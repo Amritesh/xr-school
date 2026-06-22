@@ -1,1 +1,64 @@
-npm test
+#!/bin/sh
+# XR School pre-commit hook
+# Runs: contract compile → unit tests → simulation contract validation → drift check
+
+export PATH="$HOME/.nvm/versions/node/v23.11.0/bin:$PATH"
+
+echo ""
+echo "┌─────────────────────────────────────────────┐"
+echo "│  XR School — Pre-Commit Quality Gate         │"
+echo "└─────────────────────────────────────────────┘"
+echo ""
+
+FAIL=0
+
+# 1. TypeSpec contract must compile
+echo "▸ [1/4] TypeSpec contract compile..."
+npm run contract:compile --silent
+if [ $? -ne 0 ]; then
+  echo "  ✗ TypeSpec compile FAILED. Fix contracts/typespec/main.tsp before committing."
+  FAIL=1
+else
+  echo "  ✓ TypeSpec compiled. OpenAPI generated."
+fi
+
+# 2. Unit tests (evaluation engine, scoring, contracts)
+echo "▸ [2/4] Unit tests..."
+npm run test --silent
+if [ $? -ne 0 ]; then
+  echo "  ✗ Tests FAILED. Fix failing tests before committing."
+  FAIL=1
+else
+  echo "  ✓ All unit tests pass."
+fi
+
+# 3. Simulation contract validation
+echo "▸ [3/4] Simulation contract validation..."
+node scripts/validate-simulations.mjs
+if [ $? -ne 0 ]; then
+  echo "  ✗ Simulation contract validation FAILED."
+  FAIL=1
+else
+  echo "  ✓ Simulation contracts valid."
+fi
+
+# 4. Spec drift check
+echo "▸ [4/4] Spec drift check..."
+npm run spec:drift --silent
+if [ $? -ne 0 ]; then
+  echo "  ✗ Spec drift check FAILED."
+  FAIL=1
+else
+  echo "  ✓ No contract drift detected."
+fi
+
+echo ""
+if [ $FAIL -ne 0 ]; then
+  echo "  ✗ Pre-commit gate FAILED. Commit blocked."
+  echo "    Fix the errors above and try again."
+  echo ""
+  exit 1
+fi
+
+echo "  ✓ All checks passed. Proceeding with commit."
+echo ""
