@@ -1,0 +1,36 @@
+{
+  "name": "xr-school",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline-first K-12 XR simulation curriculum platform for Indian schools",
+  "type": "module",
+  "scripts": {
+    "contract:compile": "tsp compile contracts/typespec",
+    "quality": "npm run contract:compile && npm run test",
+    "test": "vitest run",
+    "spec:drift": "node scripts/spec-drift-check.mjs",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md,yaml}\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@typespec/compiler": "^1.13.0",
+    "@typespec/http": "^1.13.0",
+    "@typespec/openapi3": "^1.13.0",
+    "@typespec/rest": "^0.83.0",
+    "eslint": "^9.39.4",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.4",
+    "tsx": "^4.22.4",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

@@ -1,0 +1,3541 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "XR School Lab Platform API",
+    "version": "0.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/v1/assessment-hooks": {
+      "post": {
+        "operationId": "AssessmentHooks_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentHook"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssessmentHookRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/assessment-hooks/{assessmentHookId}": {
+      "get": {
+        "operationId": "AssessmentHooks_get",
+        "parameters": [
+          {
+            "name": "assessmentHookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentHook"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batch-sessions": {
+      "get": {
+        "operationId": "BatchSessions_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "schoolId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "labDeploymentId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "instructorId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "syncStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/OfflineSyncStatus"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListBatchSessionsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "BatchSessions_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchSession"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBatchSessionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/batch-sessions/{batchSessionId}": {
+      "get": {
+        "operationId": "BatchSessions_get",
+        "parameters": [
+          {
+            "name": "batchSessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchSession"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cue-cards": {
+      "post": {
+        "operationId": "CueCards_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CueCard"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCueCardRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cue-cards/{cueCardId}": {
+      "get": {
+        "operationId": "CueCards_get",
+        "parameters": [
+          {
+            "name": "cueCardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CueCard"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/curriculum-maps": {
+      "get": {
+        "operationId": "CurriculumMaps_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "board",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SchoolBoard"
+            },
+            "explode": false
+          },
+          {
+            "name": "gradeBand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GradeBand"
+            },
+            "explode": false
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "explode": false
+          },
+          {
+            "name": "xrFitType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/XrFitType"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCurriculumMapsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "CurriculumMaps_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumMap"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCurriculumMapRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/curriculum-maps/{curriculumMapId}": {
+      "get": {
+        "operationId": "CurriculumMaps_get",
+        "parameters": [
+          {
+            "name": "curriculumMapId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumMap"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evaluation-records": {
+      "get": {
+        "operationId": "EvaluationRecords_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "schoolId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "moduleId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "instructorId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "gradeBand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GradeBand"
+            },
+            "explode": false
+          },
+          {
+            "name": "syncStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/OfflineSyncStatus"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListEvaluationRecordsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "EvaluationRecords_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationRecord"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEvaluationRecordRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evaluation-records/{evaluationRecordId}": {
+      "get": {
+        "operationId": "EvaluationRecords_get",
+        "parameters": [
+          {
+            "name": "evaluationRecordId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationRecord"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/learning-concepts": {
+      "get": {
+        "operationId": "LearningConcepts_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "explode": false
+          },
+          {
+            "name": "visualizable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListLearningConceptsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "LearningConcepts_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearningConcept"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLearningConceptRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/learning-concepts/{conceptId}": {
+      "get": {
+        "operationId": "LearningConcepts_get",
+        "parameters": [
+          {
+            "name": "conceptId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearningConcept"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/offline-content-packs": {
+      "get": {
+        "operationId": "OfflineContentPacks_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "releaseChannel",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ReleaseChannel"
+            },
+            "explode": false
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContentPackStatus"
+            },
+            "explode": false
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "explode": false
+          },
+          {
+            "name": "gradeBand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GradeBand"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfflineContentPacksResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "OfflineContentPacks_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfflineContentPack"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOfflineContentPackRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/offline-content-packs/{packId}": {
+      "get": {
+        "operationId": "OfflineContentPacks_get",
+        "parameters": [
+          {
+            "name": "packId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfflineContentPack"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/revision-cards": {
+      "post": {
+        "operationId": "RevisionCards_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisionCard"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRevisionCardRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/revision-cards/{revisionCardId}": {
+      "get": {
+        "operationId": "RevisionCards_get",
+        "parameters": [
+          {
+            "name": "revisionCardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevisionCard"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/simulation-modules": {
+      "get": {
+        "operationId": "SimulationModules_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "explode": false
+          },
+          {
+            "name": "gradeBand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/GradeBand"
+            },
+            "explode": false
+          },
+          {
+            "name": "xrFitType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/XrFitType"
+            },
+            "explode": false
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContentPackStatus"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListSimulationModulesResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "SimulationModules_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationModule"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSimulationModuleRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/simulation-modules/{moduleId}": {
+      "get": {
+        "operationId": "SimulationModules_get",
+        "parameters": [
+          {
+            "name": "moduleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationModule"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sync-jobs": {
+      "get": {
+        "operationId": "SyncJobs_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PageRequest.page"
+          },
+          {
+            "$ref": "#/components/parameters/PageRequest.pageSize"
+          },
+          {
+            "name": "schoolId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          },
+          {
+            "name": "syncStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/OfflineSyncStatus"
+            },
+            "explode": false
+          },
+          {
+            "name": "entityType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "explode": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SyncJob"
+                      }
+                    },
+                    "page": {
+                      "$ref": "#/components/schemas/PageInfo"
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "page"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sync-jobs/{syncJobId}": {
+      "get": {
+        "operationId": "SyncJobs_get",
+        "parameters": [
+          {
+            "name": "syncJobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncJob"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "PageRequest.page": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "explode": false
+      },
+      "PageRequest.pageSize": {
+        "name": "pageSize",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "explode": false
+      }
+    },
+    "schemas": {
+      "AIChangeRequest": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "requestedByRole",
+          "targetDomain",
+          "allowedFiles",
+          "forbiddenFiles",
+          "requiresTypeSpecChange",
+          "requiresStorybookUpdate",
+          "requiresDiagramUpdate",
+          "requiresTestUpdate",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "requestedByRole": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "targetDomain": {
+            "type": "string"
+          },
+          "allowedFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forbiddenFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiresTypeSpecChange": {
+            "type": "boolean"
+          },
+          "requiresStorybookUpdate": {
+            "type": "boolean"
+          },
+          "requiresDiagramUpdate": {
+            "type": "boolean"
+          },
+          "requiresTestUpdate": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "required": [
+          "city",
+          "state",
+          "country"
+        ],
+        "properties": {
+          "line1": {
+            "type": "string"
+          },
+          "line2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "pincode": {
+            "type": "string"
+          }
+        }
+      },
+      "AssessmentHook": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "questionText",
+          "conceptId",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/AssessmentType"
+          },
+          "questionText": {
+            "type": "string"
+          },
+          "expectedAnswer": {
+            "type": "string"
+          },
+          "conceptId": {
+            "type": "string"
+          },
+          "misconceptionDetectedWhen": {
+            "type": "string"
+          },
+          "scoringRule": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "AssessmentType": {
+        "type": "string",
+        "enum": [
+          "preCheck",
+          "microQuiz",
+          "misconceptionCheck",
+          "postCheck",
+          "revisionCheck",
+          "instructorObservation"
+        ]
+      },
+      "AuditFields": {
+        "type": "object",
+        "required": [
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "BatchSession": {
+        "type": "object",
+        "required": [
+          "id",
+          "schoolId",
+          "labDeploymentId",
+          "instructorId",
+          "moduleId",
+          "gradeBand",
+          "batchNumber",
+          "batchSize",
+          "totalClassSize",
+          "plannedStartTime",
+          "anonymousParticipantCount",
+          "headsetCountUsed",
+          "offline",
+          "syncStatus",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "labDeploymentId": {
+            "type": "string"
+          },
+          "instructorId": {
+            "type": "string"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "gradeBand": {
+            "$ref": "#/components/schemas/GradeBand"
+          },
+          "batchNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "batchSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalClassSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plannedStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "actualStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "actualEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "anonymousParticipantCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "headsetCountUsed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offline": {
+            "type": "boolean"
+          },
+          "syncStatus": {
+            "$ref": "#/components/schemas/OfflineSyncStatus"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "BillingPlan": {
+        "type": "object",
+        "required": [
+          "id",
+          "schoolId",
+          "futureShellOnly",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "setupFeeInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "monthlyPricePerStudentInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "futureShellOnly": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "BloomLevel": {
+        "type": "string",
+        "enum": [
+          "remember",
+          "understand",
+          "apply",
+          "analyze",
+          "evaluate",
+          "create"
+        ]
+      },
+      "CRMLead": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "futureShellOnly",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "futureShellOnly": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "ComfortRiskLevel": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ]
+      },
+      "ContentPackStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "approved",
+          "released",
+          "deprecated",
+          "archived"
+        ]
+      },
+      "ContentVersion": {
+        "type": "object",
+        "required": [
+          "id",
+          "entityType",
+          "entityId",
+          "version",
+          "changeSummary",
+          "releaseChannel",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "changeSummary": {
+            "type": "string"
+          },
+          "approvedBy": {
+            "type": "string"
+          },
+          "releaseChannel": {
+            "$ref": "#/components/schemas/ReleaseChannel"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateAssessmentHookRequest": {
+        "type": "object",
+        "required": [
+          "type",
+          "questionText",
+          "conceptId"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AssessmentType"
+          },
+          "questionText": {
+            "type": "string"
+          },
+          "expectedAnswer": {
+            "type": "string"
+          },
+          "conceptId": {
+            "type": "string"
+          },
+          "misconceptionDetectedWhen": {
+            "type": "string"
+          },
+          "scoringRule": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateBatchSessionRequest": {
+        "type": "object",
+        "required": [
+          "schoolId",
+          "labDeploymentId",
+          "instructorId",
+          "moduleId",
+          "gradeBand",
+          "batchNumber",
+          "batchSize",
+          "totalClassSize",
+          "plannedStartTime",
+          "anonymousParticipantCount",
+          "headsetCountUsed",
+          "offline"
+        ],
+        "properties": {
+          "schoolId": {
+            "type": "string"
+          },
+          "labDeploymentId": {
+            "type": "string"
+          },
+          "instructorId": {
+            "type": "string"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "gradeBand": {
+            "$ref": "#/components/schemas/GradeBand"
+          },
+          "batchNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "batchSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalClassSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plannedStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "anonymousParticipantCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "headsetCountUsed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offline": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateCueCardRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "shortPrompt",
+          "conceptId",
+          "displayOrder"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "shortPrompt": {
+            "type": "string"
+          },
+          "visualAnchor": {
+            "type": "string"
+          },
+          "conceptId": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "instructorNote": {
+            "type": "string"
+          },
+          "studentAction": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateCurriculumMapRequest": {
+        "type": "object",
+        "required": [
+          "board",
+          "gradeBand",
+          "subject",
+          "topic",
+          "conceptIds",
+          "learningOutcome",
+          "bloomLevel",
+          "assessmentTypes",
+          "revisionImportance",
+          "difficultyLevel",
+          "xrFitType",
+          "xrFitJustification"
+        ],
+        "properties": {
+          "board": {
+            "$ref": "#/components/schemas/SchoolBoard"
+          },
+          "stateBoardState": {
+            "type": "string"
+          },
+          "gradeBand": {
+            "$ref": "#/components/schemas/GradeBand"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "chapter": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "conceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subconceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "learningOutcome": {
+            "type": "string"
+          },
+          "bloomLevel": {
+            "$ref": "#/components/schemas/BloomLevel"
+          },
+          "prerequisiteConceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "misconceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assessmentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssessmentType"
+            }
+          },
+          "revisionImportance": {
+            "$ref": "#/components/schemas/RevisionImportance"
+          },
+          "difficultyLevel": {
+            "$ref": "#/components/schemas/DifficultyLevel"
+          },
+          "languagePackIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "localContextRelevance": {
+            "type": "string"
+          },
+          "practicalLabRelevance": {
+            "type": "string"
+          },
+          "xrFitType": {
+            "$ref": "#/components/schemas/XrFitType"
+          },
+          "xrFitJustification": {
+            "type": "string"
+          },
+          "whyNotTextbookOrVideoOnly": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateEvaluationRecordRequest": {
+        "type": "object",
+        "required": [
+          "schoolId",
+          "labDeploymentId",
+          "batchSessionId",
+          "moduleId",
+          "instructorId",
+          "gradeBand",
+          "anonymousParticipantCount",
+          "syncStatus"
+        ],
+        "properties": {
+          "schoolId": {
+            "type": "string"
+          },
+          "labDeploymentId": {
+            "type": "string"
+          },
+          "batchSessionId": {
+            "type": "string"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "instructorId": {
+            "type": "string"
+          },
+          "gradeBand": {
+            "$ref": "#/components/schemas/GradeBand"
+          },
+          "anonymousParticipantCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "preUnderstandingScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "postUnderstandingScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "engagementScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "completionRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "confusionPoints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "misconceptionsDetected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conceptsNeedingRevision": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "instructorObservation": {
+            "type": "string"
+          },
+          "headsetComfortIssues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "safetyIssues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "syncStatus": {
+            "$ref": "#/components/schemas/OfflineSyncStatus"
+          }
+        }
+      },
+      "CreateLearningConceptRequest": {
+        "type": "object",
+        "required": [
+          "canonicalName",
+          "subject",
+          "description",
+          "visualizable"
+        ],
+        "properties": {
+          "canonicalName": {
+            "type": "string"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "description": {
+            "type": "string"
+          },
+          "parentConceptId": {
+            "type": "string"
+          },
+          "prerequisiteConceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commonMisconceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visualizable": {
+            "type": "boolean"
+          },
+          "practicalRelevance": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateOfflineContentPackRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "version",
+          "releaseChannel",
+          "status",
+          "moduleIds",
+          "gradeBands",
+          "subjects",
+          "applicableBoards",
+          "estimatedSizeMb",
+          "requiresInternetAfterInstall",
+          "questStorageBudgetGb"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "releaseChannel": {
+            "$ref": "#/components/schemas/ReleaseChannel"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentPackStatus"
+          },
+          "moduleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gradeBands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradeBand"
+            }
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            }
+          },
+          "applicableBoards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchoolBoard"
+            }
+          },
+          "estimatedSizeMb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requiresInternetAfterInstall": {
+            "type": "boolean"
+          },
+          "questStorageBudgetGb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "manifestPath": {
+            "type": "string"
+          },
+          "checksum": {
+            "type": "string"
+          },
+          "releaseNotes": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateRevisionCardRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "recapText",
+          "conceptId",
+          "difficultyLevel"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "recapText": {
+            "type": "string"
+          },
+          "conceptId": {
+            "type": "string"
+          },
+          "difficultyLevel": {
+            "$ref": "#/components/schemas/DifficultyLevel"
+          },
+          "spacedRevisionTag": {
+            "type": "string"
+          },
+          "misconceptionReminder": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateSimulationModuleRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "slug",
+          "summary",
+          "gradeBands",
+          "subjects",
+          "applicableBoards",
+          "curriculumMapIds",
+          "conceptIds",
+          "simulationFormat",
+          "evidenceConfidenceLevel",
+          "xrFitType",
+          "xrFitJustification",
+          "learningObjective",
+          "scientificConceptExplanation",
+          "visualizationStrategy",
+          "interactionStrategy",
+          "cueCardIds",
+          "revisionCardIds",
+          "assessmentHookIds",
+          "instructorScript",
+          "expectedDurationMinutes",
+          "maxSessionDurationMinutes",
+          "comfortRiskLevel",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "gradeBands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradeBand"
+            }
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            }
+          },
+          "applicableBoards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchoolBoard"
+            }
+          },
+          "stateBoardStates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "curriculumMapIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "simulationFormat": {
+            "$ref": "#/components/schemas/SimulationFormat"
+          },
+          "evidenceConfidenceLevel": {
+            "$ref": "#/components/schemas/EvidenceConfidenceLevel"
+          },
+          "xrFitType": {
+            "$ref": "#/components/schemas/XrFitType"
+          },
+          "xrFitJustification": {
+            "type": "string"
+          },
+          "learningObjective": {
+            "type": "string"
+          },
+          "scientificConceptExplanation": {
+            "type": "string"
+          },
+          "prerequisiteConceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "misconceptionsAddressed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visualizationStrategy": {
+            "type": "string"
+          },
+          "interactionStrategy": {
+            "type": "string"
+          },
+          "imaginationHelperStrategy": {
+            "type": "string"
+          },
+          "practicalUseCase": {
+            "type": "string"
+          },
+          "cueCardIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revisionCardIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assessmentHookIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "instructorScript": {
+            "type": "string"
+          },
+          "batchActivityPrompt": {
+            "type": "string"
+          },
+          "expectedDurationMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSessionDurationMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comfortRiskLevel": {
+            "$ref": "#/components/schemas/ComfortRiskLevel"
+          },
+          "safetyNotes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "offlineContentPackId": {
+            "type": "string"
+          },
+          "estimatedPackageSizeMb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "targetFrameRateFps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minQuestStorageGb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentPackStatus"
+          }
+        }
+      },
+      "CueCard": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "shortPrompt",
+          "conceptId",
+          "displayOrder",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "shortPrompt": {
+            "type": "string"
+          },
+          "visualAnchor": {
+            "type": "string"
+          },
+          "conceptId": {
+            "type": "string"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "instructorNote": {
+            "type": "string"
+          },
+          "studentAction": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "CurriculumMap": {
+        "type": "object",
+        "required": [
+          "id",
+          "board",
+          "gradeBand",
+          "subject",
+          "topic",
+          "conceptIds",
+          "learningOutcome",
+          "bloomLevel",
+          "assessmentTypes",
+          "revisionImportance",
+          "difficultyLevel",
+          "xrFitType",
+          "xrFitJustification",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "board": {
+            "$ref": "#/components/schemas/SchoolBoard"
+          },
+          "stateBoardState": {
+            "type": "string"
+          },
+          "gradeBand": {
+            "$ref": "#/components/schemas/GradeBand"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "chapter": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "conceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subconceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "learningOutcome": {
+            "type": "string"
+          },
+          "bloomLevel": {
+            "$ref": "#/components/schemas/BloomLevel"
+          },
+          "prerequisiteConceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "misconceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assessmentTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssessmentType"
+            }
+          },
+          "revisionImportance": {
+            "$ref": "#/components/schemas/RevisionImportance"
+          },
+          "difficultyLevel": {
+            "$ref": "#/components/schemas/DifficultyLevel"
+          },
+          "languagePackIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "localContextRelevance": {
+            "type": "string"
+          },
+          "practicalLabRelevance": {
+            "type": "string"
+          },
+          "xrFitType": {
+            "$ref": "#/components/schemas/XrFitType"
+          },
+          "xrFitJustification": {
+            "type": "string"
+          },
+          "whyNotTextbookOrVideoOnly": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "DeviceType": {
+        "type": "string",
+        "enum": [
+          "metaQuestHeadset",
+          "chargingDock",
+          "storageCase",
+          "wifiRouter",
+          "instructorTablet",
+          "maintenanceLaptop"
+        ]
+      },
+      "DifficultyLevel": {
+        "type": "string",
+        "enum": [
+          "easy",
+          "moderate",
+          "hard",
+          "advanced"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EvaluationRecord": {
+        "type": "object",
+        "required": [
+          "id",
+          "schoolId",
+          "labDeploymentId",
+          "batchSessionId",
+          "moduleId",
+          "instructorId",
+          "gradeBand",
+          "anonymousParticipantCount",
+          "syncStatus",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "labDeploymentId": {
+            "type": "string"
+          },
+          "batchSessionId": {
+            "type": "string"
+          },
+          "moduleId": {
+            "type": "string"
+          },
+          "instructorId": {
+            "type": "string"
+          },
+          "gradeBand": {
+            "$ref": "#/components/schemas/GradeBand"
+          },
+          "anonymousParticipantCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "preUnderstandingScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "postUnderstandingScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "improvementPercent": {
+            "type": "number",
+            "format": "double"
+          },
+          "engagementScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "completionRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "confusionPoints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "misconceptionsDetected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conceptsNeedingRevision": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "instructorObservation": {
+            "type": "string"
+          },
+          "headsetComfortIssues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "safetyIssues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "syncStatus": {
+            "$ref": "#/components/schemas/OfflineSyncStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "EvidenceConfidenceLevel": {
+        "type": "string",
+        "enum": [
+          "experimental",
+          "expertDesigned",
+          "internallyPiloted",
+          "schoolValidated",
+          "researchBacked"
+        ]
+      },
+      "GradeBand": {
+        "type": "string",
+        "enum": [
+          "kindergarten",
+          "class1To2",
+          "class3To5",
+          "class6To8",
+          "class9To10",
+          "class11To12"
+        ]
+      },
+      "HardwareKit": {
+        "type": "object",
+        "required": [
+          "id",
+          "labDeploymentId",
+          "devices",
+          "expectedSetupCostMinInr",
+          "expectedSetupCostMaxInr",
+          "monthlyStudentPriceInr",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "labDeploymentId": {
+            "type": "string"
+          },
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HardwareKitItem"
+            }
+          },
+          "expectedSetupCostMinInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expectedSetupCostMaxInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "monthlyStudentPriceInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "warrantyNotes": {
+            "type": "string"
+          },
+          "maintenanceNotes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "HardwareKitItem": {
+        "type": "object",
+        "required": [
+          "deviceType",
+          "quantity",
+          "required"
+        ],
+        "properties": {
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      },
+      "IndianRegion": {
+        "type": "string",
+        "enum": [
+          "northEastIndia",
+          "eastIndia",
+          "northIndia",
+          "southIndia",
+          "westIndia",
+          "centralIndia"
+        ]
+      },
+      "Instructor": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "region",
+          "active",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "region": {
+            "$ref": "#/components/schemas/IndianRegion"
+          },
+          "assignedStates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NorthEastState"
+            }
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "LabDeployment": {
+        "type": "object",
+        "required": [
+          "id",
+          "schoolId",
+          "labName",
+          "roomSizeSqFt",
+          "expectedRoomSizeSqFt",
+          "headsetCount",
+          "expectedHeadsetCount",
+          "classSize",
+          "batchSize",
+          "batchesPerClass",
+          "projectorAvailable",
+          "instructorProvidedByUs",
+          "offlineFirst",
+          "targetQuestStorageGb",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "labName": {
+            "type": "string"
+          },
+          "roomSizeSqFt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expectedRoomSizeSqFt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "headsetCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expectedHeadsetCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "classSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "batchSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "batchesPerClass": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectorAvailable": {
+            "type": "boolean"
+          },
+          "instructorProvidedByUs": {
+            "type": "boolean"
+          },
+          "teacherSupportCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offlineFirst": {
+            "type": "boolean"
+          },
+          "targetQuestStorageGb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "LearningConcept": {
+        "type": "object",
+        "required": [
+          "id",
+          "canonicalName",
+          "subject",
+          "description",
+          "visualizable",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "canonicalName": {
+            "type": "string"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "description": {
+            "type": "string"
+          },
+          "parentConceptId": {
+            "type": "string"
+          },
+          "prerequisiteConceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commonMisconceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visualizable": {
+            "type": "boolean"
+          },
+          "practicalRelevance": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "ListBatchSessionsResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BatchSession"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "ListCurriculumMapsResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurriculumMap"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "ListEvaluationRecordsResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvaluationRecord"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "ListLearningConceptsResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LearningConcept"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "ListOfflineContentPacksResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfflineContentPack"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "ListSimulationModulesResponse": {
+        "type": "object",
+        "required": [
+          "items",
+          "page"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SimulationModule"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "NorthEastState": {
+        "type": "string",
+        "enum": [
+          "arunachalPradesh",
+          "assam",
+          "manipur",
+          "meghalaya",
+          "mizoram",
+          "nagaland",
+          "sikkim",
+          "tripura"
+        ]
+      },
+      "OfflineContentPack": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "version",
+          "releaseChannel",
+          "status",
+          "moduleIds",
+          "gradeBands",
+          "subjects",
+          "applicableBoards",
+          "estimatedSizeMb",
+          "requiresInternetAfterInstall",
+          "questStorageBudgetGb",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "releaseChannel": {
+            "$ref": "#/components/schemas/ReleaseChannel"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentPackStatus"
+          },
+          "moduleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gradeBands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradeBand"
+            }
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            }
+          },
+          "applicableBoards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchoolBoard"
+            }
+          },
+          "estimatedSizeMb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requiresInternetAfterInstall": {
+            "type": "boolean"
+          },
+          "questStorageBudgetGb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "manifestPath": {
+            "type": "string"
+          },
+          "checksum": {
+            "type": "string"
+          },
+          "releaseNotes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "OfflineSyncStatus": {
+        "type": "string",
+        "enum": [
+          "localOnly",
+          "queued",
+          "syncing",
+          "synced",
+          "failed",
+          "conflict"
+        ]
+      },
+      "PageInfo": {
+        "type": "object",
+        "required": [
+          "page",
+          "pageSize",
+          "totalItems",
+          "totalPages"
+        ],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalItems": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Proposal": {
+        "type": "object",
+        "required": [
+          "id",
+          "schoolId",
+          "title",
+          "status",
+          "futureShellOnly",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "estimatedSetupCostInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "monthlyStudentPriceInr": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "futureShellOnly": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "ReleaseChannel": {
+        "type": "string",
+        "enum": [
+          "internal",
+          "pilot",
+          "schoolStable",
+          "regionalStable"
+        ]
+      },
+      "RevisionCard": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "recapText",
+          "conceptId",
+          "difficultyLevel",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "recapText": {
+            "type": "string"
+          },
+          "conceptId": {
+            "type": "string"
+          },
+          "difficultyLevel": {
+            "$ref": "#/components/schemas/DifficultyLevel"
+          },
+          "spacedRevisionTag": {
+            "type": "string"
+          },
+          "misconceptionReminder": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "RevisionImportance": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high",
+          "examCritical"
+        ]
+      },
+      "School": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "board",
+          "region",
+          "address",
+          "gradeBands",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "board": {
+            "$ref": "#/components/schemas/SchoolBoard"
+          },
+          "stateBoardState": {
+            "type": "string"
+          },
+          "region": {
+            "$ref": "#/components/schemas/IndianRegion"
+          },
+          "northEastState": {
+            "$ref": "#/components/schemas/NorthEastState"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "gradeBands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradeBand"
+            }
+          },
+          "estimatedStudents": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "SchoolBoard": {
+        "type": "string",
+        "enum": [
+          "cbse",
+          "icse",
+          "stateBoard"
+        ]
+      },
+      "SimulationFormat": {
+        "type": "string",
+        "enum": [
+          "immersiveVr",
+          "threeSixtyVr",
+          "interactive3d",
+          "guidedVisualization",
+          "practicalLabSimulation",
+          "virtualFieldVisit",
+          "revisionMode"
+        ]
+      },
+      "SimulationModule": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "summary",
+          "gradeBands",
+          "subjects",
+          "applicableBoards",
+          "curriculumMapIds",
+          "conceptIds",
+          "simulationFormat",
+          "evidenceConfidenceLevel",
+          "xrFitType",
+          "xrFitJustification",
+          "learningObjective",
+          "scientificConceptExplanation",
+          "visualizationStrategy",
+          "interactionStrategy",
+          "cueCardIds",
+          "revisionCardIds",
+          "assessmentHookIds",
+          "instructorScript",
+          "expectedDurationMinutes",
+          "maxSessionDurationMinutes",
+          "comfortRiskLevel",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "gradeBands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradeBand"
+            }
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            }
+          },
+          "applicableBoards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchoolBoard"
+            }
+          },
+          "stateBoardStates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "curriculumMapIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "simulationFormat": {
+            "$ref": "#/components/schemas/SimulationFormat"
+          },
+          "evidenceConfidenceLevel": {
+            "$ref": "#/components/schemas/EvidenceConfidenceLevel"
+          },
+          "xrFitType": {
+            "$ref": "#/components/schemas/XrFitType"
+          },
+          "xrFitJustification": {
+            "type": "string"
+          },
+          "learningObjective": {
+            "type": "string"
+          },
+          "scientificConceptExplanation": {
+            "type": "string"
+          },
+          "prerequisiteConceptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "misconceptionsAddressed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visualizationStrategy": {
+            "type": "string"
+          },
+          "interactionStrategy": {
+            "type": "string"
+          },
+          "imaginationHelperStrategy": {
+            "type": "string"
+          },
+          "practicalUseCase": {
+            "type": "string"
+          },
+          "cueCardIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revisionCardIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assessmentHookIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "instructorScript": {
+            "type": "string"
+          },
+          "batchActivityPrompt": {
+            "type": "string"
+          },
+          "expectedDurationMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxSessionDurationMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comfortRiskLevel": {
+            "$ref": "#/components/schemas/ComfortRiskLevel"
+          },
+          "safetyNotes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "offlineContentPackId": {
+            "type": "string"
+          },
+          "estimatedPackageSizeMb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "targetFrameRateFps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minQuestStorageGb": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentPackStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "StorybookComponentBoundary": {
+        "type": "object",
+        "required": [
+          "id",
+          "componentName",
+          "packagePath",
+          "ownerDomain",
+          "allowedEditZones",
+          "forbiddenEditZones",
+          "requiredStories",
+          "requiredTests",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "componentName": {
+            "type": "string"
+          },
+          "packagePath": {
+            "type": "string"
+          },
+          "ownerDomain": {
+            "type": "string"
+          },
+          "allowedEditZones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forbiddenEditZones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredStories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requiredTests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mockDataPath": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "Subject": {
+        "type": "string",
+        "enum": [
+          "science",
+          "physics",
+          "chemistry",
+          "biology",
+          "mathematics",
+          "geography",
+          "history",
+          "environmentalScience",
+          "computerScience",
+          "vocationalSkills",
+          "careerExposure"
+        ]
+      },
+      "SyncJob": {
+        "type": "object",
+        "required": [
+          "id",
+          "schoolId",
+          "entityType",
+          "entityId",
+          "syncStatus",
+          "retryCount",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "schoolId": {
+            "type": "string"
+          },
+          "labDeploymentId": {
+            "type": "string"
+          },
+          "sourceDeviceId": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "syncStatus": {
+            "$ref": "#/components/schemas/OfflineSyncStatus"
+          },
+          "retryCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastAttemptAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "payloadHash": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRole": {
+        "type": "string",
+        "enum": [
+          "superAdmin",
+          "programOwner",
+          "instructor",
+          "contentManager",
+          "schoolAdmin",
+          "supportOps"
+        ]
+      },
+      "XrFitType": {
+        "type": "string",
+        "enum": [
+          "strongVrFit",
+          "arTabletFit",
+          "normalClassroomBetter",
+          "physicalLabBetter",
+          "notWorthXr"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.xr-school-lab.local/v1",
+      "description": "Local or staging API endpoint",
+      "variables": {}
+    }
+  ]
+}
