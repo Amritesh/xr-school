@@ -73,7 +73,8 @@ function matchesAny(files, prefixes) {
 }
 
 function isReusableComponent(filePath) {
-  // A component is reusable if it's in components/ and not a page or layout
+  // Simulation viewers are full-page XR experiences, not reusable UI atoms
+  if (filePath.includes("/components/simulations/")) return false;
   return (
     filePath.includes("/components/") &&
     !filePath.includes("/pages/") &&
