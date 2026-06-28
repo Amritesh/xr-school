@@ -47,3 +47,8 @@ export type {
   WorldRuntimeState,
   WorldSystem,
 } from './world/runtime';
+export {
+  chooseQualityProfile,
+  nextLowerQualityProfile,
+} from './world/quality';
+export type { DeviceQualityCapabilities } from './world/quality';
