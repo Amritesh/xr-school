@@ -31,6 +31,7 @@ export function toWebCatalogRows(rows) {
     expectedDurationMinutes: toNumber(row.expectedDurationMinutes),
     reuseGroup: row.reuseGroup,
     implementationNotes: row.implementationNotes,
+    releaseMaturity: 'catalogued',
   }));
 }
 

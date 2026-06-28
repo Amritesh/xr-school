@@ -64,6 +64,7 @@ export function parseScienceCatalogCsv(csvText: string): ScienceCatalogRow[] {
       packageSizeTargetMb: Number(record.packageSizeTargetMb),
       reuseGroup: record.reuseGroup,
       implementationNotes: record.implementationNotes,
+      releaseMaturity: 'catalogued',
     } as ScienceCatalogRow;
   });
 }

@@ -58,12 +58,30 @@ export const VALID_SIMULATION_ARCHETYPES = [
   'scenario',
 ] as const;
 
+export const VALID_RELEASE_MATURITIES = [
+  'catalogued',
+  'inDevelopment',
+  'internalQA',
+  'pilotReady',
+  'schoolValidated',
+] as const;
+
+export const VALID_EVIDENCE_CONFIDENCE_LEVELS = [
+  'experimental',
+  'expertDesigned',
+  'internallyPiloted',
+  'schoolValidated',
+  'researchBacked',
+] as const;
+
 export type GradeBand = (typeof VALID_GRADE_BANDS)[number];
 export type Subject = (typeof VALID_SUBJECTS)[number];
 export type SimulationFormat = (typeof VALID_SIMULATION_FORMATS)[number];
 export type XrFitType = (typeof VALID_XR_FIT_TYPES)[number];
 export type ComfortRiskLevel = (typeof VALID_COMFORT_RISK_LEVELS)[number];
 export type SimulationArchetype = (typeof VALID_SIMULATION_ARCHETYPES)[number];
+export type ReleaseMaturity = (typeof VALID_RELEASE_MATURITIES)[number];
+export type EvidenceConfidenceLevel = (typeof VALID_EVIDENCE_CONFIDENCE_LEVELS)[number];
 
 export interface ScienceCatalogRow {
   simulationId: string;
@@ -84,6 +102,7 @@ export interface ScienceCatalogRow {
   packageSizeTargetMb: number;
   reuseGroup: string;
   implementationNotes: string;
+  releaseMaturity: ReleaseMaturity;
 }
 
 export interface SimulationModuleRecord {
@@ -98,7 +117,8 @@ export interface SimulationModuleRecord {
   curriculumMapIds: string[];
   conceptIds: string[];
   simulationFormat: SimulationFormat;
-  evidenceConfidenceLevel: 'experimental' | 'expertDesigned' | 'internallyPiloted' | 'schoolValidated' | 'researchBacked';
+  evidenceConfidenceLevel: EvidenceConfidenceLevel;
+  releaseMaturity: ReleaseMaturity;
   xrFitType: XrFitType;
   xrFitJustification: string;
   learningObjective: string;
@@ -162,6 +182,18 @@ export function mapArchetypeToSimulationFormat(archetype: SimulationArchetype): 
   }
 }
 
+export function isLaunchableReleaseMaturity(maturity: ReleaseMaturity) {
+  return VALID_RELEASE_MATURITIES.indexOf(maturity) >= VALID_RELEASE_MATURITIES.indexOf('internalQA');
+}
+
+export function isSchoolStableRelease(
+  maturity: ReleaseMaturity,
+  evidenceConfidenceLevel: EvidenceConfidenceLevel,
+) {
+  return maturity === 'schoolValidated'
+    && (evidenceConfidenceLevel === 'schoolValidated' || evidenceConfidenceLevel === 'researchBacked');
+}
+
 function isOneOf<T extends readonly string[]>(values: T, value: string): value is T[number] {
   return values.includes(value);
 }
@@ -182,6 +214,7 @@ export function validateCatalogRow(row: ScienceCatalogRow, index = 0) {
     errors.push(`${prefix} forbidden release xrFitType ${row.xrFitType}`);
   }
   if (!isOneOf(VALID_COMFORT_RISK_LEVELS, row.comfortRiskLevel)) errors.push(`${prefix} invalid comfortRiskLevel ${row.comfortRiskLevel}`);
+  if (!isOneOf(VALID_RELEASE_MATURITIES, row.releaseMaturity)) errors.push(`${prefix} invalid releaseMaturity ${row.releaseMaturity}`);
   if (row.expectedDurationMinutes <= 0 || row.expectedDurationMinutes > 12) errors.push(`${prefix} expectedDurationMinutes must be 1-12`);
   if (row.packageSizeTargetMb <= 0) errors.push(`${prefix} packageSizeTargetMb must be positive`);
 

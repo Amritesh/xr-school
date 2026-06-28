@@ -56,6 +56,7 @@ Every `SimulationModule` must define all of the following. None are optional fro
 ### Format and Evidence
 - `simulationFormat` — immersiveVr | threeSixtyVr | interactive3d | guidedVisualization | practicalLabSimulation | virtualFieldVisit | revisionMode
 - `evidenceConfidenceLevel` — experimental | expertDesigned | internallyPiloted | schoolValidated | researchBacked
+- `releaseMaturity` — catalogued | inDevelopment | internalQA | pilotReady | schoolValidated
 - `xrFitType` — strongVrFit | arTabletFit | normalClassroomBetter | physicalLabBetter | notWorthXr
 - `xrFitJustification` — required text: why XR is better than textbook/video/lab for this topic
 
@@ -127,31 +128,30 @@ Every simulation should explicitly implement one or more of these techniques:
 ## Simulation Lifecycle States
 
 ```
-IDEA → DESIGN_DRAFT → CONTENT_REVIEW → INTERNAL_PILOT → SCHOOL_PILOT → RELEASED → DEPRECATED
+CATALOGUED → IN_DEVELOPMENT → INTERNAL_QA → PILOT_READY → SCHOOL_VALIDATED
 ```
 
-Tracked via `ContentPackStatus` on `SimulationModule`:
-- `draft` — idea documented, not built
-- `approved` — design reviewed and approved for development  
-- `released` — deployed to schools
-- `deprecated` — superseded or retired
-- `archived` — removed from catalog
+Tracked separately from evidence confidence and content-pack lifecycle:
+
+| Release maturity | Public behavior | Required evidence |
+|---|---|---|
+| `catalogued` | Searchable curriculum candidate; no launch link | Structured catalog record |
+| `inDevelopment` | Visible as being built; no public launch link | Assigned implementation work |
+| `internalQA` | Launchable test build | Automated gates and internal functional QA |
+| `pilotReady` | Launchable for controlled pilots | Quest acceptance, content review, and pilot approval |
+| `schoolValidated` | May be labelled school-ready | Completed school evaluation plus `schoolValidated` or `researchBacked` evidence confidence |
+
+**Policy:** launch access begins at `internalQA`. A `schoolStable` claim requires both `releaseMaturity: schoolValidated` and an evidence confidence of `schoolValidated` or `researchBacked`. Deployment alone never advances maturity.
 
 ## Simulation Lifecycle Diagram
 
 ```mermaid
 flowchart LR
-    A[Idea] -->|Content Manager creates spec| B[Draft]
-    B -->|Program Owner reviews design| C{Design Review}
-    C -->|Approved| D[Approved for Dev]
-    C -->|Rejected| B
-    D -->|Unity dev builds| E[Internal Pilot]
-    E -->|Instructor tests in lab| F{Internal QA}
-    F -->|Pass| G[School Pilot - 1 school]
-    F -->|Fail| D
-    G -->|Evaluation data collected| H{School Review}
-    H -->|Pass| I[Released - schoolStable]
-    H -->|Needs changes| D
-    I -->|Superseded| J[Deprecated]
-    J -->|Removed| K[Archived]
+    A[Catalogued] -->|Approved scope| B[In development]
+    B -->|Build and automated gates pass| C{Internal QA}
+    C -->|Pass| D[Pilot ready]
+    C -->|Fail| B
+    D -->|Controlled school pilot| E{School review}
+    E -->|Evidence accepted| F[School validated]
+    E -->|Needs changes| B
 ```

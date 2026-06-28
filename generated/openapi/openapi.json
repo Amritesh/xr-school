@@ -1893,6 +1893,7 @@
           "conceptIds",
           "simulationFormat",
           "evidenceConfidenceLevel",
+          "releaseMaturity",
           "xrFitType",
           "xrFitJustification",
           "learningObjective",
@@ -1959,6 +1960,9 @@
           },
           "evidenceConfidenceLevel": {
             "$ref": "#/components/schemas/EvidenceConfidenceLevel"
+          },
+          "releaseMaturity": {
+            "$ref": "#/components/schemas/ReleaseMaturity"
           },
           "xrFitType": {
             "$ref": "#/components/schemas/XrFitType"
@@ -3020,6 +3024,16 @@
           "regionalStable"
         ]
       },
+      "ReleaseMaturity": {
+        "type": "string",
+        "enum": [
+          "catalogued",
+          "inDevelopment",
+          "internalQA",
+          "pilotReady",
+          "schoolValidated"
+        ]
+      },
       "RevisionCard": {
         "type": "object",
         "required": [
@@ -3175,6 +3189,7 @@
           "conceptIds",
           "simulationFormat",
           "evidenceConfidenceLevel",
+          "releaseMaturity",
           "xrFitType",
           "xrFitJustification",
           "learningObjective",
@@ -3246,6 +3261,9 @@
           },
           "evidenceConfidenceLevel": {
             "$ref": "#/components/schemas/EvidenceConfidenceLevel"
+          },
+          "releaseMaturity": {
+            "$ref": "#/components/schemas/ReleaseMaturity"
           },
           "xrFitType": {
             "$ref": "#/components/schemas/XrFitType"

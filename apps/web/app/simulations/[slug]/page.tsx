@@ -3,20 +3,16 @@ import { notFound } from 'next/navigation';
 import GenericCatalogSimulationViewer from '@/components/simulations/GenericCatalogSimulationViewer';
 import { SCIENCE_SIMULATION_CATALOG } from '@/lib/scienceCatalog.generated';
 
-const CUSTOM_VIEWER_SLUGS = new Set([
-  'c5-ch07-a03-soluble-and-insoluble-substances',
-  'c6-ch01-a01-sources-of-food',
-  'c9-ch01-a02-states-of-matter',
-]);
-
 export function generateStaticParams() {
-  return SCIENCE_SIMULATION_CATALOG.filter(item => !CUSTOM_VIEWER_SLUGS.has(item.slug)).map(item => ({ slug: item.slug }));
+  return SCIENCE_SIMULATION_CATALOG
+    .filter(item => item.releaseMaturity !== 'catalogued')
+    .map(item => ({ slug: item.slug }));
 }
 
 export default async function CatalogSimulationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const simulation = SCIENCE_SIMULATION_CATALOG.find(item => item.slug === slug);
-  if (!simulation) notFound();
+  if (!simulation || simulation.releaseMaturity === 'catalogued') notFound();
 
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#07111f' }}>

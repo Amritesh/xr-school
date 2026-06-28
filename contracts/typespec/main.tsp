@@ -107,6 +107,14 @@ enum EvidenceConfidenceLevel {
   researchBacked
 }
 
+enum ReleaseMaturity {
+  catalogued,
+  inDevelopment,
+  internalQA,
+  pilotReady,
+  schoolValidated
+}
+
 enum OfflineSyncStatus {
   localOnly,
   queued,
@@ -360,6 +368,7 @@ model SimulationModule {
   conceptIds: string[];
   simulationFormat: SimulationFormat;
   evidenceConfidenceLevel: EvidenceConfidenceLevel;
+  releaseMaturity: ReleaseMaturity;
   xrFitType: XrFitType;
   xrFitJustification: string;
   learningObjective: string;
@@ -646,6 +655,7 @@ model CreateSimulationModuleRequest {
   conceptIds: string[];
   simulationFormat: SimulationFormat;
   evidenceConfidenceLevel: EvidenceConfidenceLevel;
+  releaseMaturity: ReleaseMaturity;
   xrFitType: XrFitType;
   xrFitJustification: string;
   learningObjective: string;

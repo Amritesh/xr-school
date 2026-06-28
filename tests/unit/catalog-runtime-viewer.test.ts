@@ -9,20 +9,18 @@ const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/Gener
 const availabilityPath = resolve(process.cwd(), 'apps/web/lib/simulationAvailability.ts');
 
 describe('catalog runtime simulations', () => {
-  it('exposes every class 5-10 catalog row as a launchable simulation route', () => {
+  it('keeps reusable catalog runtimes available for development without advertising them as released', () => {
     expect(existsSync(routePath)).toBe(true);
     const routeSource = readFileSync(routePath, 'utf8');
     expect(routeSource).toContain('generateStaticParams');
     expect(routeSource).toContain('GenericCatalogSimulationViewer');
     expect(routeSource).toContain('SCIENCE_SIMULATION_CATALOG.find');
-    expect(routeSource).toContain('CUSTOM_VIEWER_SLUGS');
-    expect(routeSource).toContain('!CUSTOM_VIEWER_SLUGS.has(item.slug)');
+    expect(routeSource).toContain("item.releaseMaturity !== 'catalogued'");
 
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
     expect(SCIENCE_SIMULATION_CATALOG).toHaveLength(497);
-    expect(sections.queuedPdf).toHaveLength(0);
-    expect(sections.implemented.length).toBeGreaterThanOrEqual(499);
-    expect(sections.implemented.find(item => item.slug === 'c5-ch01-a01-supersense-of-smell')?.href).toBe('/simulations/c5-ch01-a01-supersense-of-smell');
+    expect(sections.launchable).toHaveLength(5);
+    expect(sections.catalogued.find(item => item.slug === 'c5-ch01-a01-supersense-of-smell')?.href).toBeUndefined();
   });
 
   it('uses reusable archetype rendering instead of static queued cards', () => {
@@ -35,7 +33,7 @@ describe('catalog runtime simulations', () => {
     expect(viewerSource).toContain('playSimulationNarration');
 
     const availabilitySource = readFileSync(availabilityPath, 'utf8');
-    expect(availabilitySource).toContain('toCatalogRuntimeCard');
-    expect(availabilitySource).toContain("status: 'implemented'");
+    expect(availabilitySource).toContain('toCataloguedCard');
+    expect(availabilitySource).toContain("releaseMaturity: 'internalQA'");
   });
 });

@@ -17,7 +17,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:super-senses",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch01-a02-supersense-of-sights",
@@ -36,7 +37,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:super-senses",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch01-a03-super-sense-of-danger",
@@ -55,7 +57,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:super-senses",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch01-a04-supersense-of-hearing",
@@ -74,7 +77,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:super-senses",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch02-a01-snakes-and-their-types",
@@ -93,7 +97,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 7,
     "reuseGroup": "environmentalScience:a-snake-charmer-s-story",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch03-a01-a-sense-of-taste",
@@ -112,7 +117,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:from-tasting-to-digesting",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch03-a02-introduction-of-digestive-system",
@@ -131,7 +137,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:from-tasting-to-digesting",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch04-a01-food-spoilage",
@@ -150,7 +157,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:mangoes-round-the-year",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch04-a02-milk-spoilage",
@@ -169,7 +177,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:mangoes-round-the-year",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch04-a03-the-making-of-aam-papad",
@@ -190,7 +199,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:mangoes-round-the-year",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch05-a01-pitcher-plant-the-insect-hunter",
@@ -209,7 +219,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:seeds-and-seeds",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch05-a02-seed-dispersal",
@@ -228,7 +239,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:seeds-and-seeds",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch06-a01-the-storage-of-rainwater",
@@ -247,7 +259,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:every-drop-counts",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch06-a02-a-step-well-structure",
@@ -266,7 +279,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:every-drop-counts",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks",
@@ -285,7 +299,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:experiments-with-water",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects",
@@ -304,7 +319,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:experiments-with-water",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch07-a03-soluble-and-insoluble-substances",
@@ -323,7 +339,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:experiments-with-water",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch08-a01-diagnosis-of-malaria",
@@ -342,7 +359,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:a-treat-for-mosquitoes",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch08-a02-life-cycle-of-the-mosquito",
@@ -361,7 +379,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:a-treat-for-mosquitoes",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch09-a01-river-crossing-adventure",
@@ -380,7 +399,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:up-you-go",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch09-a02-rock-climbing",
@@ -399,7 +419,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:up-you-go",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch09-a03-camp-in-the-snow",
@@ -418,7 +439,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:up-you-go",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch09-a04-snow-mountain-climbing",
@@ -437,7 +459,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:up-you-go",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch10-a01-a-visit-of-ancient-fort",
@@ -456,7 +479,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:walls-tell-stories",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch10-a02-bulls-fetching-well-water-arrangement",
@@ -475,7 +499,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:walls-tell-stories",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch11-a01-a-space-shuttle-launching",
@@ -494,7 +519,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:sunita-in-space",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch11-a02-life-in-space",
@@ -513,7 +539,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:sunita-in-space",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch12-a01-important-traffic-signs-and-rules",
@@ -532,7 +559,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:what-if-it-finishes",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch12-a02-types-of-fuels",
@@ -553,7 +581,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:what-if-it-finishes",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch12-a03-types-of-domestic-fuels-and-its-usage",
@@ -574,7 +603,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:what-if-it-finishes",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch13-a01-preparation-for-tour",
@@ -593,7 +623,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:a-shelter-so-high",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch13-a02-a-visit-to-ladakh",
@@ -612,7 +643,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:a-shelter-so-high",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch13-a03-a-visit-to-srinagar",
@@ -631,7 +663,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:a-shelter-so-high",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch14-a01-hot-air-and-cool-air",
@@ -650,7 +683,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:blow-hot-blow-cold",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch14-a02-flow-of-air",
@@ -669,7 +703,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:blow-hot-blow-cold",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch15-a01-waste-management-system",
@@ -690,7 +725,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:who-will-do-this-work",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch15-a02-waste-water-treatment-plant",
@@ -711,7 +747,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:who-will-do-this-work",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch16-a01-a-village-life",
@@ -730,7 +767,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:no-place-for-us",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch16-a02-a-life-in-a-small-town",
@@ -749,7 +787,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:no-place-for-us",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch16-a03-a-life-in-a-metro-city",
@@ -768,7 +807,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:no-place-for-us",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch17-a01-old-farming-methods",
@@ -787,7 +827,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:a-seed-tells-a-farmer-s-story",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch17-a02-transformations-in-old-farming-methods",
@@ -806,7 +847,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:a-seed-tells-a-farmer-s-story",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c05-ch17-a03-modern-farming-methods",
@@ -825,7 +867,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 8,
     "reuseGroup": "environmentalScience:a-seed-tells-a-farmer-s-story",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch01-a01-sources-of-food",
@@ -844,7 +887,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:food-where-does-it-come-from",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch01-a02-herbivores-carnivores-and-omnivores",
@@ -863,7 +907,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:food-where-does-it-come-from",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch02-a01-test-the-presence-of-carbohydrates",
@@ -885,7 +930,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:components-of-food",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch02-a02-test-the-presence-of-proteins",
@@ -906,7 +952,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:components-of-food",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch02-a03-test-the-presence-of-lipids",
@@ -927,7 +974,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:components-of-food",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
@@ -948,7 +996,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:components-of-food",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch02-a05-the-sources-of-minerals-in-food",
@@ -969,7 +1018,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:components-of-food",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch03-a01-cotton-farming",
@@ -988,7 +1038,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:fiber-to-fabric",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch03-a02-the-process-of-cotton-ginning",
@@ -1007,7 +1058,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:fiber-to-fabric",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a01-sorting-materials-according-to-their-shape",
@@ -1026,7 +1078,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a02-sorting-materials-according-to-their-surface",
@@ -1045,7 +1098,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a03-sorting-materials-according-to-their-hardness",
@@ -1064,7 +1118,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a04-sorting-solid-materials-according-to-their-solubility-in-water",
@@ -1083,7 +1138,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a05-sorting-liquids-according-to-their-solubility-in-water",
@@ -1102,7 +1158,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a06-sorting-materials-according-to-their-density",
@@ -1121,7 +1178,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch04-a07-transparency-translucency-and-opacity",
@@ -1140,7 +1198,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:sorting-materials-into-groups",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch05-a01-methods-of-separating-substances",
@@ -1159,7 +1218,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:separation-of-substances",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch05-a02-the-sieving-process",
@@ -1178,7 +1238,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:separation-of-substances",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch05-a03-sedimentation-decantation-and-filtration-processes",
@@ -1197,7 +1258,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:separation-of-substances",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch05-a04-saturation-evaporation-and-condensation-process",
@@ -1218,7 +1280,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:separation-of-substances",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch06-a01-information-about-reversible-and-irreversible-changes-and-its-examples-p",
@@ -1237,7 +1300,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:changes-around-us",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch06-a02-reversible-and-irreversible-changes-part-2",
@@ -1256,7 +1320,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:changes-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch06-a03-reversible-and-irreversible-changes-part-3",
@@ -1275,7 +1340,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:changes-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch07-a01-types-and-parts-of-the-plant",
@@ -1297,7 +1363,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:getting-to-know-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch07-a02-types-of-root-its-structure-and-function",
@@ -1319,7 +1386,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:getting-to-know-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch07-a03-structure-and-function-of-stem",
@@ -1340,7 +1408,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:getting-to-know-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch07-a04-structure-and-function-of-leaf",
@@ -1361,7 +1430,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:getting-to-know-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch07-a05-structure-and-function-of-the-flower",
@@ -1383,7 +1453,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:getting-to-know-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch07-a06-the-basic-photosynthesis-process",
@@ -1404,7 +1475,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:getting-to-know-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch08-a01-body-movement-in-human",
@@ -1423,7 +1495,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:body-movements",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch08-a02-body-movement-of-earthworm-snail-and-cockroach",
@@ -1444,7 +1517,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:body-movements",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch08-a03-body-movement-in-eagle-fish-and-snake",
@@ -1463,7 +1537,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:body-movements",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch09-a01-adaptations-for-desert-habitat",
@@ -1482,7 +1557,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:the-living-organisms-characteristicsand-habitats",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch09-a02-adaptations-for-aquatic-habitat",
@@ -1501,7 +1577,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:the-living-organisms-characteristicsand-habitats",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch09-a03-adaptations-for-mountain-habitat",
@@ -1522,7 +1599,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:the-living-organisms-characteristicsand-habitats",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch09-a04-adaptations-for-grassland-habitat",
@@ -1541,7 +1619,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:the-living-organisms-characteristicsand-habitats",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch09-a05-characteristics-of-living-organisms",
@@ -1560,7 +1639,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:the-living-organisms-characteristicsand-habitats",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch10-a01-measurement-of-length",
@@ -1579,7 +1659,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-measurement-of-distances",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch10-a02-motion-and-its-types",
@@ -1600,7 +1681,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-measurement-of-distances",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch11-a01-transparency-translucency-and-opacity",
@@ -1619,7 +1701,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light-shadows-and-reflections",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch11-a02-the-making-of-pinhole-camera",
@@ -1640,7 +1723,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light-shadows-and-reflections",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch12-a01-types-of-electric-cells",
@@ -1661,7 +1745,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electricity-and-circuits",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch12-a02-different-types-of-electric-circuit-connections",
@@ -1682,7 +1767,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electricity-and-circuits",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch12-a03-electric-torch-and-its-parts",
@@ -1701,7 +1787,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electricity-and-circuits",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch12-a04-conductivity-of-electricity",
@@ -1720,7 +1807,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electricity-and-circuits",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a01-types-of-magnet",
@@ -1741,7 +1829,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a02-magnetic-and-non-magnetic-materials",
@@ -1760,7 +1849,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a03-poles-of-magnet",
@@ -1779,7 +1869,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a04-attraction-and-repulsion-between-magnets",
@@ -1798,7 +1889,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a05-magnetic-compass",
@@ -1817,7 +1909,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a06-making-of-magnet-at-home",
@@ -1838,7 +1931,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch13-a07-caution-of-magnet",
@@ -1857,7 +1951,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:fun-with-magnets",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch14-a01-sources-of-water",
@@ -1876,7 +1971,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:water",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch14-a02-evaporation-of-water-from-wet-clothes",
@@ -1895,7 +1991,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:water",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch14-a03-water-cycle",
@@ -1916,7 +2013,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:water",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch14-a04-a-heavy-rainfall",
@@ -1935,7 +2033,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:water",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch14-a05-rooftop-rain-water-harvesting",
@@ -1954,7 +2053,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:water",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch15-a01-presence-of-air-around-us",
@@ -1973,7 +2073,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:air-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch15-a02-presence-of-oxygen-in-the-air",
@@ -1992,7 +2093,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:air-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch15-a03-presence-of-dust-and-smoke-in-air",
@@ -2011,7 +2113,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:air-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch15-a04-presence-of-air-in-water-and-soil",
@@ -2030,7 +2133,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:air-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch15-a05-components-of-air",
@@ -2049,7 +2153,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:air-around-us",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch15-a06-the-balance-of-oxygen-and-carbon-dioxide-in-the-air",
@@ -2068,7 +2173,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:air-around-us",
-    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible."
+    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch16-a01-waste-disposal-at-landfill",
@@ -2089,7 +2195,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:garbage-in-garbage-out",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch16-a02-vermicomposting",
@@ -2108,7 +2215,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:garbage-in-garbage-out",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c06-ch16-a03-the-paper-recycling-process-home-made",
@@ -2127,7 +2235,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:garbage-in-garbage-out",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch01-a01-photosynthesis-process",
@@ -2148,7 +2257,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:nutrition-in-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch02-a01-cow-digestive-system",
@@ -2167,7 +2277,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:nutrition-in-animals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch02-a02-nutrition-in-amoeba",
@@ -2186,7 +2297,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:nutrition-in-animals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch03-a01-shearing-and-scouring-of-wool",
@@ -2205,7 +2317,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:fiber-to-fabric",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch03-a02-sorting-and-dyeing-of-wool",
@@ -2224,7 +2337,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "science:fiber-to-fabric",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch03-a03-spinning-and-rolling-of-wool",
@@ -2243,7 +2357,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:fiber-to-fabric",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch03-a04-sericulture-rearing-of-silkworms-to-produce-silk",
@@ -2262,7 +2377,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:fiber-to-fabric",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch04-a01-types-of-thermometer",
@@ -2283,7 +2399,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:heat",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch04-a02-the-convection-of-water",
@@ -2302,7 +2419,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:heat",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch04-a03-the-convection-of-air",
@@ -2321,7 +2439,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:heat",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch04-a04-sea-breeze-and-land-breeze",
@@ -2340,7 +2459,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:heat",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch04-a05-heat-absorption-color-matters",
@@ -2359,7 +2479,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:heat",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch05-a01-the-neutralization-process-using-universal-indicator",
@@ -2380,7 +2501,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch05-a02-natural-indicator-turmeric-paper",
@@ -2399,7 +2521,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch05-a03-the-neutralization-process",
@@ -2420,7 +2543,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch05-a04-the-ant-bite-neutralization-in-everyday-life",
@@ -2439,7 +2563,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch06-a01-types-of-physical-changes-part-1",
@@ -2460,7 +2585,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:physical-and-chemical-changes",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch06-a02-types-of-physical-changes-part-2",
@@ -2481,7 +2607,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:physical-and-chemical-changes",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch06-a03-chemical-reaction-burning-of-magnesium-ribbon",
@@ -2500,7 +2627,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:physical-and-chemical-changes",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch06-a04-rusting-of-iron",
@@ -2519,7 +2647,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:physical-and-chemical-changes",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch06-a05-reactivity-of-metals",
@@ -2538,7 +2667,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:physical-and-chemical-changes",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch07-a01-adaptation-of-animals-in-tropical-rainforests",
@@ -2559,7 +2689,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:weather-climate-and-adaptations-ofanimals-to-climate",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch08-a01-air-exerts-pressure",
@@ -2578,7 +2709,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:winds-storms-and-cyclones",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch08-a02-high-pressure-area-and-low-pressure-area-of-air-and-effects",
@@ -2597,7 +2729,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:winds-storms-and-cyclones",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch08-a03-high-speed-wind-reduces-the-air-pressure",
@@ -2616,7 +2749,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:winds-storms-and-cyclones",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch08-a04-air-expands-on-heating",
@@ -2635,7 +2769,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:winds-storms-and-cyclones",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch08-a05-wind-current-on-the-earth",
@@ -2657,7 +2792,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:winds-storms-and-cyclones",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch08-a06-monsoon-winds",
@@ -2676,7 +2812,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:winds-storms-and-cyclones",
-    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible."
+    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch09-a01-soil-profile",
@@ -2695,7 +2832,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:soil",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch09-a02-test-of-the-percolation-rate-of-soil",
@@ -2716,7 +2854,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:soil",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch09-a03-measurement-of-moisture-in-soil",
@@ -2737,7 +2876,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:soil",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch09-a04-layers-of-soil",
@@ -2756,7 +2896,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:soil",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch10-a01-the-breathing-rate",
@@ -2778,7 +2919,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch10-a02-the-breathing-process-in-human",
@@ -2799,7 +2941,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch10-a03-aerobic-respiration-in-human",
@@ -2820,7 +2963,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch10-a04-anaerobic-respiration-in-human",
@@ -2841,7 +2985,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch11-a01-anaerobic-respiration-in-yeast",
@@ -2862,7 +3007,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch11-a02-breathing-in-cockroach-and-earthworm",
@@ -2883,7 +3029,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch11-a03-breathing-in-fish",
@@ -2904,7 +3051,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:respiration-in-organisms-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch12-a01-the-blood-and-its-components",
@@ -2926,7 +3074,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:transportation-in-animals-and-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch12-a02-the-circulatory-system-in-human",
@@ -2948,7 +3097,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:transportation-in-animals-and-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch12-a03-introduction-to-human-heart",
@@ -2970,7 +3120,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:transportation-in-animals-and-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch12-a04-human-excretory-system",
@@ -2992,7 +3143,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:transportation-in-animals-and-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch12-a05-transport-of-water-and-food-in-plants",
@@ -3013,7 +3165,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:transportation-in-animals-and-plants",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch13-a01-vegetative-propagation-by-stem-cutting",
@@ -3034,7 +3187,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch13-a02-vegetative-propagation-by-buds-or-eyes",
@@ -3056,7 +3210,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch13-a03-vegetative-propagation-in-leaf",
@@ -3077,7 +3232,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch13-a04-vegetative-propagation-in-cactus",
@@ -3098,7 +3254,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch14-a01-fragmentation-in-spirogyra",
@@ -3119,7 +3276,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-2",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch14-a02-asexual-reproduction-by-spore-formation",
@@ -3140,7 +3298,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-2",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch14-a03-reproduction-through-spore-formation-in-fern",
@@ -3161,7 +3320,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-2",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch15-a01-structure-and-function-of-the-flower",
@@ -3183,7 +3343,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-3",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch15-a02-pollination-and-fertilization",
@@ -3204,7 +3365,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-3",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch15-a03-seed-dispersal",
@@ -3225,7 +3387,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:reproduction-in-plants-part-3",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a01-slow-motion-or-fast-motion",
@@ -3244,7 +3407,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a02-measurement-of-time",
@@ -3263,7 +3427,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a03-speed-and-its-measurement",
@@ -3282,7 +3447,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a04-units-of-speed",
@@ -3301,7 +3467,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a05-uniform-motion",
@@ -3320,7 +3487,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a06-distance-vs-time-graph-for-uniform-motion",
@@ -3339,7 +3507,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a07-non-uniform-motion",
@@ -3358,7 +3527,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch16-a08-distance-vs-time-graph-for-non-uniform-motion",
@@ -3377,7 +3547,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:motion-and-time",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch17-a01-symbol-of-electric-components",
@@ -3398,7 +3569,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electric-current-and-its-effects",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch17-a02-the-making-of-a-battery",
@@ -3419,7 +3591,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electric-current-and-its-effects",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch17-a03-heating-effect-of-electric-current-and-its-uses",
@@ -3438,7 +3611,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:electric-current-and-its-effects",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch17-a04-the-fuse-working-principle-and-application",
@@ -3459,7 +3633,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electric-current-and-its-effects",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch17-a05-magnetic-effect-of-electric-current",
@@ -3480,7 +3655,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electric-current-and-its-effects",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch17-a06-the-working-of-electric-bell",
@@ -3501,7 +3677,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:electric-current-and-its-effects",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch18-a01-travelling-of-light",
@@ -3520,7 +3697,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch18-a02-concave-mirror-and-its-use",
@@ -3539,7 +3717,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch18-a03-convex-mirror-and-its-use",
@@ -3558,7 +3737,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch18-a04-the-newton-s-disc",
@@ -3577,7 +3757,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch18-a05-refraction-of-light-by-convex-lens-and-concave-lens",
@@ -3598,7 +3779,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch18-a06-laws-of-reflection-of-light",
@@ -3617,7 +3799,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch19-a01-water-cycle",
@@ -3639,7 +3822,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:water-a-precious-resource",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch19-a02-extraction-of-groundwater",
@@ -3660,7 +3844,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "environmentalScience:water-a-precious-resource",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch20-a01-visit-to-a-forest",
@@ -3679,7 +3864,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:forests-our-lifeline",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch20-a02-the-three-link-food-chain",
@@ -3700,7 +3886,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:forests-our-lifeline",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch20-a03-the-five-link-food-chain",
@@ -3721,7 +3908,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:forests-our-lifeline",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch20-a04-the-balance-between-oxygen-and-carbon-dioxide",
@@ -3742,7 +3930,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:forests-our-lifeline",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch20-a05-the-soil-erosion-and-prevention",
@@ -3761,7 +3950,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:forests-our-lifeline",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c07-ch21-a01-waste-water-collection",
@@ -3780,7 +3970,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:waste-water-story",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch01-a01-ploughing-preparation-of-soil",
@@ -3799,7 +3990,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:crop-production-and-management",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch01-a02-sowing-of-seeds",
@@ -3818,7 +4010,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:crop-production-and-management",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch01-a03-irrigation-methods",
@@ -3837,7 +4030,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:crop-production-and-management",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch01-a04-fertilizers-and-weedicides",
@@ -3856,7 +4050,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:crop-production-and-management",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch01-a05-harvesting-threshing-and-storage-of-crop",
@@ -3875,7 +4070,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:crop-production-and-management",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch02-a01-microorganisms-introduction-their-types-useful-or-harmful",
@@ -3896,7 +4092,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:microorganisms-friend-and-foe",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch02-a02-virus-introduction-spreading-and-its-effects",
@@ -3915,7 +4112,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:microorganisms-friend-and-foe",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch02-a03-fungi-and-its-development",
@@ -3936,7 +4134,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:microorganisms-friend-and-foe",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch02-a04-food-preservation-pasteurization-of-milk",
@@ -3955,7 +4154,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:microorganisms-friend-and-foe",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch03-a01-polymer-introduction-and-classification-based-on-availability-source-and",
@@ -3976,7 +4176,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:synthetic-fibers-and-plastics",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch03-a02-synthetic-fibers-introduction-and-types",
@@ -3995,7 +4196,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "chemistry:synthetic-fibers-and-plastics",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch03-a03-plastic-introduction-and-types",
@@ -4014,7 +4216,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "chemistry:synthetic-fibers-and-plastics",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a01-conductivity-of-heat-in-metals",
@@ -4033,7 +4236,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:materials-metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a02-conductivity-of-electricity",
@@ -4052,7 +4256,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:materials-metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a03-physical-properties-of-metal-sonorous-malleability-ductile-lustrous-and-",
@@ -4071,7 +4276,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a04-chemical-properties-of-metal-part-1",
@@ -4090,7 +4296,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a05-chemical-properties-of-metal-part-2",
@@ -4109,7 +4316,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a06-chemical-properties-of-non-metal",
@@ -4128,7 +4336,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a07-reaction-of-metals-with-water",
@@ -4147,7 +4356,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a08-reaction-of-metals-with-acid",
@@ -4166,7 +4376,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a09-reaction-of-metals-with-base",
@@ -4185,7 +4396,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch04-a10-reactivity-series-of-metals",
@@ -4206,7 +4418,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:materials-metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch05-a01-introduction-of-coal",
@@ -4225,7 +4438,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:coal-and-petroleum",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch05-a02-production-of-coal-gas-coal-tar-and-coke-from-coal",
@@ -4244,7 +4458,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:coal-and-petroleum",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch05-a03-petroleum-refinery",
@@ -4263,7 +4478,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:coal-and-petroleum",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch06-a01-combustion-and-ignition-temperature",
@@ -4282,7 +4498,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:combustion-and-flame",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch06-a02-heating-water-in-a-paper-cup",
@@ -4301,7 +4518,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:combustion-and-flame",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch06-a03-how-to-control-flre",
@@ -4320,7 +4538,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:combustion-and-flame",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch06-a04-types-of-combustion",
@@ -4341,7 +4560,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:combustion-and-flame",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch06-a05-structure-of-flame",
@@ -4360,7 +4580,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "chemistry:combustion-and-flame",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch07-a01-cells-of-the-human-body",
@@ -4379,7 +4600,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:cell-structure-and-functions",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch07-a02-basic-structure-of-animal-cell",
@@ -4398,7 +4620,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:cell-structure-and-functions",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a01-male-reproductive-organs",
@@ -4419,7 +4642,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a02-female-reproductive-organs",
@@ -4440,7 +4664,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a03-fertilization-in-human",
@@ -4459,7 +4684,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a04-development-of-embryo-in-humans",
@@ -4478,7 +4704,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a05-fertilization-in-frog",
@@ -4497,7 +4724,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a06-asexual-reproduction-budding",
@@ -4516,7 +4744,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch08-a07-binary-fission-in-amoeba",
@@ -4535,7 +4764,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "biology:reproduction-in-animals",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch09-a01-types-of-glands-and-their-functions",
@@ -4557,7 +4787,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:reaching-the-age-of-adolescence",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch09-a02-human-sex-determination-female",
@@ -4576,7 +4807,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:reaching-the-age-of-adolescence",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch09-a03-human-sex-determination-male",
@@ -4595,7 +4827,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:reaching-the-age-of-adolescence",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch10-a01-the-force",
@@ -4614,7 +4847,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:force-and-pressure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
@@ -4633,7 +4867,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:force-and-pressure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch10-a03-types-of-force",
@@ -4654,7 +4889,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:force-and-pressure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch10-a04-introduction-of-pressure",
@@ -4673,7 +4909,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:force-and-pressure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a01-introduction-of-friction",
@@ -4692,7 +4929,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a02-the-force-of-friction",
@@ -4711,7 +4949,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a03-the-factors-affecting-friction",
@@ -4730,7 +4969,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a04-the-advantages-and-disadvantages-of-friction",
@@ -4749,7 +4989,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a05-increasing-and-reducing-friction",
@@ -4768,7 +5009,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a06-rolling-friction",
@@ -4787,7 +5029,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch11-a07-fluid-friction",
@@ -4806,7 +5049,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:friction",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch12-a01-how-the-sound-is-produced",
@@ -4825,7 +5069,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:sound",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch12-a02-the-sound-produced-by-human",
@@ -4844,7 +5089,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:sound",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch12-a03-propagation-of-sound",
@@ -4863,7 +5109,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:sound",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch12-a04-the-ear-structure-and-function",
@@ -4882,7 +5129,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:sound",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch13-a01-conductivity-of-electricity-in-liquids",
@@ -4903,7 +5151,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:chemical-effects-of-electric-current",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch13-a02-electroplating",
@@ -4924,7 +5173,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:chemical-effects-of-electric-current",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch13-a03-a-visit-to-the-electroplating-industry",
@@ -4946,7 +5196,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:chemical-effects-of-electric-current",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch14-a01-types-of-charges-their-interaction-and-transfer-of-charges",
@@ -4967,7 +5218,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:some-natural-phenomena",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch14-a02-what-causes-lightning",
@@ -4986,7 +5238,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:some-natural-phenomena",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch14-a03-seismograph-and-its-working",
@@ -5007,7 +5260,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 10,
     "reuseGroup": "science:some-natural-phenomena",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a01-laws-of-reflection",
@@ -5026,7 +5280,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a02-regular-and-irregular-reflection",
@@ -5045,7 +5300,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a03-the-periscope-and-its-function",
@@ -5064,7 +5320,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a04-human-eye-anatomy",
@@ -5083,7 +5340,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a05-defects-of-vision-myopia-and-how-is-it-corrected",
@@ -5102,7 +5360,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a06-defects-of-vision-hypermetropia-and-how-is-it-corrected",
@@ -5123,7 +5382,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch15-a07-defects-of-vision-presbyopia-and-how-is-it-corrected",
@@ -5142,7 +5402,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 9,
     "reuseGroup": "physics:light",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a01-day-and-night-cycle-on-the-earth",
@@ -5163,7 +5424,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a02-change-of-seasons-on-earth",
@@ -5182,7 +5444,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a03-phases-of-the-moon",
@@ -5201,7 +5464,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a04-introduction-to-the-solar-system",
@@ -5220,7 +5484,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a05-constellations",
@@ -5239,7 +5504,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a06-comets-meteors-and-meteorites",
@@ -5258,7 +5524,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch16-a07-artiflcial-satellites",
@@ -5277,7 +5544,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "physics:stars-and-the-solar-system",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c08-ch17-a01-air-pollution",
@@ -5296,7 +5564,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:pollution-of-air-and-water",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch01-a01-matters-in-our-surroundings",
@@ -5315,7 +5584,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:matter-in-our-surroundings",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch01-a02-states-of-matter",
@@ -5334,7 +5604,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:matter-in-our-surroundings",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch01-a03-changes-of-states-of-the-matter",
@@ -5353,7 +5624,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:matter-in-our-surroundings",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a01-element-compound-and-mixture",
@@ -5372,7 +5644,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a02-types-of-mixtures",
@@ -5393,7 +5666,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a03-what-is-a-solution",
@@ -5412,7 +5686,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a04-what-is-a-suspension",
@@ -5431,7 +5706,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a05-what-is-a-colloidal-solution",
@@ -5450,7 +5726,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a06-separating-components-of-a-mixture",
@@ -5469,7 +5746,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a07-separation-of-immiscible-liquids",
@@ -5488,7 +5766,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch02-a08-separation-of-miscible-liquids",
@@ -5507,7 +5786,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:is-matter-around-us-pure",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch03-a01-law-of-conservation-of-mass",
@@ -5528,7 +5808,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:atoms-and-molecules",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch03-a02-law-of-constant-proportions",
@@ -5549,7 +5830,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:atoms-and-molecules",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch03-a03-information-about-atom",
@@ -5570,7 +5852,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:atoms-and-molecules",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch03-a04-molecules-of-elements",
@@ -5589,7 +5872,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:atoms-and-molecules",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a01-the-structure-of-an-atom",
@@ -5608,7 +5892,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a02-thomson-rutherford-and-bohr-s-model-of-the-atom",
@@ -5627,7 +5912,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a03-atomic-number-and-atomic-mass",
@@ -5646,7 +5932,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a04-electronic-configuration-of-elements",
@@ -5665,7 +5952,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a05-valency-of-the-electron",
@@ -5684,7 +5972,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a06-noble-gases",
@@ -5703,7 +5992,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch04-a07-isotopes-and-isobars",
@@ -5722,7 +6012,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:structure-of-the-atom",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch05-a01-basic-structure-of-animal-cell",
@@ -5743,7 +6034,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:the-fundamental-unit-of-life",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch05-a02-cells-of-the-human-body",
@@ -5764,7 +6056,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:the-fundamental-unit-of-life",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch06-a01-meristematic-tissue-of-plants",
@@ -5783,7 +6076,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:tissues-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch06-a02-epidermal-and-guard-cells",
@@ -5802,7 +6096,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:tissues-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch07-a01-epithelial-tissue",
@@ -5821,7 +6116,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:tissue-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch07-a02-connective-tissue",
@@ -5840,7 +6136,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:tissue-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch07-a03-nervous-tissue",
@@ -5859,7 +6156,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:tissue-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch08-a01-biological-classification",
@@ -5880,7 +6178,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:diversity-in-living-organisms",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch08-a02-the-five-kingdom-classiflcation",
@@ -5899,7 +6198,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:diversity-in-living-organisms",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch08-a03-classification-of-plants",
@@ -5921,7 +6221,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:diversity-in-living-organisms",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch08-a04-classification-of-animals",
@@ -5942,7 +6243,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:diversity-in-living-organisms",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch08-a05-classes-of-vertebrates",
@@ -5963,7 +6265,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:diversity-in-living-organisms",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch08-a06-binomial-nomenclature",
@@ -5982,7 +6285,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:diversity-in-living-organisms",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch09-a01-uniform-motion",
@@ -6001,7 +6305,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:motion",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch09-a02-velocity-vs-time-graph-for-uniform-motion",
@@ -6020,7 +6325,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:motion",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch09-a03-distance-vs-time-graph-for-uniform-motion",
@@ -6039,7 +6345,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:motion",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch09-a04-non-uniform-motion",
@@ -6058,7 +6365,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:motion",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch09-a05-distance-vs-time-graph-for-non-uniform-motion",
@@ -6077,7 +6385,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:motion",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch09-a06-velocity-vs-time-graph-for-non-uniform-motion",
@@ -6096,7 +6405,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:motion",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch10-a01-balanced-and-unbalanced-forces",
@@ -6115,7 +6425,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:force-and-laws-of-motion",
-    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible."
+    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch10-a02-inertia-and-mass",
@@ -6134,7 +6445,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:force-and-laws-of-motion",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch10-a03-the-second-law-of-motion",
@@ -6153,7 +6465,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:force-and-laws-of-motion",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch10-a04-the-third-law-of-motion",
@@ -6172,7 +6485,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:force-and-laws-of-motion",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch10-a05-conservation-of-momentum",
@@ -6191,7 +6505,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:force-and-laws-of-motion",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch10-a06-the-relation-between-galileo-s-track-and-the-first-law-of-motion",
@@ -6210,7 +6525,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:force-and-laws-of-motion",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch11-a01-universal-law-of-gravitation",
@@ -6229,7 +6545,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:gravitation",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch11-a02-free-fall",
@@ -6248,7 +6565,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:gravitation",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch11-a03-mass-and-weight",
@@ -6267,7 +6585,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:gravitation",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch11-a04-thrust-and-pressure",
@@ -6286,7 +6605,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:gravitation",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch11-a05-the-archimedes-principle",
@@ -6305,7 +6625,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:gravitation",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a01-concept-of-work",
@@ -6324,7 +6645,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a02-the-energy",
@@ -6343,7 +6665,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a03-the-kinetic-energy",
@@ -6362,7 +6685,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a04-the-potential-energy",
@@ -6381,7 +6705,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a05-the-law-of-conservation-of-energy",
@@ -6400,7 +6725,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a06-potential-energy-of-an-object-at-a-height",
@@ -6419,7 +6745,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch12-a07-the-power",
@@ -6438,7 +6765,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:work-and-energy",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch13-a01-sound-and-its-propagation",
@@ -6457,7 +6785,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch13-a02-sound-waves-are-longitudinal-waves",
@@ -6476,7 +6805,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch13-a03-characteristics-of-sound-wave",
@@ -6495,7 +6825,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch13-a04-sonic-boom",
@@ -6514,7 +6845,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch14-a01-echo",
@@ -6533,7 +6865,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch14-a02-reverberation",
@@ -6552,7 +6885,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch14-a03-reflection-of-sound",
@@ -6571,7 +6905,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-2",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch14-a04-ultrasound",
@@ -6590,7 +6925,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sound-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch15-a01-health-and-its-issues",
@@ -6609,7 +6945,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:why-do-we-fall-ill-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch15-a02-disease-and-its-types",
@@ -6630,7 +6967,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "biology:why-do-we-fall-ill-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch15-a03-aids-disease-and-its-causes",
@@ -6649,7 +6987,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:why-do-we-fall-ill-part-1",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch15-a04-malaria-disease-and-its-causes",
@@ -6668,7 +7007,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:why-do-we-fall-ill-part-1",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch16-a01-foodborne-diseases-their-causes-and-cure",
@@ -6687,7 +7027,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:why-do-we-fall-ill-part-2",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch17-a01-winds-the-movement-of-air",
@@ -6709,7 +7050,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:natural-resources-part-1",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch17-a02-air-expands-on-heating",
@@ -6730,7 +7072,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:natural-resources-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch17-a03-formation-of-clouds-and-rain",
@@ -6752,7 +7095,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:natural-resources-part-1",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch17-a04-air-pollution-causes-and-effects",
@@ -6774,7 +7118,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:natural-resources-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch17-a05-water-pollution-causes-and-effects",
@@ -6796,7 +7141,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:natural-resources-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch18-a01-water-cycle",
@@ -6818,7 +7164,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:natural-resources-part-2",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch18-a02-nitrogen-cycle",
@@ -6840,7 +7187,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:natural-resources-part-2",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch18-a03-carbon-cycle",
@@ -6862,7 +7210,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:natural-resources-part-2",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch18-a04-oxygen-cycle",
@@ -6884,7 +7233,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:natural-resources-part-2",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch18-a05-the-ozone-layer",
@@ -6905,7 +7255,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:natural-resources-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a01-types-of-cropping",
@@ -6927,7 +7278,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:improvement-in-food-resources",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a02-types-of-irrigation",
@@ -6949,7 +7301,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:improvement-in-food-resources",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a03-fertilizers",
@@ -6970,7 +7323,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "science:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a04-crop-protection",
@@ -6991,7 +7345,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a05-storage-of-grains",
@@ -7012,7 +7367,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a06-cattle-farming",
@@ -7033,7 +7389,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a07-poultry-farming",
@@ -7054,7 +7411,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "environmentalScience:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a08-fishery",
@@ -7075,7 +7433,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "science:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c09-ch19-a09-apiculture",
@@ -7096,7 +7455,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "science:improvement-in-food-resources",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch01-a01-chemical-reaction-burning-of-magnesium-ribbon",
@@ -7115,7 +7475,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:chemical-reactions-and-equations",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch01-a02-combination-reaction",
@@ -7134,7 +7495,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:chemical-reactions-and-equations",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch01-a03-decomposition-reaction",
@@ -7153,7 +7515,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:chemical-reactions-and-equations",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch01-a04-displacement-reaction",
@@ -7172,7 +7535,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:chemical-reactions-and-equations",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch01-a05-double-displacement-reaction",
@@ -7191,7 +7555,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:chemical-reactions-and-equations",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch01-a06-redox-reaction",
@@ -7210,7 +7575,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:chemical-reactions-and-equations",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
@@ -7229,7 +7595,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a02-reaction-of-metals-with-acid-and-base",
@@ -7248,7 +7615,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a03-reaction-of-metal-carbonates-and-metal-hydrogen-carbonates-with-acid",
@@ -7267,7 +7635,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a04-conductivity-of-chemicals",
@@ -7286,7 +7655,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a05-what-happens-to-an-acid-or-a-base-in-a-water-solution",
@@ -7305,7 +7675,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a06-salts-contain-water",
@@ -7324,7 +7695,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a07-reaction-of-metal-oxides-with-acids",
@@ -7343,7 +7715,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a08-is-this-an-exothermic-or-endothermic-process",
@@ -7362,7 +7735,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch02-a09-reaction-of-acids-and-bases-with-each-other",
@@ -7381,7 +7755,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:acids-bases-and-salts",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a01-physical-property-of-metal-conductivity-of-heat",
@@ -7400,7 +7775,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a02-physical-properties-of-metal-sonorous-malleability-ductile-lustrous-and-",
@@ -7419,7 +7795,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a03-conductivity-of-electricity",
@@ -7438,7 +7815,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a04-chemical-properties-of-metal",
@@ -7457,7 +7835,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a05-metal-reacts-with-water",
@@ -7476,7 +7855,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:metals-and-non-metals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a06-reactivity-series-of-metals",
@@ -7497,7 +7877,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:metals-and-non-metals",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a07-properties-of-ionic-compounds",
@@ -7516,7 +7897,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:metals-and-non-metals",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a08-magnetic-separation-process-extraction-of-metal",
@@ -7537,7 +7919,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:metals-and-non-metals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch03-a09-prevention-of-corrosion",
@@ -7556,7 +7939,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:metals-and-non-metals",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch04-a01-types-of-bonds",
@@ -7577,7 +7961,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch04-a02-versatile-nature-and-catenation-of-carbon-structure-of-carbon-compounds",
@@ -7596,7 +7981,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch04-a03-saturated-and-unsaturated-compounds-of-carbon",
@@ -7615,7 +8001,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-1",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch04-a04-allotropes-of-carbon-and-oxygen",
@@ -7634,7 +8021,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch04-a05-homologous-series-and-nomenclature-of-the-chlorine-group",
@@ -7655,7 +8043,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-1",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch04-a06-homologous-series-and-nomenclature-of-the-hydroxyl-group",
@@ -7676,7 +8065,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-1",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch05-a01-homologous-series-and-nomenclature-of-the-aldehyde-group",
@@ -7697,7 +8087,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-2",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch05-a02-homologous-series-and-nomenclature-of-carboxyl-group",
@@ -7718,7 +8109,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-2",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch05-a03-homologous-series-and-nomenclature-of-unsaturated-compound",
@@ -7740,7 +8132,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-2",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch05-a04-chemical-properties-of-carbon-compound",
@@ -7759,7 +8152,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch05-a05-soap-and-detergent",
@@ -7778,7 +8172,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:carbon-and-its-compounds-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch06-a01-dobereiner-s-triads",
@@ -7797,7 +8192,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:periodic-classification-of-elements",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch06-a02-newland-s-law-of-octaves",
@@ -7818,7 +8214,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:periodic-classification-of-elements",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch06-a03-mendeleev-s-periodic-table",
@@ -7837,7 +8234,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:periodic-classification-of-elements",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch06-a04-modern-periodic-table",
@@ -7856,7 +8254,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "chemistry:periodic-classification-of-elements",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch07-a01-a-deep-photosynthesis-process",
@@ -7875,7 +8274,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-1",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch07-a02-nutrition-in-amoeba",
@@ -7894,7 +8294,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-1",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch07-a03-human-digestive-system",
@@ -7915,7 +8316,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch07-a04-aerobic-respiration-in-human",
@@ -7934,7 +8336,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-1",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch07-a05-anaerobic-respiration-in-human",
@@ -7953,7 +8356,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-1",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch08-a01-the-human-heart",
@@ -7974,7 +8378,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch08-a02-transport-and-exchange-of-o2-and-co2-in-humans",
@@ -7993,7 +8398,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-2",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch08-a03-human-lymphatic-system",
@@ -8014,7 +8420,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch09-a01-anaerobic-respiration-in-yeast",
@@ -8033,7 +8440,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-3",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch09-a02-human-respiratory-system",
@@ -8054,7 +8462,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-3",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch09-a03-transportation-in-plants",
@@ -8075,7 +8484,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-3",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch10-a01-human-excretory-system",
@@ -8096,7 +8506,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-4",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch10-a02-hemodialysis",
@@ -8115,7 +8526,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:life-process-part-4",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch10-a03-excretion-in-plants",
@@ -8136,7 +8548,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:life-process-part-4",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a01-the-human-nervous-system",
@@ -8155,7 +8568,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:control-and-coordination",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a02-the-reflex-action-in-human",
@@ -8174,7 +8588,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "science:control-and-coordination",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a03-the-human-brain",
@@ -8193,7 +8608,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:control-and-coordination",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a04-the-endocrine-glands-and-hormones",
@@ -8212,7 +8628,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:control-and-coordination",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a05-tropism-in-plants",
@@ -8231,7 +8648,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:control-and-coordination",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a06-nastism-in-plants",
@@ -8250,7 +8668,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:control-and-coordination",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch11-a07-hormones-of-the-plant",
@@ -8269,7 +8688,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:control-and-coordination",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch12-a01-binary-fission-in-amoeba",
@@ -8288,7 +8708,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch12-a02-fragmentation-in-spirogyra",
@@ -8307,7 +8728,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch12-a03-regeneration-in-hydra",
@@ -8326,7 +8748,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch12-a04-asexual-reproduction-in-hydra-by-budding",
@@ -8347,7 +8770,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch13-a01-asexual-reproduction-by-spore-formation",
@@ -8368,7 +8792,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch13-a02-vegetative-propagation-by-buds-or-eyes",
@@ -8387,7 +8812,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch13-a03-vegetative-propagation-in-leaf",
@@ -8406,7 +8832,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch14-a01-fertilization-in-human",
@@ -8427,7 +8854,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-3",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch14-a02-development-of-embryo-in-humans",
@@ -8448,7 +8876,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:how-do-organisms-reproduce-part-3",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch15-a01-introduction-of-heredity-and-dna",
@@ -8467,7 +8896,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch15-a02-mendel-s-law-of-segregation",
@@ -8486,7 +8916,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-1",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch15-a03-mendel-s-law-of-dominance",
@@ -8505,7 +8936,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-1",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch15-a04-mendel-s-law-of-independent-assortment",
@@ -8524,7 +8956,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-1",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch16-a01-human-sex-determination-female",
@@ -8543,7 +8976,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-2",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch16-a02-human-sex-determination-male",
@@ -8562,7 +8996,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-2",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score."
+    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch16-a03-fossils",
@@ -8581,7 +9016,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch17-a01-evolution-of-beetles",
@@ -8600,7 +9036,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-3",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch17-a02-evolution-of-homologous-and-analogous-organs",
@@ -8619,7 +9056,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-3",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch17-a03-evolution-of-wild-cabbage",
@@ -8638,7 +9076,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:heredity-and-evolution-part-3",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a01-law-of-reflection",
@@ -8657,7 +9096,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a02-the-making-of-a-convex-mirror",
@@ -8679,7 +9119,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a03-the-making-of-a-concave-mirror",
@@ -8701,7 +9142,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a04-definition-of-focal-length-radius-of-curvature-pole-and-principal-axis-o",
@@ -8722,7 +9164,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a05-image-formation-by-concave-mirror",
@@ -8744,7 +9187,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a06-image-formation-by-convex-mirror",
@@ -8766,7 +9210,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a07-refraction-of-light",
@@ -8785,7 +9230,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a08-the-making-of-concave-and-convex-lens",
@@ -8807,7 +9253,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a09-refraction-by-concave-and-convex-lens",
@@ -8828,7 +9275,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a10-image-formation-by-concave-lens",
@@ -8850,7 +9298,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch18-a11-image-formation-by-convex-lens",
@@ -8872,7 +9321,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:light-reflection-and-refraction",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch19-a01-structure-of-the-human-eye",
@@ -8891,7 +9341,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch19-a02-defects-of-vision-myopia-and-how-is-it-corrected",
@@ -8912,7 +9363,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch19-a03-defects-of-vision-hypermetropia-and-how-is-it-corrected",
@@ -8934,7 +9386,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch19-a04-defects-of-vision-presbyopia-and-how-is-it-corrected",
@@ -8955,7 +9408,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch19-a05-refraction-and-dispersion-of-light",
@@ -8976,7 +9430,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:human-eye-and-colourful-world-part-1",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch19-a06-primary-and-secondary-rainbow",
@@ -8995,7 +9450,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-1",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch20-a01-atmospheric-refraction",
@@ -9016,7 +9472,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:human-eye-and-colourful-world-part-2",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch20-a02-twinkling-of-stars",
@@ -9035,7 +9492,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:human-eye-and-colourful-world-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch20-a03-advance-sunrise-and-delayed-sunset",
@@ -9054,7 +9512,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch20-a04-scattering-of-light-tyndall-effect",
@@ -9073,7 +9532,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:human-eye-and-colourful-world-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch20-a05-blue-colour-of-the-sky",
@@ -9092,7 +9552,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch20-a06-the-sunrise-and-sunset",
@@ -9111,7 +9572,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:human-eye-and-colourful-world-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a01-electric-current-and-electric-potential-difference",
@@ -9130,7 +9592,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a02-ohm-s-law",
@@ -9149,7 +9612,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a03-relation-between-r-and-i-for-constant-v-with-different-electric-material",
@@ -9168,7 +9632,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a04-resistivity",
@@ -9187,7 +9652,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a05-resistance-of-a-system-of-resistor",
@@ -9208,7 +9674,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a06-resistors-in-series",
@@ -9229,7 +9696,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a07-resistors-in-parallel",
@@ -9248,7 +9716,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful."
+    "implementationNotes": "Use variable controls, predict-observe-explain prompts, resettable safe lab state, and visible invisible forces or particles where useful.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch21-a08-heating-effect-of-electric-current",
@@ -9267,7 +9736,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:electricity",
-    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question."
+    "implementationNotes": "Use instrument panel, recorded readings, plotted graph, and one interpretable data question.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a01-magnetic-lines-and-magnetic-field-creates-in-simple-electric-circuit",
@@ -9288,7 +9758,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a02-right-hand-thumb-rule",
@@ -9309,7 +9780,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a03-solenoid",
@@ -9330,7 +9802,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a04-fleming-s-left-hand-rule",
@@ -9351,7 +9824,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a05-electric-motor",
@@ -9372,7 +9846,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a06-electromagnetic-induction",
@@ -9393,7 +9868,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch22-a07-electric-generator",
@@ -9414,7 +9890,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:magnetic-effects-of-electric-current",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a01-sources-of-energy",
@@ -9433,7 +9910,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a02-fossil-fuels",
@@ -9452,7 +9930,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a03-thermal-power-plant",
@@ -9474,7 +9953,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a04-hydro-power-plant",
@@ -9496,7 +9976,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a05-biomass",
@@ -9515,7 +9996,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a06-wind-energy",
@@ -9534,7 +10016,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch23-a07-solar-energy",
@@ -9553,7 +10036,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-1",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch24-a01-solar-cooker",
@@ -9572,7 +10056,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch24-a02-tidal-energy",
@@ -9591,7 +10076,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch24-a03-wave-energy",
@@ -9610,7 +10096,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch24-a04-ocean-thermal-energy",
@@ -9629,7 +10116,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch24-a05-geothermal-energy",
@@ -9648,7 +10136,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 11,
     "reuseGroup": "physics:sources-of-energy-part-2",
-    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode."
+    "implementationNotes": "Use drag-sort classification with immediate feedback, misconception traps, and instructor review mode.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch24-a06-nuclear-energy",
@@ -9669,7 +10158,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "medium",
     "expectedDurationMinutes": 12,
     "reuseGroup": "physics:sources-of-energy-part-2",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch25-a01-food-chain",
@@ -9688,7 +10178,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:our-environment",
-    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible."
+    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch25-a02-food-web",
@@ -9707,7 +10198,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "biology:our-environment",
-    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible."
+    "implementationNotes": "Use node-flow system map with visible inputs, outputs, feedback loops, and local-context example where possible.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch25-a03-ozone-layer-and-its-depletion",
@@ -9726,7 +10218,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:our-environment",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer."
+    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch26-a01-water-storage-by-dams",
@@ -9748,7 +10241,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:management-of-natural-resources",
-    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet."
+    "implementationNotes": "Use bounded teleport or seated 360 scene with hotspots, instructor pauses, and companion observation sheet.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch26-a02-water-harvesting",
@@ -9770,7 +10264,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:management-of-natural-resources",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch26-a03-rainwater-harvesting",
@@ -9792,7 +10287,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "environmentalScience:management-of-natural-resources",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   },
   {
     "id": "sim-c10-ch26-a04-the-formation-and-conservation-of-coal-and-petroleum",
@@ -9814,7 +10310,8 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "comfortRiskLevel": "low",
     "expectedDurationMinutes": 12,
     "reuseGroup": "chemistry:management-of-natural-resources",
-    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap."
+    "implementationNotes": "Use staged timeline with progressive reveal, scrubber, cue-card checkpoints, and final sequence recap.",
+    "releaseMaturity": "catalogued"
   }
 ] as const;
 

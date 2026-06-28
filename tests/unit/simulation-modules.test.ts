@@ -14,6 +14,7 @@ const VALID_STATUSES = ['draft', 'approved', 'released', 'deprecated', 'archived
 const VALID_COMFORT_RISKS = ['low', 'medium', 'high'];
 const VALID_FORMATS = ['immersiveVr', 'threeSixtyVr', 'interactive3d', 'guidedVisualization', 'practicalLabSimulation', 'virtualFieldVisit', 'revisionMode'];
 const VALID_EVIDENCE_LEVELS = ['experimental', 'expertDesigned', 'internallyPiloted', 'schoolValidated', 'researchBacked'];
+const VALID_RELEASE_MATURITIES = ['catalogued', 'inDevelopment', 'internalQA', 'pilotReady', 'schoolValidated'];
 
 const SIMULATIONS = SIMULATION_MODULES;
 
@@ -60,6 +61,10 @@ describe('Simulation module contracts', () => {
 
       it('has a valid evidenceConfidenceLevel', () => {
         expect(VALID_EVIDENCE_LEVELS).toContain(sim.evidenceConfidenceLevel);
+      });
+
+      it('has a valid releaseMaturity', () => {
+        expect(VALID_RELEASE_MATURITIES).toContain(sim.releaseMaturity);
       });
 
       it('has a valid comfortRiskLevel', () => {

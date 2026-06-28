@@ -10,7 +10,7 @@ export const IMPLEMENTED_SIMULATION_SLUGS = [
 
 type ImplementedSlug = (typeof IMPLEMENTED_SIMULATION_SLUGS)[number];
 
-type CatalogCard = {
+export type CatalogCard = {
   slug: string;
   title: string;
   topic: string;
@@ -19,11 +19,11 @@ type CatalogCard = {
   archetype: string;
   minutes: number;
   color: string;
-  status: 'implemented' | 'queued';
+  releaseMaturity: 'catalogued' | 'inDevelopment' | 'internalQA' | 'pilotReady' | 'schoolValidated';
   href?: string;
 };
 
-const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'status' | 'href'>> = {
+const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMaturity' | 'href'>> = {
   pollination: {
     slug: 'pollination',
     color: '#34d399',
@@ -89,7 +89,7 @@ const COLORS: Record<string, string> = {
 
 const implementedSet = new Set<string>(IMPLEMENTED_SIMULATION_SLUGS);
 
-function toQueuedCard(item: ScienceSimulationCatalogItem): CatalogCard {
+function toCataloguedCard(item: ScienceSimulationCatalogItem): CatalogCard {
   return {
     slug: item.slug,
     color: COLORS[item.primaryArchetype] ?? '#38bdf8',
@@ -99,27 +99,22 @@ function toQueuedCard(item: ScienceSimulationCatalogItem): CatalogCard {
     topic: item.topic,
     archetype: item.primaryArchetype,
     minutes: item.expectedDurationMinutes,
-    status: 'queued',
-  };
-}
-
-function toCatalogRuntimeCard(item: ScienceSimulationCatalogItem): CatalogCard {
-  return {
-    ...toQueuedCard(item),
-    status: 'implemented',
-    href: `/simulations/${item.slug}`,
+    releaseMaturity: item.releaseMaturity,
   };
 }
 
 export function getSimulationCatalogSections(catalog: readonly ScienceSimulationCatalogItem[]) {
-  const implemented = IMPLEMENTED_SIMULATION_SLUGS.map(slug => ({
+  const launchable = IMPLEMENTED_SIMULATION_SLUGS.map(slug => ({
     ...EXTRA_IMPLEMENTED[slug],
-    status: 'implemented' as const,
+    releaseMaturity: 'internalQA' as const,
     href: `/simulations/${slug}`,
   }));
+  const catalogued = catalog
+    .filter(item => !implementedSet.has(item.slug))
+    .map(toCataloguedCard);
 
   return {
-    implemented: [...implemented, ...catalog.map(toCatalogRuntimeCard)],
-    queuedPdf: [] as CatalogCard[],
+    launchable,
+    catalogued,
   };
 }

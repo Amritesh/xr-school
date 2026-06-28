@@ -22,6 +22,7 @@ describe('web catalog generator', () => {
       classLevel: 5,
       primaryArchetype: 'experimentBench',
       simulationFormat: 'practicalLabSimulation',
+      releaseMaturity: 'catalogued',
     });
   });
 
