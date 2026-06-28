@@ -3,7 +3,13 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import { resolveControllerSelection, updateSnapTurn } from '@/lib/xrNavigation';
+import {
+  isQuestBackPressed,
+  resolveBackAction,
+  resolveControllerSelection,
+  updateButtonLatch,
+  updateSnapTurn,
+} from '@/lib/xrNavigation';
 
 const NARRATIONS = [
   "Welcome to the flower garden. Look all around you — you are standing inside a living garden. Flowers are structures designed for reproduction. Each flower has petals to attract pollinators, stamens that produce pollen, and a pistil that receives it.",
@@ -599,6 +605,39 @@ export default function PollinationViewer() {
       playNarration(next);
       setStage(next);
     };
+    const backButtonLatches = new Map<XRInputSource, boolean>();
+    const exitToCatalog = () => {
+      const session = renderer.xr.getSession();
+      if (!session) {
+        window.location.assign('/simulations');
+        return;
+      }
+      void session.end()
+        .catch(() => undefined)
+        .finally(() => window.location.assign('/simulations'));
+    };
+    const updateBackNavigation = () => {
+      const session = renderer.xr.getSession();
+      if (!session) return;
+
+      let handledBack = false;
+      for (const inputSource of session.inputSources) {
+        const isDown = inputSource.gamepad
+          ? isQuestBackPressed(inputSource.gamepad.buttons, inputSource.handedness)
+          : false;
+        const result = updateButtonLatch(
+          isDown,
+          backButtonLatches.get(inputSource) ?? false,
+        );
+        backButtonLatches.set(inputSource, result.latched);
+        if (!handledBack && result.pressed) {
+          const action = resolveBackAction(stageRef.current);
+          if (action === 'previous') retreatStage();
+          if (action === 'exit') exitToCatalog();
+          handledBack = true;
+        }
+      }
+    };
     const onCtrlSelect = (event: Event) => {
       const ctrl = event.target as unknown as THREE.XRTargetRaySpace;
       const selection = resolveControllerSelection(getNavigationHit(ctrl)?.object.name);
@@ -689,7 +728,10 @@ export default function PollinationViewer() {
       prevBtn.lookAt(cam.position);
       nextBtn.lookAt(cam.position);
       updateNavigationHover();
-      if (renderer.xr.isPresenting) updateSnapTurning();
+      if (renderer.xr.isPresenting) {
+        updateSnapTurning();
+        updateBackNavigation();
+      }
 
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);

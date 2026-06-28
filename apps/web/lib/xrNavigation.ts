@@ -22,3 +22,20 @@ export function updateSnapTurn(axisX: number, latched: boolean) {
     latched: true,
   };
 }
+
+export function resolveBackAction(stageIndex: number) {
+  return stageIndex > 0 ? 'previous' as const : 'exit' as const;
+}
+
+export function updateButtonLatch(isDown: boolean, latched: boolean) {
+  if (!isDown) return { pressed: false, latched: false };
+  return { pressed: !latched, latched: true };
+}
+
+export function isQuestBackPressed(
+  buttons: ReadonlyArray<{ pressed: boolean }>,
+  handedness: string,
+) {
+  const buttonIndex = handedness === 'left' ? 4 : handedness === 'right' ? 5 : -1;
+  return buttonIndex >= 0 && buttons[buttonIndex]?.pressed === true;
+}

@@ -45,6 +45,13 @@ describe('Pollination viewer feedback regressions', () => {
     expect(source).toContain('gamepad.axes');
   });
 
+  it('maps Quest B and X to latched previous-stage or catalog navigation', () => {
+    expect(source).toContain('isQuestBackPressed');
+    expect(source).toContain('resolveBackAction');
+    expect(source).toContain('backButtonLatches');
+    expect(source).toContain("window.location.assign('/simulations')");
+  });
+
   it('renders pollen as natural 3D grains instead of square point sprites', () => {
     expect(source).toContain('buildPollenGrainGeometry');
     expect(source).toContain('new THREE.SphereGeometry');
