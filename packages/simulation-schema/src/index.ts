@@ -340,3 +340,6 @@ export function validateCurriculumGraph(input: {
 
   return errors;
 }
+
+export * from './world';
+export * from './worldValidation';

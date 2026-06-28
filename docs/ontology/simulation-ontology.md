@@ -34,6 +34,15 @@ graph TD
     LC -->|"prerequisiteConceptIds[]"| LC
     CM -->|"conceptIds[]"| LC
     CM -->|"prerequisiteConceptIds[]"| LC
+
+    WD[WorldDefinition] -->|"entityIds[]"| WED[WorldEntityDefinition]
+    WD -->|"environmentId"| ED[EnvironmentDefinition]
+    WED -->|"materialId"| PMD[PbrMaterialDefinition]
+    WD -->|"scientificModelIds[]"| SMM[ScientificModelManifest]
+    WD -->|"assessmentSequenceId"| AS[AssessmentSequence]
+    WD -->|"assetManifestId"| AM[AssetManifest]
+    WD -->|"acceptanceProfileId"| AP[AcceptanceProfile]
+    AP -->|"requiredQualityProfileId"| QP[QualityProfile]
 ```
 
 ## Simulation Required Properties
@@ -135,6 +144,20 @@ The public curriculum library is generated from four linked record types:
 - `CurriculumSearchDocument` is the deterministic browser index for courses, chapters, concepts, and simulations.
 
 Every course-to-chapter, chapter-to-concept, and course/chapter-to-simulation reference is validated before generation. Search documents include class, subject, concept, and release-maturity facets so filters cannot bypass launch governance.
+
+## World-Builder Runtime Graph
+
+Each production world is a validated composition rooted at `WorldDefinition`:
+
+- `WorldEntityDefinition` holds explicit transforms, visual references, material links, collider links, interaction tags, and accessibility labels.
+- `EnvironmentDefinition` defines the background, fog, physically based lighting, shadow casters, exposure, and tone mapping.
+- `PbrMaterialDefinition` defines standard or selectively physical materials plus licensed image-map references and fallbacks.
+- `ScientificModelManifest` records internal units, valid ranges, assumptions, limitations, sources, numerical tolerance, and reference vectors. Its formulas remain hidden from the student lesson.
+- `AssessmentSequence` requires misconception and transfer prompts and defines the evidence needed for mastery.
+- `AssetManifest` records provenance, redistribution license, author, dimensions, channels, compression, and explicit fallback assets.
+- `AcceptanceProfile` binds a world to a quality profile and its frame-rate, draw-call, triangle, and direct-Quest acceptance limits.
+
+Validation fails closed before a world can start when any reference is unresolved; an ID is duplicated; a transform or budget is non-finite; a scale is non-positive; a PBR property is outside its physical range; an asset lacks provenance or licensing; a scientific model lacks reference vectors; or a mastery rule cannot be satisfied. Visual assets may degrade only through declared fallbacks. Scientific state and assessment outcomes never receive cosmetic substitutes.
 
 ## Simulation Lifecycle States
 
