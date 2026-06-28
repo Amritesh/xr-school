@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import type { ScienceCatalogRow, SimulationArchetype } from '../../simulation-schema/src/index';
 
+export { COURSES, CURRICULUM_CHAPTERS, LEARNING_CONCEPTS } from './curriculum';
+
 const here = dirname(fileURLToPath(import.meta.url));
 export const SCIENCE_CATALOG_CSV_PATH = resolve(here, '../../../docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv');
 

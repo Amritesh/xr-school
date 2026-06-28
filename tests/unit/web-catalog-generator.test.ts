@@ -2,7 +2,17 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parseCatalogCsv } from '../../scripts/validate-simulation-catalog.mjs';
-import { renderWebCatalogSource, toWebCatalogRows } from '../../scripts/generate-web-catalog.mjs';
+import {
+  buildCurriculumSearchDocuments,
+  renderWebCatalogSource,
+  toWebCatalogRows,
+} from '../../scripts/generate-web-catalog.mjs';
+import { SIMULATION_MODULES } from '../../packages/simulation-content/src/modules';
+import {
+  COURSES,
+  CURRICULUM_CHAPTERS,
+  LEARNING_CONCEPTS,
+} from '../../packages/simulation-content/src/curriculum';
 
 const csv = readFileSync(resolve(process.cwd(), 'docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv'), 'utf8');
 const rows = toWebCatalogRows(parseCatalogCsv(csv));
@@ -32,5 +42,23 @@ describe('web catalog generator', () => {
     expect(source).toContain('export const SCIENCE_SIMULATION_CATALOG');
     expect(source).toContain('as const');
     expect(source).toContain('c5-ch01-a01-supersense-of-smell');
+  });
+
+  it('builds a deterministic curriculum index across courses, concepts, and simulations', () => {
+    const documents = buildCurriculumSearchDocuments({
+      catalogRows: rows,
+      courses: COURSES,
+      chapters: CURRICULUM_CHAPTERS,
+      concepts: LEARNING_CONCEPTS,
+      modules: SIMULATION_MODULES,
+    });
+
+    expect(documents.length).toBeGreaterThan(500);
+    expect(new Set(documents.map(document => document.id)).size).toBe(documents.length);
+    expect(documents.find(document => document.id === 'simulation:pollination')).toMatchObject({
+      kind: 'simulation',
+      releaseMaturity: 'internalQA',
+      href: '/simulations/pollination',
+    });
   });
 });

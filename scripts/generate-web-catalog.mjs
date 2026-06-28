@@ -2,10 +2,17 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { parseCatalogCsv } from './validate-simulation-catalog.mjs';
+import {
+  COURSES,
+  CURRICULUM_CHAPTERS,
+  LEARNING_CONCEPTS,
+} from '../packages/simulation-content/src/curriculum.ts';
+import { SIMULATION_MODULES } from '../packages/simulation-content/src/modules.ts';
 
 const ROOT = process.cwd();
 const CATALOG_PATH = resolve(ROOT, 'docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv');
 const OUTPUT_PATH = resolve(ROOT, 'apps/web/lib/scienceCatalog.generated.ts');
+const SEARCH_OUTPUT_PATH = resolve(ROOT, 'apps/web/lib/curriculumSearch.generated.ts');
 
 function toNumber(value) {
   const parsed = Number(value);
@@ -44,9 +51,162 @@ export type ScienceSimulationArchetype = ScienceSimulationCatalogItem['primaryAr
 `;
 }
 
+function normalizedTokens(values) {
+  return [...new Set(
+    values
+      .flatMap(value => String(value ?? '').toLowerCase().split(/[^a-z0-9]+/))
+      .filter(Boolean),
+  )];
+}
+
+export function buildCurriculumSearchDocuments({
+  catalogRows,
+  courses,
+  chapters,
+  concepts,
+  modules,
+}) {
+  const courseById = new Map(courses.map(course => [course.id, course]));
+  const conceptById = new Map(concepts.map(concept => [concept.id, concept]));
+  const courseBySimulationId = new Map(
+    courses.flatMap(course => course.simulationIds.map(simulationId => [simulationId, course])),
+  );
+  const implementedSlugs = new Set(modules.map(module => module.slug));
+
+  const courseDocuments = courses.map(course => ({
+    id: `course:${course.id}`,
+    kind: 'course',
+    title: course.title,
+    summary: course.description,
+    href: `/simulations#${course.id}`,
+    classLevels: [course.classLevel],
+    subjects: [course.subject],
+    conceptIds: course.conceptIds,
+    tokens: normalizedTokens([course.title, course.description, ...course.searchKeywords]),
+  }));
+
+  const chapterDocuments = chapters.map(chapter => {
+    const course = courseById.get(chapter.courseId);
+    return {
+      id: `chapter:${chapter.id}`,
+      kind: 'chapter',
+      title: chapter.title,
+      summary: `${course?.title ?? 'Curriculum'} · Chapter ${chapter.chapterNumber}`,
+      href: `/simulations#${chapter.id}`,
+      classLevels: course ? [course.classLevel] : [],
+      subjects: course ? [course.subject] : [],
+      conceptIds: chapter.conceptIds,
+      tokens: normalizedTokens([
+        chapter.title,
+        course?.title,
+        `chapter ${chapter.chapterNumber}`,
+        ...chapter.topicIds,
+      ]),
+    };
+  });
+
+  const conceptDocuments = concepts.map(concept => {
+    const relatedCourses = courses.filter(course => course.conceptIds.includes(concept.id));
+    return {
+      id: `concept:${concept.id}`,
+      kind: 'concept',
+      title: concept.canonicalName,
+      summary: concept.description,
+      href: `/simulations#${concept.id}`,
+      classLevels: [...new Set(relatedCourses.map(course => course.classLevel))],
+      subjects: [concept.subject],
+      conceptIds: [concept.id],
+      tokens: normalizedTokens([
+        concept.canonicalName,
+        concept.description,
+        concept.practicalRelevance,
+        ...concept.aliases,
+        ...concept.searchKeywords,
+      ]),
+    };
+  });
+
+  const moduleDocuments = modules.map(module => {
+    const course = courseBySimulationId.get(module.id);
+    const linkedConcepts = module.conceptIds
+      .map(conceptId => conceptById.get(conceptId))
+      .filter(Boolean);
+    return {
+      id: `simulation:${module.slug}`,
+      kind: 'simulation',
+      title: module.title,
+      summary: module.summary,
+      href: `/simulations/${module.slug}`,
+      classLevels: course ? [course.classLevel] : [],
+      subjects: module.subjects,
+      conceptIds: module.conceptIds,
+      releaseMaturity: module.releaseMaturity,
+      tokens: normalizedTokens([
+        module.title,
+        module.summary,
+        module.learningObjective,
+        ...module.subjects,
+        ...linkedConcepts.flatMap(concept => [
+          concept.canonicalName,
+          ...concept.aliases,
+          ...concept.searchKeywords,
+        ]),
+      ]),
+    };
+  });
+
+  const catalogDocuments = catalogRows
+    .filter(row => !implementedSlugs.has(row.slug))
+    .map(row => ({
+      id: `simulation:${row.slug}`,
+      kind: 'simulation',
+      title: row.title,
+      summary: `${row.topic} · Class ${row.classLevel} ${row.subject}`,
+      href: `/simulations#${row.slug}`,
+      classLevels: [row.classLevel],
+      subjects: [row.subject],
+      conceptIds: [],
+      releaseMaturity: row.releaseMaturity,
+      tokens: normalizedTokens([
+        row.title,
+        row.topic,
+        row.subject,
+        row.primaryArchetype,
+        ...row.secondaryArchetypes,
+        row.reuseGroup,
+        row.implementationNotes,
+      ]),
+    }));
+
+  return [
+    ...courseDocuments,
+    ...chapterDocuments,
+    ...conceptDocuments,
+    ...moduleDocuments,
+    ...catalogDocuments,
+  ];
+}
+
+export function renderCurriculumSearchSource(documents) {
+  return `// Generated by scripts/generate-web-catalog.mjs. Do not edit manually.
+import type { CurriculumSearchDocument } from '../../../packages/simulation-schema/src/index';
+
+export const CURRICULUM_SEARCH_DOCUMENTS = ${JSON.stringify(documents, null, 2)} satisfies CurriculumSearchDocument[];
+`;
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const rows = toWebCatalogRows(parseCatalogCsv(readFileSync(CATALOG_PATH, 'utf8')));
+  const documents = buildCurriculumSearchDocuments({
+    catalogRows: rows,
+    courses: COURSES,
+    chapters: CURRICULUM_CHAPTERS,
+    concepts: LEARNING_CONCEPTS,
+    modules: SIMULATION_MODULES,
+  });
   mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
   writeFileSync(OUTPUT_PATH, renderWebCatalogSource(rows));
+  writeFileSync(SEARCH_OUTPUT_PATH, renderCurriculumSearchSource(documents));
   console.log(`Generated ${rows.length} web catalog rows at ${OUTPUT_PATH}`);
+  console.log(`Generated ${documents.length} curriculum search documents at ${SEARCH_OUTPUT_PATH}`);
 }

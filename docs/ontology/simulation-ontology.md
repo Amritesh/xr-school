@@ -125,6 +125,17 @@ Every simulation should explicitly implement one or more of these techniques:
 | `handsOnInteraction` | Physical interaction with virtual objects |
 | `imaginationHelperScenes` | Scenes designed specifically for abstract concepts like atoms, forces, time |
 
+## Curriculum Search Graph
+
+The public curriculum library is generated from four linked record types:
+
+- `CourseRecord` is the board, class, and subject browse container.
+- `CurriculumChapterRecord` links one course chapter to its concepts and simulations.
+- `LearningConceptRecord` stores canonical names, aliases, prerequisites, related concepts, misconceptions, practical relevance, and search keywords.
+- `CurriculumSearchDocument` is the deterministic browser index for courses, chapters, concepts, and simulations.
+
+Every course-to-chapter, chapter-to-concept, and course/chapter-to-simulation reference is validated before generation. Search documents include class, subject, concept, and release-maturity facets so filters cannot bypass launch governance.
+
 ## Simulation Lifecycle States
 
 ```

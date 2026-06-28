@@ -146,6 +146,58 @@ export interface SimulationModuleRecord {
   status: 'draft' | 'approved' | 'released' | 'deprecated' | 'archived';
 }
 
+export interface CourseRecord {
+  id: string;
+  title: string;
+  board: 'cbse' | 'icse' | 'stateBoard';
+  classLevel: number;
+  gradeBand: GradeBand;
+  subject: Subject;
+  academicYear?: string;
+  description: string;
+  chapterIds: string[];
+  conceptIds: string[];
+  simulationIds: string[];
+  searchKeywords: string[];
+}
+
+export interface CurriculumChapterRecord {
+  id: string;
+  courseId: string;
+  chapterNumber: number;
+  title: string;
+  topicIds: string[];
+  conceptIds: string[];
+  simulationIds: string[];
+}
+
+export interface LearningConceptRecord {
+  id: string;
+  canonicalName: string;
+  aliases: string[];
+  subject: Subject;
+  description: string;
+  parentConceptId?: string;
+  prerequisiteConceptIds: string[];
+  relatedConceptIds: string[];
+  commonMisconceptions: string[];
+  practicalRelevance: string;
+  searchKeywords: string[];
+}
+
+export interface CurriculumSearchDocument {
+  id: string;
+  kind: 'course' | 'chapter' | 'concept' | 'simulation';
+  title: string;
+  summary: string;
+  href: string;
+  classLevels: number[];
+  subjects: Subject[];
+  conceptIds: string[];
+  releaseMaturity?: ReleaseMaturity;
+  tokens: string[];
+}
+
 export function slugifyActivity(title: string) {
   return title
     .toLowerCase()
@@ -231,6 +283,59 @@ export function validateCatalog(catalog: ScienceCatalogRow[]) {
     slugs.add(row.slug);
     if (ids.has(row.simulationId)) errors.push(`${row.simulationId}: duplicate simulationId`);
     ids.add(row.simulationId);
+  }
+
+  return errors;
+}
+
+function findDuplicates(values: readonly string[]) {
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const value of values) {
+    if (seen.has(value)) duplicates.add(value);
+    seen.add(value);
+  }
+  return [...duplicates];
+}
+
+export function validateCurriculumGraph(input: {
+  courses: readonly CourseRecord[];
+  chapters: readonly CurriculumChapterRecord[];
+  concepts: readonly LearningConceptRecord[];
+  simulationIds: readonly string[];
+}) {
+  const errors: string[] = [];
+  const courseIds = new Set(input.courses.map(course => course.id));
+  const chapterIds = new Set(input.chapters.map(chapter => chapter.id));
+  const conceptIds = new Set(input.concepts.map(concept => concept.id));
+  const simulationIds = new Set(input.simulationIds);
+
+  for (const duplicate of findDuplicates(input.courses.map(course => course.id))) errors.push(`duplicate course ${duplicate}`);
+  for (const duplicate of findDuplicates(input.chapters.map(chapter => chapter.id))) errors.push(`duplicate chapter ${duplicate}`);
+  for (const duplicate of findDuplicates(input.concepts.map(concept => concept.id))) errors.push(`duplicate concept ${duplicate}`);
+  for (const duplicate of findDuplicates(input.simulationIds)) errors.push(`duplicate simulation ${duplicate}`);
+
+  for (const course of input.courses) {
+    if (course.classLevel < 1 || course.classLevel > 12) errors.push(`${course.id}: invalid classLevel`);
+    for (const id of course.chapterIds) {
+      const chapter = input.chapters.find(item => item.id === id);
+      if (!chapterIds.has(id)) errors.push(`${course.id}: missing chapter ${id}`);
+      else if (chapter?.courseId !== course.id) errors.push(`${course.id}: chapter ${id} belongs to another course`);
+    }
+    for (const id of course.conceptIds) if (!conceptIds.has(id)) errors.push(`${course.id}: missing concept ${id}`);
+    for (const id of course.simulationIds) if (!simulationIds.has(id)) errors.push(`${course.id}: missing simulation ${id}`);
+  }
+
+  for (const chapter of input.chapters) {
+    if (!courseIds.has(chapter.courseId)) errors.push(`${chapter.id}: missing course ${chapter.courseId}`);
+    for (const id of chapter.conceptIds) if (!conceptIds.has(id)) errors.push(`${chapter.id}: missing concept ${id}`);
+    for (const id of chapter.simulationIds) if (!simulationIds.has(id)) errors.push(`${chapter.id}: missing simulation ${id}`);
+  }
+
+  for (const concept of input.concepts) {
+    if (concept.parentConceptId && !conceptIds.has(concept.parentConceptId)) errors.push(`${concept.id}: missing parent concept ${concept.parentConceptId}`);
+    for (const id of concept.prerequisiteConceptIds) if (!conceptIds.has(id)) errors.push(`${concept.id}: missing prerequisite ${id}`);
+    for (const id of concept.relatedConceptIds) if (!conceptIds.has(id)) errors.push(`${concept.id}: missing related concept ${id}`);
   }
 
   return errors;
