@@ -4,6 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 const deployWorkflow = readFileSync(resolve(process.cwd(), '.github/workflows/deploy.yml'), 'utf8');
 const qualityWorkflow = readFileSync(resolve(process.cwd(), '.github/workflows/quality.yml'), 'utf8');
+const rootPackage = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
+  scripts?: Record<string, string>;
+};
 
 describe('web build workflows', () => {
   it.each([
@@ -20,5 +23,9 @@ describe('web build workflows', () => {
 
   it('quality invokes the production build through the web workspace', () => {
     expect(qualityWorkflow).toContain('run: npm --workspace apps/web run build');
+  });
+
+  it('exposes a root build script for the Vercel monorepo project', () => {
+    expect(rootPackage.scripts?.build).toBe('npm --workspace apps/web run build');
   });
 });

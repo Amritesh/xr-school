@@ -5,6 +5,7 @@
   "description": "Offline-first K-12 XR simulation curriculum platform for Indian schools",
   "type": "module",
   "scripts": {
+    "build": "npm --workspace apps/web run build",
     "env:check": "node scripts/dev-env-check.mjs",
     "contract:compile": "tsp compile contracts/typespec",
     "catalog:validate": "node scripts/validate-simulation-catalog.mjs",
