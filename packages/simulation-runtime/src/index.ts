@@ -37,3 +37,13 @@ export type {
   ResourceDisposer,
   ResourceRegistry,
 } from './world/resourceRegistry';
+export { createWorldRuntime } from './world/runtime';
+export type {
+  FixedUpdateContext,
+  RenderUpdateContext,
+  WorldContext,
+  WorldRuntime,
+  WorldRuntimeConfig,
+  WorldRuntimeState,
+  WorldSystem,
+} from './world/runtime';
