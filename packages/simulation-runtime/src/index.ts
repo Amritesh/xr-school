@@ -52,3 +52,12 @@ export {
   nextLowerQualityProfile,
 } from './world/quality';
 export type { DeviceQualityCapabilities } from './world/quality';
+export { createRapierWorld } from './physics/rapierWorld';
+export type {
+  RapierBodySnapshot,
+  RapierCuboidDefinition,
+  RapierSphereDefinition,
+  RapierVector3,
+  RapierWorld,
+  RapierWorldConfig,
+} from './physics/rapierWorld';
