@@ -26,3 +26,14 @@ export type {
   PhysicsWorldConfig,
   Vector3,
 } from './core/physics';
+export { createFixedClock } from './world/fixedClock';
+export type {
+  FixedClock,
+  FixedClockAdvance,
+  FixedClockConfig,
+} from './world/fixedClock';
+export { createResourceRegistry } from './world/resourceRegistry';
+export type {
+  ResourceDisposer,
+  ResourceRegistry,
+} from './world/resourceRegistry';
