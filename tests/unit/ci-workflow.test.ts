@@ -29,6 +29,12 @@ describe('web build workflows', () => {
     expect(deployWorkflow).toContain('run: npm --workspace apps/web run build');
   });
 
+  it('uploads the prebuilt Vercel artifact as one compressed archive', () => {
+    expect(deployWorkflow).toContain(
+      'vercel deploy --prebuilt --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}',
+    );
+  });
+
   it('quality invokes the production build through the web workspace', () => {
     expect(qualityWorkflow).toContain('run: npm --workspace apps/web run build');
   });
