@@ -524,17 +524,32 @@ export default function PollinationViewer() {
     cueMesh.position.set(0, 1.68, -2.05);
     scene.add(cueMesh);
 
-    // Stage nav buttons (VR — point and click)
+    // Stage nav panel (VR — kept on the user's left for predictable access)
+    const navigationPanel = new THREE.Group();
+    navigationPanel.name = 'left-navigation-panel';
+    navigationPanel.position.set(-1.15, 1.35, -1.65);
+    const navigationBacking = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.62, 0.5),
+      new THREE.MeshBasicMaterial({
+        color: 0x0f172a,
+        transparent: true,
+        opacity: 0.82,
+        side: THREE.DoubleSide,
+      }),
+    );
+    navigationBacking.position.z = -0.035;
+
     const btnMat = (col: number) => new THREE.MeshStandardMaterial({ color: col, roughness: 0.4, emissive: col, emissiveIntensity: 0.25 });
     const prevBtn = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.15, 0.04), btnMat(0x374151));
-    prevBtn.position.set(-0.32, 1.28, -1.8); prevBtn.name = 'btn-prev';
+    prevBtn.position.set(0, 0.11, 0); prevBtn.name = 'btn-prev';
     prevBtn.add(makeButtonLabelMesh('Previous', '#94a3b8'));
-    scene.add(prevBtn);
     const nextBtn = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.15, 0.04), btnMat(0x16a34a));
-    nextBtn.position.set(0.32, 1.28, -1.8); nextBtn.name = 'btn-next';
+    nextBtn.position.set(0, -0.11, 0); nextBtn.name = 'btn-next';
     nextBtn.add(makeButtonLabelMesh('Next', '#22c55e'));
-    scene.add(nextBtn);
+    navigationPanel.add(navigationBacking, prevBtn, nextBtn);
+    playerRig.add(navigationPanel);
     const interactables = [prevBtn, nextBtn];
+    const navigationLookTarget = new THREE.Vector3();
 
     // ── XR Controllers ────────────────────────────────────────────────────
     function buildControllerVisual() {
@@ -725,8 +740,8 @@ export default function PollinationViewer() {
       // Cue card panel faces player
       const cam = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
       cueMesh.lookAt(cam.position);
-      prevBtn.lookAt(cam.position);
-      nextBtn.lookAt(cam.position);
+      cam.getWorldPosition(navigationLookTarget);
+      navigationPanel.lookAt(navigationLookTarget);
       updateNavigationHover();
       if (renderer.xr.isPresenting) {
         updateSnapTurning();

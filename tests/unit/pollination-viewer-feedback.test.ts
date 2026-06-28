@@ -52,6 +52,14 @@ describe('Pollination viewer feedback regressions', () => {
     expect(source).toContain("window.location.assign('/simulations')");
   });
 
+  it('groups navigation controls in a persistent left-side VR panel', () => {
+    expect(source).toContain("navigationPanel.name = 'left-navigation-panel'");
+    expect(source).toContain('navigationPanel.position.set(-1.15, 1.35, -1.65)');
+    expect(source).toContain('navigationPanel.add');
+    expect(source).toContain('playerRig.add(navigationPanel)');
+    expect(source).toContain('navigationPanel.lookAt');
+  });
+
   it('renders pollen as natural 3D grains instead of square point sprites', () => {
     expect(source).toContain('buildPollenGrainGeometry');
     expect(source).toContain('new THREE.SphereGeometry');
