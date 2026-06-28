@@ -61,3 +61,10 @@ export type {
   RapierWorld,
   RapierWorldConfig,
 } from './physics/rapierWorld';
+export { createScientificModelRegistry } from './world/scientificModels';
+export type {
+  ScientificInput,
+  ScientificModelDefinition,
+  ScientificModelRegistry,
+  ScientificOutput,
+} from './world/scientificModels';
