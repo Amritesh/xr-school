@@ -8,3 +8,6 @@ coverage/
 playwright-report/
 test-results/
 certificates/
+.DS_Store
+**/.DS_Store
+.superpowers/
