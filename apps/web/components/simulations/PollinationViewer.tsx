@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import { resolveControllerSelection } from '@/lib/xrNavigation';
+import { resolveControllerSelection, updateSnapTurn } from '@/lib/xrNavigation';
 
 const NARRATIONS = [
   "Welcome to the flower garden. Look all around you — you are standing inside a living garden. Flowers are structures designed for reproduction. Each flower has petals to attract pollinators, stamens that produce pollen, and a pistil that receives it.",
@@ -349,6 +349,10 @@ export default function PollinationViewer() {
     const camera = new THREE.PerspectiveCamera(72, mount.clientWidth / mount.clientHeight, 0.05, 100);
     camera.position.set(0, 1.7, 3.5);
     camera.lookAt(0, 1.5, 0);
+    const playerRig = new THREE.Group();
+    playerRig.name = 'player-rig';
+    playerRig.add(camera);
+    scene.add(playerRig);
 
     // ── Lights ────────────────────────────────────────────────────────────
     const hemi = new THREE.HemisphereLight(0x87ceeb, 0x3a7d44, 0.7);
@@ -542,9 +546,32 @@ export default function PollinationViewer() {
     const ctrl0 = renderer.xr.getController(0);
     const ctrl1 = renderer.xr.getController(1);
     ctrl0.add(buildControllerVisual()); ctrl1.add(buildControllerVisual());
-    scene.add(ctrl0, ctrl1);
+    playerRig.add(ctrl0, ctrl1);
 
     const ctrlRaycaster = new THREE.Raycaster();
+    const snapTurnLatches = new Map<XRInputSource, boolean>();
+    const updateSnapTurning = () => {
+      const session = renderer.xr.getSession();
+      if (!session) return;
+
+      let appliedTurn = false;
+      for (const inputSource of session.inputSources) {
+        const gamepad = inputSource.gamepad;
+        if (!gamepad) continue;
+        const axisX = gamepad.axes.length >= 4
+          ? (gamepad.axes[2] ?? 0)
+          : (gamepad.axes[0] ?? 0);
+        const result = updateSnapTurn(
+          axisX,
+          snapTurnLatches.get(inputSource) ?? false,
+        );
+        snapTurnLatches.set(inputSource, result.latched);
+        if (!appliedTurn && result.radians !== 0) {
+          playerRig.rotation.y += result.radians;
+          appliedTurn = true;
+        }
+      }
+    };
     const getNavigationHit = (controller: THREE.XRTargetRaySpace) => {
       ctrlRaycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
       ctrlRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(controller.quaternion);
@@ -662,6 +689,7 @@ export default function PollinationViewer() {
       prevBtn.lookAt(cam.position);
       nextBtn.lookAt(cam.position);
       updateNavigationHover();
+      if (renderer.xr.isPresenting) updateSnapTurning();
 
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);

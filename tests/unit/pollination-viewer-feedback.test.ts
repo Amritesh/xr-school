@@ -38,6 +38,13 @@ describe('Pollination viewer feedback regressions', () => {
     expect(source).not.toMatch(/else\s*\{\s*advanceStage\(\);\s*\}/);
   });
 
+  it('uses a player rig and latched thumbstick input for comfort snap turning', () => {
+    expect(source).toContain('updateSnapTurn');
+    expect(source).toContain('playerRig');
+    expect(source).toContain('snapTurnLatches');
+    expect(source).toContain('gamepad.axes');
+  });
+
   it('renders pollen as natural 3D grains instead of square point sprites', () => {
     expect(source).toContain('buildPollenGrainGeometry');
     expect(source).toContain('new THREE.SphereGeometry');
