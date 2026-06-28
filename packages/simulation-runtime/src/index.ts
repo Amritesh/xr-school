@@ -68,3 +68,9 @@ export type {
   ScientificModelRegistry,
   ScientificOutput,
 } from './world/scientificModels';
+export { createAssessmentSession } from './world/assessment';
+export type {
+  AssessmentAnswerResult,
+  AssessmentEvidence,
+  AssessmentSession,
+} from './world/assessment';
