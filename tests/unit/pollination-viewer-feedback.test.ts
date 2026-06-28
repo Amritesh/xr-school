@@ -32,6 +32,12 @@ describe('Pollination viewer feedback regressions', () => {
     expect(source).toContain('nextBtn.add');
   });
 
+  it('requires an intentional controller-ray hit before changing stages', () => {
+    expect(source).toContain('resolveControllerSelection');
+    expect(source).toContain('updateNavigationHover');
+    expect(source).not.toMatch(/else\s*\{\s*advanceStage\(\);\s*\}/);
+  });
+
   it('renders pollen as natural 3D grains instead of square point sprites', () => {
     expect(source).toContain('buildPollenGrainGeometry');
     expect(source).toContain('new THREE.SphereGeometry');

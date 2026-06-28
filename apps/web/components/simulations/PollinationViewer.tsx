@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { resolveControllerSelection } from '@/lib/xrNavigation';
 
 const NARRATIONS = [
   "Welcome to the flower garden. Look all around you — you are standing inside a living garden. Flowers are structures designed for reproduction. Each flower has petals to attract pollinators, stamens that produce pollen, and a pistil that receives it.",
@@ -544,6 +545,20 @@ export default function PollinationViewer() {
     scene.add(ctrl0, ctrl1);
 
     const ctrlRaycaster = new THREE.Raycaster();
+    const getNavigationHit = (controller: THREE.XRTargetRaySpace) => {
+      ctrlRaycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+      ctrlRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(controller.quaternion);
+      return ctrlRaycaster.intersectObjects(interactables, false)[0];
+    };
+    const updateNavigationHover = () => {
+      const hovered = new Set(
+        [getNavigationHit(ctrl0)?.object, getNavigationHit(ctrl1)?.object].filter(Boolean),
+      );
+      for (const button of interactables) {
+        const material = button.material as THREE.MeshStandardMaterial;
+        material.emissiveIntensity = hovered.has(button) ? 0.8 : 0.25;
+      }
+    };
     const advanceStage = () => {
       const next = Math.min(stageRef.current + 1, STAGES.length - 1);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
@@ -559,16 +574,9 @@ export default function PollinationViewer() {
     };
     const onCtrlSelect = (event: Event) => {
       const ctrl = event.target as unknown as THREE.XRTargetRaySpace;
-      ctrlRaycaster.ray.origin.setFromMatrixPosition(ctrl.matrixWorld);
-      ctrlRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(ctrl.quaternion);
-      const hits = ctrlRaycaster.intersectObjects(interactables);
-      if (hits.length > 0) {
-        const name = hits[0].object.name;
-        if (name === 'btn-next') advanceStage();
-        else if (name === 'btn-prev') retreatStage();
-      } else {
-        advanceStage();
-      }
+      const selection = resolveControllerSelection(getNavigationHit(ctrl)?.object.name);
+      if (selection === 'next') advanceStage();
+      if (selection === 'previous') retreatStage();
     };
     ctrl0.addEventListener('selectstart', onCtrlSelect as any);
     ctrl1.addEventListener('selectstart', onCtrlSelect as any);
@@ -653,6 +661,7 @@ export default function PollinationViewer() {
       cueMesh.lookAt(cam.position);
       prevBtn.lookAt(cam.position);
       nextBtn.lookAt(cam.position);
+      updateNavigationHover();
 
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);
