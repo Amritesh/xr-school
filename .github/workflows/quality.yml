@@ -167,11 +167,10 @@ jobs:
         with:
           node-version: "23"
           cache: "npm"
-          cache-dependency-path: apps/web/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install web dependencies
-        run: npm install
-        working-directory: apps/web
+        run: npm ci
 
       - name: Validate simulations
         run: node scripts/validate-simulations.mjs
@@ -183,5 +182,4 @@ jobs:
         run: node scripts/generate-web-catalog.mjs
 
       - name: Build web
-        run: npm run build
-        working-directory: apps/web
+        run: npm --workspace apps/web run build
