@@ -34,6 +34,12 @@ jobs:
       - name: Validate simulations
         run: node scripts/validate-simulations.mjs
 
+      - name: Validate science catalog
+        run: node scripts/validate-simulation-catalog.mjs
+
+      - name: Generate web catalog
+        run: node scripts/generate-web-catalog.mjs
+
       - name: Next.js build
         run: npm run build
         working-directory: apps/web

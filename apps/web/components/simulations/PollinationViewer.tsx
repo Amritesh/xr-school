@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 
 const NARRATIONS = [
   "Welcome to the flower garden. Look all around you — you are standing inside a living garden. Flowers are structures designed for reproduction. Each flower has petals to attract pollinators, stamens that produce pollen, and a pistil that receives it.",
@@ -14,6 +15,23 @@ const NARRATIONS = [
   "The cycle completes. The seedling grows into a new plant which will one day flower and produce its own pollen. You are surrounded by the result of countless successful pollinations. This is how plant populations grow and evolve.",
 ];
 
+const NARRATION_AUDIO_URLS = [
+  '/audio/pollination/stage-01.mp3',
+  '/audio/pollination/stage-02.mp3',
+  '/audio/pollination/stage-03.mp3',
+  '/audio/pollination/stage-04.mp3',
+  '/audio/pollination/stage-05.mp3',
+  '/audio/pollination/stage-06.mp3',
+  '/audio/pollination/stage-07.mp3',
+  '/audio/pollination/stage-08.mp3',
+];
+
+const FLOWER_SCALE_RANGES = {
+  inner: [0.46, 0.62],
+  middle: [0.58, 0.78],
+  outer: [0.66, 0.9],
+} as const;
+
 const STAGES = [
   { title: '🌸 The Flower Garden', cue: 'Flowers are structures designed to enable reproduction. Look around — you\'re standing in a living garden.', detail: 'Each flower has petals (to attract pollinators), stamens (male parts that make pollen), and a pistil (female part that receives pollen).', instructor: 'Ask students: Why are flowers brightly coloured? Why do they smell sweet?' },
   { title: '🟡 Pollen Production', cue: 'The stamens produce pollen grains — each contains male genetic material.', detail: 'Watch the yellow pollen particles gathering on the anthers at the tip of each stamen.', instructor: 'Ask: What do you notice about where the pollen is concentrated?' },
@@ -25,62 +43,63 @@ const STAGES = [
   { title: '🌳 The Cycle Completes', cue: 'The new plant grows, flowers, and the entire cycle begins again. You are surrounded by the result.', detail: 'One successful pollination can lead to hundreds of seeds — and hundreds of new plants.', instructor: 'Recap: Flower → Pollen → Pollinator → Cross-pollination → Fertilisation → Seed → Germination → New plant.' },
 ];
 
-function speakText(text: string) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.87; utterance.pitch = 1.02; utterance.volume = 1.0;
-  const trySpeak = () => {
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      const voice =
-        voices.find(v => v.name === 'Samantha') ||
-        voices.find(v => v.name.includes('Google US English')) ||
-        voices.find(v => v.name.includes('Karen')) ||
-        voices.find(v => v.lang === 'en-US' && v.localService) ||
-        voices.find(v => v.lang.startsWith('en-US')) ||
-        voices.find(v => v.lang.startsWith('en'));
-      if (voice) utterance.voice = voice;
-    }
-    window.speechSynthesis.speak(utterance);
-  };
-  if (window.speechSynthesis.getVoices().length > 0) trySpeak();
-  else window.speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
+function playNarration(stageIndex: number) {
+  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
+}
+
+function randomRange(range: readonly [number, number]) {
+  return range[0] + Math.random() * (range[1] - range[0]);
 }
 
 function buildFlower(petalHex: number, x: number, z: number, scale = 1): THREE.Group {
   const g = new THREE.Group();
   g.position.set(x, 0, z);
   g.scale.setScalar(scale);
-  const stemMat = new THREE.MeshStandardMaterial({ color: 0x2d7a3a, roughness: 0.9 });
-  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.06, 1.5, 8), stemMat);
-  stem.position.y = 0.75;
+  const stemMat = new THREE.MeshStandardMaterial({ color: 0x2f7d38, roughness: 0.9 });
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.052, 1.35, 10), stemMat);
+  stem.position.y = 0.67;
   g.add(stem);
   const leafShape = new THREE.Shape();
-  leafShape.moveTo(0, 0); leafShape.bezierCurveTo(0.35, 0.08, 0.4, 0.35, 0, 0.55); leafShape.bezierCurveTo(-0.4, 0.35, -0.35, 0.08, 0, 0);
+  leafShape.moveTo(0, 0); leafShape.bezierCurveTo(0.28, 0.05, 0.38, 0.27, 0.04, 0.5); leafShape.bezierCurveTo(-0.28, 0.32, -0.28, 0.08, 0, 0);
   const leafGeo = new THREE.ShapeGeometry(leafShape);
-  const leafMat = new THREE.MeshStandardMaterial({ color: 0x2d7a3a, side: THREE.DoubleSide, roughness: 0.85 });
+  const leafMat = new THREE.MeshStandardMaterial({ color: 0x2f9e44, side: THREE.DoubleSide, roughness: 0.85 });
   [-1, 1].forEach(side => {
     const leaf = new THREE.Mesh(leafGeo, leafMat);
-    leaf.position.set(side * 0.06, 0.5, 0);
-    leaf.rotation.set(Math.PI / 5, side * (Math.PI / 3.5), 0);
+    leaf.position.set(side * 0.07, 0.45 + (side > 0 ? 0.05 : 0), 0);
+    leaf.rotation.set(Math.PI / 4.4, side * (Math.PI / 3.4), side * 0.18);
     g.add(leaf);
   });
   const head = new THREE.Group();
-  head.position.y = 1.55;
+  head.position.y = 1.4;
+  head.rotation.x = -0.12;
   g.add(head);
   const petalShape = new THREE.Shape();
-  petalShape.moveTo(0, 0); petalShape.bezierCurveTo(0.18, 0.04, 0.22, 0.22, 0.18, 0.4); petalShape.bezierCurveTo(0.14, 0.55, 0, 0.62, 0, 0.62); petalShape.bezierCurveTo(0, 0.62, -0.14, 0.55, -0.18, 0.4); petalShape.bezierCurveTo(-0.22, 0.22, -0.18, 0.04, 0, 0);
+  petalShape.moveTo(0, 0); petalShape.bezierCurveTo(0.2, 0.05, 0.25, 0.27, 0.16, 0.48); petalShape.bezierCurveTo(0.09, 0.64, 0, 0.72, 0, 0.72); petalShape.bezierCurveTo(0, 0.72, -0.09, 0.64, -0.16, 0.48); petalShape.bezierCurveTo(-0.25, 0.27, -0.2, 0.05, 0, 0);
   const petalGeo = new THREE.ShapeGeometry(petalShape, 8);
-  const petalMat = new THREE.MeshStandardMaterial({ color: petalHex, side: THREE.DoubleSide, roughness: 0.55 });
-  for (let i = 0; i < 6; i++) {
+  const petalMat = new THREE.MeshStandardMaterial({ color: petalHex, side: THREE.DoubleSide, roughness: 0.48, metalness: 0.02 });
+  const innerPetalMat = new THREE.MeshStandardMaterial({ color: petalHex, side: THREE.DoubleSide, roughness: 0.55, emissive: petalHex, emissiveIntensity: 0.06 });
+  for (let i = 0; i < 8; i++) {
     const petal = new THREE.Mesh(petalGeo, petalMat);
-    const a = (i / 6) * Math.PI * 2;
-    petal.position.set(Math.cos(a) * 0.16, 0, Math.sin(a) * 0.16);
-    petal.rotation.y = -a; petal.rotation.x = Math.PI / 2 - 0.3;
+    const a = (i / 8) * Math.PI * 2;
+    petal.position.set(Math.cos(a) * 0.15, 0, Math.sin(a) * 0.15);
+    petal.rotation.y = -a; petal.rotation.x = Math.PI / 2 - 0.42;
+    petal.scale.set(0.86, 0.82, 0.86);
     head.add(petal);
   }
-  const center = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.08, 16), new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.4, emissive: 0xd97706, emissiveIntensity: 0.3 }));
+  for (let i = 0; i < 8; i++) {
+    const petal = new THREE.Mesh(petalGeo, innerPetalMat);
+    const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+    petal.position.set(Math.cos(a) * 0.08, 0.015, Math.sin(a) * 0.08);
+    petal.rotation.y = -a; petal.rotation.x = Math.PI / 2 - 0.25;
+    petal.scale.set(0.58, 0.56, 0.58);
+    head.add(petal);
+  }
+  const sepal = new THREE.Mesh(new THREE.ConeGeometry(0.25, 0.18, 8), new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.8 }));
+  sepal.rotation.x = Math.PI;
+  sepal.position.y = -0.06;
+  head.add(sepal);
+  const center = new THREE.Mesh(new THREE.SphereGeometry(0.13, 18, 12), new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.42, emissive: 0xd97706, emissiveIntensity: 0.32 }));
+  center.scale.y = 0.55;
   head.add(center);
   const antherMat = new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xfbbf24, emissiveIntensity: 0.6 });
   for (let i = 0; i < 10; i++) {
@@ -94,27 +113,79 @@ function buildFlower(petalHex: number, x: number, z: number, scale = 1): THREE.G
   return g;
 }
 
+function buildBeeWing() {
+  const wingShape = new THREE.Shape();
+  wingShape.moveTo(0, 0);
+  wingShape.bezierCurveTo(0.13, 0.16, 0.38, 0.24, 0.55, 0.08);
+  wingShape.bezierCurveTo(0.68, -0.05, 0.43, -0.28, 0.15, -0.2);
+  wingShape.bezierCurveTo(0.03, -0.16, -0.04, -0.05, 0, 0);
+  return new THREE.ShapeGeometry(wingShape, 24);
+}
+
+function buildBeeLeg(side: number, forward: number) {
+  const leg = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.7 });
+  const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.007, 0.18, 5), mat);
+  upper.position.set(side * 0.075, -0.04, forward);
+  upper.rotation.set(0.75, 0, side * 0.75);
+  leg.add(upper);
+  const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.005, 0.16, 5), mat);
+  lower.position.set(side * 0.14, -0.12, forward + 0.015);
+  lower.rotation.set(1.0, 0, side * 1.05);
+  leg.add(lower);
+  return leg;
+}
+
 function buildBee(): THREE.Group {
   const g = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), new THREE.MeshStandardMaterial({ color: 0xf59e0b }));
-  body.scale.z = 1.6;
-  g.add(body);
+  const abdomen = new THREE.Mesh(new THREE.SphereGeometry(0.13, 18, 14), new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.58 }));
+  abdomen.scale.set(0.92, 0.82, 1.65);
+  abdomen.position.z = -0.03;
+  g.add(abdomen);
+  const thorax = new THREE.Mesh(new THREE.SphereGeometry(0.105, 16, 12), new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.75 }));
+  thorax.position.z = 0.12;
+  thorax.scale.set(1.1, 0.95, 1);
+  g.add(thorax);
+  const fuzzMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.34, roughness: 0.9 });
+  const fuzz = new THREE.Mesh(new THREE.SphereGeometry(0.122, 12, 8), fuzzMat);
+  fuzz.position.copy(thorax.position);
+  fuzz.scale.set(1.2, 1.05, 1.1);
+  g.add(fuzz);
   // Stripes
   for (let i = 0; i < 3; i++) {
-    const stripe = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.018, 4, 16), new THREE.MeshStandardMaterial({ color: 0x1c1917 }));
-    stripe.position.z = -0.05 + i * 0.06;
+    const stripe = new THREE.Mesh(new THREE.TorusGeometry(0.105, 0.013, 5, 24), new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.65 }));
+    stripe.position.z = -0.11 + i * 0.065;
     stripe.rotation.x = Math.PI / 2;
     g.add(stripe);
   }
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.08, 10, 10), new THREE.MeshStandardMaterial({ color: 0x1c1917 }));
-  head.position.z = 0.19;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.075, 14, 12), new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.6 }));
+  head.position.z = 0.25;
   g.add(head);
-  const wingMat = new THREE.MeshStandardMaterial({ color: 0xbfdbfe, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
-  [[1, 0.12], [-1, 0.12]].forEach(([side, y]) => {
-    const wg = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.22), wingMat);
-    wg.position.set(side * 0.18, y as number, 0);
-    wg.rotation.set(-0.3, (side as number) * 0.2, 0);
-    g.add(wg);
+  const antennaMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.5 });
+  [-1, 1].forEach(side => {
+    const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.004, 0.18, 5), antennaMat);
+    antenna.position.set(side * 0.045, 0.055, 0.31);
+    antenna.rotation.set(0.7, side * 0.65, side * 0.25);
+    g.add(antenna);
+  });
+  const wingMat = new THREE.MeshStandardMaterial({ color: 0xdbeafe, transparent: true, opacity: 0.52, side: THREE.DoubleSide, roughness: 0.18, metalness: 0.04 });
+  [-1, 1].forEach(side => {
+    const wing = new THREE.Mesh(buildBeeWing(), wingMat);
+    wing.name = 'bee-wing';
+    wing.position.set(side * 0.08, 0.12, 0.08);
+    wing.rotation.set(-0.55, side * 0.62, side * 0.18);
+    wing.scale.x = side;
+    g.add(wing);
+    [0.0, 0.07, -0.07].forEach((offset, index) => {
+      const vein = new THREE.Mesh(new THREE.CylinderGeometry(0.0025, 0.0025, 0.34 - index * 0.05, 4), new THREE.MeshBasicMaterial({ color: 0x93c5fd, transparent: true, opacity: 0.65 }));
+      vein.name = 'bee-wing-vein';
+      vein.position.set(side * (0.21 + index * 0.03), 0.12 + offset, 0.1);
+      vein.rotation.set(1.35 + offset, 0, side * (1.1 - index * 0.18));
+      g.add(vein);
+    });
+  });
+  [-1, 1].forEach(side => {
+    [-0.08, 0.04, 0.16].forEach(forward => g.add(buildBeeLeg(side, forward)));
   });
   // Pollen bags on legs
   const pollenBagMat = new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xfbbf24, emissiveIntensity: 0.4 });
@@ -124,6 +195,20 @@ function buildBee(): THREE.Group {
     g.add(bag);
   });
   return g;
+}
+
+function buildPollenGrainGeometry() {
+  const geo = new THREE.SphereGeometry(0.042, 18, 14);
+  const pos = geo.attributes.position as THREE.BufferAttribute;
+  const v = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i);
+    const bump = 1 + Math.sin(i * 2.37) * 0.1 + Math.cos(i * 1.41) * 0.08;
+    v.multiplyScalar(bump);
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  geo.computeVertexNormals();
+  return geo;
 }
 
 function drawCueCard(canvas: HTMLCanvasElement, stage: typeof STAGES[0], num: number, total: number) {
@@ -148,7 +233,16 @@ function drawCueCard(canvas: HTMLCanvasElement, stage: typeof STAGES[0], num: nu
   const titleLines = wrapText(ctx, stage.title, 20, 72, w - 40, 30);
   ctx.font = '20px sans-serif';
   ctx.fillStyle = '#d1d5db';
-  wrapText(ctx, stage.cue, 20, titleLines + 10, w - 40, 26);
+  const cueLines = wrapText(ctx, stage.cue, 20, titleLines + 8, w - 40, 27);
+  ctx.fillStyle = '#34d399';
+  ctx.font = 'bold 18px sans-serif';
+  ctx.fillText('Detailed explanation', 20, cueLines + 10);
+  ctx.fillStyle = '#e5e7eb';
+  ctx.font = '18px sans-serif';
+  const detailLines = wrapText(ctx, stage.detail, 20, cueLines + 38, w - 40, 24);
+  ctx.fillStyle = '#a7f3d0';
+  ctx.font = '16px sans-serif';
+  wrapText(ctx, stage.instructor, 20, Math.min(detailLines + 8, h - 82), w - 40, 22);
 }
 
 function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxW: number, lh: number): number {
@@ -163,6 +257,37 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
   return cy;
 }
 
+function makeButtonLabelTexture(label: string, color: string) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 160;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return new THREE.CanvasTexture(canvas);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'rgba(2,6,23,0.92)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 10;
+  ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+  ctx.fillStyle = '#f8fafc';
+  ctx.font = 'bold 54px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, canvas.width / 2, canvas.height / 2);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function makeButtonLabelMesh(label: string, color: string) {
+  const labelMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.42, 0.13),
+    new THREE.MeshBasicMaterial({ map: makeButtonLabelTexture(label, color), transparent: true, depthTest: false })
+  );
+  labelMesh.position.z = 0.026;
+  return labelMesh;
+}
+
 export default function PollinationViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -172,7 +297,7 @@ export default function PollinationViewer() {
   const cueTextureRef = useRef<THREE.CanvasTexture | null>(null);
   const beeRef = useRef<THREE.Group | null>(null);
   const pollenParentRef = useRef<THREE.Group | null>(null);
-  const pollenRef = useRef<{ points: THREE.Points; positions: Float32Array } | null>(null);
+  const pollenRef = useRef<{ mesh: THREE.InstancedMesh; positions: Float32Array } | null>(null);
   const seedRef = useRef<THREE.Mesh | null>(null);
   const seedlingRef = useRef<THREE.Group | null>(null);
   const seedlingGrowthRef = useRef(0);
@@ -273,20 +398,20 @@ export default function PollinationViewer() {
     // ── 360° Flowers ─────────────────────────────────────────────────────
     const PETAL_COLORS = [0xf472b6, 0xfbbf24, 0xa78bfa, 0xf87171, 0x86efac, 0xfb923c, 0xe879f9, 0x67e8f9];
     const flowerPositions: {x:number,z:number,color:number,scale:number}[] = [];
-    // Inner ring (very close — almost touching distance in VR)
+    // Inner ring: close enough to inspect, but scaled to avoid oversized VR flowers.
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2 + 0.2;
-      flowerPositions.push({ x: Math.cos(a) * (1.4 + Math.random() * 0.4), z: Math.sin(a) * (1.4 + Math.random() * 0.4), color: PETAL_COLORS[i % PETAL_COLORS.length], scale: 0.7 + Math.random() * 0.3 });
+      flowerPositions.push({ x: Math.cos(a) * (1.8 + Math.random() * 0.45), z: Math.sin(a) * (1.8 + Math.random() * 0.45), color: PETAL_COLORS[i % PETAL_COLORS.length], scale: randomRange(FLOWER_SCALE_RANGES.inner) });
     }
     // Middle ring
     for (let i = 0; i < 10; i++) {
       const a = (i / 10) * Math.PI * 2 + 0.5;
-      flowerPositions.push({ x: Math.cos(a) * (3.5 + Math.random() * 0.8), z: Math.sin(a) * (3.5 + Math.random() * 0.8), color: PETAL_COLORS[(i + 3) % PETAL_COLORS.length], scale: 0.85 + Math.random() * 0.3 });
+      flowerPositions.push({ x: Math.cos(a) * (3.8 + Math.random() * 0.9), z: Math.sin(a) * (3.8 + Math.random() * 0.9), color: PETAL_COLORS[(i + 3) % PETAL_COLORS.length], scale: randomRange(FLOWER_SCALE_RANGES.middle) });
     }
     // Outer ring
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2 + 1.1;
-      flowerPositions.push({ x: Math.cos(a) * (5.5 + Math.random() * 1.5), z: Math.sin(a) * (5.5 + Math.random() * 1.5), color: PETAL_COLORS[(i + 5) % PETAL_COLORS.length], scale: 1.0 + Math.random() * 0.4 });
+      flowerPositions.push({ x: Math.cos(a) * (5.8 + Math.random() * 1.5), z: Math.sin(a) * (5.8 + Math.random() * 1.5), color: PETAL_COLORS[(i + 5) % PETAL_COLORS.length], scale: randomRange(FLOWER_SCALE_RANGES.outer) });
     }
     flowerPositions.forEach(({ x, z, color, scale }) => {
       const f = buildFlower(color, x, z, scale);
@@ -325,16 +450,23 @@ export default function PollinationViewer() {
       pollenPositions[i * 3 + 1] = 0.5 + Math.random() * 2.5;
       pollenPositions[i * 3 + 2] = Math.sin(a) * r;
     }
-    const pollenGeo = new THREE.BufferGeometry();
-    pollenGeo.setAttribute('position', new THREE.BufferAttribute(pollenPositions.slice(), 3));
-    const pollenMat = new THREE.PointsMaterial({ color: 0xfde68a, size: 0.06, transparent: true, opacity: 0.9, sizeAttenuation: true });
-    const pollenPoints = new THREE.Points(pollenGeo, pollenMat);
+    const pollenGeo = buildPollenGrainGeometry();
+    const pollenMat = new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xfbbf24, emissiveIntensity: 0.42, roughness: 0.78 });
+    const pollenMesh = new THREE.InstancedMesh(pollenGeo, pollenMat, POLLEN_COUNT);
+    const pollenDummy = new THREE.Object3D();
+    for (let i = 0; i < POLLEN_COUNT; i++) {
+      pollenDummy.position.set(pollenPositions[i * 3], pollenPositions[i * 3 + 1], pollenPositions[i * 3 + 2]);
+      pollenDummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      pollenDummy.scale.setScalar(0.75 + Math.random() * 0.45);
+      pollenDummy.updateMatrix();
+      pollenMesh.setMatrixAt(i, pollenDummy.matrix);
+    }
     const pollenParent = new THREE.Group();
-    pollenParent.add(pollenPoints);
+    pollenParent.add(pollenMesh);
     pollenParent.visible = false;
     scene.add(pollenParent);
     pollenParentRef.current = pollenParent;
-    pollenRef.current = { points: pollenPoints, positions: pollenPositions };
+    pollenRef.current = { mesh: pollenMesh, positions: pollenPositions };
 
     // ── Underground section (for stage 6-7) ──────────────────────────────
     const pitGroup = new THREE.Group();
@@ -370,24 +502,26 @@ export default function PollinationViewer() {
 
     // ── 3D Cue card panel (visible in VR headset) ────────────────────────
     const cueCanvas = document.createElement('canvas');
-    cueCanvas.width = 512; cueCanvas.height = 256;
+    cueCanvas.width = 1024; cueCanvas.height = 640;
     cueCanvasRef.current = cueCanvas;
     const cueTexture = new THREE.CanvasTexture(cueCanvas);
     cueTextureRef.current = cueTexture;
     const cueMesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(1.1, 0.55),
+      new THREE.PlaneGeometry(1.75, 1.1),
       new THREE.MeshBasicMaterial({ map: cueTexture })
     );
-    cueMesh.position.set(0, 1.62, -1.8);
+    cueMesh.position.set(0, 1.68, -2.05);
     scene.add(cueMesh);
 
     // Stage nav buttons (VR — point and click)
     const btnMat = (col: number) => new THREE.MeshStandardMaterial({ color: col, roughness: 0.4, emissive: col, emissiveIntensity: 0.25 });
-    const prevBtn = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.12, 0.04), btnMat(0x374151));
-    prevBtn.position.set(-0.25, 1.28, -1.8); prevBtn.name = 'btn-prev';
+    const prevBtn = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.15, 0.04), btnMat(0x374151));
+    prevBtn.position.set(-0.32, 1.28, -1.8); prevBtn.name = 'btn-prev';
+    prevBtn.add(makeButtonLabelMesh('Previous', '#94a3b8'));
     scene.add(prevBtn);
-    const nextBtn = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.12, 0.04), btnMat(0x16a34a));
-    nextBtn.position.set(0.25, 1.28, -1.8); nextBtn.name = 'btn-next';
+    const nextBtn = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.15, 0.04), btnMat(0x16a34a));
+    nextBtn.position.set(0.32, 1.28, -1.8); nextBtn.name = 'btn-next';
+    nextBtn.add(makeButtonLabelMesh('Next', '#22c55e'));
     scene.add(nextBtn);
     const interactables = [prevBtn, nextBtn];
 
@@ -414,13 +548,13 @@ export default function PollinationViewer() {
       const next = Math.min(stageRef.current + 1, STAGES.length - 1);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
       if (next === 7) seedlingGrowthRef.current = 0;
-      speakText(NARRATIONS[next]);
+      playNarration(next);
       setStage(next);
     };
     const retreatStage = () => {
       const next = Math.max(stageRef.current - 1, 0);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
-      speakText(NARRATIONS[next]);
+      playNarration(next);
       setStage(next);
     };
     const onCtrlSelect = (event: Event) => {
@@ -466,33 +600,40 @@ export default function PollinationViewer() {
       // Bee: figure-8 pattern at eye level, very close to player
       bee.visible = s >= 2 && s <= 4;
       if (bee.visible) {
-        const bt = t * 0.65;
+        const beeFlightPhase = t * 0.65;
         if (s === 2) {
-          bee.position.set(Math.sin(bt * 2) * 1.8, 1.55 + Math.sin(bt * 1.4) * 0.22, Math.sin(bt) * 2.2 - 0.5);
+          bee.position.set(Math.sin(beeFlightPhase * 2) * 1.8, 1.55 + Math.sin(beeFlightPhase * 1.4) * 0.22, Math.sin(beeFlightPhase) * 2.2 - 0.5);
         } else if (s === 3) {
-          bee.position.set(Math.cos(bt * 1.5) * 0.9, 1.6 + Math.sin(bt * 2.2) * 0.12, Math.sin(bt * 1.5) * 1.1 - 0.3);
+          bee.position.set(Math.cos(beeFlightPhase * 1.5) * 0.9, 1.6 + Math.sin(beeFlightPhase * 2.2) * 0.12, Math.sin(beeFlightPhase * 1.5) * 1.1 - 0.3);
         } else {
           bee.position.lerp(new THREE.Vector3(-12, 5, 0), 0.006);
         }
+        bee.rotation.z += (Math.sin(beeFlightPhase * 3.2) * 0.08 - bee.rotation.z) * 0.08;
         const lookTarget = new THREE.Vector3(bee.position.x + Math.sin(t * 0.7), bee.position.y, bee.position.z - 0.5);
         bee.lookAt(lookTarget);
-        bee.children.filter(c => (c as THREE.Mesh).isMesh && ((c as THREE.Mesh).material as THREE.MeshStandardMaterial)?.transparent)
-          .forEach((w, i) => { w.rotation.z = Math.sin(t * 20 + i * Math.PI) * 0.45; });
+        bee.children.filter(c => c.name === 'bee-wing')
+          .forEach((w, i) => {
+            w.rotation.z = (i === 0 ? 0.18 : -0.18) + Math.sin(t * 34 + i * Math.PI) * 0.55;
+            w.rotation.x = -0.55 + Math.cos(t * 34 + i) * 0.18;
+          });
       }
 
       // Pollen: float and drift
       pollenParent.visible = s >= 1 && s <= 4;
       if (pollenParent.visible && pollenRef.current) {
-        const pos = pollenRef.current.points.geometry.attributes.position as THREE.BufferAttribute;
-        const orig = pollenRef.current.positions;
-        for (let i = 0; i < pos.count; i++) {
-          pos.setXYZ(i,
-            orig[i * 3] + Math.sin(t * 1.3 + i * 0.7) * 0.04,
-            orig[i * 3 + 1] + Math.cos(t * 0.9 + i * 0.4) * 0.05 + Math.sin(t * 0.3) * 0.02,
-            orig[i * 3 + 2] + Math.sin(t * 1.6 + i * 1.1) * 0.04
+        const { mesh, positions } = pollenRef.current;
+        for (let i = 0; i < mesh.count; i++) {
+          pollenDummy.position.set(
+            positions[i * 3] + Math.sin(t * 1.3 + i * 0.7) * 0.04,
+            positions[i * 3 + 1] + Math.cos(t * 0.9 + i * 0.4) * 0.05 + Math.sin(t * 0.3) * 0.02,
+            positions[i * 3 + 2] + Math.sin(t * 1.6 + i * 1.1) * 0.04
           );
+          pollenDummy.rotation.set(t * 0.25 + i, t * 0.18 + i * 0.3, t * 0.21 + i * 0.17);
+          pollenDummy.scale.setScalar(0.78 + Math.sin(t * 1.7 + i) * 0.08);
+          pollenDummy.updateMatrix();
+          mesh.setMatrixAt(i, pollenDummy.matrix);
         }
-        pos.needsUpdate = true;
+        mesh.instanceMatrix.needsUpdate = true;
       }
 
       // Underground / seed / seedling stages
@@ -534,7 +675,7 @@ export default function PollinationViewer() {
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', onResize);
-      window.speechSynthesis?.cancel();
+      stopSimulationNarration();
     };
   }, []);
 
@@ -543,7 +684,7 @@ export default function PollinationViewer() {
       const next = Math.min(prev + 1, STAGES.length - 1);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
       if (next === 7) seedlingGrowthRef.current = 0;
-      speakText(NARRATIONS[next]);
+      playNarration(next);
       return next;
     });
   }, []);
@@ -552,7 +693,7 @@ export default function PollinationViewer() {
     setStage(prev => {
       const next = Math.max(prev - 1, 0);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
-      speakText(NARRATIONS[next]);
+      playNarration(next);
       return next;
     });
   }, []);
@@ -566,8 +707,10 @@ export default function PollinationViewer() {
       });
       rendererRef.current.xr.setSession(session);
       setStarted(true);
+      playNarration(stageRef.current);
     } catch {
       setStarted(true);
+      playNarration(stageRef.current);
     }
   }, []);
 
@@ -593,7 +736,7 @@ export default function PollinationViewer() {
                   <span style={{ fontSize: 22 }}>🥽</span> Enter in VR
                 </button>
               )}
-              <button onClick={() => { setStarted(true); speakText(NARRATIONS[0]); }} style={{ padding: '14px 28px', borderRadius: 12, background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.35)', color: '#34d399', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button onClick={() => { setStarted(true); playNarration(0); }} style={{ padding: '14px 28px', borderRadius: 12, background: 'rgba(52,211,153,0.12)', border: '1px solid rgba(52,211,153,0.35)', color: '#34d399', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 22 }}>💻</span> View in Browser
               </button>
             </div>

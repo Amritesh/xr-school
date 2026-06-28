@@ -31,6 +31,20 @@
 
 ---
 
+## Phase 0A: Toolchain and Catalog Preflight (Current)
+
+- [x] `scripts/dev-env-check.mjs` exists and verifies Node 22+, required specs, generated OpenAPI, and catalog files
+- [x] `package.json` has `env:check`
+- [x] Class 5-10 science catalog exists with 497 activity rows
+- [x] Revised implementation spec exists under `docs/superpowers/specs/`
+- [x] Revised Spec Kit plan exists under `docs/superpowers/plans/`
+- [ ] `packages/simulation-schema/` defines typed catalog enums, validators, and normalization helpers
+- [ ] `packages/simulation-content/` exposes the 497-row catalog as typed TypeScript data
+- [ ] Vitest validates catalog row count, slug uniqueness, id uniqueness, enum values, comfort risk, and duration limits
+- [ ] `scripts/validate-simulation-catalog.mjs` runs in CI
+
+---
+
 ## Phase 1: API Implementation (Next)
 
 ### Curriculum

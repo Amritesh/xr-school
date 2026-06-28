@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 
 const VOLTAGE = 9;
 
@@ -24,6 +25,13 @@ const NARRATIONS = [
   "Closed circuit. The switch is now closed — the path is complete. Electrons flow from the battery's negative terminal, through the wire, the resistor, and the bulb filament, and back. Watch the blue particles moving around the circuit.",
   "Changing resistance. Try the different resistor values. A higher resistance reduces the current, making the bulb dimmer. This is Ohm's Law — the voltage stays constant, but resistance controls how much current flows.",
   "Ohm's Law. Voltage equals current multiplied by resistance. Think of voltage as water pressure, current as the flow rate, and resistance as how narrow the pipe is. This single equation governs every circuit in the world, from phone chargers to power grids.",
+];
+
+const NARRATION_AUDIO_URLS = [
+  '/audio/circuit/stage-01.mp3',
+  '/audio/circuit/stage-02.mp3',
+  '/audio/circuit/stage-03.mp3',
+  '/audio/circuit/stage-04.mp3',
 ];
 
 // Stage cameras: where to position the viewpoint for each stage
@@ -52,29 +60,8 @@ const CIRCUIT_SCALE = 0.155;
 // World-space bench center: Z = -0.8  (user starts at Z=0, facing -Z)
 const BZ = -0.8;
 
-function speakText(text: string) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.87;
-  utterance.pitch = 1.02;
-  utterance.volume = 1.0;
-  const trySpeak = () => {
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      const voice =
-        voices.find(v => v.name === 'Samantha') ||
-        voices.find(v => v.name.includes('Google US English')) ||
-        voices.find(v => v.name.includes('Karen')) ||
-        voices.find(v => v.lang === 'en-US' && v.localService) ||
-        voices.find(v => v.lang.startsWith('en-US')) ||
-        voices.find(v => v.lang.startsWith('en'));
-      if (voice) utterance.voice = voice;
-    }
-    window.speechSynthesis.speak(utterance);
-  };
-  if (window.speechSynthesis.getVoices().length > 0) trySpeak();
-  else window.speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
+function playNarration(stageIndex: number) {
+  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
 function drawCueCard(canvas: HTMLCanvasElement, stage: typeof STAGES[0], num: number, total: number) {
@@ -115,6 +102,37 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
   }
   if (line.trim()) { ctx.fillText(line.trimEnd(), x, cy); cy += lh; }
   return cy;
+}
+
+function makeButtonLabelTexture(label: string, color: string) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 160;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return new THREE.CanvasTexture(canvas);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'rgba(3,7,18,0.94)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 10;
+  ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+  ctx.fillStyle = '#f8fafc';
+  ctx.font = 'bold 54px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, canvas.width / 2, canvas.height / 2);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function makeButtonLabelMesh(label: string, color: string, width = 0.36) {
+  const labelMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(width, 0.11),
+    new THREE.MeshBasicMaterial({ map: makeButtonLabelTexture(label, color), transparent: true, depthTest: false })
+  );
+  labelMesh.position.z = 0.025;
+  return labelMesh;
 }
 
 function drawChalkboard(canvas: HTMLCanvasElement, R: number, I: number, closed: boolean) {
@@ -369,20 +387,28 @@ export default function CircuitViewer() {
 
     // VR nav buttons (below cue card on the left)
     const btnMat = (col: number) => new THREE.MeshStandardMaterial({ color: col, roughness: 0.4, emissive: col, emissiveIntensity: 0.25 });
-    const prevBtn = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.1, 0.04), btnMat(0x374151));
-    prevBtn.position.set(-1.65, 1.17, BZ); prevBtn.name = 'btn-prev'; scene.add(prevBtn);
-    const nextBtn = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.1, 0.04), btnMat(0xb45309));
-    nextBtn.position.set(-1.35, 1.17, BZ); nextBtn.name = 'btn-next'; scene.add(nextBtn);
+    const prevBtn = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.13, 0.04), btnMat(0x374151));
+    prevBtn.position.set(-1.72, 1.17, BZ); prevBtn.name = 'btn-prev';
+    prevBtn.add(makeButtonLabelMesh('Previous', '#94a3b8', 0.39));
+    scene.add(prevBtn);
+    const nextBtn = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.13, 0.04), btnMat(0xb45309));
+    nextBtn.position.set(-1.28, 1.17, BZ); nextBtn.name = 'btn-next';
+    nextBtn.add(makeButtonLabelMesh('Next', '#fbbf24', 0.31));
+    scene.add(nextBtn);
 
     // VR switch button (floating above near edge of bench, easy to reach)
-    const vrSwBtn = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.10, 0.04), btnMat(0xef4444));
-    vrSwBtn.position.set(0, 1.2, BZ + 0.35); vrSwBtn.name = 'btn-switch'; scene.add(vrSwBtn);
+    const vrSwBtn = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.13, 0.04), btnMat(0xef4444));
+    vrSwBtn.position.set(0, 1.2, BZ + 0.35); vrSwBtn.name = 'btn-switch';
+    vrSwBtn.add(makeButtonLabelMesh('Switch', '#f87171', 0.35));
+    scene.add(vrSwBtn);
 
     // VR resistor buttons (above near edge, to the right)
     const resButtons: THREE.Mesh[] = [];
     RESISTORS.forEach((r, i) => {
-      const rb = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.04), btnMat(r.color));
-      rb.position.set(0.55 + i * 0.22, 1.1, BZ + 0.35); rb.name = `btn-res-${i}`; scene.add(rb);
+      const rb = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.1, 0.04), btnMat(r.color));
+      rb.position.set(0.52 + i * 0.3, 1.1, BZ + 0.35); rb.name = `btn-res-${i}`;
+      rb.add(makeButtonLabelMesh(r.label, '#fbbf24', 0.22));
+      scene.add(rb);
       resButtons.push(rb);
     });
 
@@ -414,11 +440,11 @@ export default function CircuitViewer() {
         } else if (name === 'btn-next') {
           const next = Math.min(stageRef.current + 1, STAGES.length - 1);
           stageRef.current = next; cueNeedsUpdateRef.current = true; setStage(next);
-          speakText(NARRATIONS[next]);
+          playNarration(next);
         } else if (name === 'btn-prev') {
           const next = Math.max(stageRef.current - 1, 0);
           stageRef.current = next; cueNeedsUpdateRef.current = true; setStage(next);
-          speakText(NARRATIONS[next]);
+          playNarration(next);
         } else if (name.startsWith('btn-res-')) {
           const idx = parseInt(name.slice(-1));
           setResistorIdx(idx); resistorIdxRef.current = idx; chalkNeedsUpdateRef.current = true;
@@ -550,7 +576,7 @@ export default function CircuitViewer() {
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', onResize);
-      window.speechSynthesis?.cancel();
+      stopSimulationNarration();
     };
   }, []);
 
@@ -562,7 +588,7 @@ export default function CircuitViewer() {
     camGoalTarget.current.copy(STAGE_CAMERAS[next].target);
     camAnimating.current = true;
     setStage(next);
-    speakText(NARRATIONS[next]);
+    playNarration(next);
   }, []);
 
   const enterVR = useCallback(async () => {
@@ -574,7 +600,11 @@ export default function CircuitViewer() {
       });
       rendererRef.current.xr.setSession(session);
       setStarted(true);
-    } catch { setStarted(true); }
+      playNarration(stageRef.current);
+    } catch {
+      setStarted(true);
+      playNarration(stageRef.current);
+    }
   }, []);
 
   const toggleSwitch = () => {
@@ -612,7 +642,7 @@ export default function CircuitViewer() {
                   <span style={{ fontSize: 22 }}>🥽</span> Enter in VR
                 </button>
               )}
-              <button onClick={() => { setStarted(true); speakText(NARRATIONS[0]); }} style={{ padding: '14px 28px', borderRadius: 12, background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)', color: '#60a5fa', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button onClick={() => { setStarted(true); playNarration(0); }} style={{ padding: '14px 28px', borderRadius: 12, background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.3)', color: '#60a5fa', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 22 }}>💻</span> View in Browser
               </button>
             </div>

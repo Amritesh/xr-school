@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { SIMULATION_MODULES } from '../../packages/simulation-content/src/modules';
 
 /**
  * Validates the simulation module seed data against the TypeSpec contract rules.
@@ -14,43 +15,7 @@ const VALID_COMFORT_RISKS = ['low', 'medium', 'high'];
 const VALID_FORMATS = ['immersiveVr', 'threeSixtyVr', 'interactive3d', 'guidedVisualization', 'practicalLabSimulation', 'virtualFieldVisit', 'revisionMode'];
 const VALID_EVIDENCE_LEVELS = ['experimental', 'expertDesigned', 'internallyPiloted', 'schoolValidated', 'researchBacked'];
 
-// Simulation module definitions — must stay in sync with apps/api/src/index.ts
-const SIMULATIONS = [
-  {
-    id: 'sim-pollination-001',
-    slug: 'pollination',
-    title: 'Plant Pollination & Growth Cycle',
-    gradeBands: ['class6To8', 'class9To10'],
-    subjects: ['biology', 'environmentalScience'],
-    applicableBoards: ['cbse', 'icse'],
-    simulationFormat: 'immersiveVr',
-    xrFitType: 'strongVrFit',
-    xrFitJustification: 'Pollination occurs at microscopic scale and involves invisible pollen transfer that students cannot witness directly.',
-    learningObjective: 'Students will be able to sequence the 8 stages of plant reproduction from pollen production through germination.',
-    evidenceConfidenceLevel: 'expertDesigned',
-    comfortRiskLevel: 'low',
-    expectedDurationMinutes: 10,
-    stages: 8,
-    status: 'released',
-  },
-  {
-    id: 'sim-circuit-001',
-    slug: 'circuit',
-    title: "Electric Circuits & Resistance (Ohm's Law)",
-    gradeBands: ['class9To10'],
-    subjects: ['physics'],
-    applicableBoards: ['cbse', 'icse'],
-    simulationFormat: 'interactive3d',
-    xrFitType: 'strongVrFit',
-    xrFitJustification: 'Electric current is invisible. Visualising electron flow as glowing particles gives students a spatial, intuitive understanding.',
-    learningObjective: "Students will apply Ohm's Law (V=IR) to predict how changing resistance affects current.",
-    evidenceConfidenceLevel: 'expertDesigned',
-    comfortRiskLevel: 'low',
-    expectedDurationMinutes: 8,
-    stages: 4,
-    status: 'released',
-  },
-];
+const SIMULATIONS = SIMULATION_MODULES;
 
 describe('Simulation module contracts', () => {
   SIMULATIONS.forEach(sim => {
@@ -110,12 +75,31 @@ describe('Simulation module contracts', () => {
         expect(sim.expectedDurationMinutes).toBeLessThanOrEqual(12);
       });
 
+      it('has the required ontology links and learning design fields', () => {
+        expect(sim.curriculumMapIds.length).toBeGreaterThan(0);
+        expect(sim.conceptIds.length).toBeGreaterThan(0);
+        expect(sim.cueCardIds.length).toBeGreaterThanOrEqual(3);
+        expect(sim.revisionCardIds.length).toBeGreaterThanOrEqual(1);
+        expect(sim.assessmentHookIds.length).toBeGreaterThanOrEqual(2);
+        expect(sim.maxSessionDurationMinutes).toBeGreaterThanOrEqual(sim.expectedDurationMinutes);
+        expect(sim.maxSessionDurationMinutes).toBeLessThanOrEqual(12);
+        expect(sim.scientificConceptExplanation.length).toBeGreaterThan(40);
+        expect(sim.visualizationStrategy.length).toBeGreaterThan(30);
+        expect(sim.interactionStrategy.length).toBeGreaterThan(30);
+        expect(sim.instructorScript).toContain('SETUP');
+        expect(sim.instructorScript).toContain('DURING HEADSET BATCH');
+        expect(sim.instructorScript).toContain('DEBRIEF');
+        expect(sim.instructorScript).toContain('REVISION TRIGGER');
+      });
+
       it('has at least 2 stages', () => {
         expect(sim.stages).toBeGreaterThanOrEqual(2);
       });
 
-      it('slug matches id pattern (id starts with sim-{slug})', () => {
-        expect(sim.id).toContain(sim.slug.replace(/-/g, '-'));
+      it('id uses a stable simulation prefix and title-derived suffix', () => {
+        const titleSuffix = sim.slug.replace(/^c\d+-ch\d+-a\d+-/, '');
+        expect(sim.id).toMatch(/^sim-/);
+        expect(sim.id).toContain(titleSuffix);
       });
     });
   });
@@ -130,5 +114,40 @@ describe('Simulation module contracts', () => {
     const ids = SIMULATIONS.map(s => s.id);
     const unique = new Set(ids);
     expect(unique.size).toBe(ids.length);
+  });
+
+  it('does not use invalid legacy grade bands', () => {
+    const allGradeBands = SIMULATIONS.flatMap(s => s.gradeBands);
+    expect(allGradeBands).not.toContain('class8To10');
+  });
+
+  it('includes the Class 9 states of matter activity as the first new catalog-backed demo', () => {
+    const module = SIMULATIONS.find(s => s.slug === 'c9-ch01-a02-states-of-matter');
+
+    expect(module?.title).toBe('States of Matter Particle Lab');
+    expect(module?.curriculumMapIds).toContain('cm-cbse-c9-ch01-states-of-matter');
+    expect(module?.conceptIds).toContain('concept-states-of-matter');
+    expect(module?.simulationFormat).toBe('interactive3d');
+    expect(module?.stages).toBe(4);
+  });
+
+  it('includes the Class 6 sources of food sorting-board activity', () => {
+    const module = SIMULATIONS.find(s => s.slug === 'c6-ch01-a01-sources-of-food');
+
+    expect(module?.title).toBe('Sources of Food Sorting Lab');
+    expect(module?.curriculumMapIds).toContain('cm-cbse-c6-ch01-food-sources');
+    expect(module?.conceptIds).toContain('concept-food-sources');
+    expect(module?.simulationFormat).toBe('interactive3d');
+    expect(module?.stages).toBe(4);
+  });
+
+  it('includes the Class 5 soluble and insoluble substances experiment bench activity', () => {
+    const module = SIMULATIONS.find(s => s.slug === 'c5-ch07-a03-soluble-and-insoluble-substances');
+
+    expect(module?.title).toBe('Soluble and Insoluble Substances Lab');
+    expect(module?.curriculumMapIds).toContain('cm-cbse-c5-ch07-water-experiments');
+    expect(module?.conceptIds).toContain('concept-solubility');
+    expect(module?.simulationFormat).toBe('practicalLabSimulation');
+    expect(module?.stages).toBe(4);
   });
 });

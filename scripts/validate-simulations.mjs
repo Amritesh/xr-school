@@ -28,19 +28,19 @@ function fail(msg) { console.error(`  ${RED}✗${RESET} ${msg}`); errors++; }
 function warn(msg) { console.warn(`  ${YELLOW}!${RESET} ${msg}`); warnings++; }
 function pass(msg) { console.log(`  ${GREEN}✓${RESET} ${msg}`); }
 
-// ── 1. Read simulation slugs from API seed data ────────────────────────
-const apiSrc = resolve(ROOT, 'apps/api/src/index.ts');
-if (!existsSync(apiSrc)) {
-  fail(`apps/api/src/index.ts not found`);
+// ── 1. Read simulation slugs from shared content data ──────────────────
+const modulesSrc = resolve(ROOT, 'packages/simulation-content/src/modules.ts');
+if (!existsSync(modulesSrc)) {
+  fail(`packages/simulation-content/src/modules.ts not found`);
   process.exit(1);
 }
 
-const apiCode = readFileSync(apiSrc, 'utf8');
-const slugMatches = [...apiCode.matchAll(/slug:\s*['"]([a-z0-9-]+)['"]/g)];
+const modulesCode = readFileSync(modulesSrc, 'utf8');
+const slugMatches = [...modulesCode.matchAll(/slug:\s*['"]([a-z0-9-]+)['"]/g)];
 const slugs = slugMatches.map(m => m[1]);
 
 if (slugs.length === 0) {
-  fail('No simulation slugs found in apps/api/src/index.ts');
+  fail('No simulation slugs found in packages/simulation-content/src/modules.ts');
   process.exit(1);
 }
 
@@ -60,6 +60,9 @@ for (const slug of slugs) {
 const viewerNameMap = {
   pollination: 'PollinationViewer',
   circuit: 'CircuitViewer',
+  'c9-ch01-a02-states-of-matter': 'StatesOfMatterViewer',
+  'c6-ch01-a01-sources-of-food': 'FoodSourcesSortingViewer',
+  'c5-ch07-a03-soluble-and-insoluble-substances': 'SolubilityLabViewer',
 };
 
 for (const slug of slugs) {
@@ -123,7 +126,7 @@ if (!existsSync(openapiPath)) {
 
 // ── 6. No simulation uses a forbidden xrFitType ────────────────────────
 const FORBIDDEN_FIT = ['normalClassroomBetter', 'physicalLabBetter', 'notWorthXr'];
-const fitMatches = [...apiCode.matchAll(/xrFitType:\s*['"]([a-zA-Z]+)['"]/g)];
+const fitMatches = [...modulesCode.matchAll(/xrFitType:\s*['"]([a-zA-Z]+)['"]/g)];
 fitMatches.forEach(m => {
   if (FORBIDDEN_FIT.includes(m[1])) {
     fail(`Simulation uses forbidden xrFitType "${m[1]}". Only strongVrFit or arTabletFit may be built.`);

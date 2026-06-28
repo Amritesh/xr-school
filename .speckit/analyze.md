@@ -32,6 +32,8 @@ xr-school/
 │   └── ai-boundaries/
 │       └── ai-agent-boundaries.md  ✓ with 7 prompt templates
 ├── scripts/
+│   ├── dev-env-check.mjs           ✓ Node/filesystem preflight
+│   ├── validate-simulations.mjs    ✓ current viewer/catalog smoke validation
 │   └── spec-drift-check.mjs        ✓ 5 rules, exits 1 on violations
 ├── .github/
 │   └── workflows/
@@ -45,14 +47,16 @@ xr-school/
 │   ├── tasks.md                    ✓ 13 tasks, backlog
 │   └── analyze.md                  ← this file
 ├── apps/
-│   ├── web/                        (empty, scaffold pending)
-│   ├── api/                        (empty, scaffold pending)
-│   └── quest/                      (empty, Unity team)
+│   ├── web/                        ✓ Next.js/WebXR launcher with pollination + circuit
+│   ├── api/                        ✓ lightweight Fastify simulation catalog API
+│   └── quest/                      (pending, Unity team)
 ├── packages/
-│   ├── shared/                     (empty)
-│   ├── curriculum-engine/          (empty)
-│   ├── simulation-schema/          (empty)
-│   └── evaluation-engine/          (empty)
+│   └── evaluation-engine/          ✓ scoring/sync utilities with tests
+├── docs/catalog/
+│   └── class-5-to-10-science-virtual-tours-catalog.csv ✓ 497 activity rows
+├── docs/superpowers/
+│   ├── specs/                      ✓ PDF-scale implementation design
+│   └── plans/                      ✓ revised Spec Kit implementation plan
 └── package.json                    ✓ Node 23, npm workspaces
 ```
 
@@ -106,6 +110,12 @@ Missing routes for MVP (can be added as needed):
 
 ---
 
+## Current Flow Reality
+
+The original Spec Kit plan assumed empty apps and package directories. The repo now has a working WebXR launcher, a lightweight Fastify simulation API, and two demo viewers. The Class 5-10 PDF catalog adds 497 activity modules across 116 topic bundles, so the next implementation step is canonical catalog/schema normalization before expanding API routes.
+
+The local shell may expose Node 14 even though `.nvmrc` requires Node 23. Use `npm run env:check` or direct Node 23 commands before trusting TypeSpec, Vitest, or validation results.
+
 ## Readiness Assessment
 
 | Area | Status | Blocker |
@@ -116,15 +126,14 @@ Missing routes for MVP (can be added as needed):
 | ER diagram | READY | None |
 | Drift check | READY | None |
 | CI pipeline | READY | None (apps don't exist yet — build job disabled) |
-| API implementation | NOT STARTED | Needs T-001 through T-010 |
-| Web admin | NOT STARTED | Needs API first |
+| API implementation | PARTIAL | Lightweight catalog API exists; full TypeSpec vertical still needed |
+| Web admin | PARTIAL | Simulation launcher exists; content/admin screens still needed |
 | Quest app | NOT STARTED | Unity team parallel track |
-| Evaluation engine | NOT STARTED | Needs T-008 |
+| Evaluation engine | READY | Scoring/sync utilities and tests exist |
+| Simulation catalog | READY FOR NORMALIZATION | CSV exists; typed package and CI gate needed |
 
-**Phase 0 is complete. Phase 1 is ready to start.**
+**Phase 0 is complete. Phase 0A toolchain/catalog preflight is now active. Phase 1 should start with typed catalog normalization, then resume the API vertical slice.**
 
 ## Recommended First Implementation
 
-Start with T-001 (Fastify scaffold) → T-002 (Prisma schema) → T-003 (LearningConcept routes) → T-004 (CurriculumMap routes).
-
-This gives you a running API with the curriculum foundation in approximately 4–5 days.
+Start with toolchain preflight → typed catalog/schema package → normalize existing `pollination` and `circuit` metadata → catalog validation CLI → shared WebXR runtime shell. Resume LearningConcept and CurriculumMap API routes after the simulation catalog has one canonical source of truth.

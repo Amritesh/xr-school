@@ -26,20 +26,50 @@ LearningConcept → CurriculumMap → CueCard → RevisionCard → AssessmentHoo
 
 ---
 
+## Phase 0A: Toolchain and Catalog Preflight
+
+**Goal:** Make the active repo state and the Class 5-10 science catalog safe for implementation.
+
+**Duration estimate:** 2-3 days
+
+### Step 1: Toolchain preflight
+- Add `scripts/dev-env-check.mjs`
+- Add `npm run env:check`
+- Ensure Node 22+ is active before TypeSpec/Vitest checks
+- Verify required catalog/spec files exist
+
+**Verify:** `node scripts/dev-env-check.mjs` exits 0 under Node 23.
+
+### Step 2: Typed catalog source
+- Create `packages/simulation-schema`
+- Create `packages/simulation-content`
+- Convert `docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv` into typed content data
+- Add catalog validation tests
+
+**Verify:** Catalog tests confirm 497 rows, unique slugs, valid enums, and max duration <= 12.
+
+### Step 3: Existing demo normalization
+- Move `pollination` and `circuit` metadata into shared content
+- Fix invalid `class8To10`
+- Make API, web catalog, and tests import shared records
+
+**Verify:** Existing simulation validation passes and no duplicate fixture data remains.
+
+---
+
 ## Phase 1: API Core
 
 **Goal:** A simulation module can be created, linked to curriculum, and returned via API.
 
 **Duration estimate:** 2–3 weeks
 
-### Step 1: Project scaffolding
-- Initialize `apps/api/` as Fastify TypeScript project
-- Initialize `packages/shared/` with TypeScript
-- Initialize `packages/evaluation-engine/` with TypeScript + Vitest
-- Set up Prisma with SQLite (dev) → PostgreSQL (prod)
-- Generate TypeScript types from OpenAPI spec
+### Step 1: API normalization
+- Split current `apps/api/src/index.ts` into route modules
+- Keep `/health` and current simulation list/get behavior working
+- Import simulation records from `packages/simulation-content`
+- Decide whether this phase uses in-memory repositories or Prisma/SQLite
 
-**Verify:** `npm run build` succeeds for `apps/api/`
+**Verify:** API tests pass and `GET /v1/simulation-modules` returns normalized shared records.
 
 ### Step 2: Curriculum endpoints
 - `POST /v1/learning-concepts`

@@ -61,6 +61,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate science catalog
+        run: npm run catalog:validate
+
+      - name: Generate web catalog
+        run: npm run web-catalog:generate
+
       - name: Run tests
         run: npm test
 
@@ -169,6 +175,12 @@ jobs:
 
       - name: Validate simulations
         run: node scripts/validate-simulations.mjs
+
+      - name: Validate science catalog
+        run: node scripts/validate-simulation-catalog.mjs
+
+      - name: Generate web catalog
+        run: node scripts/generate-web-catalog.mjs
 
       - name: Build web
         run: npm run build
