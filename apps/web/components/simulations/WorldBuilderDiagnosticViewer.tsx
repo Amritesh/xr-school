@@ -6,15 +6,21 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import {
   createAssessmentSession,
+  type AssessmentAnswerResult,
+  type AssessmentSession,
+} from '../../../../packages/simulation-runtime/src/world/assessment';
+import {
   createRapierWorld,
+} from '../../../../packages/simulation-runtime/src/physics/rapierWorld';
+import {
   createResourceRegistry,
+} from '../../../../packages/simulation-runtime/src/world/resourceRegistry';
+import {
   createScientificModelRegistry,
+} from '../../../../packages/simulation-runtime/src/world/scientificModels';
+import {
   createWorldRuntime,
-} from '../../../../packages/simulation-runtime/src/index';
-import type {
-  AssessmentAnswerResult,
-  AssessmentSession,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '../../../../packages/simulation-runtime/src/world/runtime';
 import { detectDeviceProfile } from '@/lib/world-builder/deviceProfile';
 import {
   evaluatePresentationBudget,

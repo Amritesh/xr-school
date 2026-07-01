@@ -1,7 +1,7 @@
 import {
   chooseQualityProfile,
   type DeviceQualityCapabilities,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '../../../../packages/simulation-runtime/src/world/quality';
 
 interface RendererCapabilities {
   capabilities: {

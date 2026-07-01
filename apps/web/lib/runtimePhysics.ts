@@ -1,7 +1,7 @@
 export {
   createParticleCloud,
   createPhysicsWorld,
-} from '../../../packages/simulation-runtime/src/index';
+} from '../../../packages/simulation-runtime/src/core/physics';
 
 export type {
   ParticleCloudConfig,
@@ -9,4 +9,4 @@ export type {
   PhysicsBounds as RuntimePhysicsBounds,
   PhysicsWorld as RuntimePhysicsWorld,
   Vector3 as RuntimeVector3,
-} from '../../../packages/simulation-runtime/src/index';
+} from '../../../packages/simulation-runtime/src/core/physics';

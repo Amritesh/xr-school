@@ -4,12 +4,16 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
   createAssessmentSession,
-  createPollinationModel,
-  createScientificModelRegistry,
-  pollinationSnapshotForStage,
   type AssessmentAnswerResult,
+} from '../../../../packages/simulation-runtime/src/world/assessment';
+import {
+  createScientificModelRegistry,
+} from '../../../../packages/simulation-runtime/src/world/scientificModels';
+import {
+  createPollinationModel,
+  pollinationSnapshotForStage,
   type PollinationEvent,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '../../../../packages/simulation-runtime/src/models/pollinationModel';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import {
   isQuestBackPressed,

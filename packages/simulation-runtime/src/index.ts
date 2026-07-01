@@ -83,3 +83,8 @@ export type {
   PollinationModel,
   PollinationSnapshot,
 } from './models/pollinationModel';
+export { evaluateCircuit } from './models/circuitModel';
+export type {
+  CircuitInput,
+  CircuitOutput,
+} from './models/circuitModel';

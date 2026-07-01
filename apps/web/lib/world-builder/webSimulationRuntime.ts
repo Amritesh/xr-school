@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 import {
   createResourceRegistry,
+  type ResourceRegistry,
+} from '../../../../packages/simulation-runtime/src/world/resourceRegistry';
+import {
   createWorldRuntime,
   type FixedUpdateContext,
   type RenderUpdateContext,
-  type ResourceRegistry,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '../../../../packages/simulation-runtime/src/world/runtime';
 import type {
   QualityProfileId,
 } from '../../../../packages/simulation-schema/src/index';
