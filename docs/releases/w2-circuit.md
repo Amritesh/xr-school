@@ -1,6 +1,6 @@
 # W2 Circuit Reference World Release
 
-**Release status:** Production candidate
+**Release status:** Deployed internal QA reference world
 
 **Release maturity:** `internalQA`
 
@@ -43,10 +43,27 @@ on contacts, forces, or gravity.
 | Browser remount | PASS — one canvas after reload |
 | Browser console | PASS — no warnings or errors |
 
-## Production acceptance — PENDING
+## Production acceptance
 
-Production deployment and smoke evidence will be recorded after this exact
-candidate passes the protected Quality and Deploy workflows.
+- GitHub Quality:
+  [run 28544670766](https://github.com/Amritesh/xr-school/actions/runs/28544670766)
+- GitHub Deploy:
+  [run 28544670796](https://github.com/Amritesh/xr-school/actions/runs/28544670796)
+- Deployed immutable URL:
+  <https://xr-school-dfbnvrj7w-amritesh-anands-projects.vercel.app>
+- Production alias: <https://xr-school.vercel.app>
+- Release candidate: `dd0eea0a5e93e0b1d678ddb0eeef1249727095b1`
+- Protected Quality and Deploy workflows: PASS
+- Open-circuit state and 0.000 A reading: PASS
+- Closed 10 Ω state and 0.900 A reading: PASS
+- Closed 200 Ω state and 0.045 A reading: PASS
+- Stages 1–4: PASS
+- Observation, misconception, transfer, and mastery: PASS
+- Browser canvas ownership: PASS — exactly one canvas
+- Browser console: PASS — no warnings or errors
+
+Production acceptance covers the browser/WebXR delivery surface. It does not
+replace the direct Quest checks below.
 
 ## Direct Quest acceptance — UNSIGNED
 
