@@ -24,9 +24,8 @@ describe('web build workflows', () => {
     expect(workflow).toMatch(/- name: Install (?:web )?dependencies\n\s+run: npm ci\n(?!\s+working-directory: apps\/web)/);
   });
 
-  it('deploy invokes typecheck and build through the web workspace', () => {
-    expect(deployWorkflow).toContain('run: npm --workspace apps/web run type-check');
-    expect(deployWorkflow).toContain('run: npm --workspace apps/web run build');
+  it('deploy runs the root strict verification gate', () => {
+    expect(deployWorkflow).toContain('run: npm run verify');
   });
 
   it('uploads the prebuilt Vercel artifact as one compressed archive', () => {
@@ -35,8 +34,8 @@ describe('web build workflows', () => {
     );
   });
 
-  it('quality invokes the production build through the web workspace', () => {
-    expect(qualityWorkflow).toContain('run: npm --workspace apps/web run build');
+  it('quality runs the root strict verification gate', () => {
+    expect(qualityWorkflow).toContain('run: npm run verify');
   });
 
   it('exposes a root build script for the Vercel monorepo project', () => {
@@ -49,5 +48,25 @@ describe('web build workflows', () => {
       buildCommand: 'npm run build',
       outputDirectory: 'apps/web/.next',
     });
+  });
+
+  it('makes typecheck, build, and generated freshness strict release gates', () => {
+    expect(rootPackage.scripts?.verify).toContain(
+      'npm --workspace apps/web run type-check',
+    );
+    expect(rootPackage.scripts?.verify).toContain(
+      'npm --workspace apps/web run build',
+    );
+    expect(qualityWorkflow).toContain('run: npm run verify');
+    expect(qualityWorkflow).toContain('git diff --exit-code --');
+    expect(qualityWorkflow).not.toContain('continue-on-error: true');
+    expect(deployWorkflow).toContain('needs: verify');
+  });
+
+  it('keeps pull-request drift checking dependency-free', () => {
+    const driftJob = qualityWorkflow.split('drift-check:')[1];
+    expect(driftJob).toBeDefined();
+    expect(driftJob).not.toContain('npm ci');
+    expect(driftJob).toContain('npm run spec:drift');
   });
 });

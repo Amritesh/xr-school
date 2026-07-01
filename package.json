@@ -11,6 +11,7 @@
     "catalog:validate": "node scripts/validate-simulation-catalog.mjs",
     "web-catalog:generate": "node scripts/generate-web-catalog.mjs",
     "quality": "npm run env:check && npm run contract:compile && npm run catalog:validate && npm run web-catalog:generate && npm run test",
+    "verify": "npm run env:check && npm run contract:compile && npm run catalog:validate && npm run web-catalog:generate && npm run test && npm --workspace apps/web run type-check && npm --workspace apps/web run build",
     "test": "vitest run",
     "spec:drift": "node scripts/spec-drift-check.mjs",
     "lint": "eslint . --ext .ts,.tsx",
