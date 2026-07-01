@@ -1,12 +1,12 @@
 # W0 World Builder Foundation Release
 
-**Release status:** Internal QA candidate
+**Release status:** Deployed internal QA foundation
 
-**Release maturity:** `internalQA` only after deployment verification
+**Release maturity:** `internalQA`
 
-**Foundation commit:** Pending final W0 release commit
+**Foundation commit:** `d40bfb6ffb805a2a7a979e851175482b1593b3a8`
 
-**Production URL:** Pending deployment
+**Production URL:** <https://xr-school.vercel.app>
 
 ## Scope
 
@@ -43,8 +43,21 @@ Evidence captured before the final release commit:
 | Diagnostic browser flow | PASS — observation, misconception, transfer, mastery, replay |
 | Browser console | PASS — no warnings or errors |
 
-The final `npm run verify`, generated-source diff, and production smoke results
-must be recorded against the release commit after integration.
+Final release evidence:
+
+- Local `npm run verify`: PASS
+- Generated-source diff: PASS
+- GitHub Quality:
+  [run 28542046710](https://github.com/Amritesh/xr-school/actions/runs/28542046710)
+- GitHub Deploy:
+  [run 28542047529](https://github.com/Amritesh/xr-school/actions/runs/28542047529)
+- Deployed immutable URL:
+  <https://xr-school-7972j2zui-amritesh-anands-projects.vercel.app>
+- `origin/main` matched the foundation commit at acceptance time.
+- Production smoke: `/`, `/simulations`, all six released demos, and the
+  diagnostic route loaded without console warnings or errors.
+- Production diagnostic: observation, misconception, transfer, mastery, and
+  Rapier-backed world startup passed.
 
 ## Diagnostic acceptance
 
