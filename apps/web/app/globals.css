@@ -781,6 +781,40 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .release-policy { gap: 2.5rem; margin-top: 3rem; padding-block: 4rem; }
 }
 
+@media (max-width: 720px) {
+  .digestive-hud-header {
+    align-items: stretch !important;
+    flex-direction: column;
+    gap: 8px !important;
+  }
+
+  .digestive-hud-header > div:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .digestive-utility-controls {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .digestive-utility-controls button {
+    min-width: 0;
+    padding: 8px 5px !important;
+    font-size: 0.75rem;
+  }
+
+  .digestive-stage-panel {
+    top: 136px !important;
+    max-height: calc(100vh - 152px);
+  }
+
+  .digestive-stage-nav {
+    display: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

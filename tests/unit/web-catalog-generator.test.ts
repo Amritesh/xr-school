@@ -36,6 +36,20 @@ describe('web catalog generator', () => {
     });
   });
 
+  it('keeps the promoted digestive activity aligned with the ten-minute lesson', () => {
+    const row = rows.find(
+      item => item.slug === 'c5-ch03-a02-introduction-of-digestive-system',
+    );
+
+    expect(row).toMatchObject({
+      title: 'Introduction to the Digestive System',
+      expectedDurationMinutes: 10,
+      primaryArchetype: 'modelInspection',
+      secondaryArchetypes: ['processTimeline'],
+      simulationFormat: 'immersiveVr',
+    });
+  });
+
   it('renders a TypeScript source module with readonly catalog data', () => {
     const source = renderWebCatalogSource(rows.slice(0, 2));
 
@@ -60,5 +74,15 @@ describe('web catalog generator', () => {
       releaseMaturity: 'internalQA',
       href: '/simulations/pollination',
     });
+    expect(documents.filter(
+      document => document.id === 'simulation:c5-ch03-a02-introduction-of-digestive-system',
+    )).toEqual([
+      expect.objectContaining({
+        kind: 'simulation',
+        releaseMaturity: 'internalQA',
+        href: '/simulations/c5-ch03-a02-introduction-of-digestive-system',
+        classLevels: [5],
+      }),
+    ]);
   });
 });

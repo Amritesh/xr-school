@@ -18,7 +18,7 @@ describe('simulation availability routing', () => {
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
 
     expect(sections.catalogued).toHaveLength(
-      SCIENCE_SIMULATION_CATALOG.length - 3,
+      SCIENCE_SIMULATION_CATALOG.length - 4,
     );
     expect(sections.catalogued.every(item => item.releaseMaturity === 'catalogued')).toBe(true);
     expect(sections.catalogued.every(item => item.href === undefined)).toBe(true);

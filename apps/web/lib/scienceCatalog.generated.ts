@@ -128,16 +128,18 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "chapter": 3,
     "topic": "From Tasting to Digesting",
     "activityNumber": 2,
-    "title": "Introduction of Digestive system",
+    "title": "Introduction to the Digestive System",
     "subject": "environmentalScience",
     "primaryArchetype": "modelInspection",
-    "secondaryArchetypes": [],
-    "simulationFormat": "interactive3d",
+    "secondaryArchetypes": [
+      "processTimeline"
+    ],
+    "simulationFormat": "immersiveVr",
     "xrFitType": "strongVrFit",
     "comfortRiskLevel": "low",
-    "expectedDurationMinutes": 8,
+    "expectedDurationMinutes": 10,
     "reuseGroup": "environmentalScience:from-tasting-to-digesting",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "implementationNotes": "Use a stationary ten-stage body journey with organ inspection, visible food movement, absorption tasks, healthy-habit sorting, subtitles, and recap assessment.",
     "releaseMaturity": "catalogued"
   },
   {

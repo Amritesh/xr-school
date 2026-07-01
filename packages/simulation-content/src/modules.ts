@@ -60,6 +60,18 @@ Compare soluble and insoluble substances and separate dissolving from melting, f
 REVISION TRIGGER
 One week later, show a new material and ask students to predict solubility, state the evidence they would look for, and describe a fair test.`;
 
+const digestiveSystemScript = `SETUP
+Ask students where a bite of food goes after they swallow it. Non-headset students draw a simple body outline and predict the order of the organs.
+
+DURING HEADSET BATCH
+Guide students through the ten stages from the mouth to waste removal. Pause at each interaction so students connect the visible action—chewing, muscle waves, churning, absorption, and water recovery—to the organ's function.
+
+DEBRIEF
+Ask students to sequence Mouth, Esophagus, Stomach, Small Intestine, Large Intestine, Rectum, and Anus. Review how the liver, gallbladder, and pancreas support the pathway without food passing through them.
+
+REVISION TRIGGER
+One week later, show an unlabeled digestive-system pathway and ask students to label the organs, name where nutrients and water are absorbed, and explain one healthy digestion habit.`;
+
 export const POLLINATION_MODULE: SimulationModuleRecord = {
   id: 'sim-pollination-001',
   slug: 'pollination',
@@ -254,10 +266,73 @@ export const SOLUBLE_INSOLUBLE_MODULE: SimulationModuleRecord = {
   status: 'released',
 };
 
+export const DIGESTIVE_SYSTEM_MODULE: SimulationModuleRecord = {
+  id: 'sim-c05-ch03-a02-introduction-of-digestive-system',
+  slug: 'c5-ch03-a02-introduction-of-digestive-system',
+  title: 'Introduction to the Digestive System',
+  summary: 'Travel with food from the mouth through the digestive tract, activate each organ, absorb nutrients and water, and finish with a healthy-habits challenge.',
+  gradeBands: ['class3To5'],
+  subjects: ['environmentalScience', 'biology'],
+  applicableBoards: ['cbse', 'icse'],
+  curriculumMapIds: ['cm-cbse-c5-ch03-digestive-system'],
+  conceptIds: [
+    'concept-digestive-system',
+    'concept-food-journey',
+    'concept-nutrient-absorption',
+    'concept-digestive-health',
+  ],
+  simulationFormat: 'immersiveVr',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'Digestion happens inside the body and cannot be observed directly. A stationary VR cutaway makes the hidden pathway, organ relationships, muscle waves, churning, and absorption spatially visible.',
+  learningObjective: 'Students will identify the main digestive organs, sequence the journey of food, explain each organ function, and choose habits that support healthy digestion.',
+  scientificConceptExplanation: 'Digestion begins in the mouth, continues through the esophagus and stomach, and is completed in the small intestine where nutrients enter the blood. The large intestine absorbs water before waste is stored in the rectum and removed through the anus.',
+  misconceptionsAddressed: [
+    'Digestion begins in the stomach.',
+    'Food passes through the liver and pancreas.',
+    'The large intestine absorbs most nutrients.',
+    'The gallbladder produces bile.',
+  ],
+  visualizationStrategy: 'Use a child-friendly translucent torso with a glowing food pathway, animated peristalsis and churning, enlarged villi, nutrient particles, water droplets, and clearly separated supporting organs.',
+  interactionStrategy: 'Students place food in the mouth, trigger esophagus waves, turn a stomach mixer, inspect helper organs, transfer nutrients and water, sort healthy habits, and answer a five-question recap.',
+  imaginationHelperStrategy: 'Hidden muscle movement, digestive juices, nutrients, and absorbed water are enlarged and color-coded so students can connect invisible processes to each organ.',
+  practicalUseCase: 'Connects body-system knowledge to chewing, hydration, varied foods, exercise, hand washing, and everyday digestive health.',
+  cueCardIds: [
+    'cue-digestion-mouth-001',
+    'cue-digestion-peristalsis-002',
+    'cue-digestion-stomach-003',
+    'cue-digestion-absorption-004',
+    'cue-digestion-health-005',
+  ],
+  revisionCardIds: ['rev-digestive-pathway-001'],
+  assessmentHookIds: [
+    'assess-digestive-pre-001',
+    'assess-digestive-post-001',
+    'assess-digestive-misconception-001',
+  ],
+  instructorScript: digestiveSystemScript,
+  batchActivityPrompt: 'Draw the food pathway in order, add the three supporting organs beside it, and explain where nutrients and water enter the body.',
+  expectedDurationMinutes: 10,
+  maxSessionDurationMinutes: 12,
+  comfortRiskLevel: 'low',
+  safetyNotes: [
+    'Use stationary or seated play with no forced camera movement.',
+    'Use a simple non-graphic cutaway for waste storage and removal.',
+  ],
+  offlineContentPackId: 'pack-evs-digestive-system-class5-v1',
+  estimatedPackageSizeMb: 180,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 10,
+  status: 'released',
+};
+
 export const SIMULATION_MODULES = [
   POLLINATION_MODULE,
   CIRCUIT_MODULE,
   STATES_OF_MATTER_MODULE,
   SOURCES_OF_FOOD_MODULE,
   SOLUBLE_INSOLUBLE_MODULE,
+  DIGESTIVE_SYSTEM_MODULE,
 ] as const;

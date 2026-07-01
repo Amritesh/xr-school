@@ -31,8 +31,11 @@ describe('curriculum search', () => {
       releaseMaturity: 'internalQA',
     });
 
-    expect(results).toHaveLength(1);
-    expect(results[0].href).toBe('/simulations/c5-ch07-a03-soluble-and-insoluble-substances');
+    expect(results.map(result => result.href)).toEqual(expect.arrayContaining([
+      '/simulations/c5-ch03-a02-introduction-of-digestive-system',
+      '/simulations/c5-ch07-a03-soluble-and-insoluble-substances',
+    ]));
+    expect(results).toHaveLength(2);
   });
 
   it('keeps catalogued candidates searchable without launch URLs', () => {

@@ -18,6 +18,8 @@ describe('showcase catalog', () => {
     expect(source).toContain('Subject');
     expect(source).toContain('Release maturity');
     expect(source).toContain('searchCurriculum');
+    expect(source).toContain('{launchableCards.length} Internal QA builds');
+    expect(source).toContain('canonicalConceptCount');
   });
 
   it('uses a professional product entry page and responsive visual system', () => {
@@ -42,5 +44,6 @@ describe('showcase catalog', () => {
     expect(story).toContain('export const Mobile');
     expect(story).toContain('export const SearchInteraction');
     expect(story).toContain('a11y');
+    expect(story).toContain('mock-digestive-system');
   });
 });

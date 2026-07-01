@@ -6,7 +6,7 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     "id": "course:course-cbse-c5-environmental-science",
     "kind": "course",
     "title": "CBSE Class 5 Environmental Studies",
-    "summary": "Observation-led environmental science grounded in everyday materials and water.",
+    "summary": "Observation-led environmental science connecting the human body, health, everyday materials, and water.",
     "href": "/simulations#course-cbse-c5-environmental-science",
     "classLevels": [
       5
@@ -15,6 +15,10 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "environmentalScience"
     ],
     "conceptIds": [
+      "concept-digestive-system",
+      "concept-food-journey",
+      "concept-nutrient-absorption",
+      "concept-digestive-health",
       "concept-solubility",
       "concept-solution",
       "concept-mixture-observation"
@@ -28,13 +32,18 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "observation",
       "led",
       "science",
-      "grounded",
-      "in",
+      "connecting",
+      "the",
+      "human",
+      "body",
+      "health",
       "everyday",
       "materials",
       "and",
       "water",
       "evs",
+      "digestive",
+      "system",
       "experiments"
     ]
   },
@@ -179,6 +188,42 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "resistance",
       "ohms",
       "law"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-from-tasting-to-digesting",
+    "kind": "chapter",
+    "title": "From Tasting to Digesting",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 3",
+    "href": "/simulations#chapter-cbse-c5-from-tasting-to-digesting",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-digestive-system",
+      "concept-food-journey",
+      "concept-nutrient-absorption",
+      "concept-digestive-health"
+    ],
+    "tokens": [
+      "from",
+      "tasting",
+      "to",
+      "digesting",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "3",
+      "topic",
+      "human",
+      "digestive",
+      "system"
     ]
   },
   {
@@ -1091,6 +1136,192 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "concept:concept-digestive-system",
+    "kind": "concept",
+    "title": "Human digestive system",
+    "summary": "The connected organs that break food down, absorb useful material, and remove solid waste.",
+    "href": "/simulations#concept-digestive-system",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-digestive-system"
+    ],
+    "tokens": [
+      "human",
+      "digestive",
+      "system",
+      "the",
+      "connected",
+      "organs",
+      "that",
+      "break",
+      "food",
+      "down",
+      "absorb",
+      "useful",
+      "material",
+      "and",
+      "remove",
+      "solid",
+      "waste",
+      "builds",
+      "body",
+      "awareness",
+      "explains",
+      "how",
+      "supports",
+      "growth",
+      "activity",
+      "digestion",
+      "mouth",
+      "esophagus",
+      "stomach",
+      "intestine"
+    ]
+  },
+  {
+    "id": "concept:concept-food-journey",
+    "kind": "concept",
+    "title": "Journey of food",
+    "summary": "The ordered movement of food through the mouth, esophagus, stomach, intestines, rectum, and anus.",
+    "href": "/simulations#concept-food-journey",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-food-journey"
+    ],
+    "tokens": [
+      "journey",
+      "of",
+      "food",
+      "the",
+      "ordered",
+      "movement",
+      "through",
+      "mouth",
+      "esophagus",
+      "stomach",
+      "intestines",
+      "rectum",
+      "and",
+      "anus",
+      "helps",
+      "students",
+      "connect",
+      "eating",
+      "swallowing",
+      "digestion",
+      "waste",
+      "removal",
+      "digestive",
+      "pathway",
+      "alimentary",
+      "canal",
+      "pipe",
+      "peristalsis",
+      "chyme"
+    ]
+  },
+  {
+    "id": "concept:concept-nutrient-absorption",
+    "kind": "concept",
+    "title": "Nutrient and water absorption",
+    "summary": "Movement of digested nutrients into blood through the small intestine and recovery of water in the large intestine.",
+    "href": "/simulations#concept-nutrient-absorption",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-nutrient-absorption"
+    ],
+    "tokens": [
+      "nutrient",
+      "and",
+      "water",
+      "absorption",
+      "movement",
+      "of",
+      "digested",
+      "nutrients",
+      "into",
+      "blood",
+      "through",
+      "the",
+      "small",
+      "intestine",
+      "recovery",
+      "in",
+      "large",
+      "explains",
+      "how",
+      "food",
+      "become",
+      "useful",
+      "to",
+      "whole",
+      "body",
+      "villi",
+      "intestines"
+    ]
+  },
+  {
+    "id": "concept:concept-digestive-health",
+    "kind": "concept",
+    "title": "Healthy digestion habits",
+    "summary": "Everyday choices that support digestion, including varied foods, water, chewing, hygiene, and movement.",
+    "href": "/simulations#concept-digestive-health",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-digestive-health"
+    ],
+    "tokens": [
+      "healthy",
+      "digestion",
+      "habits",
+      "everyday",
+      "choices",
+      "that",
+      "support",
+      "including",
+      "varied",
+      "foods",
+      "water",
+      "chewing",
+      "hygiene",
+      "and",
+      "movement",
+      "supports",
+      "informed",
+      "about",
+      "meals",
+      "hydration",
+      "exercise",
+      "hand",
+      "washing",
+      "digestive",
+      "health",
+      "eating",
+      "fruit",
+      "vegetables"
+    ]
+  },
+  {
     "id": "simulation:pollination",
     "kind": "simulation",
     "title": "Plant Pollination & Growth Cycle",
@@ -1471,6 +1702,94 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "simulation:c5-ch03-a02-introduction-of-digestive-system",
+    "kind": "simulation",
+    "title": "Introduction to the Digestive System",
+    "summary": "Travel with food from the mouth through the digestive tract, activate each organ, absorb nutrients and water, and finish with a healthy-habits challenge.",
+    "href": "/simulations/c5-ch03-a02-introduction-of-digestive-system",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience",
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-digestive-system",
+      "concept-food-journey",
+      "concept-nutrient-absorption",
+      "concept-digestive-health"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "introduction",
+      "to",
+      "the",
+      "digestive",
+      "system",
+      "travel",
+      "with",
+      "food",
+      "from",
+      "mouth",
+      "through",
+      "tract",
+      "activate",
+      "each",
+      "organ",
+      "absorb",
+      "nutrients",
+      "and",
+      "water",
+      "finish",
+      "a",
+      "healthy",
+      "habits",
+      "challenge",
+      "students",
+      "will",
+      "identify",
+      "main",
+      "organs",
+      "sequence",
+      "journey",
+      "of",
+      "explain",
+      "function",
+      "choose",
+      "that",
+      "support",
+      "digestion",
+      "environmentalscience",
+      "biology",
+      "human",
+      "esophagus",
+      "stomach",
+      "intestine",
+      "pathway",
+      "alimentary",
+      "canal",
+      "pipe",
+      "peristalsis",
+      "chyme",
+      "waste",
+      "nutrient",
+      "absorption",
+      "villi",
+      "in",
+      "intestines",
+      "small",
+      "large",
+      "blood",
+      "health",
+      "eating",
+      "fruit",
+      "vegetables",
+      "chewing",
+      "exercise"
+    ]
+  },
+  {
     "id": "simulation:c5-ch01-a01-supersense-of-smell",
     "kind": "simulation",
     "title": "Supersense of smell",
@@ -1676,45 +1995,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "sense",
       "of",
       "taste",
-      "from",
-      "tasting",
-      "to",
-      "digesting",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch03-a02-introduction-of-digestive-system",
-    "kind": "simulation",
-    "title": "Introduction of Digestive system",
-    "summary": "From Tasting to Digesting · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch03-a02-introduction-of-digestive-system",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "introduction",
-      "of",
-      "digestive",
-      "system",
       "from",
       "tasting",
       "to",

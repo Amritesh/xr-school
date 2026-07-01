@@ -6,6 +6,7 @@ export const IMPLEMENTED_SIMULATION_SLUGS = [
   'c9-ch01-a02-states-of-matter',
   'c6-ch01-a01-sources-of-food',
   'c5-ch07-a03-soluble-and-insoluble-substances',
+  'c5-ch03-a02-introduction-of-digestive-system',
 ] as const;
 
 type ImplementedSlug = (typeof IMPLEMENTED_SIMULATION_SLUGS)[number];
@@ -73,6 +74,16 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     topic: 'Experiments with Water',
     archetype: 'experimentBench',
     minutes: 8,
+  },
+  'c5-ch03-a02-introduction-of-digestive-system': {
+    slug: 'c5-ch03-a02-introduction-of-digestive-system',
+    color: '#fb7185',
+    subject: 'environmentalScience, biology',
+    grade: 'Class 5',
+    title: 'Introduction to the Digestive System',
+    topic: 'From Tasting to Digesting',
+    archetype: 'immersive VR',
+    minutes: 10,
   },
 };
 

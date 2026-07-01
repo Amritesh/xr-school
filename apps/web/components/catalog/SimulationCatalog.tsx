@@ -73,6 +73,7 @@ export default function SimulationCatalog({
 
   const courseDocuments = documents.filter(document => document.kind === 'course');
   const chapterDocuments = documents.filter(document => document.kind === 'chapter');
+  const canonicalConceptCount = documents.filter(document => document.kind === 'concept').length;
 
   const resetFilters = () => {
     setQuery('');
@@ -105,7 +106,7 @@ export default function SimulationCatalog({
         </Link>
         <div className="header-status">
           <span className="status-dot" />
-          5 Internal QA builds
+          {launchableCards.length} Internal QA builds
         </div>
       </header>
 
@@ -120,8 +121,8 @@ export default function SimulationCatalog({
         </div>
         <div className="catalog-metrics" aria-label="Catalog summary">
           <Metric value={String(launchableCards.length + cataloguedCards.length)} label="unique simulation opportunities" />
-          <Metric value="18" label="canonical learning concepts" />
-          <Metric value="5" label="headset-testable builds" />
+          <Metric value={String(canonicalConceptCount)} label="canonical learning concepts" />
+          <Metric value={String(launchableCards.length)} label="headset-testable builds" />
         </div>
       </section>
 

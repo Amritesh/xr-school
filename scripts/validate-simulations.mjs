@@ -63,6 +63,7 @@ const viewerNameMap = {
   'c9-ch01-a02-states-of-matter': 'StatesOfMatterViewer',
   'c6-ch01-a01-sources-of-food': 'FoodSourcesSortingViewer',
   'c5-ch07-a03-soluble-and-insoluble-substances': 'SolubilityLabViewer',
+  'c5-ch03-a02-introduction-of-digestive-system': 'DigestiveSystemViewer',
 };
 
 for (const slug of slugs) {

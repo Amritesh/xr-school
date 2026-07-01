@@ -2,7 +2,10 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { SCIENCE_SIMULATION_CATALOG } from '../../apps/web/lib/scienceCatalog.generated';
-import { getSimulationCatalogSections } from '../../apps/web/lib/simulationAvailability';
+import {
+  IMPLEMENTED_SIMULATION_SLUGS,
+  getSimulationCatalogSections,
+} from '../../apps/web/lib/simulationAvailability';
 
 const routePath = resolve(process.cwd(), 'apps/web/app/simulations/[slug]/page.tsx');
 const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/GenericCatalogSimulationViewer.tsx');
@@ -19,7 +22,7 @@ describe('catalog runtime simulations', () => {
 
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
     expect(SCIENCE_SIMULATION_CATALOG).toHaveLength(497);
-    expect(sections.launchable).toHaveLength(5);
+    expect(sections.launchable).toHaveLength(IMPLEMENTED_SIMULATION_SLUGS.length);
     expect(sections.catalogued.find(item => item.slug === 'c5-ch01-a01-supersense-of-smell')?.href).toBeUndefined();
   });
 

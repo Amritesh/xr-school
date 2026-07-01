@@ -26,20 +26,46 @@ const MOCK_DOCUMENTS: CurriculumSearchDocument[] = [
     releaseMaturity: 'internalQA',
     tokens: ['pollination', 'pollen', 'flower'],
   },
+  {
+    id: 'simulation:mock-digestive-system',
+    kind: 'simulation',
+    title: 'Introduction to the Digestive System',
+    summary: 'A ten-stage Class 5 body journey used to document multiple launchable cards.',
+    href: '#mock-digestive-system',
+    classLevels: [5],
+    subjects: ['environmentalScience', 'biology'],
+    conceptIds: ['concept-mock-digestion'],
+    releaseMaturity: 'internalQA',
+    tokens: ['digestion', 'stomach', 'intestine'],
+  },
 ];
 
-const MOCK_LAUNCHABLE: CatalogCard[] = [{
-  slug: 'mock-pollination',
-  title: 'Pollination Learning Journey',
-  topic: 'Reproduction in Plants',
-  subject: 'biology',
-  grade: 'Class 7',
-  archetype: 'immersiveVr',
-  minutes: 9,
-  color: '#93dc9e',
-  releaseMaturity: 'internalQA',
-  href: '#mock-simulation',
-}];
+const MOCK_LAUNCHABLE: CatalogCard[] = [
+  {
+    slug: 'mock-pollination',
+    title: 'Pollination Learning Journey',
+    topic: 'Reproduction in Plants',
+    subject: 'biology',
+    grade: 'Class 7',
+    archetype: 'immersiveVr',
+    minutes: 9,
+    color: '#93dc9e',
+    releaseMaturity: 'internalQA',
+    href: '#mock-simulation',
+  },
+  {
+    slug: 'mock-digestive-system',
+    title: 'Introduction to the Digestive System',
+    topic: 'From Tasting to Digesting',
+    subject: 'environmentalScience, biology',
+    grade: 'Class 5',
+    archetype: 'immersiveVr',
+    minutes: 10,
+    color: '#fb7185',
+    releaseMaturity: 'internalQA',
+    href: '#mock-digestive-system',
+  },
+];
 
 const meta = {
   title: 'Catalog/SimulationCatalog',

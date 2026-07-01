@@ -155,4 +155,17 @@ describe('Simulation module contracts', () => {
     expect(module?.simulationFormat).toBe('practicalLabSimulation');
     expect(module?.stages).toBe(4);
   });
+
+  it('includes the Class 5 digestive system journey as a ten-stage WebXR lesson', () => {
+    const module = SIMULATIONS.find(
+      s => s.slug === 'c5-ch03-a02-introduction-of-digestive-system',
+    );
+
+    expect(module?.title).toBe('Introduction to the Digestive System');
+    expect(module?.curriculumMapIds).toContain('cm-cbse-c5-ch03-digestive-system');
+    expect(module?.conceptIds).toContain('concept-digestive-system');
+    expect(module?.simulationFormat).toBe('immersiveVr');
+    expect(module?.expectedDurationMinutes).toBe(10);
+    expect(module?.stages).toBe(10);
+  });
 });
