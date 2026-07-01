@@ -1,3 +1,10 @@
+import {
+  BROWSER_BALANCED_PROFILE,
+  BROWSER_ENHANCED_PROFILE,
+  QUEST_BASELINE_PROFILE,
+  type QualityProfileId,
+} from '../../../../packages/simulation-schema/src/world';
+
 export interface PresentationMetrics {
   fps: number;
   drawCalls: number;
@@ -8,6 +15,18 @@ export interface PresentationBudget {
   minSteadyFps: number;
   maxDrawCalls: number;
   maxVisibleTriangles: number;
+}
+
+const PRESENTATION_BUDGETS: Record<QualityProfileId, PresentationBudget> = {
+  questBaseline: QUEST_BASELINE_PROFILE,
+  browserBalanced: BROWSER_BALANCED_PROFILE,
+  browserEnhanced: BROWSER_ENHANCED_PROFILE,
+};
+
+export function presentationBudgetForProfile(
+  profileId: QualityProfileId,
+): PresentationBudget {
+  return PRESENTATION_BUDGETS[profileId];
 }
 
 function validMetric(value: number, label: string, errors: string[]) {

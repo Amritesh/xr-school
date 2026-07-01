@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
+  createMaterialFactory,
   textureColorSpaceForChannel,
   validateMaterialForProfile,
 } from '../../apps/web/lib/world-builder/materialFactory';
@@ -38,5 +39,27 @@ describe('world presentation adapters', () => {
     expect(source).toContain('renderer.xr.isPresenting');
     expect(source).toContain('renderer.render(scene, camera)');
     expect(source).toContain('composer.render()');
+  });
+
+  it('does not pass absent texture maps to Three.js material constructors', async () => {
+    const warn = vi.spyOn(console, 'warn');
+    const factory = createMaterialFactory({
+      assets: { id: 'assets-test', assets: [] },
+      materials: [],
+      qualityProfileId: 'browserBalanced',
+      maxAnisotropy: 8,
+    });
+
+    await factory.create({
+      id: 'plain',
+      model: 'standard',
+      baseColor: '#77d8d4',
+      roughness: 0.4,
+      metalness: 0,
+    });
+
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+    factory.dispose();
   });
 });

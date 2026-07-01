@@ -4,6 +4,7 @@ import {
   nextLowerQualityProfile,
 } from '../../packages/simulation-runtime/src/index';
 import {
+  presentationBudgetForProfile,
   evaluatePresentationBudget,
 } from '../../apps/web/lib/world-builder/diagnostics';
 
@@ -31,5 +32,17 @@ describe('world presentation quality', () => {
       'draw calls 130 exceed 120',
       'triangles 260000 exceed 250000',
     ]);
+  });
+
+  it('uses the active browser profile instead of Quest acceptance thresholds', () => {
+    expect(presentationBudgetForProfile('browserEnhanced')).toMatchObject({
+      minSteadyFps: 60,
+      maxDrawCalls: 300,
+      maxVisibleTriangles: 750_000,
+    });
+    expect(evaluatePresentationBudget(
+      { fps: 60, drawCalls: 1, triangles: 1 },
+      presentationBudgetForProfile('browserEnhanced'),
+    )).toEqual([]);
   });
 });

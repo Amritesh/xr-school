@@ -184,22 +184,22 @@ export function createMaterialFactory(config: MaterialFactoryConfig) {
     const common: THREE.MeshStandardMaterialParameters = {
       name: definition.id,
       color: definition.baseColor,
-      map,
-      normalMap,
-      normalScale: definition.normalScale
-        ? new THREE.Vector2(...definition.normalScale)
-        : undefined,
       roughness: definition.roughness,
-      roughnessMap,
       metalness: definition.metalness,
-      metalnessMap,
-      aoMap,
       emissive: definition.emissiveColor ?? '#000000',
-      emissiveMap,
       emissiveIntensity: definition.emissiveIntensity ?? 1,
       side: definition.doubleSided ? THREE.DoubleSide : THREE.FrontSide,
       opacity: definition.opacity ?? 1,
       transparent: (definition.opacity ?? 1) < 1,
+      ...(map ? { map } : {}),
+      ...(normalMap ? { normalMap } : {}),
+      ...(definition.normalScale
+        ? { normalScale: new THREE.Vector2(...definition.normalScale) }
+        : {}),
+      ...(roughnessMap ? { roughnessMap } : {}),
+      ...(metalnessMap ? { metalnessMap } : {}),
+      ...(aoMap ? { aoMap } : {}),
+      ...(emissiveMap ? { emissiveMap } : {}),
     };
     const material = definition.model === 'physical'
       ? new THREE.MeshPhysicalMaterial({
