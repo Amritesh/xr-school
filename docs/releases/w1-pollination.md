@@ -1,6 +1,6 @@
 # W1 Pollination Reference World Release
 
-**Release status:** Production candidate
+**Release status:** Deployed internal QA reference world
 
 **Release maturity:** `internalQA`
 
@@ -41,10 +41,27 @@ Evidence captured for the release candidate:
 | Browser remount | PASS — one canvas after reload |
 | Browser console | PASS — no warnings or errors |
 
-## Production acceptance — PENDING
+## Production acceptance
 
-Production deployment and smoke evidence will be recorded after the exact
-candidate passes the protected Quality and Deploy workflows.
+- GitHub Quality:
+  [run 28543477257](https://github.com/Amritesh/xr-school/actions/runs/28543477257)
+- GitHub Deploy:
+  [run 28543477060](https://github.com/Amritesh/xr-school/actions/runs/28543477060)
+- Deployed immutable URL:
+  <https://xr-school-99zkhkyer-amritesh-anands-projects.vercel.app>
+- Production alias: <https://xr-school.vercel.app>
+- Release candidate: `4f12b8301938e848b1ab9ad3a66e1ed173d13982`
+- Protected Quality and Deploy workflows: PASS
+- Production stages 1–8: PASS
+- Observation evidence: PASS
+- Misconception evidence: PASS
+- Transfer evidence and concept mastery: PASS
+- Mapped PBR scene and readable browser HUD: PASS
+- Browser canvas ownership: PASS — exactly one canvas
+- Browser console: PASS — no warnings or errors
+
+Production acceptance covers the browser/WebXR delivery surface. It does not
+replace the direct Quest checks below.
 
 ## Direct Quest acceptance — UNSIGNED
 
