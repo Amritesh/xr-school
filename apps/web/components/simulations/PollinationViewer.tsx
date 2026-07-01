@@ -2,6 +2,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {
+  createAssessmentSession,
+  createPollinationModel,
+  createScientificModelRegistry,
+  pollinationSnapshotForStage,
+  type AssessmentAnswerResult,
+  type PollinationEvent,
+} from '../../../../packages/simulation-runtime/src/index';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import {
   isQuestBackPressed,
@@ -10,6 +18,14 @@ import {
   updateButtonLatch,
   updateSnapTurn,
 } from '@/lib/xrNavigation';
+import { createEnvironment } from '@/lib/world-builder/environmentFactory';
+import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
+import { POLLINATION_WORLD } from '@/lib/world-builder/pollinationWorld';
+import {
+  createWebSimulationRuntime,
+  type WebSimulationRuntime,
+  type WebSimulationUpdates,
+} from '@/lib/world-builder/webSimulationRuntime';
 
 const NARRATIONS = [
   "Welcome to the flower garden. Look all around you — you are standing inside a living garden. Flowers are structures designed for reproduction. Each flower has petals to attract pollinators, stamens that produce pollen, and a pistil that receives it.",
@@ -39,6 +55,33 @@ const FLOWER_SCALE_RANGES = {
   outer: [0.66, 0.9],
 } as const;
 
+const STAGE_EVENTS: Array<PollinationEvent | undefined> = [
+  undefined,
+  'producePollen',
+  'arrivePollinator',
+  'transferPollen',
+  'fertilise',
+  'formSeed',
+  'germinate',
+  'maturePlant',
+];
+
+const ASSESSMENT_STAGE_REQUIREMENTS = [3, 4, 7] as const;
+const ASSESSMENT_SEQUENCE = POLLINATION_WORLD.assessments[0];
+
+type PollinationMaterials = {
+  soil: THREE.MeshStandardMaterial;
+  stem: THREE.MeshStandardMaterial;
+  leaf: THREE.MeshStandardMaterial;
+  petalPink: THREE.MeshStandardMaterial;
+  petalViolet: THREE.MeshStandardMaterial;
+  bark: THREE.MeshStandardMaterial;
+  beeYellow: THREE.MeshStandardMaterial;
+  beeDark: THREE.MeshStandardMaterial;
+  beeWing: THREE.MeshStandardMaterial;
+  pollen: THREE.MeshStandardMaterial;
+};
+
 const STAGES = [
   { title: '🌸 The Flower Garden', cue: 'Flowers are structures designed to enable reproduction. Look around — you\'re standing in a living garden.', detail: 'Each flower has petals (to attract pollinators), stamens (male parts that make pollen), and a pistil (female part that receives pollen).', instructor: 'Ask students: Why are flowers brightly coloured? Why do they smell sweet?' },
   { title: '🟡 Pollen Production', cue: 'The stamens produce pollen grains — each contains male genetic material.', detail: 'Watch the yellow pollen particles gathering on the anthers at the tip of each stamen.', instructor: 'Ask: What do you notice about where the pollen is concentrated?' },
@@ -54,24 +97,42 @@ function playNarration(stageIndex: number) {
   void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
-function randomRange(range: readonly [number, number]) {
-  return range[0] + Math.random() * (range[1] - range[0]);
+function createSeededRandom(seed: number) {
+  let state = seed >>> 0;
+  return () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 0x100000000;
+  };
 }
 
-function buildFlower(petalHex: number, x: number, z: number, scale = 1): THREE.Group {
+function randomRange(
+  random: () => number,
+  range: readonly [number, number],
+) {
+  return range[0] + random() * (range[1] - range[0]);
+}
+
+function buildFlower(
+  petalMaterial: THREE.MeshStandardMaterial,
+  x: number,
+  z: number,
+  scale: number,
+  materials: PollinationMaterials,
+): THREE.Group {
   const g = new THREE.Group();
   g.position.set(x, 0, z);
   g.scale.setScalar(scale);
-  const stemMat = new THREE.MeshStandardMaterial({ color: 0x2f7d38, roughness: 0.9 });
-  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.052, 1.35, 10), stemMat);
+  const stem = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.035, 0.052, 1.35, 10),
+    materials.stem,
+  );
   stem.position.y = 0.67;
   g.add(stem);
   const leafShape = new THREE.Shape();
   leafShape.moveTo(0, 0); leafShape.bezierCurveTo(0.28, 0.05, 0.38, 0.27, 0.04, 0.5); leafShape.bezierCurveTo(-0.28, 0.32, -0.28, 0.08, 0, 0);
   const leafGeo = new THREE.ShapeGeometry(leafShape);
-  const leafMat = new THREE.MeshStandardMaterial({ color: 0x2f9e44, side: THREE.DoubleSide, roughness: 0.85 });
   [-1, 1].forEach(side => {
-    const leaf = new THREE.Mesh(leafGeo, leafMat);
+    const leaf = new THREE.Mesh(leafGeo, materials.leaf);
     leaf.position.set(side * 0.07, 0.45 + (side > 0 ? 0.05 : 0), 0);
     leaf.rotation.set(Math.PI / 4.4, side * (Math.PI / 3.4), side * 0.18);
     g.add(leaf);
@@ -83,10 +144,8 @@ function buildFlower(petalHex: number, x: number, z: number, scale = 1): THREE.G
   const petalShape = new THREE.Shape();
   petalShape.moveTo(0, 0); petalShape.bezierCurveTo(0.2, 0.05, 0.25, 0.27, 0.16, 0.48); petalShape.bezierCurveTo(0.09, 0.64, 0, 0.72, 0, 0.72); petalShape.bezierCurveTo(0, 0.72, -0.09, 0.64, -0.16, 0.48); petalShape.bezierCurveTo(-0.25, 0.27, -0.2, 0.05, 0, 0);
   const petalGeo = new THREE.ShapeGeometry(petalShape, 8);
-  const petalMat = new THREE.MeshStandardMaterial({ color: petalHex, side: THREE.DoubleSide, roughness: 0.48, metalness: 0.02 });
-  const innerPetalMat = new THREE.MeshStandardMaterial({ color: petalHex, side: THREE.DoubleSide, roughness: 0.55, emissive: petalHex, emissiveIntensity: 0.06 });
   for (let i = 0; i < 8; i++) {
-    const petal = new THREE.Mesh(petalGeo, petalMat);
+    const petal = new THREE.Mesh(petalGeo, petalMaterial);
     const a = (i / 8) * Math.PI * 2;
     petal.position.set(Math.cos(a) * 0.15, 0, Math.sin(a) * 0.15);
     petal.rotation.y = -a; petal.rotation.x = Math.PI / 2 - 0.42;
@@ -94,7 +153,7 @@ function buildFlower(petalHex: number, x: number, z: number, scale = 1): THREE.G
     head.add(petal);
   }
   for (let i = 0; i < 8; i++) {
-    const petal = new THREE.Mesh(petalGeo, innerPetalMat);
+    const petal = new THREE.Mesh(petalGeo, petalMaterial);
     const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
     petal.position.set(Math.cos(a) * 0.08, 0.015, Math.sin(a) * 0.08);
     petal.rotation.y = -a; petal.rotation.x = Math.PI / 2 - 0.25;
@@ -129,27 +188,42 @@ function buildBeeWing() {
   return new THREE.ShapeGeometry(wingShape, 24);
 }
 
-function buildBeeLeg(side: number, forward: number) {
+function buildBeeLeg(
+  side: number,
+  forward: number,
+  materials: PollinationMaterials,
+) {
   const leg = new THREE.Group();
-  const mat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.7 });
-  const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.007, 0.18, 5), mat);
+  const upper = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.006, 0.007, 0.18, 5),
+    materials.beeDark,
+  );
   upper.position.set(side * 0.075, -0.04, forward);
   upper.rotation.set(0.75, 0, side * 0.75);
   leg.add(upper);
-  const lower = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.005, 0.16, 5), mat);
+  const lower = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.004, 0.005, 0.16, 5),
+    materials.beeDark,
+  );
   lower.position.set(side * 0.14, -0.12, forward + 0.015);
   lower.rotation.set(1.0, 0, side * 1.05);
   leg.add(lower);
   return leg;
 }
 
-function buildBee(): THREE.Group {
+function buildBee(materials: PollinationMaterials): THREE.Group {
   const g = new THREE.Group();
-  const abdomen = new THREE.Mesh(new THREE.SphereGeometry(0.13, 18, 14), new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.58 }));
+  const abdomen = new THREE.Mesh(
+    new THREE.SphereGeometry(0.13, 18, 14),
+    materials.beeYellow,
+  );
   abdomen.scale.set(0.92, 0.82, 1.65);
   abdomen.position.z = -0.03;
   g.add(abdomen);
-  const thorax = new THREE.Mesh(new THREE.SphereGeometry(0.105, 16, 12), new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.75 }));
+  const thorax = new THREE.Mesh(
+    new THREE.SphereGeometry(0.105, 16, 12),
+    materials.beeDark,
+  );
   thorax.position.z = 0.12;
   thorax.scale.set(1.1, 0.95, 1);
   g.add(thorax);
@@ -160,24 +234,31 @@ function buildBee(): THREE.Group {
   g.add(fuzz);
   // Stripes
   for (let i = 0; i < 3; i++) {
-    const stripe = new THREE.Mesh(new THREE.TorusGeometry(0.105, 0.013, 5, 24), new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.65 }));
+    const stripe = new THREE.Mesh(
+      new THREE.TorusGeometry(0.105, 0.013, 5, 24),
+      materials.beeDark,
+    );
     stripe.position.z = -0.11 + i * 0.065;
     stripe.rotation.x = Math.PI / 2;
     g.add(stripe);
   }
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.075, 14, 12), new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.6 }));
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(0.075, 14, 12),
+    materials.beeDark,
+  );
   head.position.z = 0.25;
   g.add(head);
-  const antennaMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.5 });
   [-1, 1].forEach(side => {
-    const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.004, 0.18, 5), antennaMat);
+    const antenna = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.006, 0.004, 0.18, 5),
+      materials.beeDark,
+    );
     antenna.position.set(side * 0.045, 0.055, 0.31);
     antenna.rotation.set(0.7, side * 0.65, side * 0.25);
     g.add(antenna);
   });
-  const wingMat = new THREE.MeshStandardMaterial({ color: 0xdbeafe, transparent: true, opacity: 0.52, side: THREE.DoubleSide, roughness: 0.18, metalness: 0.04 });
   [-1, 1].forEach(side => {
-    const wing = new THREE.Mesh(buildBeeWing(), wingMat);
+    const wing = new THREE.Mesh(buildBeeWing(), materials.beeWing);
     wing.name = 'bee-wing';
     wing.position.set(side * 0.08, 0.12, 0.08);
     wing.rotation.set(-0.55, side * 0.62, side * 0.18);
@@ -192,12 +273,16 @@ function buildBee(): THREE.Group {
     });
   });
   [-1, 1].forEach(side => {
-    [-0.08, 0.04, 0.16].forEach(forward => g.add(buildBeeLeg(side, forward)));
+    [-0.08, 0.04, 0.16].forEach(
+      forward => g.add(buildBeeLeg(side, forward, materials)),
+    );
   });
   // Pollen bags on legs
-  const pollenBagMat = new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xfbbf24, emissiveIntensity: 0.4 });
   [-1, 1].forEach(side => {
-    const bag = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), pollenBagMat);
+    const bag = new THREE.Mesh(
+      new THREE.SphereGeometry(0.04, 6, 6),
+      materials.pollen,
+    );
     bag.position.set(side * 0.1, -0.1, 0);
     g.add(bag);
   });
@@ -309,10 +394,29 @@ export default function PollinationViewer() {
   const seedlingRef = useRef<THREE.Group | null>(null);
   const seedlingGrowthRef = useRef(0);
   const stageRef = useRef(0);
+  const biologyRef = useRef(createPollinationModel());
+  const biologyStageRef = useRef(0);
+  const assessmentRef = useRef(createAssessmentSession(ASSESSMENT_SEQUENCE));
 
   const [started, setStarted] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
   const [stage, setStage] = useState(0);
+  const [runtimeError, setRuntimeError] = useState('');
+  const [assessmentPromptIndex, setAssessmentPromptIndex] = useState(0);
+  const [assessmentResult, setAssessmentResult] =
+    useState<AssessmentAnswerResult | null>(null);
+  const [mastered, setMastered] = useState(false);
+
+  const syncBiology = useCallback((nextStage: number) => {
+    if (nextStage < biologyStageRef.current) {
+      biologyRef.current.reset();
+      biologyStageRef.current = 0;
+    }
+    while (biologyStageRef.current < nextStage) {
+      biologyStageRef.current += 1;
+      biologyRef.current.apply(STAGE_EVENTS[biologyStageRef.current]!);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof navigator !== 'undefined' && 'xr' in navigator) {
@@ -324,20 +428,129 @@ export default function PollinationViewer() {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // ── Renderer ──────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.xr.enabled = true;
-    renderer.xr.setReferenceSpaceType('local-floor');
-    mount.appendChild(renderer.domElement);
+    let cancelled = false;
+    let host: WebSimulationRuntime | undefined;
+    let fixedUpdate: WebSimulationUpdates['fixedUpdate'];
+    let renderUpdate: WebSimulationUpdates['renderUpdate'];
+
+    async function start() {
+    setRuntimeError('');
+    const scene = new THREE.Scene();
+
+    // ── Camera (for browser mode — VR uses headset) ───────────────────────
+    const camera = new THREE.PerspectiveCamera(72, 1, 0.05, 100);
+    camera.position.set(0, 1.7, 3.5);
+    camera.lookAt(0, 1.5, 0);
+    const playerRig = new THREE.Group();
+    playerRig.name = 'player-rig';
+    playerRig.add(camera);
+    scene.add(playerRig);
+
+    host = createWebSimulationRuntime({
+      mount: mount!,
+      scene,
+      camera,
+      updates: {
+        fixedUpdate(context) {
+          fixedUpdate?.(context);
+        },
+        renderUpdate(context) {
+          renderUpdate?.(context);
+        },
+      },
+    });
+    const renderer = host.renderer;
     rendererRef.current = renderer;
 
-    // ── Scene ─────────────────────────────────────────────────────────────
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xc5e8f5, 0.022);
+    const materialFactory = createMaterialFactory({
+      assets: POLLINATION_WORLD.assetManifests[0],
+      materials: POLLINATION_WORLD.materials,
+      qualityProfileId: 'questBaseline',
+      maxAnisotropy: renderer.capabilities.getMaxAnisotropy(),
+    });
+    const materialDefinition = (id: string) => {
+      const definition = POLLINATION_WORLD.materials.find(
+        material => material.id === id,
+      );
+      if (!definition) throw new Error(`Missing Pollination material ${id}`);
+      return definition;
+    };
+    const loadedMaterials = await Promise.all([
+      'soil',
+      'stem',
+      'leaf',
+      'petal-pink',
+      'petal-violet',
+      'bark',
+      'bee-yellow',
+      'bee-dark',
+      'bee-wing',
+      'pollen',
+    ].map(id => materialFactory.create(materialDefinition(id))));
+    if (cancelled) {
+      materialFactory.dispose();
+      await host.dispose();
+      return;
+    }
+    const [
+      soil,
+      stem,
+      leaf,
+      petalPink,
+      petalViolet,
+      bark,
+      beeYellow,
+      beeDark,
+      beeWing,
+      pollen,
+    ] = loadedMaterials as THREE.MeshStandardMaterial[];
+    const materials: PollinationMaterials = {
+      soil,
+      stem,
+      leaf,
+      petalPink,
+      petalViolet,
+      bark,
+      beeYellow,
+      beeDark,
+      beeWing,
+      pollen,
+    };
+    host.resources.register(
+      'pollination-materials',
+      () => materialFactory.dispose(),
+    );
+
+    const environment = await createEnvironment({
+      renderer,
+      scene,
+      definition: POLLINATION_WORLD.environments[0],
+      assets: POLLINATION_WORLD.assetManifests[0],
+    });
+    if (cancelled) {
+      await host.dispose();
+      return;
+    }
+    host.resources.register(
+      'pollination-environment',
+      () => environment.dispose(),
+    );
+
+    const scientificModels = createScientificModelRegistry();
+    scientificModels.register({
+      manifest: POLLINATION_WORLD.scientificModels[0],
+      evaluate: input => pollinationSnapshotForStage(
+        Number(input.completedStage),
+      ),
+    });
+    const modelFailures = scientificModels.verify('pollination-event-graph');
+    if (modelFailures.length > 0) {
+      throw new Error(modelFailures.join('; '));
+    }
+    host.resources.register(
+      'pollination-scientific-models',
+      () => scientificModels.dispose(),
+    );
 
     // ── Sky sphere (gradient: horizon pale blue → zenith deep blue) ───────
     const skyGeo = new THREE.SphereGeometry(48, 32, 20);
@@ -351,55 +564,40 @@ export default function PollinationViewer() {
     skyGeo.setAttribute('color', new THREE.Float32BufferAttribute(skyCols, 3));
     scene.add(new THREE.Mesh(skyGeo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide })));
 
-    // ── Camera (for browser mode — VR uses headset) ───────────────────────
-    const camera = new THREE.PerspectiveCamera(72, mount.clientWidth / mount.clientHeight, 0.05, 100);
-    camera.position.set(0, 1.7, 3.5);
-    camera.lookAt(0, 1.5, 0);
-    const playerRig = new THREE.Group();
-    playerRig.name = 'player-rig';
-    playerRig.add(camera);
-    scene.add(playerRig);
-
-    // ── Lights ────────────────────────────────────────────────────────────
-    const hemi = new THREE.HemisphereLight(0x87ceeb, 0x3a7d44, 0.7);
-    scene.add(hemi);
-    const sun = new THREE.DirectionalLight(0xfff5d6, 1.6);
-    sun.position.set(8, 14, 5);
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(2048, 2048);
-    sun.shadow.camera.near = 0.5;
-    sun.shadow.camera.far = 50;
-    sun.shadow.camera.left = -15; sun.shadow.camera.right = 15;
-    sun.shadow.camera.top = 15; sun.shadow.camera.bottom = -15;
-    scene.add(sun);
-    // Sun glow fill
-    const fill = new THREE.DirectionalLight(0xffd6a5, 0.4);
-    fill.position.set(-5, 6, -8);
-    scene.add(fill);
-
     // ── Ground ────────────────────────────────────────────────────────────
     const ground = new THREE.Mesh(
       new THREE.PlaneGeometry(60, 60),
-      new THREE.MeshStandardMaterial({ color: 0x3d8b47, roughness: 0.95 })
+      materials.leaf,
     );
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
     // Dirt patch (center stage)
-    const dirt = new THREE.Mesh(new THREE.CircleGeometry(1.2, 32), new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 1 }));
+    const dirt = new THREE.Mesh(
+      new THREE.CircleGeometry(1.2, 32),
+      materials.soil,
+    );
     dirt.rotation.x = -Math.PI / 2; dirt.position.y = 0.005;
     scene.add(dirt);
 
     // ── Clouds ────────────────────────────────────────────────────────────
     const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, transparent: true, opacity: 0.92 });
     const clouds: THREE.Group[] = [];
+    const random = createSeededRandom(0x706f6c6c);
     for (let c = 0; c < 5; c++) {
       const cg = new THREE.Group();
       const angle = (c / 5) * Math.PI * 2;
       cg.position.set(Math.cos(angle) * (14 + c * 3), 11 + c * 1.2, Math.sin(angle) * (12 + c * 2));
       for (let b = 0; b < 5; b++) {
-        const blob = new THREE.Mesh(new THREE.SphereGeometry(1.2 + Math.random(), 8, 6), cloudMat);
-        blob.position.set((Math.random() - 0.5) * 3, (Math.random() - 0.5) * 0.5, (Math.random() - 0.5) * 1.5);
+        const blob = new THREE.Mesh(
+          new THREE.SphereGeometry(1.2 + random(), 8, 6),
+          cloudMat,
+        );
+        blob.position.set(
+          (random() - 0.5) * 3,
+          (random() - 0.5) * 0.5,
+          (random() - 0.5) * 1.5,
+        );
         cg.add(blob);
       }
       scene.add(cg);
@@ -407,25 +605,47 @@ export default function PollinationViewer() {
     }
 
     // ── 360° Flowers ─────────────────────────────────────────────────────
-    const PETAL_COLORS = [0xf472b6, 0xfbbf24, 0xa78bfa, 0xf87171, 0x86efac, 0xfb923c, 0xe879f9, 0x67e8f9];
-    const flowerPositions: {x:number,z:number,color:number,scale:number}[] = [];
+    const flowerPositions: {
+      x: number;
+      z: number;
+      variant: 'pink' | 'violet';
+      scale: number;
+    }[] = [];
     // Inner ring: close enough to inspect, but scaled to avoid oversized VR flowers.
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2 + 0.2;
-      flowerPositions.push({ x: Math.cos(a) * (1.8 + Math.random() * 0.45), z: Math.sin(a) * (1.8 + Math.random() * 0.45), color: PETAL_COLORS[i % PETAL_COLORS.length], scale: randomRange(FLOWER_SCALE_RANGES.inner) });
+      flowerPositions.push({
+        x: Math.cos(a) * (1.8 + random() * 0.45),
+        z: Math.sin(a) * (1.8 + random() * 0.45),
+        variant: i % 2 === 0 ? 'pink' : 'violet',
+        scale: randomRange(random, FLOWER_SCALE_RANGES.inner),
+      });
     }
     // Middle ring
     for (let i = 0; i < 10; i++) {
       const a = (i / 10) * Math.PI * 2 + 0.5;
-      flowerPositions.push({ x: Math.cos(a) * (3.8 + Math.random() * 0.9), z: Math.sin(a) * (3.8 + Math.random() * 0.9), color: PETAL_COLORS[(i + 3) % PETAL_COLORS.length], scale: randomRange(FLOWER_SCALE_RANGES.middle) });
+      flowerPositions.push({
+        x: Math.cos(a) * (3.8 + random() * 0.9),
+        z: Math.sin(a) * (3.8 + random() * 0.9),
+        variant: i % 2 === 0 ? 'violet' : 'pink',
+        scale: randomRange(random, FLOWER_SCALE_RANGES.middle),
+      });
     }
     // Outer ring
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2 + 1.1;
-      flowerPositions.push({ x: Math.cos(a) * (5.8 + Math.random() * 1.5), z: Math.sin(a) * (5.8 + Math.random() * 1.5), color: PETAL_COLORS[(i + 5) % PETAL_COLORS.length], scale: randomRange(FLOWER_SCALE_RANGES.outer) });
+      flowerPositions.push({
+        x: Math.cos(a) * (5.8 + random() * 1.5),
+        z: Math.sin(a) * (5.8 + random() * 1.5),
+        variant: i % 2 === 0 ? 'pink' : 'violet',
+        scale: randomRange(random, FLOWER_SCALE_RANGES.outer),
+      });
     }
-    flowerPositions.forEach(({ x, z, color, scale }) => {
-      const f = buildFlower(color, x, z, scale);
+    flowerPositions.forEach(({ x, z, variant, scale }) => {
+      const petalMaterial = variant === 'pink'
+        ? materials.petalPink
+        : materials.petalViolet;
+      const f = buildFlower(petalMaterial, x, z, scale, materials);
       f.traverse(m => { if ((m as THREE.Mesh).isMesh) { m.castShadow = true; m.receiveShadow = true; } });
       scene.add(f);
     });
@@ -433,20 +653,26 @@ export default function PollinationViewer() {
     // ── Trees (all 360°) ─────────────────────────────────────────────────
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
-      const r = 9 + Math.random() * 5;
-      const h = 3 + Math.random() * 2;
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.22, h, 7), new THREE.MeshStandardMaterial({ color: 0x6b3d14, roughness: 0.9 }));
+      const r = 9 + random() * 5;
+      const h = 3 + random() * 2;
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.14, 0.22, h, 7),
+        materials.bark,
+      );
       trunk.position.set(Math.cos(a) * r, h / 2, Math.sin(a) * r);
       trunk.castShadow = true;
       scene.add(trunk);
-      const foliage = new THREE.Mesh(new THREE.SphereGeometry(1.5 + Math.random() * 0.8, 8, 6), new THREE.MeshStandardMaterial({ color: i % 3 === 0 ? 0x15803d : 0x166534, roughness: 0.9 }));
+      const foliage = new THREE.Mesh(
+        new THREE.SphereGeometry(1.5 + random() * 0.8, 8, 6),
+        materials.leaf,
+      );
       foliage.position.set(Math.cos(a) * r, h + 0.9, Math.sin(a) * r);
       foliage.castShadow = true;
       scene.add(foliage);
     }
 
     // ── Bee (large, flies very close to player at eye level) ─────────────
-    const bee = buildBee();
+    const bee = buildBee(materials);
     bee.scale.setScalar(1.6);
     scene.add(bee);
     beeRef.current = bee;
@@ -455,20 +681,27 @@ export default function PollinationViewer() {
     const POLLEN_COUNT = 200;
     const pollenPositions = new Float32Array(POLLEN_COUNT * 3);
     for (let i = 0; i < POLLEN_COUNT; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = Math.random() * 5;
+      const a = random() * Math.PI * 2;
+      const r = random() * 5;
       pollenPositions[i * 3 + 0] = Math.cos(a) * r;
-      pollenPositions[i * 3 + 1] = 0.5 + Math.random() * 2.5;
+      pollenPositions[i * 3 + 1] = 0.5 + random() * 2.5;
       pollenPositions[i * 3 + 2] = Math.sin(a) * r;
     }
     const pollenGeo = buildPollenGrainGeometry();
-    const pollenMat = new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xfbbf24, emissiveIntensity: 0.42, roughness: 0.78 });
-    const pollenMesh = new THREE.InstancedMesh(pollenGeo, pollenMat, POLLEN_COUNT);
+    const pollenMesh = new THREE.InstancedMesh(
+      pollenGeo,
+      materials.pollen,
+      POLLEN_COUNT,
+    );
     const pollenDummy = new THREE.Object3D();
     for (let i = 0; i < POLLEN_COUNT; i++) {
       pollenDummy.position.set(pollenPositions[i * 3], pollenPositions[i * 3 + 1], pollenPositions[i * 3 + 2]);
-      pollenDummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      pollenDummy.scale.setScalar(0.75 + Math.random() * 0.45);
+      pollenDummy.rotation.set(
+        random() * Math.PI,
+        random() * Math.PI,
+        random() * Math.PI,
+      );
+      pollenDummy.scale.setScalar(0.75 + random() * 0.45);
       pollenDummy.updateMatrix();
       pollenMesh.setMatrixAt(i, pollenDummy.matrix);
     }
@@ -483,18 +716,26 @@ export default function PollinationViewer() {
     const pitGroup = new THREE.Group();
     pitGroup.visible = false;
     scene.add(pitGroup);
-    const soilWall = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.8, 0.1), new THREE.MeshStandardMaterial({ color: 0x7c5c3a }));
+    const soilWall = new THREE.Mesh(
+      new THREE.BoxGeometry(2.5, 1.8, 0.1),
+      materials.soil,
+    );
     soilWall.position.set(0, -0.9, -0.5);
     pitGroup.add(soilWall);
-    const rootMat = new THREE.MeshStandardMaterial({ color: 0xd4a574, roughness: 0.8 });
     for (let i = 0; i < 5; i++) {
-      const root = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.01, 0.6 + Math.random() * 0.4, 4), rootMat);
-      root.position.set((Math.random() - 0.5) * 1.5, -1.3, -0.5);
-      root.rotation.z = (Math.random() - 0.5) * 0.8;
+      const root = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.015, 0.01, 0.6 + random() * 0.4, 4),
+        materials.bark,
+      );
+      root.position.set((random() - 0.5) * 1.5, -1.3, -0.5);
+      root.rotation.z = (random() - 0.5) * 0.8;
       pitGroup.add(root);
     }
 
-    const seed = new THREE.Mesh(new THREE.SphereGeometry(0.1, 12, 12), new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.8 }));
+    const seed = new THREE.Mesh(
+      new THREE.SphereGeometry(0.1, 12, 12),
+      materials.bark,
+    );
     seed.position.set(0, -0.55, 0);
     seed.visible = false;
     scene.add(seed);
@@ -503,10 +744,16 @@ export default function PollinationViewer() {
     const seedling = new THREE.Group();
     seedling.visible = false;
     scene.add(seedling);
-    const sprout = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.03, 1, 6), new THREE.MeshStandardMaterial({ color: 0x4ade80 }));
+    const sprout = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.02, 0.03, 1, 6),
+      materials.stem,
+    );
     sprout.position.y = 0.5;
     seedling.add(sprout);
-    const sproutLeaf = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.25), new THREE.MeshStandardMaterial({ color: 0x22c55e, side: THREE.DoubleSide }));
+    const sproutLeaf = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.4, 0.25),
+      materials.leaf,
+    );
     sproutLeaf.position.set(0.2, 0.9, 0); sproutLeaf.rotation.z = 0.3;
     seedling.add(sproutLeaf);
     seedlingRef.current = seedling;
@@ -609,6 +856,7 @@ export default function PollinationViewer() {
     };
     const advanceStage = () => {
       const next = Math.min(stageRef.current + 1, STAGES.length - 1);
+      syncBiology(next);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
       if (next === 7) seedlingGrowthRef.current = 0;
       playNarration(next);
@@ -616,6 +864,7 @@ export default function PollinationViewer() {
     };
     const retreatStage = () => {
       const next = Math.max(stageRef.current - 1, 0);
+      syncBiology(next);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
       playNarration(next);
       setStage(next);
@@ -670,10 +919,21 @@ export default function PollinationViewer() {
     controls.minPolarAngle = 0.05; controls.maxPolarAngle = Math.PI * 0.88;
     controlsRef.current = controls;
 
-    // ── Animation loop ─────────────────────────────────────────────────────
-    const clock = new THREE.Clock();
-    renderer.setAnimationLoop(() => {
-      const t = clock.getElapsedTime();
+    fixedUpdate = ({ deltaSeconds }) => {
+      clouds.forEach((cloud, index) => {
+        cloud.position.x += deltaSeconds * 0.09
+          * (index % 2 === 0 ? 1 : -1);
+      });
+      if (stageRef.current === 7) {
+        seedlingGrowthRef.current = Math.min(
+          seedlingGrowthRef.current + deltaSeconds * 0.42,
+          1,
+        );
+      }
+    };
+
+    renderUpdate = ({ elapsedSeconds, interpolationAlpha, renderer }) => {
+      const t = elapsedSeconds + interpolationAlpha / 60;
       const s = stageRef.current;
 
       // Update 3D cue card when stage changes
@@ -682,9 +942,6 @@ export default function PollinationViewer() {
         if (cueTextureRef.current) cueTextureRef.current.needsUpdate = true;
         cueNeedsUpdateRef.current = false;
       }
-
-      // Clouds drift slowly
-      clouds.forEach((cg, i) => { cg.position.x += 0.0015 * (i % 2 === 0 ? 1 : -1); });
 
       // Bee: figure-8 pattern at eye level, very close to player
       bee.visible = s >= 2 && s <= 4;
@@ -695,9 +952,13 @@ export default function PollinationViewer() {
         } else if (s === 3) {
           bee.position.set(Math.cos(beeFlightPhase * 1.5) * 0.9, 1.6 + Math.sin(beeFlightPhase * 2.2) * 0.12, Math.sin(beeFlightPhase * 1.5) * 1.1 - 0.3);
         } else {
-          bee.position.lerp(new THREE.Vector3(-12, 5, 0), 0.006);
+          bee.position.set(
+            -Math.min(12, beeFlightPhase * 0.8),
+            1.8 + Math.sin(beeFlightPhase) * 0.2,
+            Math.cos(beeFlightPhase) * 0.6,
+          );
         }
-        bee.rotation.z += (Math.sin(beeFlightPhase * 3.2) * 0.08 - bee.rotation.z) * 0.08;
+        bee.rotation.z = Math.sin(beeFlightPhase * 3.2) * 0.08;
         const lookTarget = new THREE.Vector3(bee.position.x + Math.sin(t * 0.7), bee.position.y, bee.position.z - 0.5);
         bee.lookAt(lookTarget);
         bee.children.filter(c => c.name === 'bee-wing')
@@ -734,7 +995,9 @@ export default function PollinationViewer() {
       }
       if (seedlingRef.current) {
         seedlingRef.current.visible = s === 7;
-        if (s === 7) { seedlingGrowthRef.current = Math.min(seedlingGrowthRef.current + 0.007, 1); seedlingRef.current.scale.setScalar(seedlingGrowthRef.current); }
+        if (s === 7) {
+          seedlingRef.current.scale.setScalar(seedlingGrowthRef.current);
+        }
       }
 
       // Cue card panel faces player
@@ -749,48 +1012,64 @@ export default function PollinationViewer() {
       }
 
       if (!renderer.xr.isPresenting) controls.update();
-      renderer.render(scene, camera);
-    });
+    };
 
     // Initial cue card draw
     drawCueCard(cueCanvas, STAGES[0], 1, STAGES.length);
     cueTexture.needsUpdate = true;
 
-    const onResize = () => {
-      if (!mount) return;
-      camera.aspect = mount.clientWidth / mount.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(mount.clientWidth, mount.clientHeight);
-    };
-    window.addEventListener('resize', onResize);
+    host.resources.register('pollination-controller-listeners', () => {
+      ctrl0.removeEventListener('selectstart', onCtrlSelect as any);
+      ctrl1.removeEventListener('selectstart', onCtrlSelect as any);
+    });
+    host.resources.register('pollination-controls', () => controls.dispose());
+    host.resources.register('pollination-scene', () => {
+      scene.traverse(object => {
+        if (!(object instanceof THREE.Mesh)) return;
+        object.geometry.dispose();
+        const objectMaterials = Array.isArray(object.material)
+          ? object.material
+          : [object.material];
+        for (const material of objectMaterials) material.dispose();
+      });
+    });
+
+    await host.initialize();
+    }
+
+    void start().catch(reason => {
+      if (cancelled) return;
+      setRuntimeError(reason instanceof Error ? reason.message : String(reason));
+      void host?.dispose();
+    });
 
     return () => {
-      renderer.setAnimationLoop(null);
-      renderer.dispose();
-      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
-      window.removeEventListener('resize', onResize);
+      cancelled = true;
+      void host?.dispose();
       stopSimulationNarration();
     };
-  }, []);
+  }, [syncBiology]);
 
   const advance = useCallback(() => {
     setStage(prev => {
       const next = Math.min(prev + 1, STAGES.length - 1);
+      syncBiology(next);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
       if (next === 7) seedlingGrowthRef.current = 0;
       playNarration(next);
       return next;
     });
-  }, []);
+  }, [syncBiology]);
 
   const goBack = useCallback(() => {
     setStage(prev => {
       const next = Math.max(prev - 1, 0);
+      syncBiology(next);
       stageRef.current = next; cueNeedsUpdateRef.current = true;
       playNarration(next);
       return next;
     });
-  }, []);
+  }, [syncBiology]);
 
   const enterVR = useCallback(async () => {
     if (!rendererRef.current) return;
@@ -808,11 +1087,39 @@ export default function PollinationViewer() {
     }
   }, []);
 
+  const answerAssessment = useCallback((evidenceId: string) => {
+    const prompt = ASSESSMENT_SEQUENCE.prompts[assessmentPromptIndex];
+    const result = assessmentRef.current.answer(prompt.id, evidenceId);
+    setAssessmentResult(result);
+    setMastered(assessmentRef.current.mastery().mastered);
+  }, [assessmentPromptIndex]);
+
+  const continueAssessment = useCallback(() => {
+    setAssessmentPromptIndex(index => Math.min(
+      index + 1,
+      ASSESSMENT_SEQUENCE.prompts.length - 1,
+    ));
+    setAssessmentResult(null);
+  }, []);
+
   const info = STAGES[stage];
+  const assessmentPrompt =
+    ASSESSMENT_SEQUENCE.prompts[assessmentPromptIndex];
+  const assessmentReady = stage >= (
+    ASSESSMENT_STAGE_REQUIREMENTS[assessmentPromptIndex]
+    ?? STAGES.length
+  );
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', background: '#0a1f0a', overflow: 'hidden' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+
+      {runtimeError && (
+        <div role="alert" style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'grid', placeContent: 'center', padding: 24, background: 'rgba(3,10,3,0.94)', color: '#fecaca', textAlign: 'center' }}>
+          <strong>Pollination world could not start.</strong>
+          <span style={{ marginTop: 8, color: '#fca5a5' }}>{runtimeError}</span>
+        </div>
+      )}
 
       {/* Intro overlay */}
       {!started && (
@@ -843,9 +1150,64 @@ export default function PollinationViewer() {
 
       {started && (
         <>
-          <div style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(3,10,3,0.88)', borderRadius: 8, padding: '6px 14px', color: '#9ca3af', fontSize: '0.8rem', fontWeight: 600 }}>
-            {stage + 1} / {STAGES.length}
-          </div>
+           <div style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(3,10,3,0.88)', borderRadius: 8, padding: '6px 14px', color: '#9ca3af', fontSize: '0.8rem', fontWeight: 600 }}>
+             {stage + 1} / {STAGES.length}
+           </div>
+
+           {assessmentReady && (
+             <aside
+               aria-label="Pollination evidence check"
+               style={{ position: 'absolute', top: 16, left: 16, zIndex: 5, width: 'min(340px, calc(100vw - 32px))', padding: 16, borderRadius: 12, border: '1px solid rgba(52,211,153,0.28)', background: 'rgba(3,10,3,0.93)', color: '#f9fafb' }}
+             >
+               {mastered ? (
+                 <>
+                   <strong style={{ color: '#86efac' }}>Concept mastered</strong>
+                   <p style={{ marginTop: 7, color: '#d1fae5', fontSize: '0.82rem', lineHeight: 1.5 }}>
+                     You used visible evidence to separate pollination from fertilisation and transferred the idea to wind pollination.
+                   </p>
+                 </>
+               ) : (
+                 <>
+                   <div style={{ color: '#34d399', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                     {assessmentPrompt.kind} evidence
+                   </div>
+                   <p style={{ margin: '8px 0 10px', fontSize: '0.86rem', lineHeight: 1.45 }}>
+                     {assessmentPrompt.question}
+                   </p>
+                   <div style={{ display: 'grid', gap: 7 }}>
+                     {assessmentPrompt.options?.map(option => (
+                       <button
+                         key={option.id}
+                         type="button"
+                         disabled={assessmentResult?.correct}
+                         onClick={() => answerAssessment(option.id)}
+                         style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid rgba(255,255,255,0.14)', background: 'rgba(255,255,255,0.06)', color: '#f3f4f6', cursor: 'pointer', textAlign: 'left', fontSize: '0.76rem' }}
+                       >
+                         {option.label}
+                       </button>
+                     ))}
+                   </div>
+                   {assessmentResult && (
+                     <div style={{ marginTop: 10, color: assessmentResult.correct ? '#86efac' : '#fde68a', fontSize: '0.76rem', lineHeight: 1.45 }}>
+                       {assessmentResult.correct
+                         ? assessmentResult.explanation
+                         : assessmentResult.hint}
+                       {assessmentResult.correct
+                         && assessmentPromptIndex < ASSESSMENT_SEQUENCE.prompts.length - 1 && (
+                         <button
+                           type="button"
+                           onClick={continueAssessment}
+                           style={{ display: 'block', marginTop: 8, padding: '7px 10px', border: 0, borderRadius: 6, background: '#16a34a', color: '#fff', cursor: 'pointer', fontWeight: 700 }}
+                         >
+                           Continue
+                         </button>
+                       )}
+                     </div>
+                   )}
+                 </>
+               )}
+             </aside>
+           )}
 
           <div style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', width: 'min(580px, 92vw)', background: 'rgba(3,10,3,0.92)', borderRadius: 16, padding: '18px 22px', border: '1px solid rgba(52,211,153,0.2)', color: '#f9fafb' }}>
             <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#34d399', marginBottom: 8 }}>🌸 Pollination Cycle · Stage {stage + 1}</div>

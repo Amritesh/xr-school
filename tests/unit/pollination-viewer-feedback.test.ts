@@ -86,4 +86,16 @@ describe('Pollination viewer feedback regressions', () => {
     expect(source).toContain('FLOWER_SCALE_RANGES');
     expect(source).toContain('inner: [0.46, 0.62]');
   });
+
+  it('uses the shared world lifecycle and mapped PBR factories', () => {
+    expect(source).toContain('createWebSimulationRuntime');
+    expect(source).toContain('createMaterialFactory');
+    expect(source).toContain('createEnvironment');
+    expect(source).toContain('POLLINATION_WORLD');
+    expect(source).toContain('createAssessmentSession');
+    expect(source).toContain('createPollinationModel');
+    expect(source).not.toContain('new THREE.WebGLRenderer');
+    expect(source).not.toContain('renderer.setAnimationLoop');
+    expect(source).not.toContain('renderer.render(scene, camera)');
+  });
 });

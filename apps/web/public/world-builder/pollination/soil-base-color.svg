@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <defs><filter id="n"><feTurbulence baseFrequency=".045" numOctaves="4" seed="17"/></filter></defs>
+  <rect width="512" height="512" fill="#a17a58"/>
+  <rect width="512" height="512" filter="url(#n)" opacity=".22"/>
+  <g fill="#5f412d" opacity=".35">
+    <circle cx="74" cy="91" r="9"/><circle cx="214" cy="162" r="6"/>
+    <circle cx="387" cy="78" r="11"/><circle cx="448" cy="326" r="7"/>
+    <circle cx="132" cy="408" r="10"/><circle cx="305" cy="371" r="5"/>
+  </g>
+</svg>

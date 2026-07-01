@@ -74,3 +74,12 @@ export type {
   AssessmentEvidence,
   AssessmentSession,
 } from './world/assessment';
+export {
+  createPollinationModel,
+  pollinationSnapshotForStage,
+} from './models/pollinationModel';
+export type {
+  PollinationEvent,
+  PollinationModel,
+  PollinationSnapshot,
+} from './models/pollinationModel';

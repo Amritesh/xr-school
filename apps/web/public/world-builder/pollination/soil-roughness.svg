@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <defs><filter id="n"><feTurbulence baseFrequency=".05" numOctaves="4" seed="17"/></filter></defs>
+  <rect width="512" height="512" fill="#e8e8e8"/>
+  <rect width="512" height="512" filter="url(#n)" opacity=".2"/>
+</svg>
