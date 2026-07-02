@@ -35,4 +35,20 @@ describe('world-builder diagnostic reference', () => {
       'apps/web/app/simulations/world-builder-diagnostic/page.tsx',
     ))).toBe(true);
   });
+
+  it('proves the shared experience, spatial, and unobstructed-HUD foundation', () => {
+    expect(DIAGNOSTIC_WORLD.world.experienceId).toBe('experience-material-evidence');
+    expect(DIAGNOSTIC_WORLD.world.spatialLayoutId).toBe('spatial-diagnostic-studio');
+    expect(DIAGNOSTIC_WORLD.experienceDefinitions).toHaveLength(1);
+    expect(DIAGNOSTIC_WORLD.spatialLayouts).toHaveLength(1);
+
+    const source = readFileSync(resolve(
+      process.cwd(),
+      'apps/web/components/simulations/WorldBuilderDiagnosticViewer.tsx',
+    ), 'utf8');
+    expect(source).toContain('createLessonSession');
+    expect(source).toContain('SimulationExperienceShell');
+    expect(source).toContain('resolveCuePlacement');
+    expect(source).toContain('verifyClearView');
+  });
 });

@@ -28,6 +28,8 @@ export const DIAGNOSTIC_WORLD: WorldBundle = {
     assessmentSequenceId: 'assessment-material-evidence',
     assetManifestId: 'assets-diagnostic',
     acceptanceProfileId: 'acceptance-diagnostic',
+    experienceId: 'experience-material-evidence',
+    spatialLayoutId: 'spatial-diagnostic-studio',
   },
   entities: [
     {
@@ -272,6 +274,33 @@ export const DIAGNOSTIC_WORLD: WorldBundle = {
     maxDrawCalls: 120,
     maxVisibleTriangles: 250_000,
     requiresQuestAcceptance: true,
+  }],
+  experienceDefinitions: [{
+    id: 'experience-material-evidence',
+    gradeTone: 'class6To8',
+    objective: 'Release the sphere and separate visible appearance from physical evidence.',
+    stages: [{
+      id: 'stage-material-comparison',
+      title: 'Release and observe',
+      cue: 'Release the teal sphere, then watch where it settles.',
+      requiredActionIds: ['release-sphere'],
+      completionEvidenceIds: ['sphere-settled'],
+    }],
+  }],
+  spatialLayouts: [{
+    id: 'spatial-diagnostic-studio',
+    metersPerWorldUnit: 1,
+    scaleRepresentation: 'literal',
+    intendedEyeHeightMeters: 1.6,
+    seatedEyeHeightMeters: 1.2,
+    movementBoundsMeters: { width: 2, depth: 2 },
+    reachMeters: { min: 0.25, max: 0.8 },
+    cueBay: {
+      position: [1.1, 1.45, -1.8],
+      fallbackPositions: [[-1.1, 1.45, -1.8]],
+    },
+    browserClearView: { x: 0.2, y: 0.12, width: 0.6, height: 0.64 },
+    minLabelAngularSizeDegrees: 1.4,
   }],
   lessonSequenceIds: ['lesson-material-evidence'],
   systemIds: ['physics', 'presentation'],

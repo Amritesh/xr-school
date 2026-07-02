@@ -21,6 +21,12 @@ import {
 import {
   createWorldRuntime,
 } from '../../../../packages/simulation-runtime/src/world/runtime';
+import {
+  createLessonSession,
+} from '../../../../packages/simulation-runtime/src/experience/lessonSession';
+import SimulationExperienceShell, {
+  type ExperiencePreferences,
+} from '@/components/simulation-experience/SimulationExperienceShell';
 import { detectDeviceProfile } from '@/lib/world-builder/deviceProfile';
 import {
   evaluatePresentationBudget,
@@ -30,6 +36,8 @@ import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
 import { createPresentationPipeline } from '@/lib/world-builder/presentationPipeline';
 import { DIAGNOSTIC_WORLD } from '@/lib/world-builder/diagnosticWorld';
+import { verifyClearView } from '@/lib/world-builder/occlusionDiagnostics';
+import { resolveCuePlacement } from '@/lib/world-builder/spatialCueSystem';
 
 type DiagnosticState = {
   profile: string;
@@ -50,6 +58,15 @@ const INITIAL_DIAGNOSTICS: DiagnosticState = {
 };
 
 const sequence = DIAGNOSTIC_WORLD.assessments[0];
+const experience = DIAGNOSTIC_WORLD.experienceDefinitions![0];
+const spatialLayout = DIAGNOSTIC_WORLD.spatialLayouts![0];
+const INITIAL_PREFERENCES: ExperiencePreferences = {
+  audio: true,
+  subtitles: true,
+  comfort: true,
+  seated: false,
+  reducedMotion: false,
+};
 
 function findMaterial(id: string) {
   const material = DIAGNOSTIC_WORLD.materials.find(item => item.id === id);
@@ -62,6 +79,12 @@ export default function WorldBuilderDiagnosticViewer() {
   const sessionRef = useRef<AssessmentSession>(
     createAssessmentSession(sequence),
   );
+  const lessonSessionRef = useRef(createLessonSession(experience));
+  const [lessonSnapshot, setLessonSnapshot] = useState(
+    lessonSessionRef.current.snapshot(),
+  );
+  const [started, setStarted] = useState(false);
+  const [preferences, setPreferences] = useState(INITIAL_PREFERENCES);
   const [runId, setRunId] = useState(0);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [error, setError] = useState('');
@@ -76,6 +99,20 @@ export default function WorldBuilderDiagnosticViewer() {
     () => `${Math.min(promptIndex + 1, sequence.prompts.length)} of ${sequence.prompts.length}`,
     [promptIndex],
   );
+  const cuePlacement = useMemo(() => resolveCuePlacement({
+    primary: spatialLayout.cueBay.position,
+    fallbacks: spatialLayout.cueBay.fallbackPositions,
+    focusDirection: [0, 0, -1],
+    minimumSeparationDegrees: 25,
+  }), []);
+  const clearViewIssues = useMemo(() => verifyClearView(
+    spatialLayout.browserClearView,
+    [
+      { x: 0, y: 0, width: 1, height: 0.1 },
+      { x: 0, y: 0.84, width: 1, height: 0.16 },
+    ],
+    0.08,
+  ), []);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -242,6 +279,7 @@ export default function WorldBuilderDiagnosticViewer() {
       let profile = browserProfile;
       let frameCount = 0;
       let sampleStart = performance.now();
+      let settledEvidenceRecorded = false;
       runtime = createWorldRuntime({
         resourceRegistry,
         systems: [
@@ -254,6 +292,14 @@ export default function WorldBuilderDiagnosticViewer() {
               const body = physics.body('painted-sphere');
               paintedSphere.position.set(...body.positionMeters);
               paintedSphere.quaternion.set(...body.rotation);
+              if (!settledEvidenceRecorded
+                && body.positionMeters[1] <= 0.43
+                && lessonSessionRef.current.snapshot().performedActionIds.includes('release-sphere')) {
+                settledEvidenceRecorded = true;
+                setLessonSnapshot(
+                  lessonSessionRef.current.recordEvidence('sphere-settled'),
+                );
+              }
             },
             dispose() {},
           },
@@ -386,8 +432,37 @@ export default function WorldBuilderDiagnosticViewer() {
     setMastered(false);
   }
 
+  function startBrowser() {
+    const current = lessonSessionRef.current.snapshot();
+    if (!current.performedActionIds.includes('release-sphere')) {
+      setLessonSnapshot(
+        lessonSessionRef.current.performAction('release-sphere'),
+      );
+    }
+    setStarted(true);
+    setRunId(value => value + 1);
+  }
+
   return (
-    <main className="diagnostic-shell">
+    <SimulationExperienceShell
+      title="Material, light & evidence"
+      classContext="W0 reference world · Internal QA"
+      objective={experience.objective}
+      snapshot={lessonSnapshot}
+      started={started}
+      preferences={preferences}
+      onPreferencesChange={setPreferences}
+      onStartBrowser={startBrowser}
+      onPrevious={() => setLessonSnapshot(lessonSessionRef.current.previous())}
+      onNext={() => setLessonSnapshot(lessonSessionRef.current.next())}
+      evidence={lessonSnapshot.recordedEvidenceIds}
+      error={status === 'error' ? error : undefined}
+    >
+    <main
+      className="diagnostic-shell"
+      data-cue-position={cuePlacement.join(',')}
+      data-clear-view={clearViewIssues.length === 0 ? 'verified' : 'blocked'}
+    >
       <header className="diagnostic-header">
         <div>
           <span>W0 REFERENCE WORLD · INTERNAL QA</span>
@@ -679,5 +754,6 @@ export default function WorldBuilderDiagnosticViewer() {
         }
       `}</style>
     </main>
+    </SimulationExperienceShell>
   );
 }
