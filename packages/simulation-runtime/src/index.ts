@@ -98,3 +98,8 @@ export type {
   LessonSession,
   LessonSnapshot,
 } from './experience/lessonSession';
+export { createActionRouter } from './input/actionRouter';
+export type {
+  ActionHandler,
+  ActionRouter,
+} from './input/actionRouter';
