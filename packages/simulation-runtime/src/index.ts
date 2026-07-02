@@ -93,3 +93,8 @@ export type {
   MatterPhase,
   MatterStateOutput,
 } from './models/matterStateModel';
+export { createLessonSession } from './experience/lessonSession';
+export type {
+  LessonSession,
+  LessonSnapshot,
+} from './experience/lessonSession';
