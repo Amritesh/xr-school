@@ -88,3 +88,8 @@ export type {
   CircuitInput,
   CircuitOutput,
 } from './models/circuitModel';
+export { evaluateMatterState } from './models/matterStateModel';
+export type {
+  MatterPhase,
+  MatterStateOutput,
+} from './models/matterStateModel';

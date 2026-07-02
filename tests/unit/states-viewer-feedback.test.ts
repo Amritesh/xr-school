@@ -30,4 +30,18 @@ describe('States of Matter viewer headset regressions', () => {
     expect(source).toContain('createParticleCloud');
     expect(source).toContain('physicsWorldRef');
   });
+
+  it('uses the shared world host, matter model, mapped PBR, and mastery', () => {
+    expect(source).toContain('createWebSimulationRuntime');
+    expect(source).toContain('createMaterialFactory');
+    expect(source).toContain('createEnvironment');
+    expect(source).toContain('STATES_WORLD');
+    expect(source).toContain('evaluateMatterState');
+    expect(source).toContain('createAssessmentSession');
+    expect(source).toContain('fixedUpdate');
+    expect(source).toContain('renderUpdate');
+    expect(source).not.toContain('new THREE.WebGLRenderer');
+    expect(source).not.toContain('renderer.setAnimationLoop');
+    expect(source).not.toContain('renderer.render(scene, camera)');
+  });
 });

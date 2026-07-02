@@ -25,6 +25,7 @@ describe('web simulation runtime host', () => {
       'apps/web/lib/world-builder/webSimulationRuntime.ts',
       'apps/web/components/simulations/PollinationViewer.tsx',
       'apps/web/components/simulations/CircuitViewer.tsx',
+      'apps/web/components/simulations/StatesOfMatterViewer.tsx',
     ];
     for (const file of clientFiles) {
       const source = readFileSync(resolve(process.cwd(), file), 'utf8');

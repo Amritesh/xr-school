@@ -5,6 +5,20 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createParticleCloud, createPhysicsWorld, type RuntimePhysicsWorld } from '@/lib/runtimePhysics';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import {
+  createAssessmentSession,
+  type AssessmentAnswerResult,
+} from '../../../../packages/simulation-runtime/src/world/assessment';
+import { createScientificModelRegistry } from '../../../../packages/simulation-runtime/src/world/scientificModels';
+import { evaluateMatterState } from '../../../../packages/simulation-runtime/src/models/matterStateModel';
+import { createEnvironment } from '@/lib/world-builder/environmentFactory';
+import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
+import { STATES_WORLD } from '@/lib/world-builder/statesWorld';
+import {
+  createWebSimulationRuntime,
+  type WebSimulationRuntime,
+  type WebSimulationUpdates,
+} from '@/lib/world-builder/webSimulationRuntime';
 
 const STAGES = [
   {
@@ -51,15 +65,16 @@ const NARRATION_AUDIO_URLS = [
   '/audio/states-of-matter/stage-03.mp3',
   '/audio/states-of-matter/stage-04.mp3',
 ];
+const ASSESSMENT_STAGE_REQUIREMENTS = [1, 2, 3] as const;
+const ASSESSMENT_SEQUENCE = STATES_WORLD.assessments[0];
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
 function stateFromHeat(heat: number) {
-  if (heat < 0.34) return STAGES[0];
-  if (heat < 0.68) return STAGES[1];
-  return STAGES[2];
+  const phase = evaluateMatterState(heat).phase;
+  return STAGES.find(stage => stage.key === phase) ?? STAGES[0];
 }
 
 function drawCueCard(canvas: HTMLCanvasElement, stage: Stage, heat: number) {
@@ -150,11 +165,17 @@ export default function StatesOfMatterViewer() {
   const cueTextureRef = useRef<THREE.CanvasTexture | null>(null);
   const heatRef = useRef<number>(STAGES[0].heat);
   const stageRef = useRef(0);
+  const assessmentRef = useRef(createAssessmentSession(STATES_WORLD.assessments[0]));
 
   const [started, setStarted] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
   const [heat, setHeat] = useState<number>(STAGES[0].heat);
+  const [runtimeError, setRuntimeError] = useState('');
+  const [assessmentPromptIndex, setAssessmentPromptIndex] = useState(0);
+  const [assessmentResult, setAssessmentResult] =
+    useState<AssessmentAnswerResult | null>(null);
+  const [mastered, setMastered] = useState(false);
 
   const stage = STAGES[stageIndex];
   const observedState = useMemo(() => (stage.key === 'phase-change' ? stateFromHeat(heat) : stage), [heat, stage]);
@@ -166,33 +187,75 @@ export default function StatesOfMatterViewer() {
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+    const hostMount = mount;
+    let cancelled = false;
+    let host: WebSimulationRuntime | undefined;
+    let fixedUpdate: WebSimulationUpdates['fixedUpdate'];
+    let renderUpdate: WebSimulationUpdates['renderUpdate'];
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.xr.enabled = true;
-    renderer.xr.setReferenceSpaceType('local-floor');
-    renderer.shadowMap.enabled = true;
-    mount.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
+    async function start() {
+    setRuntimeError('');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x08111f);
-    scene.fog = new THREE.Fog(0x08111f, 6, 18);
-
-    const camera = new THREE.PerspectiveCamera(68, mount.clientWidth / mount.clientHeight, 0.05, 50);
+    const camera = new THREE.PerspectiveCamera(68, 1, 0.05, 50);
     camera.position.set(0, 1.65, 4.4);
     camera.lookAt(0, 1.2, 0);
 
-    scene.add(new THREE.HemisphereLight(0x90cdf4, 0x0f172a, 1.4));
-    const key = new THREE.DirectionalLight(0xffffff, 1.9);
-    key.position.set(4, 6, 4);
-    key.castShadow = true;
-    scene.add(key);
+    host = createWebSimulationRuntime({
+      mount: hostMount,
+      scene,
+      camera,
+      updates: {
+        fixedUpdate: context => fixedUpdate?.(context),
+        renderUpdate: context => renderUpdate?.(context),
+      },
+    });
+    const renderer = host.renderer;
+    rendererRef.current = renderer;
+
+    const factory = createMaterialFactory({
+      assets: STATES_WORLD.assetManifests[0],
+      materials: STATES_WORLD.materials,
+      qualityProfileId: 'questBaseline',
+      maxAnisotropy: renderer.capabilities.getMaxAnisotropy(),
+    });
+    const definition = (id: string) => {
+      const value = STATES_WORLD.materials.find(material => material.id === id);
+      if (!value) throw new Error(`Missing States material ${id}`);
+      return value;
+    };
+    const [floorMaterial, chamberMaterial, heaterMaterial, particleMaterial] =
+      await Promise.all(['lab-floor', 'chamber-shell', 'heater', 'particle-marker']
+        .map(id => factory.create(definition(id))));
+    if (cancelled) {
+      factory.dispose();
+      await host.dispose();
+      return;
+    }
+    host.resources.register('states-materials', () => factory.dispose());
+    const environment = await createEnvironment({
+      renderer,
+      scene,
+      definition: STATES_WORLD.environments[0],
+      assets: STATES_WORLD.assetManifests[0],
+    });
+    if (cancelled) {
+      await host.dispose();
+      return;
+    }
+    host.resources.register('states-environment', () => environment.dispose());
+
+    const models = createScientificModelRegistry();
+    models.register({
+      manifest: STATES_WORLD.scientificModels[0],
+      evaluate: input => evaluateMatterState(Number(input.heat)),
+    });
+    const modelFailures = models.verify('matter-state-from-heat');
+    if (modelFailures.length) throw new Error(modelFailures.join('; '));
+    host.resources.register('states-scientific-model', () => models.dispose());
 
     const floor = new THREE.Mesh(
       new THREE.CircleGeometry(7, 64),
-      new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.85 })
+      floorMaterial,
     );
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
@@ -200,7 +263,7 @@ export default function StatesOfMatterViewer() {
 
     const chamber = new THREE.Mesh(
       new THREE.BoxGeometry(3.1, 2.2, 3.1),
-      new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.12, roughness: 0.2 })
+      chamberMaterial,
     );
     chamber.position.y = 1.25;
     scene.add(chamber);
@@ -214,13 +277,12 @@ export default function StatesOfMatterViewer() {
 
     const heater = new THREE.Mesh(
       new THREE.CylinderGeometry(1.6, 1.6, 0.08, 48),
-      new THREE.MeshStandardMaterial({ color: 0x7c2d12, emissive: 0xef4444, emissiveIntensity: 0.6 })
+      heaterMaterial,
     );
     heater.position.set(0, 0.1, 0);
     scene.add(heater);
 
     const particleGeometry = new THREE.SphereGeometry(0.075, 16, 16);
-    const particleMaterial = new THREE.MeshStandardMaterial({ color: STAGES[0].color, emissive: STAGES[0].color, emissiveIntensity: 0.45 });
     const particles: THREE.Mesh[] = [];
     const physicsWorld = createPhysicsWorld({
       bounds: { min: { x: -1.45, y: 0.35, z: -1.45 }, max: { x: 1.45, y: 2.1, z: 1.45 } },
@@ -307,22 +369,36 @@ export default function StatesOfMatterViewer() {
     controls.maxPolarAngle = Math.PI / 2 - 0.05;
     controlsRef.current = controls;
 
-    const clock = new THREE.Clock();
-    renderer.setAnimationLoop(() => {
-      const dt = Math.min(clock.getDelta(), 0.033);
-      const elapsed = clock.elapsedTime;
+    fixedUpdate = ({ deltaSeconds, elapsedSeconds }) => {
       const activeStage = STAGES[stageRef.current];
       const activeHeat = heatRef.current;
       const visualState = activeStage.key === 'phase-change' ? stateFromHeat(activeHeat) : activeStage;
       const forceScale = 0.45 + activeHeat * 4.2;
       const physicsWorld = physicsWorldRef.current;
-      const bodyPositions = new Map(physicsWorld?.bodies().map(body => [body.id, body.position]) ?? []);
+      if (visualState.key !== 'solid') {
+        particles.forEach((_, i) => {
+          physicsWorld?.applyForce(`matter-particle-${i}`, {
+            x: Math.sin(elapsedSeconds * 1.7 + i * 12.9898) * forceScale,
+            y: Math.cos(elapsedSeconds * 1.3 + i * 78.233) * forceScale * 0.72,
+            z: Math.sin(elapsedSeconds * 1.1 + i * 37.719) * forceScale,
+          });
+        });
+        physicsWorld?.step(deltaSeconds);
+      }
+    };
 
+    renderUpdate = ({ elapsedSeconds, interpolationAlpha, renderer }) => {
+      const activeStage = STAGES[stageRef.current];
+      const activeHeat = heatRef.current;
+      const visualState = activeStage.key === 'phase-change' ? stateFromHeat(activeHeat) : activeStage;
+      const elapsed = elapsedSeconds + interpolationAlpha / 60;
+      const bodyPositions = new Map(
+        physicsWorldRef.current?.bodies().map(body => [body.id, body.position]) ?? [],
+      );
       particles.forEach((particle, i) => {
         const material = particle.material as THREE.MeshStandardMaterial;
         material.color.setHex(visualState.color);
         material.emissive.setHex(visualState.color);
-
         if (visualState.key === 'solid') {
           const row = i % 6;
           const col = Math.floor(i / 6) % 6;
@@ -330,18 +406,10 @@ export default function StatesOfMatterViewer() {
           const base = new THREE.Vector3((row - 2.5) * 0.28, 0.74 + col * 0.18, (layer - 0.5) * 0.34);
           particle.position.lerp(base.add(new THREE.Vector3(Math.sin(elapsed * 10 + i) * 0.025, Math.cos(elapsed * 9 + i) * 0.025, 0)), 0.12);
         } else {
-          physicsWorld?.applyForce(`matter-particle-${i}`, {
-            x: Math.sin(elapsed * 1.7 + i * 12.9898) * forceScale,
-            y: Math.cos(elapsed * 1.3 + i * 78.233) * forceScale * 0.72,
-            z: Math.sin(elapsed * 1.1 + i * 37.719) * forceScale,
-          });
           const position = bodyPositions.get(`matter-particle-${i}`);
           if (position) particle.position.lerp(new THREE.Vector3(position.x, position.y, position.z), 0.75);
         }
       });
-
-      if (visualState.key !== 'solid') physicsWorld?.step(dt);
-
       if (cueCanvasRef.current && cueTextureRef.current) {
         drawCueCard(cueCanvasRef.current, visualState, activeHeat);
         cueTextureRef.current.needsUpdate = true;
@@ -352,26 +420,37 @@ export default function StatesOfMatterViewer() {
       cueMesh.lookAt(activeCamera.position);
       stageButtons.forEach(button => button.lookAt(activeCamera.position));
       if (!renderer.xr.isPresenting) controls.update();
-      renderer.render(scene, camera);
-    });
-
-    const onResize = () => {
-      camera.aspect = mount.clientWidth / mount.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
-    window.addEventListener('resize', onResize);
 
-    return () => {
-      renderer.setAnimationLoop(null);
-      window.removeEventListener('resize', onResize);
+    host.resources.register('states-controls', () => controls.dispose());
+    host.resources.register('states-listeners', () => {
       controller0.removeEventListener('selectstart', onControllerSelect as any);
       controller1.removeEventListener('selectstart', onControllerSelect as any);
-      controls.dispose();
-      renderer.dispose();
-      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
+    });
+    host.resources.register('states-scene', () => {
+      scene.traverse(object => {
+        if (!(object instanceof THREE.Mesh)) return;
+        object.geometry.dispose();
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        materials.forEach(material => material.dispose());
+      });
+      scene.clear();
       physicsWorldRef.current = null;
+    });
+    await host.initialize();
+    }
+
+    void start().catch(error => {
+      if (!cancelled) {
+        setRuntimeError(error instanceof Error ? error.message : String(error));
+      }
+      void host?.dispose();
+    });
+
+    return () => {
+      cancelled = true;
       stopSimulationNarration();
+      void host?.dispose();
     };
   }, []);
 
@@ -412,9 +491,36 @@ export default function StatesOfMatterViewer() {
     stageRef.current = 3;
   };
 
+  const answerAssessment = useCallback((evidenceId: string) => {
+    const prompt = ASSESSMENT_SEQUENCE.prompts[assessmentPromptIndex];
+    const result = assessmentRef.current.answer(prompt.id, evidenceId);
+    setAssessmentResult(result);
+    setMastered(assessmentRef.current.mastery().mastered);
+  }, [assessmentPromptIndex]);
+
+  const continueAssessment = useCallback(() => {
+    setAssessmentPromptIndex(index => Math.min(
+      index + 1,
+      ASSESSMENT_SEQUENCE.prompts.length - 1,
+    ));
+    setAssessmentResult(null);
+  }, []);
+
+  const assessmentPrompt = ASSESSMENT_SEQUENCE.prompts[assessmentPromptIndex];
+  const assessmentReady = stageIndex >= (
+    ASSESSMENT_STAGE_REQUIREMENTS[assessmentPromptIndex] ?? STAGES.length
+  );
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', background: '#08111f' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+
+      {runtimeError && (
+        <div role="alert" style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'grid', placeContent: 'center', padding: 24, background: 'rgba(2,6,23,0.96)', color: '#fecaca', textAlign: 'center' }}>
+          <strong>States of Matter world could not start.</strong>
+          <span style={{ marginTop: 8 }}>{runtimeError}</span>
+        </div>
+      )}
 
       {!started && (
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 50% 35%, #0f2a44 0%, #050812 72%)', zIndex: 10 }}>
@@ -434,6 +540,39 @@ export default function StatesOfMatterViewer() {
 
       {started && (
         <>
+          {assessmentReady && (
+            <aside aria-label="Matter evidence check" style={{ position: 'absolute', left: 18, top: 86, zIndex: 5, width: 320, padding: 16, borderRadius: 12, background: 'rgba(2,6,23,0.92)', border: '1px solid rgba(56,189,248,0.28)', color: '#e5e7eb' }}>
+              {mastered ? (
+                <>
+                  <strong style={{ color: '#86efac' }}>Concept mastered</strong>
+                  <p style={{ color: '#d1fae5', fontSize: 13, lineHeight: 1.5 }}>
+                    You connected particle spacing and motion to state changes and cooling.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div style={{ color: '#38bdf8', fontSize: 11, fontWeight: 900, textTransform: 'uppercase' }}>{assessmentPrompt.kind} evidence</div>
+                  <p style={{ fontSize: 14 }}>{assessmentPrompt.question}</p>
+                  <div style={{ display: 'grid', gap: 7 }}>
+                    {assessmentPrompt.options?.map(option => (
+                      <button key={option.id} disabled={assessmentResult?.correct} onClick={() => answerAssessment(option.id)} style={{ padding: 8, borderRadius: 7, border: '1px solid rgba(255,255,255,.14)', background: 'rgba(255,255,255,.06)', color: '#f8fafc', textAlign: 'left' }}>
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                  {assessmentResult && (
+                    <div style={{ marginTop: 9, color: assessmentResult.correct ? '#86efac' : '#fde68a', fontSize: 12 }}>
+                      {assessmentResult.correct ? assessmentResult.explanation : assessmentResult.hint}
+                      {assessmentResult.correct && assessmentPromptIndex < 2 && (
+                        <button onClick={continueAssessment} style={{ display: 'block', marginTop: 8, padding: '7px 10px', border: 0, borderRadius: 6, background: '#2563eb', color: '#fff' }}>Continue</button>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </aside>
+          )}
+
           <div style={{ position: 'absolute', top: 18, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8, padding: 10, borderRadius: 12, background: 'rgba(2,6,23,0.88)', border: '1px solid rgba(148,163,184,0.18)' }}>
             {STAGES.map((item, index) => (
               <button key={item.key} onClick={() => setStage(index)} style={{ padding: '9px 12px', borderRadius: 8, border: index === stageIndex ? '1px solid #38bdf8' : '1px solid transparent', background: index === stageIndex ? 'rgba(56,189,248,0.18)' : 'rgba(255,255,255,0.05)', color: index === stageIndex ? '#7dd3fc' : '#cbd5e1', fontWeight: 800, cursor: 'pointer' }}>{item.title}</button>
