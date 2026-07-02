@@ -267,3 +267,19 @@ Automated browser and build checks are necessary but not sufficient. Each
 reference-world release remains `internalQA` until direct Quest acceptance
 records 72 FPS, controls, readability, comfort, lifecycle, complete learning
 flow, assets, memory, and device temperature.
+
+### Unblocked Discovery View
+
+The experiment and its observable evidence own the center of the student's
+view. Browser guidance stays in collapsible edge regions. Quest guidance uses
+a stable off-axis spatial bay and may not remain head-locked over the
+experiment. Students can summon, repeat, and dismiss a cue.
+
+Stages advance through direct manipulation and observation, not through a
+generic Next button. Mouse, touch, keyboard, and Quest controls must perform
+equivalent lesson actions.
+
+Every world declares whether its scale is literal or representational.
+Any representational scale is explained in grade-appropriate language. Eye height,
+reach, object dimensions, label angular size, movement bounds, and cue
+placement are acceptance data rather than visual guesses.

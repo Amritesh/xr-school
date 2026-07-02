@@ -32,4 +32,18 @@ describe('world-builder documentation', () => {
     expect(release).toContain('UNSIGNED');
     expect(release).not.toContain('schoolValidated');
   });
+
+  it('documents the shared immersive experience and unobstructed-view rules', () => {
+    const architecture = read('docs/architecture/world-builder.md');
+    const designSystem = read(
+      'docs/simulation-design/simulation-design-system.md',
+    );
+
+    expect(architecture).toContain('normalized action');
+    expect(architecture).toContain('headless lesson session');
+    expect(architecture).toContain('off-axis cue bay');
+    expect(designSystem).toContain('Unblocked Discovery View');
+    expect(designSystem).toContain('direct manipulation');
+    expect(designSystem).toContain('representational scale');
+  });
 });

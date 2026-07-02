@@ -154,6 +154,9 @@ Each production world is a validated composition rooted at `WorldDefinition`:
 - `PbrMaterialDefinition` defines standard or selectively physical materials plus licensed image-map references and fallbacks.
 - `ScientificModelManifest` records internal units, valid ranges, assumptions, limitations, sources, numerical tolerance, and reference vectors. Its formulas remain hidden from the student lesson.
 - `AssessmentSequence` requires misconception and transfer prompts and defines the evidence needed for mastery.
+- `ExperienceDefinition` records grade tone, objective, stages, meaningful actions, and observable completion evidence for the headless lesson session.
+- `InteractionAffordanceDefinition` maps one entity action to equivalent mouse, touch, keyboard, and XR-controller input.
+- `SpatialLayoutDefinition` records literal or explained representational scale, eye heights, movement bounds, reach, cue placement, browser clear-view bounds, and minimum label size.
 - `AssetManifest` records provenance, redistribution license, author, dimensions, channels, compression, and explicit fallback assets.
 - `AcceptanceProfile` binds a world to a quality profile and its frame-rate, draw-call, triangle, and direct-Quest acceptance limits.
 

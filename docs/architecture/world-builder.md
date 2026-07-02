@@ -125,6 +125,28 @@ Mastery requires the configured evidence count and all required kinds.
 Production reference worlds require independent observation, misconception,
 and transfer evidence. No individual student identity is introduced.
 
+## Shared immersive experience foundation
+
+An optional `ExperienceDefinition` gives a migrating world an authored,
+grade-aware stage sequence. The headless lesson session owns meaningful
+actions, observable evidence, stage completion, and deterministic restart. It
+does not own rendering or scientific state.
+
+Mouse, touch, keyboard, and XR controllers emit the same normalized action
+contract. An action router validates the input source and phase before sending
+it to one world behavior. Cancelling a manipulation restores the last valid
+pose; an unknown action never advances the lesson silently.
+
+Each migrated world also declares a `SpatialLayoutDefinition` with literal or
+representational scale, eye heights, movement bounds, reach, label angular
+size, browser clear-view bounds, and an off-axis cue bay. Scale and occlusion
+diagnostics reject unreachable tools, unreadable labels, and UI that covers
+the active evidence region.
+
+Browser and Quest presentation are projections of the same lesson snapshot.
+The browser uses a collapsible edge HUD. Quest uses stable world-space cues
+that can be summoned or dismissed and never permanently follow the head.
+
 ## Diagnostics and acceptance
 
 Developer diagnostics expose active profile, FPS, draw calls, visible
