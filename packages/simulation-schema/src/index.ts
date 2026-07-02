@@ -343,3 +343,6 @@ export function validateCurriculumGraph(input: {
 
 export * from './world';
 export * from './worldValidation';
+export * from './experience';
+export * from './interaction';
+export * from './spatial';

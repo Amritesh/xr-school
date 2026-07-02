@@ -151,4 +151,15 @@ describe('world schema', () => {
 
     expect(validateWorldBundle(bundle).join('\n')).toMatch(/misconception.*transfer/);
   });
+
+  it('validates optional experience and spatial graph links', () => {
+    const bundle = validBundle();
+    bundle.world.experienceId = 'missing-experience';
+    bundle.world.spatialLayoutId = 'missing-spatial';
+
+    expect(validateWorldBundle(bundle)).toEqual(expect.arrayContaining([
+      'world-diagnostic: missing experience missing-experience',
+      'world-diagnostic: missing spatial layout missing-spatial',
+    ]));
+  });
 });

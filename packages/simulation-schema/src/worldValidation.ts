@@ -10,6 +10,8 @@ import type {
   WorldBundle,
   WorldEntityDefinition,
 } from './world';
+import { validateExperienceDefinition } from './experience';
+import { validateSpatialLayoutDefinition } from './spatial';
 
 function duplicates(values: readonly string[]) {
   const seen = new Set<string>();
@@ -237,6 +239,12 @@ export function validateWorldBundle(bundle: WorldBundle) {
   const acceptanceIds = new Set(bundle.acceptanceProfiles.map(item => item.id));
   const lessonIds = new Set(bundle.lessonSequenceIds);
   const systemIds = new Set(bundle.systemIds);
+  const experienceIds = new Set(
+    (bundle.experienceDefinitions ?? []).map(item => item.id),
+  );
+  const spatialLayoutIds = new Set(
+    (bundle.spatialLayouts ?? []).map(item => item.id),
+  );
 
   if (!environmentIds.has(bundle.world.environmentId)) {
     errors.push(`${bundle.world.id}: missing environment ${bundle.world.environmentId}`);
@@ -264,6 +272,12 @@ export function validateWorldBundle(bundle: WorldBundle) {
   }
   if (!acceptanceIds.has(bundle.world.acceptanceProfileId)) {
     errors.push(`${bundle.world.id}: missing acceptance profile ${bundle.world.acceptanceProfileId}`);
+  }
+  if (bundle.world.experienceId && !experienceIds.has(bundle.world.experienceId)) {
+    errors.push(`${bundle.world.id}: missing experience ${bundle.world.experienceId}`);
+  }
+  if (bundle.world.spatialLayoutId && !spatialLayoutIds.has(bundle.world.spatialLayoutId)) {
+    errors.push(`${bundle.world.id}: missing spatial layout ${bundle.world.spatialLayoutId}`);
   }
   if (!Number.isFinite(bundle.world.metersPerWorldUnit) || bundle.world.metersPerWorldUnit <= 0) {
     errors.push(`${bundle.world.id}: metersPerWorldUnit must be a positive finite number`);
@@ -295,6 +309,12 @@ export function validateWorldBundle(bundle: WorldBundle) {
   }
   for (const acceptance of bundle.acceptanceProfiles) {
     validateAcceptance(acceptance, qualityProfiles, errors);
+  }
+  for (const experience of bundle.experienceDefinitions ?? []) {
+    errors.push(...validateExperienceDefinition(experience));
+  }
+  for (const spatial of bundle.spatialLayouts ?? []) {
+    errors.push(...validateSpatialLayoutDefinition(spatial));
   }
 
   return errors;

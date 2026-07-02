@@ -69,6 +69,8 @@ export interface WorldDefinition {
   assessmentSequenceId: string;
   assetManifestId: string;
   acceptanceProfileId: string;
+  experienceId?: string;
+  spatialLayoutId?: string;
 }
 
 export interface WorldEntityDefinition {
@@ -241,4 +243,6 @@ export interface WorldBundle {
   acceptanceProfiles: AcceptanceProfile[];
   lessonSequenceIds: string[];
   systemIds: string[];
+  experienceDefinitions?: import('./experience').ExperienceDefinition[];
+  spatialLayouts?: import('./spatial').SpatialLayoutDefinition[];
 }
