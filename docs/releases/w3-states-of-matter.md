@@ -1,6 +1,6 @@
 # W3 States of Matter Reference World Release
 
-**Release status:** Production candidate
+**Release status:** Deployed internal QA reference world
 
 **Release maturity:** `internalQA`
 
@@ -29,10 +29,24 @@ not claim literal molecular size, count, trajectory, or temperature.
 | Remount | PASS — one canvas |
 | Browser console | PASS — no warnings or errors |
 
-## Production acceptance — PENDING
+## Production acceptance
 
-The immutable URL and protected Quality/Deploy runs will be recorded after
-this candidate is deployed and exercised in production.
+- GitHub Quality:
+  [run 28562764335](https://github.com/Amritesh/xr-school/actions/runs/28562764335)
+- GitHub Deploy:
+  [run 28562764358](https://github.com/Amritesh/xr-school/actions/runs/28562764358)
+- Immutable URL:
+  <https://xr-school-g1xmi1u7b-amritesh-anands-projects.vercel.app>
+- Production alias: <https://xr-school.vercel.app>
+- Release candidate: `e05cb24265b92b9c425f8db1be9443da48362059`
+- Protected Quality and Deploy workflows: PASS
+- Solid, liquid, gas, and phase-change modes: PASS
+- Observation, misconception, transfer, and mastery: PASS
+- Browser canvas ownership: PASS — exactly one canvas
+- Browser console: PASS — no warnings or errors
+
+Production acceptance covers the browser/WebXR delivery surface. It does not
+replace direct Quest acceptance.
 
 ## Direct Quest acceptance — UNSIGNED
 
