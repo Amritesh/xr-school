@@ -22,6 +22,32 @@ describe('pollination reference world', () => {
       .toEqual(['observation', 'misconception', 'transfer']);
   });
 
+  it('declares the eight performed stages and literal garden scale', () => {
+    expect(POLLINATION_WORLD.world.experienceId)
+      .toBe('experience-pollination-cycle');
+    expect(POLLINATION_WORLD.world.spatialLayoutId)
+      .toBe('spatial-pollination-garden');
+    expect(POLLINATION_WORLD.experienceDefinitions?.[0].stages)
+      .toHaveLength(8);
+    expect(POLLINATION_WORLD.experienceDefinitions?.[0].stages.map(
+      stage => stage.requiredActionIds[0],
+    )).toEqual([
+      'inspect-flower',
+      'release-pollen',
+      'observe-pollinator',
+      'transfer-pollen',
+      'trace-pollen-tube',
+      'inspect-seed-fruit',
+      'water-seed',
+      'inspect-mature-plant',
+    ]);
+    expect(POLLINATION_WORLD.spatialLayouts?.[0]).toMatchObject({
+      metersPerWorldUnit: 1,
+      scaleRepresentation: 'literal',
+      reachMeters: { min: 0.25, max: 0.85 },
+    });
+  });
+
   it('enforces pollination before fertilisation and germination', () => {
     const model = createPollinationModel();
 
