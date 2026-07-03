@@ -1,6 +1,6 @@
-#!/usr/bin/env node
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const ROOT = process.cwd();
 const CATALOG_PATH = resolve(ROOT, 'docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv');
@@ -84,7 +84,7 @@ export function validateRows(rows) {
   return errors;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const rows = parseCatalogCsv(readFileSync(CATALOG_PATH, 'utf8'));
   const errors = validateRows(rows);
   const summary = summarizeCatalog(rows);

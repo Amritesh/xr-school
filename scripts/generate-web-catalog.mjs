@@ -1,6 +1,6 @@
-#!/usr/bin/env node
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { parseCatalogCsv } from './validate-simulation-catalog.mjs';
 import {
   COURSES,
@@ -195,7 +195,7 @@ export const CURRICULUM_SEARCH_DOCUMENTS = ${JSON.stringify(documents, null, 2)}
 `;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const rows = toWebCatalogRows(parseCatalogCsv(readFileSync(CATALOG_PATH, 'utf8')));
   const documents = buildCurriculumSearchDocuments({
     catalogRows: rows,
