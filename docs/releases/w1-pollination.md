@@ -4,7 +4,31 @@
 
 **Release maturity:** `internalQA`
 
-**Implementation commit:** `71b97c54`
+**Production-slice implementation commit:** `f3c00e9e`
+
+## 4 July 2026 production slice
+
+Pollination is no longer a narrated stage viewer. It is a treatment/control
+field experiment modelled after the production structure demonstrated by
+[Labster's Electrical Resistance simulation](https://www.labster.com/simulations/electrical-resistance):
+a concrete mission, believable apparatus, direct action, visible consequences,
+theory at the moment it is needed, and evidence-gated progress.
+
+The student now:
+
+1. identifies reproductive flower structures;
+2. collects pollen on a field brush;
+3. observes natural bee pollination;
+4. transfers pollen to the treatment stigma while leaving a control untouched;
+5. traces fertilisation through an explicitly enlarged pistil cutaway;
+6. advances time and compares treatment with control;
+7. opens the fruit, plants, covers, and waters a seed; and
+8. inspects radicle and plumule in an explicitly enlarged soil cutaway.
+
+The slice also adds reusable tool-interaction and scale-transition controllers,
+focused botany/garden/tool/scene modules, Quest controller rays and snap turn,
+a dense school-garden set, compact edge controls, and keyboard-equivalent
+actions. A generic Next button cannot bypass the experiment.
 
 ## Scope
 
@@ -31,15 +55,17 @@ Evidence captured for the release candidate:
 | Check | Result |
 |---|---|
 | Root verification | PASS |
-| Unit suite | PASS — 285 tests across 38 files |
+| Unit suite | PASS — 331 tests across 49 files |
 | TypeScript | PASS — web `tsc --noEmit` |
 | Production build | PASS — Pollination and all released routes generated |
 | TypeSpec and OpenAPI | PASS |
 | Generated-source freshness | PASS |
 | Spec drift | PASS — no errors or warnings |
-| Pollination browser flow | PASS — all eight stages and three evidence kinds |
+| Pollination browser flow | PASS — complete direct-action treatment/control path |
 | Browser remount | PASS — one canvas after reload |
 | Browser console | PASS — no warnings or errors |
+| Desktop visual acceptance | PASS — 1280 × 720 launch, garden, pistil cutaway, treatment/control, and germination |
+| Narrow visual acceptance | PASS — 390 × 844 controls stay at edges without collision |
 
 ## Production acceptance
 
