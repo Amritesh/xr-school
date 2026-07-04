@@ -42,6 +42,30 @@ describe('Pollination production viewer', () => {
     expect(source).toContain('started && remainingActions.length > 0');
   });
 
+  it('finishes the final stage through a terminal completion state instead of looping on Complete', () => {
+    expect(source).toContain('setCompleted(true)');
+    expect(source).toContain('completed={completed}');
+    expect(source).toContain('if (snapshotRef.current.lessonComplete)');
+    expect(source).not.toContain('evidence={[...evidence, scaleDisclosure]}');
+  });
+
+  it('keeps scale disclosure separate from biological evidence in the shared HUD', () => {
+    const shell = readFileSync(
+      resolve(process.cwd(), 'apps/web/components/simulation-experience/SimulationExperienceShell.tsx'),
+      'utf8',
+    );
+    const hud = readFileSync(
+      resolve(process.cwd(), 'apps/web/components/simulation-experience/BrowserExperienceHud.tsx'),
+      'utf8',
+    );
+
+    expect(shell).toContain('scaleNote');
+    expect(shell).toContain('completed');
+    expect(hud).toContain('scaleNote');
+    expect(hud).toContain('evidence.length');
+    expect(hud).not.toContain('Evidence {evidence.length +');
+  });
+
   it('supports pointer, keyboard-equivalent controls, and Quest controllers', () => {
     expect(source).toContain("'mouse'");
     expect(source).toContain("'keyboard'");

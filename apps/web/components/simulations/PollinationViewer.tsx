@@ -162,6 +162,7 @@ export default function PollinationViewer() {
   const [snapshot, setSnapshot] = useState(snapshotRef.current);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
   const [started, setStarted] = useState(false);
+  const [completed, setCompleted] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
   const [runtimeError, setRuntimeError] = useState('');
   const [evidence, setEvidence] = useState<string[]>([]);
@@ -275,6 +276,7 @@ export default function PollinationViewer() {
   performRef.current = performAction;
 
   const previous = useCallback(() => {
+    setCompleted(false);
     const next = experienceRef.current.previous();
     snapshotRef.current = next;
     setSnapshot(next);
@@ -285,6 +287,10 @@ export default function PollinationViewer() {
 
   const next = useCallback(() => {
     if (!snapshotRef.current.stageComplete) return;
+    if (snapshotRef.current.lessonComplete) {
+      setCompleted(true);
+      return;
+    }
     try {
       const nextSnapshot = experienceRef.current.next();
       snapshotRef.current = nextSnapshot;
@@ -621,7 +627,9 @@ export default function PollinationViewer() {
       onEnterVr={vrSupported ? enterVr : undefined}
       onPrevious={previous}
       onNext={next}
-      evidence={[...evidence, scaleDisclosure]}
+      evidence={evidence}
+      scaleNote={scaleDisclosure}
+      completed={completed}
       error={runtimeError || undefined}
     >
       <div ref={mountRef} className="pollination-world-mount" />

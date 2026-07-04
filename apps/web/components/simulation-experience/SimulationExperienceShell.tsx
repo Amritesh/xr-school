@@ -21,6 +21,8 @@ interface SimulationExperienceShellProps {
   onPrevious(): void;
   onNext(): void;
   evidence: readonly string[];
+  scaleNote?: string;
+  completed?: boolean;
   error?: string;
   projector?: boolean;
   children: ReactNode;
@@ -39,6 +41,8 @@ export default function SimulationExperienceShell({
   onPrevious,
   onNext,
   evidence,
+  scaleNote,
+  completed = false,
   error,
   projector = false,
   children,
@@ -66,6 +70,8 @@ export default function SimulationExperienceShell({
           title={title}
           snapshot={snapshot}
           evidence={evidence}
+          scaleNote={scaleNote}
+          completed={completed}
           onPrevious={onPrevious}
           onNext={onNext}
         />

@@ -181,6 +181,59 @@
 .simulation-experience__evidence-drawer li,
 .simulation-experience__evidence-drawer p { margin-top: 10px; color: #b7c4d7; font-size: .82rem; }
 
+.simulation-experience__scale-note {
+  position: absolute;
+  z-index: 5;
+  top: 82px;
+  left: 16px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 10px 12px;
+  border: 1px solid rgba(167, 243, 208, .2);
+  border-radius: 12px;
+  background: rgba(8, 24, 22, .62);
+  color: #b9f6dc;
+  font-size: .75rem;
+  line-height: 1.45;
+  backdrop-filter: blur(12px);
+}
+
+.simulation-experience__complete-panel {
+  position: absolute;
+  z-index: 7;
+  top: 50%;
+  left: 50%;
+  width: min(520px, calc(100vw - 32px));
+  padding: 24px;
+  border: 1px solid rgba(125, 231, 246, .28);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(125, 231, 246, .16), transparent 14rem),
+    rgba(8, 13, 31, .88);
+  box-shadow: 0 24px 100px rgba(0, 0, 0, .42);
+  backdrop-filter: blur(18px);
+  transform: translate(-50%, -50%);
+}
+
+.simulation-experience__complete-panel > span {
+  color: #a7f3d0;
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.simulation-experience__complete-panel h2 {
+  margin: 8px 0;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -.04em;
+}
+
+.simulation-experience__complete-panel p {
+  color: #c3cee0;
+  font-size: .92rem;
+  line-height: 1.6;
+}
+
 .simulation-experience__mission-dock {
   position: absolute;
   z-index: 5;

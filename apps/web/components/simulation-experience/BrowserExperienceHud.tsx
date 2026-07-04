@@ -9,6 +9,8 @@ interface BrowserExperienceHudProps {
   title: string;
   snapshot: LessonSnapshot;
   evidence: readonly string[];
+  scaleNote?: string;
+  completed?: boolean;
   onPrevious(): void;
   onNext(): void;
 }
@@ -17,6 +19,8 @@ export default function BrowserExperienceHud({
   title,
   snapshot,
   evidence,
+  scaleNote,
+  completed = false,
   onPrevious,
   onNext,
 }: BrowserExperienceHudProps) {
@@ -40,6 +44,12 @@ export default function BrowserExperienceHud({
         </button>
       </header>
 
+      {scaleNote && (
+        <aside className="simulation-experience__scale-note" aria-label="Scale note">
+          {scaleNote}
+        </aside>
+      )}
+
       <aside
         id="experience-evidence"
         className="simulation-experience__evidence-drawer"
@@ -51,6 +61,21 @@ export default function BrowserExperienceHud({
           <ul>{evidence.map(item => <li key={item}>{item}</li>)}</ul>
         ) : <p>Perform the experiment and observe what changes.</p>}
       </aside>
+
+      {completed && (
+        <section className="simulation-experience__complete-panel" aria-labelledby="experience-complete">
+          <span>Experiment complete</span>
+          <h2 id="experience-complete">Cycle observed and recorded</h2>
+          <p>
+            You inspected the flower, transferred pollen, traced fertilisation,
+            compared treatment with control, planted a seed, and identified the
+            radicle and plumule.
+          </p>
+          <button type="button" className="secondary" onClick={onPrevious}>
+            Review final observation
+          </button>
+        </section>
+      )}
 
       <section className="simulation-experience__mission-dock" aria-labelledby="experience-mission">
         <div className="simulation-experience__stage-number">
