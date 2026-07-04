@@ -2,8 +2,14 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const deployWorkflow = readFileSync(resolve(process.cwd(), '.github/workflows/deploy.yml'), 'utf8');
-const qualityWorkflow = readFileSync(resolve(process.cwd(), '.github/workflows/quality.yml'), 'utf8');
+const normalizeLineEndings = (text: string) => text.replace(/\r\n/g, '\n');
+
+const deployWorkflow = normalizeLineEndings(
+  readFileSync(resolve(process.cwd(), '.github/workflows/deploy.yml'), 'utf8'),
+);
+const qualityWorkflow = normalizeLineEndings(
+  readFileSync(resolve(process.cwd(), '.github/workflows/quality.yml'), 'utf8'),
+);
 const rootPackage = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
   scripts?: Record<string, string>;
 };

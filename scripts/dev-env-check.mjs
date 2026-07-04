@@ -1,6 +1,6 @@
-#!/usr/bin/env node
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 export function isSupportedNodeVersion(versionText) {
   const match = String(versionText).trim().match(/^v?(\d+)\./);
@@ -21,7 +21,12 @@ export function buildRequiredPaths(root = process.cwd()) {
   ];
 }
 
-export function runDevEnvCheck({ root = process.cwd(), nodeVersion = process.version, exists = existsSync } = {}) {
+export function runDevEnvCheck({
+  root = process.cwd(),
+  nodeVersion = process.version,
+  exists = existsSync,
+  platform = process.platform,
+} = {}) {
   const failures = [];
 
   if (!isSupportedNodeVersion(nodeVersion)) {
@@ -33,7 +38,7 @@ export function runDevEnvCheck({ root = process.cwd(), nodeVersion = process.ver
     failures.push(`Missing required file: ${label}`);
   }
 
-  if (!exists('/bin/sh')) {
+  if (platform !== 'win32' && !exists('/bin/sh')) {
     failures.push('Missing /bin/sh. npm script execution expects a POSIX shell.');
   }
 
@@ -43,7 +48,7 @@ export function runDevEnvCheck({ root = process.cwd(), nodeVersion = process.ver
   };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const result = runDevEnvCheck();
   if (result.ok) {
     console.log('Dev environment check passed.');

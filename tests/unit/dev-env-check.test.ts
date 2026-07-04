@@ -31,4 +31,16 @@ describe('dev environment check', () => {
 
     expect(missing).toEqual(['catalog']);
   });
+
+  it('does not require a POSIX shell on Windows', async () => {
+    const { runDevEnvCheck } = await import(modulePath);
+
+    const result = runDevEnvCheck({
+      nodeVersion: 'v22.0.0',
+      platform: 'win32',
+      exists: () => true,
+    });
+
+    expect(result.failures).not.toContain('Missing /bin/sh. npm script execution expects a POSIX shell.');
+  });
 });
