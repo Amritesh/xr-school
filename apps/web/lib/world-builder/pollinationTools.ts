@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { POLLINATION_LAYOUT } from './pollinationLayout';
 
 export interface PollinationToolMaterials {
   wood: THREE.Material;
@@ -48,7 +49,7 @@ export function createPollinationTools(materials: PollinationToolMaterials) {
   bristles.position.x = 0.215;
   bristles.name = 'brush-bristles';
   brush.add(brushHandle, ferrule, bristles);
-  brush.position.set(-0.45, 0.94, 0.03);
+  brush.position.set(...POLLINATION_LAYOUT.toolLocal.brush);
   root.add(brush);
 
   const lens = new THREE.Group();
@@ -65,7 +66,7 @@ export function createPollinationTools(materials: PollinationToolMaterials) {
   );
   lensGlass.position.z = -0.003;
   lens.add(lensHandle, lensRim, lensGlass);
-  lens.position.set(-0.06, 1.04, 0.03);
+  lens.position.set(...POLLINATION_LAYOUT.toolLocal.lens);
   root.add(lens);
 
   const wateringCan = new THREE.Group();
@@ -95,7 +96,7 @@ export function createPollinationTools(materials: PollinationToolMaterials) {
   handle.position.y = 0.27;
   handle.rotation.z = Math.PI / 2;
   wateringCan.add(canBody, spout, rose, handle);
-  wateringCan.position.set(0.48, 0.91, -0.02);
+  wateringCan.position.set(...POLLINATION_LAYOUT.toolLocal['watering-can']);
   root.add(wateringCan);
 
   const trowel = new THREE.Group();
@@ -109,7 +110,7 @@ export function createPollinationTools(materials: PollinationToolMaterials) {
   blade.rotation.z = -Math.PI / 2;
   blade.position.x = 0.18;
   trowel.add(trowelHandle, blade);
-  trowel.position.set(0.04, 0.94, -0.18);
+  trowel.position.set(...POLLINATION_LAYOUT.toolLocal.trowel);
   root.add(trowel);
 
   const timeLapseDial = new THREE.Group();
@@ -125,7 +126,7 @@ export function createPollinationTools(materials: PollinationToolMaterials) {
   dialKnob.position.y = 0.06;
   dialKnob.name = 'time-lapse-knob';
   timeLapseDial.add(dialBase, dialKnob);
-  timeLapseDial.position.set(0.43, 0.94, 0.25);
+  timeLapseDial.position.set(...POLLINATION_LAYOUT.toolLocal['time-lapse-dial']);
   root.add(timeLapseDial);
 
   const tagBoard = new THREE.Group();
@@ -140,7 +141,7 @@ export function createPollinationTools(materials: PollinationToolMaterials) {
     tag.userData.colour = colour;
     tagBoard.add(tag);
   }
-  tagBoard.position.set(-0.2, 0.96, 0.27);
+  tagBoard.position.set(...POLLINATION_LAYOUT.toolLocal['field-tags']);
   root.add(tagBoard);
 
   return {

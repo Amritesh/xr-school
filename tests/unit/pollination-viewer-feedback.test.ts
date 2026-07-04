@@ -120,6 +120,8 @@ describe('Pollination production viewer', () => {
     expect(scene).toContain('pistilCutaway');
     expect(scene).toContain("name = 'enlarged-germination-cutaway'");
     expect(scene).toContain('germinationCutaway');
+    expect(scene).toContain('POLLINATION_LAYOUT');
+    expect(tools).toContain('POLLINATION_LAYOUT');
     expect(scene).toContain('dispose()');
   });
 });

@@ -16,6 +16,7 @@ import {
   createPollinationTools,
   type PollinationToolMaterials,
 } from './pollinationTools';
+import { POLLINATION_LAYOUT } from './pollinationLayout';
 
 export type PollinationSceneMaterials =
   & PollinationBotanyMaterials
@@ -38,30 +39,30 @@ export function createPollinationScene(config: PollinationSceneConfig) {
 
   const treatmentFlower = createFlowerSpecimen(config.materials, {
     id: 'treatment',
-    position: [-0.55, 0.31, -1.05],
-    height: 0.92,
+    position: [...POLLINATION_LAYOUT.treatmentFlower.position],
+    height: POLLINATION_LAYOUT.treatmentFlower.height,
   });
   const controlFlower = createFlowerSpecimen(config.materials, {
     id: 'control',
-    position: [0.55, 0.31, -1.2],
-    height: 0.88,
+    position: [...POLLINATION_LAYOUT.controlFlower.position],
+    height: POLLINATION_LAYOUT.controlFlower.height,
   });
   root.add(treatmentFlower.root, controlFlower.root);
 
   const bee = createBee(config.materials);
-  bee.root.position.set(-1.7, 1.42, -1.2);
+  bee.root.position.set(...POLLINATION_LAYOUT.beeFlightCenter);
   root.add(bee.root);
 
   const fruit = createFruitAndSeed(config.materials);
-  fruit.root.position.set(-0.55, 1.1, -1.05);
+  fruit.root.position.set(...POLLINATION_LAYOUT.fruit.position);
   fruit.root.visible = false;
   root.add(fruit.root);
 
   const germination = createGerminationSpecimen(config.materials);
   const germinationCutaway = new THREE.Group();
   germinationCutaway.name = 'enlarged-germination-cutaway';
-  germinationCutaway.position.set(0, 0.95, -1.25);
-  germinationCutaway.scale.setScalar(1.75);
+  germinationCutaway.position.set(...POLLINATION_LAYOUT.germinationCutaway.position);
+  germinationCutaway.scale.setScalar(POLLINATION_LAYOUT.germinationCutaway.scale);
   germinationCutaway.visible = false;
   const soilBackdrop = new THREE.Mesh(
     new RoundedBoxGeometry(1.45, 1.2, 0.18, 4, 0.08),
@@ -74,13 +75,13 @@ export function createPollinationScene(config: PollinationSceneConfig) {
   root.add(germinationCutaway);
 
   const tools = createPollinationTools(config.materials);
-  tools.root.position.set(2.9, 0, 1.7);
+  tools.root.position.set(...POLLINATION_LAYOUT.toolRoot.position);
   root.add(tools.root);
 
   const pistilCutaway = new THREE.Group();
   pistilCutaway.name = 'enlarged-pistil-cutaway';
-  pistilCutaway.position.set(0, 0.56, -1.1);
-  pistilCutaway.scale.setScalar(1.55);
+  pistilCutaway.position.set(...POLLINATION_LAYOUT.pistilCutaway.position);
+  pistilCutaway.scale.setScalar(POLLINATION_LAYOUT.pistilCutaway.scale);
   pistilCutaway.visible = false;
   const cutawayStyle = new THREE.Mesh(
     new THREE.CylinderGeometry(0.12, 0.2, 1.05, 24),
@@ -150,9 +151,9 @@ export function createPollinationScene(config: PollinationSceneConfig) {
     const angle = index * 2.399963;
     const radius = 0.025 + (index % 11) * 0.004;
     dummy.position.set(
-      -0.55 + Math.cos(angle) * radius,
-      1.43 + (index % 9) * 0.006,
-      -1.05 + Math.sin(angle) * radius,
+      POLLINATION_LAYOUT.pollenCloudOrigin[0] + Math.cos(angle) * radius,
+      POLLINATION_LAYOUT.pollenCloudOrigin[1] + (index % 9) * 0.006,
+      POLLINATION_LAYOUT.pollenCloudOrigin[2] + Math.sin(angle) * radius,
     );
     dummy.scale.setScalar(0.7 + index % 4 * 0.12);
     dummy.updateMatrix();
@@ -207,9 +208,9 @@ export function createPollinationScene(config: PollinationSceneConfig) {
       if (bee.root.visible) {
         const orbit = elapsedSeconds * 0.62;
         bee.root.position.set(
-          -0.45 + Math.cos(orbit) * 0.72,
-          1.35 + Math.sin(orbit * 1.7) * 0.12,
-          -1.06 + Math.sin(orbit) * 0.42,
+          POLLINATION_LAYOUT.beeFlightCenter[0] + Math.cos(orbit) * 0.72,
+          POLLINATION_LAYOUT.beeFlightCenter[1] + Math.sin(orbit * 1.7) * 0.12,
+          POLLINATION_LAYOUT.beeFlightCenter[2] + Math.sin(orbit) * 0.42,
         );
         bee.root.rotation.y = -orbit + Math.PI / 2;
         for (const [index, wing] of bee.wings.entries()) {
