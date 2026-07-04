@@ -41,6 +41,16 @@ describe('world presentation adapters', () => {
     expect(source).toContain('composer.render()');
   });
 
+  it('keeps the canvas CSS size aligned with the logical viewport', () => {
+    const source = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/presentationPipeline.ts'),
+      'utf8',
+    );
+
+    expect(source).toContain('renderer.setSize(width, height);');
+    expect(source).not.toContain('renderer.setSize(width, height, false)');
+  });
+
   it('does not pass absent texture maps to Three.js material constructors', async () => {
     const warn = vi.spyOn(console, 'warn');
     const factory = createMaterialFactory({

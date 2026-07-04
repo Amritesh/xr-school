@@ -133,7 +133,7 @@
   position: absolute;
   z-index: 6;
   top: 16px;
-  left: 16px;
+  left: 104px;
   right: 16px;
   display: grid;
   grid-template-columns: 1fr minmax(130px, 320px) 1fr;
@@ -234,6 +234,56 @@
   line-height: 1.6;
 }
 
+.simulation-experience__focus-guide {
+  position: absolute;
+  z-index: 6;
+  top: 50%;
+  display: flex;
+  max-width: 220px;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid rgba(125, 231, 246, .34);
+  border-radius: 999px;
+  background: rgba(8, 18, 38, .78);
+  color: #e5fbff;
+  font-size: .74rem;
+  font-weight: 800;
+  line-height: 1.25;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  transform: translateY(-50%);
+}
+
+.simulation-experience__focus-guide i {
+  color: var(--experience-cyan, #7de7f6);
+  font-style: normal;
+  font-size: 1.15rem;
+}
+
+.simulation-experience__focus-guide[data-direction='left'] {
+  left: 12px;
+}
+
+.simulation-experience__focus-guide[data-direction='left'] i {
+  transform: rotate(180deg);
+}
+
+.simulation-experience__focus-guide[data-direction='right'] {
+  right: 12px;
+  flex-direction: row-reverse;
+}
+
+.simulation-experience__focus-guide[data-direction='forward'] {
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.simulation-experience__focus-guide[data-direction='forward'] i {
+  transform: rotate(-90deg);
+}
+
 .simulation-experience__mission-dock {
   position: absolute;
   z-index: 5;
@@ -325,6 +375,7 @@
 
 @media (max-width: 760px) {
   .simulation-experience__topbar {
+    left: 92px;
     grid-template-columns: 1fr 120px auto;
   }
   .simulation-experience__topbar strong { font-size: 0; }

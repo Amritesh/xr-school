@@ -49,6 +49,15 @@ describe('Pollination production viewer', () => {
     expect(source).not.toContain('evidence={[...evidence, scaleDisclosure]}');
   });
 
+  it('lets object interactions advance the Quest flow without requiring HTML Next buttons', () => {
+    expect(source).toContain('advanceAfterObjectAction');
+    expect(source).toContain("source === 'xr-controller'");
+    expect(source).toContain("source === 'mouse'");
+    expect(source).toContain('experienceRef.current.next()');
+    expect(source).toContain('if (next.lessonComplete && isObjectActionSource(source))');
+    expect(source).toContain('focusGuide');
+  });
+
   it('keeps scale disclosure separate from biological evidence in the shared HUD', () => {
     const shell = readFileSync(
       resolve(process.cwd(), 'apps/web/components/simulation-experience/SimulationExperienceShell.tsx'),

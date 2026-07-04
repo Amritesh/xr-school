@@ -77,7 +77,7 @@ export function createPresentationPipeline(
     const profile = PROFILES[profileId];
     const cappedPixelRatio = Math.min(pixelRatio, profile.maxPixelRatio);
     renderer.setPixelRatio(cappedPixelRatio);
-    renderer.setSize(width, height, false);
+    renderer.setSize(width, height);
     composer?.setPixelRatio(cappedPixelRatio);
     composer?.setSize(width, height);
   }

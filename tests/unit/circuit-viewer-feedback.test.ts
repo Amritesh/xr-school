@@ -16,16 +16,15 @@ describe('Circuit viewer headset regressions', () => {
     expect(readdirSync(audioDir).filter(file => file.endsWith('.mp3'))).toHaveLength(4);
   });
 
-  it('renders readable labels on all VR interaction buttons', () => {
-    expect(source).toContain('makeButtonLabelTexture');
-    expect(source).toContain("makeButtonLabelMesh('Previous'");
-    expect(source).toContain("makeButtonLabelMesh('Next'");
-    expect(source).toContain("makeButtonLabelMesh('Switch'");
-    expect(source).toContain('makeButtonLabelMesh(r.label');
-    expect(source).toContain('prevBtn.add');
-    expect(source).toContain('nextBtn.add');
-    expect(source).toContain('vrSwBtn.add');
-    expect(source).toContain('rb.add');
+  it('uses physical circuit objects instead of floating VR navigation buttons', () => {
+    expect(source).toContain('handleCircuitObjectSelection');
+    expect(source).toContain('circuit-switch-lever');
+    expect(source).toContain('circuit-resistor');
+    expect(source).toContain('circuit-bulb');
+    expect(source).not.toContain('makeButtonLabelTexture');
+    expect(source).not.toContain('makeButtonLabelMesh');
+    expect(source).not.toContain('btn-next');
+    expect(source).not.toContain('btn-prev');
   });
 
   it('uses the shared world lifecycle, electrical truth, and mapped PBR', () => {
@@ -41,5 +40,27 @@ describe('Circuit viewer headset regressions', () => {
     expect(source).not.toContain('new THREE.WebGLRenderer');
     expect(source).not.toContain('renderer.setAnimationLoop');
     expect(source).not.toContain('renderer.render(scene, camera)');
+  });
+
+  it('keeps explanatory text in HTML placards instead of the VR scene', () => {
+    expect(source).not.toContain('drawCueCard');
+    expect(source).not.toContain('drawChalkboard');
+    expect(source).not.toContain('chalkCanvas');
+    expect(source).not.toContain('cueCanvas');
+    expect(source).toContain('simulation-experience__circuit-panel');
+    expect(source).toContain('focusGuide');
+  });
+
+  it('uses a brighter classroom and removes decorative shelf clutter', () => {
+    expect(source).toContain('circuit-classroom-floor');
+    expect(source).toContain('student-workbench');
+    expect(source).not.toContain('Tool shelves');
+    expect(source).not.toContain('shelf.position');
+  });
+
+  it('shows a click cursor only when a physical circuit object is targetable', () => {
+    expect(source).toContain("renderer.domElement.addEventListener('pointermove'");
+    expect(source).toContain("renderer.domElement.style.cursor = hits.length > 0 ? 'pointer' : 'grab'");
+    expect(source).toContain("renderer.domElement.removeEventListener('pointermove'");
   });
 });

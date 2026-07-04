@@ -71,6 +71,11 @@ export const Default = {
     onPrevious: noAction,
     onNext: noAction,
     evidence: ['More resistance produced less current.'],
+    focusGuide: {
+      direction: 'right',
+      label: 'Look toward the resistor',
+      visible: true,
+    },
     children: WORLD,
   },
 };
@@ -80,6 +85,11 @@ export const EmptyState = {
     ...Default.args,
     snapshot: INCOMPLETE_SNAPSHOT,
     evidence: [],
+    focusGuide: {
+      direction: 'forward',
+      label: '',
+      visible: false,
+    },
   },
 };
 
@@ -90,6 +100,11 @@ export const LoadingState = {
     objective: 'Calibrating the workbench, materials, and interaction scale.',
     snapshot: INCOMPLETE_SNAPSHOT,
     started: false,
+    focusGuide: {
+      direction: 'forward',
+      label: 'Locating the experiment target…',
+      visible: true,
+    },
   },
 };
 
@@ -97,5 +112,10 @@ export const ErrorState = {
   args: {
     ...Default.args,
     error: 'The verified circuit model could not be loaded. Retry the experience.',
+    focusGuide: {
+      direction: 'left',
+      label: 'Return to the experiment bench',
+      visible: true,
+    },
   },
 };

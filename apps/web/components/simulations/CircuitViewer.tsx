@@ -13,9 +13,19 @@ import {
   evaluateCircuit,
 } from '../../../../packages/simulation-runtime/src/models/circuitModel';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import ExperienceFocusGuide from '@/components/simulation-experience/ExperienceFocusGuide';
+import '@/components/simulation-experience/simulation-experience.css';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
 import { CIRCUIT_WORLD } from '@/lib/world-builder/circuitWorld';
+import {
+  resolveFocusGuide,
+  type FocusGuideVisibility,
+} from '@/lib/world-builder/focusGuidance';
+import {
+  isQuestBackPressed,
+  updateButtonLatch,
+} from '@/lib/xrNavigation';
 import {
   createWebSimulationRuntime,
   type WebSimulationRuntime,
@@ -55,10 +65,10 @@ const NARRATION_AUDIO_URLS = [
 // Stage cameras: where to position the viewpoint for each stage
 // pos = camera position, target = look-at point
 const STAGE_CAMERAS = [
-  { pos: new THREE.Vector3(0, 1.45, 0.5),    target: new THREE.Vector3(0, 0.88, -0.8) },   // overview
-  { pos: new THREE.Vector3(0.5, 1.2, 0.15),  target: new THREE.Vector3(0.1, 0.9, -0.8) },  // lower angle, see electrons
-  { pos: new THREE.Vector3(0.1, 1.1, 0.0),   target: new THREE.Vector3(0, 0.9, -0.97) },   // lean in toward resistor
-  { pos: new THREE.Vector3(0, 1.55, 0.9),    target: new THREE.Vector3(0, 1.4, -2.1) },    // look up at chalkboard
+  { pos: new THREE.Vector3(0.48, 1.5, 0.72), target: new THREE.Vector3(0.48, 0.88, -0.8) },
+  { pos: new THREE.Vector3(0.72, 1.28, 0.38), target: new THREE.Vector3(0.42, 0.9, -0.8) },
+  { pos: new THREE.Vector3(0.56, 1.18, 0.24), target: new THREE.Vector3(0.42, 0.9, -0.97) },
+  { pos: new THREE.Vector3(0.48, 1.5, 0.72), target: new THREE.Vector3(0.48, 0.9, -0.8) },
 ];
 
 // Wire loop — internal coordinates within circuitGroup (scaled 0.155×, placed at z=-0.8)
@@ -84,95 +94,6 @@ function playNarration(stageIndex: number) {
   void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
-function drawCueCard(canvas: HTMLCanvasElement, stage: typeof STAGES[0], num: number, total: number) {
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-  const w = canvas.width, h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = '#050814';
-  ctx.fillRect(4, 4, w - 8, h - 8);
-  ctx.strokeStyle = 'rgba(251,191,36,0.6)';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.rect(4, 4, w - 8, h - 8);
-  ctx.stroke();
-  ctx.font = 'bold 18px sans-serif';
-  ctx.fillStyle = '#fbbf24';
-  ctx.fillText(`Stage ${num} of ${total}  ·  ⚡ Electric Circuit`, 20, 38);
-  ctx.fillStyle = 'rgba(251,191,36,0.3)';
-  ctx.fillRect(20, 46, w - 40, 1);
-  ctx.font = 'bold 24px sans-serif';
-  ctx.fillStyle = '#ffffff';
-  const titleY = wrapText(ctx, stage.title, 20, 72, w - 40, 30);
-  ctx.font = '20px sans-serif';
-  ctx.fillStyle = '#d1d5db';
-  const cueY = wrapText(ctx, stage.cue, 20, titleY + 6, w - 40, 26);
-  ctx.font = 'bold 18px monospace';
-  ctx.fillStyle = '#fbbf24';
-  ctx.fillText(stage.formula, 20, Math.min(cueY + 18, h - 16));
-}
-
-function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxW: number, lh: number): number {
-  const words = text.split(' ');
-  let line = '', cy = y;
-  for (const word of words) {
-    const test = line + word + ' ';
-    if (ctx.measureText(test).width > maxW && line) { ctx.fillText(line.trimEnd(), x, cy); line = word + ' '; cy += lh; }
-    else line = test;
-  }
-  if (line.trim()) { ctx.fillText(line.trimEnd(), x, cy); cy += lh; }
-  return cy;
-}
-
-function makeButtonLabelTexture(label: string, color: string) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 160;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return new THREE.CanvasTexture(canvas);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'rgba(3,7,18,0.94)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 10;
-  ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
-  ctx.fillStyle = '#f8fafc';
-  ctx.font = 'bold 54px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, canvas.width / 2, canvas.height / 2);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}
-
-function makeButtonLabelMesh(label: string, color: string, width = 0.36) {
-  const labelMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(width, 0.11),
-    new THREE.MeshBasicMaterial({ map: makeButtonLabelTexture(label, color), transparent: true, depthTest: false })
-  );
-  labelMesh.position.z = 0.025;
-  return labelMesh;
-}
-
-function drawChalkboard(canvas: HTMLCanvasElement, R: number, I: number, closed: boolean) {
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-  ctx.fillStyle = '#1a3020';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-  ctx.lineWidth = 1;
-  for (let y = 30; y < canvas.height; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
-  ctx.font = 'bold 28px serif'; ctx.fillStyle = 'rgba(240,240,230,0.92)'; ctx.fillText("Ohm's Law", 20, 42);
-  ctx.font = '56px serif'; ctx.fillStyle = 'rgba(255,255,200,0.96)'; ctx.fillText('V = I × R', 20, 108);
-  ctx.font = '22px monospace';
-  ctx.fillStyle = '#fbbf24'; ctx.fillText(`V = ${VOLTAGE.toFixed(1)} V`, 20, 152);
-  ctx.fillStyle = closed ? '#60a5fa' : '#6b7280'; ctx.fillText(`I = ${I.toFixed(3)} A`, 20, 182);
-  ctx.fillStyle = '#f87171'; ctx.fillText(`R = ${R} Ω`, 20, 212);
-  ctx.font = '18px monospace';
-  ctx.fillStyle = closed ? '#4ade80' : '#9ca3af'; ctx.fillText(`→ Circuit: ${closed ? 'CLOSED' : 'OPEN  '}`, 20, 246);
-}
-
 export default function CircuitViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -186,12 +107,6 @@ export default function CircuitViewer() {
   const curveRef = useRef<THREE.CatmullRomCurve3 | null>(null);
   const resistorBodyRef = useRef<THREE.Mesh | null>(null);
   const resistorBandRef = useRef<THREE.Mesh | null>(null);
-  const chalkCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const chalkTextureRef = useRef<THREE.CanvasTexture | null>(null);
-  const cueCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const cueTextureRef = useRef<THREE.CanvasTexture | null>(null);
-  const cueNeedsUpdateRef = useRef(true);
-  const chalkNeedsUpdateRef = useRef(true);
 
   // Camera animation
   const camGoalPos = useRef(STAGE_CAMERAS[0].pos.clone());
@@ -213,6 +128,11 @@ export default function CircuitViewer() {
   const [assessmentResult, setAssessmentResult] =
     useState<AssessmentAnswerResult | null>(null);
   const [mastered, setMastered] = useState(false);
+  const [focusVisibility, setFocusVisibility] = useState<FocusGuideVisibility>({
+    direction: 'forward',
+    visible: false,
+  });
+  const focusVisibilityRef = useRef(focusVisibility);
 
   useEffect(() => {
     if (typeof navigator !== 'undefined' && 'xr' in navigator) setVrSupported(true);
@@ -318,61 +238,46 @@ export default function CircuitViewer() {
       () => scientificModels.dispose(),
     );
 
-    // ── Workshop room ─────────────────────────────────────────────────────
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), wallMat);
-    floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-    const backWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 3.5), wallMat);
-    backWall.position.set(0, 1.75, -3.0); scene.add(backWall);
-    const ceil = new THREE.Mesh(new THREE.PlaneGeometry(10, 8), wallMat);
+    // ── Bright school electronics classroom ──────────────────────────────
+    const classroomFloorMaterial = wallMat.clone();
+    classroomFloorMaterial.color.set('#d8e3ea');
+    classroomFloorMaterial.roughness = 0.86;
+    const classroomWallMaterial = wallMat.clone();
+    classroomWallMaterial.color.set('#edf5f7');
+    classroomWallMaterial.roughness = 0.94;
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(10, 10),
+      classroomFloorMaterial,
+    );
+    floor.name = 'circuit-classroom-floor';
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+    const backWall = new THREE.Mesh(
+      new THREE.PlaneGeometry(10, 3.5),
+      classroomWallMaterial,
+    );
+    backWall.name = 'circuit-classroom-wall';
+    backWall.position.set(0, 1.75, -3.0);
+    scene.add(backWall);
+    const ceil = new THREE.Mesh(new THREE.PlaneGeometry(10, 8), classroomWallMaterial);
     ceil.rotation.x = Math.PI / 2; ceil.position.y = 3.2; scene.add(ceil);
     [-4.0, 4.0].forEach(x => {
-      const sw = new THREE.Mesh(new THREE.PlaneGeometry(8, 3.5), wallMat);
+      const sw = new THREE.Mesh(new THREE.PlaneGeometry(8, 3.5), classroomWallMaterial);
       sw.position.set(x, 1.75, -1.5); sw.rotation.y = x < 0 ? Math.PI / 2 : -Math.PI / 2;
       scene.add(sw);
     });
 
-    // ── Overhead lamp ──────────────────────────────────────────────────────
-    const lampArm = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.2, 6), metalMat);
-    lampArm.position.set(0, 2.8, BZ + 0.3); scene.add(lampArm);
-    const lampShade = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.22, 12, 1, true), metalMat);
-    lampShade.position.set(0, 2.18, BZ + 0.3); scene.add(lampShade);
-    const lampBulb = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshStandardMaterial({ color: 0xfffde7, emissive: 0xfffde7, emissiveIntensity: 1.5 }));
-    lampBulb.position.set(0, 2.26, BZ + 0.3); scene.add(lampBulb);
-    const lampLight = new THREE.PointLight(0xfff8e1, 2.0, 6, 2);
-    lampLight.position.set(0, 2.25, BZ + 0.3); scene.add(lampLight);
-
-    // ── Chalkboard (back wall — fully visible, no cue card in front) ──────
-    const chalkCanvas = document.createElement('canvas');
-    chalkCanvas.width = 512; chalkCanvas.height = 280;
-    chalkCanvasRef.current = chalkCanvas;
-    const chalkTex = new THREE.CanvasTexture(chalkCanvas);
-    chalkTextureRef.current = chalkTex;
-    const chalkboard = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.1), new THREE.MeshBasicMaterial({ map: chalkTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
-    chalkboard.position.set(0, 1.5, -2.93); scene.add(chalkboard);
-    const chalkFrame = new THREE.Mesh(new THREE.BoxGeometry(2.14, 1.22, 0.04), benchMat);
-    chalkFrame.position.set(0, 1.5, -2.97); scene.add(chalkFrame);
-
-    // ── Tool shelves (side walls) ─────────────────────────────────────────
-    const shelfMat = benchMat;
-    [-3.85, 3.85].forEach((x, si) => {
-      for (let s = 0; s < 2; s++) {
-        const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.05, 0.28), shelfMat);
-        shelf.position.set(x + (x < 0 ? 0.25 : -0.25), 1.1 + s * 0.7, BZ - 0.2);
-        scene.add(shelf);
-        for (let b = 0; b < 3; b++) {
-          const box = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14 + b * 0.025, 0.12), new THREE.MeshStandardMaterial({ color: [0x374151, 0x1e3a5f, 0x2d1b1b][b], roughness: 0.8 }));
-          box.position.set(x + (x < 0 ? 0.4 : -0.4) + (b - 1) * 0.22, 1.14 + s * 0.7 + 0.09, BZ - 0.22);
-          scene.add(box);
-        }
-      }
-      if (si === 0) {
-        const mm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.18, 0.07), new THREE.MeshStandardMaterial({ color: 0x1c1c1c }));
-        mm.position.set(-3.6, 1.28, BZ - 0.22); scene.add(mm);
-      }
-    });
+    const classroomLight = new THREE.HemisphereLight(0xffffff, 0xb7c8d2, 1.6);
+    scene.add(classroomLight);
+    const taskLight = new THREE.DirectionalLight(0xfff6dc, 2.1);
+    taskLight.position.set(2.4, 4, 2.2);
+    taskLight.target.position.set(0, 0.9, BZ);
+    scene.add(taskLight, taskLight.target);
 
     // ── Workbench (workbench center at Z = BZ) ────────────────────────────
     const benchTop = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.08, 1.1), benchMat);
+    benchTop.name = 'student-workbench';
     benchTop.position.set(0, 0.86, BZ); benchTop.castShadow = true; benchTop.receiveShadow = true;
     scene.add(benchTop);
     // Legs: near pair at z=BZ+0.45, far pair at z=BZ-0.45
@@ -418,11 +323,13 @@ export default function CircuitViewer() {
     const switchBase = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.12, 0.25), metalMat);
     switchBase.position.set(0, 0.06, 1.1); circuitGroup.add(switchBase);
     const switchLever = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.5, 0.12), switchMat);
+    switchLever.name = 'circuit-switch-lever';
     switchLever.position.set(0, 0.25, 1.1); switchLeverRef.current = switchLever;
     circuitGroup.add(switchLever);
 
     // ── Resistor ──────────────────────────────────────────────────────────
     const resistorGroup = new THREE.Group();
+    resistorGroup.name = 'circuit-resistor';
     resistorGroup.position.set(0, 0, -1.1); resistorGroup.rotation.z = Math.PI / 2;
     const resBody = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.8, 12), resistorMat);
     resistorBodyRef.current = resBody; resistorGroup.add(resBody);
@@ -436,6 +343,7 @@ export default function CircuitViewer() {
 
     // ── Bulb ──────────────────────────────────────────────────────────────
     const bulbGroup = new THREE.Group();
+    bulbGroup.name = 'circuit-bulb';
     bulbGroup.position.set(1.8, 0, 0);
     const bulbGlass = new THREE.Mesh(new THREE.SphereGeometry(0.26, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.72), bulbGlassMat);
     bulbMeshRef.current = bulbGlass; bulbGroup.add(bulbGlass);
@@ -463,44 +371,50 @@ export default function CircuitViewer() {
     electronMeshesRef.current = electronMeshes;
     electronTsRef.current = electronTs;
 
-    // ── 3D Cue card — LEFT side of bench, chalkboard fully visible ────────
-    const cueCanvas = document.createElement('canvas');
-    cueCanvas.width = 512; cueCanvas.height = 256;
-    cueCanvasRef.current = cueCanvas;
-    const cueTexture = new THREE.CanvasTexture(cueCanvas);
-    cueTextureRef.current = cueTexture;
-    const cueMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.5), new THREE.MeshBasicMaterial({ map: cueTexture, transparent: true }));
-    cueMesh.position.set(-1.5, 1.5, BZ); // left side at bench depth
-    scene.add(cueMesh);
+    const interactables = [switchLever, resistorGroup, bulbGroup];
+    const focusTargets = [switchLever, resistorGroup, bulbGroup, bulbGroup];
+    const projectedFocus = new THREE.Vector3();
 
-    // VR nav buttons (below cue card on the left)
-    const btnMat = (col: number) => new THREE.MeshStandardMaterial({ color: col, roughness: 0.4, emissive: col, emissiveIntensity: 0.25 });
-    const prevBtn = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.13, 0.04), btnMat(0x374151));
-    prevBtn.position.set(-1.72, 1.17, BZ); prevBtn.name = 'btn-prev';
-    prevBtn.add(makeButtonLabelMesh('Previous', '#94a3b8', 0.39));
-    scene.add(prevBtn);
-    const nextBtn = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.13, 0.04), btnMat(0xb45309));
-    nextBtn.position.set(-1.28, 1.17, BZ); nextBtn.name = 'btn-next';
-    nextBtn.add(makeButtonLabelMesh('Next', '#fbbf24', 0.31));
-    scene.add(nextBtn);
+    const selectedInteractionName = (object: THREE.Object3D) => {
+      let selected: THREE.Object3D | null = object;
+      while (selected) {
+        if (selected.name.startsWith('circuit-')) return selected.name;
+        selected = selected.parent;
+      }
+      return '';
+    };
 
-    // VR switch button (floating above near edge of bench, easy to reach)
-    const vrSwBtn = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.13, 0.04), btnMat(0xef4444));
-    vrSwBtn.position.set(0, 1.2, BZ + 0.35); vrSwBtn.name = 'btn-switch';
-    vrSwBtn.add(makeButtonLabelMesh('Switch', '#f87171', 0.35));
-    scene.add(vrSwBtn);
+    const moveToCircuitStage = (next: number) => {
+      const bounded = Math.max(0, Math.min(STAGES.length - 1, next));
+      stageRef.current = bounded;
+      camGoalPos.current.copy(STAGE_CAMERAS[bounded].pos);
+      camGoalTarget.current.copy(STAGE_CAMERAS[bounded].target);
+      camAnimating.current = true;
+      setStage(bounded);
+      playNarration(bounded);
+    };
 
-    // VR resistor buttons (above near edge, to the right)
-    const resButtons: THREE.Mesh[] = [];
-    RESISTORS.forEach((r, i) => {
-      const rb = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.1, 0.04), btnMat(r.color));
-      rb.position.set(0.52 + i * 0.3, 1.1, BZ + 0.35); rb.name = `btn-res-${i}`;
-      rb.add(makeButtonLabelMesh(r.label, '#fbbf24', 0.22));
-      scene.add(rb);
-      resButtons.push(rb);
-    });
-
-    const interactables = [prevBtn, nextBtn, vrSwBtn, ...resButtons];
+    const handleCircuitObjectSelection = (object: THREE.Object3D) => {
+      const name = selectedInteractionName(object);
+      if (name === 'circuit-switch-lever') {
+        setSwitchClosed(previous => {
+          const closed = !previous;
+          switchClosedRef.current = closed;
+          if (closed && stageRef.current === 0) moveToCircuitStage(1);
+          return closed;
+        });
+      } else if (
+        name === 'circuit-resistor'
+        && stageRef.current >= 1
+      ) {
+        const nextResistor = (resistorIdxRef.current + 1) % RESISTORS.length;
+        resistorIdxRef.current = nextResistor;
+        setResistorIdx(nextResistor);
+        if (stageRef.current < 2) moveToCircuitStage(2);
+      } else if (name === 'circuit-bulb' && stageRef.current >= 2) {
+        moveToCircuitStage(3);
+      }
+    };
 
     // ── XR Controllers ────────────────────────────────────────────────────
     function buildControllerVisual() {
@@ -520,41 +434,32 @@ export default function CircuitViewer() {
       const ctrl = event.target as unknown as THREE.XRTargetRaySpace;
       ctrlRaycaster.ray.origin.setFromMatrixPosition(ctrl.matrixWorld);
       ctrlRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(ctrl.quaternion);
-      const hits = ctrlRaycaster.intersectObjects(interactables);
-      if (hits.length > 0) {
-        const name = hits[0].object.name;
-        if (name === 'btn-switch') {
-          setSwitchClosed(prev => { const n = !prev; switchClosedRef.current = n; chalkNeedsUpdateRef.current = true; return n; });
-        } else if (name === 'btn-next') {
-          const next = Math.min(stageRef.current + 1, STAGES.length - 1);
-          stageRef.current = next; cueNeedsUpdateRef.current = true; setStage(next);
-          playNarration(next);
-        } else if (name === 'btn-prev') {
-          const next = Math.max(stageRef.current - 1, 0);
-          stageRef.current = next; cueNeedsUpdateRef.current = true; setStage(next);
-          playNarration(next);
-        } else if (name.startsWith('btn-res-')) {
-          const idx = parseInt(name.slice(-1));
-          setResistorIdx(idx); resistorIdxRef.current = idx; chalkNeedsUpdateRef.current = true;
-        }
-      }
+      const hits = ctrlRaycaster.intersectObjects(interactables, true);
+      if (hits.length > 0) handleCircuitObjectSelection(hits[0].object);
     };
     ctrl0.addEventListener('selectstart', onCtrlSelect as any);
     ctrl1.addEventListener('selectstart', onCtrlSelect as any);
 
-    // ── Mouse click on switch ──────────────────────────────────────────────
+    // ── Mouse click on physical circuit objects ───────────────────────────
     const mouseRaycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
-    const onMouseDown = (e: MouseEvent) => {
+    const updatePointerRay = (event: MouseEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
       mouseRaycaster.setFromCamera(mouse, camera);
-      const hits = mouseRaycaster.intersectObject(switchLever, true);
-      if (hits.length > 0) {
-        setSwitchClosed(prev => { const n = !prev; switchClosedRef.current = n; chalkNeedsUpdateRef.current = true; return n; });
-      }
     };
+    const onPointerMove = (event: MouseEvent) => {
+      updatePointerRay(event);
+      const hits = mouseRaycaster.intersectObjects(interactables, true);
+      renderer.domElement.style.cursor = hits.length > 0 ? 'pointer' : 'grab';
+    };
+    const onMouseDown = (event: MouseEvent) => {
+      updatePointerRay(event);
+      const hits = mouseRaycaster.intersectObjects(interactables, true);
+      if (hits.length > 0) handleCircuitObjectSelection(hits[0].object);
+    };
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('mousedown', onMouseDown);
 
     // ── OrbitControls ────────────────────────────────────────────────────
@@ -570,6 +475,7 @@ export default function CircuitViewer() {
       resistance: RESISTORS[0].ohms,
       closed: false,
     });
+    const questBackLatches = [false, false];
 
     fixedUpdate = ({ deltaSeconds }) => {
       const closed = switchClosedRef.current;
@@ -600,19 +506,6 @@ export default function CircuitViewer() {
           controls.target.copy(camGoalTarget.current);
           camAnimating.current = false;
         }
-      }
-
-      // Update cue card canvas
-      if (cueNeedsUpdateRef.current && cueCanvasRef.current) {
-        drawCueCard(cueCanvasRef.current, STAGES[stageRef.current], stageRef.current + 1, STAGES.length);
-        if (cueTextureRef.current) cueTextureRef.current.needsUpdate = true;
-        cueNeedsUpdateRef.current = false;
-      }
-      // Update chalkboard
-      if (chalkNeedsUpdateRef.current && chalkCanvasRef.current) {
-        drawChalkboard(chalkCanvasRef.current, R, I, closed);
-        if (chalkTextureRef.current) chalkTextureRef.current.needsUpdate = true;
-        chalkNeedsUpdateRef.current = false;
       }
 
       // Switch lever
@@ -648,23 +541,40 @@ export default function CircuitViewer() {
       if (resistorBodyRef.current) (resistorBodyRef.current.material as THREE.MeshStandardMaterial).color.setHex(RESISTORS[rIdx].color);
       if (resistorBandRef.current) (resistorBandRef.current.material as THREE.MeshStandardMaterial).color.setHex(RESISTORS[rIdx].bandColor);
 
-      // Cue card + buttons always face the camera
-      const cam = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
-      cueMesh.lookAt(cam.position);
-      prevBtn.lookAt(cam.position); nextBtn.lookAt(cam.position);
-      vrSwBtn.lookAt(cam.position); resButtons.forEach(rb => rb.lookAt(cam.position));
-
-      if (!renderer.xr.isPresenting) controls.update();
+      if (renderer.xr.isPresenting) {
+        const session = renderer.xr.getSession();
+        session?.inputSources.forEach((inputSource, index) => {
+          const gamepad = inputSource.gamepad;
+          if (!gamepad) return;
+          const back = updateButtonLatch(
+            isQuestBackPressed(gamepad.buttons, inputSource.handedness),
+            questBackLatches[index],
+          );
+          questBackLatches[index] = back.latched;
+          if (!back.pressed) return;
+          if (stageRef.current > 0) moveToCircuitStage(stageRef.current - 1);
+          else void session.end();
+        });
+      } else {
+        controls.update();
+        focusTargets[stageRef.current]
+          .getWorldPosition(projectedFocus)
+          .project(camera);
+        const nextFocusVisibility = resolveFocusGuide(projectedFocus);
+        const currentFocusVisibility = focusVisibilityRef.current;
+        if (
+          nextFocusVisibility.visible !== currentFocusVisibility.visible
+          || nextFocusVisibility.direction !== currentFocusVisibility.direction
+        ) {
+          focusVisibilityRef.current = nextFocusVisibility;
+          setFocusVisibility(nextFocusVisibility);
+        }
+      }
     };
-
-    // Initial draws
-    drawCueCard(cueCanvas, STAGES[0], 1, STAGES.length);
-    cueTexture.needsUpdate = true;
-    drawChalkboard(chalkCanvas, RESISTORS[0].ohms, 0, false);
-    chalkTex.needsUpdate = true;
 
     host.resources.register('circuit-controls', () => controls.dispose());
     host.resources.register('circuit-listeners', () => {
+      renderer.domElement.removeEventListener('pointermove', onPointerMove);
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       ctrl0.removeEventListener('selectstart', onCtrlSelect as any);
       ctrl1.removeEventListener('selectstart', onCtrlSelect as any);
@@ -700,7 +610,6 @@ export default function CircuitViewer() {
 
   const goToStage = useCallback((next: number) => {
     stageRef.current = next;
-    cueNeedsUpdateRef.current = true;
     // Animate camera to stage-specific position
     camGoalPos.current.copy(STAGE_CAMERAS[next].pos);
     camGoalTarget.current.copy(STAGE_CAMERAS[next].target);
@@ -727,14 +636,14 @@ export default function CircuitViewer() {
 
   const toggleSwitch = () => {
     setSwitchClosed(prev => {
-      const n = !prev; switchClosedRef.current = n; chalkNeedsUpdateRef.current = true;
+      const n = !prev; switchClosedRef.current = n;
       if (n && stageRef.current === 0) goToStage(1);
       return n;
     });
   };
 
   const changeResistor = (idx: number) => {
-    setResistorIdx(idx); resistorIdxRef.current = idx; chalkNeedsUpdateRef.current = true;
+    setResistorIdx(idx); resistorIdxRef.current = idx;
     if (stageRef.current < 2) goToStage(2);
   };
 
@@ -767,9 +676,20 @@ export default function CircuitViewer() {
     ASSESSMENT_STAGE_REQUIREMENTS[assessmentPromptIndex]
     ?? STAGES.length
   );
+  const focusGuide = {
+    direction: focusVisibility.direction,
+    label: stage === 0
+      ? 'Look at and click the red switch'
+      : stage === 1
+        ? 'Click the resistor to change resistance'
+        : stage === 2
+          ? 'Inspect the bulb after the resistance change'
+          : 'Inspect the bulb and current reading',
+    visible: started && focusVisibility.visible,
+  } as const;
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100vh', background: '#0d1117', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100vh', background: '#dce8ef', overflow: 'hidden' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
 
       {runtimeError && (
@@ -804,10 +724,11 @@ export default function CircuitViewer() {
 
       {started && (
         <>
+          <ExperienceFocusGuide {...focusGuide} />
           {assessmentReady && (
             <aside
               aria-label="Circuit evidence check"
-              style={{ position: 'absolute', top: 16, left: 16, zIndex: 5, width: 'min(330px, calc(100vw - 32px))', padding: 16, borderRadius: 12, border: '1px solid rgba(96,165,250,0.3)', background: 'rgba(8,5,2,0.94)', color: '#f9fafb' }}
+              style={{ position: 'absolute', top: 96, left: 16, zIndex: 5, width: 'min(330px, calc(100vw - 32px))', padding: 16, borderRadius: 12, border: '1px solid rgba(96,165,250,0.3)', background: 'rgba(8,5,2,0.94)', color: '#f9fafb' }}
             >
               {mastered ? (
                 <>
@@ -878,7 +799,7 @@ export default function CircuitViewer() {
           </div>
 
           {/* Right-side info panel — clear of the workbench */}
-          <div style={{ position: 'absolute', top: 80, right: 16, width: 268, background: 'rgba(10,7,3,0.93)', borderRadius: 14, padding: '16px', border: '1px solid rgba(251,191,36,0.18)', color: '#f9fafb', display: 'flex', flexDirection: 'column', gap: 0 }}>
+          <div className="simulation-experience__circuit-panel" style={{ position: 'absolute', top: 80, right: 16, width: 268, background: 'rgba(10,24,38,0.88)', borderRadius: 14, padding: '16px', border: '1px solid rgba(96,165,250,0.28)', color: '#f9fafb', display: 'flex', flexDirection: 'column', gap: 0 }}>
             <div style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fbbf24', marginBottom: 6 }}>
               ⚡ Stage {stage + 1} / {STAGES.length}
             </div>

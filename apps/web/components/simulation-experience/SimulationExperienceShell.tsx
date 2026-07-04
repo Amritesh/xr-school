@@ -5,6 +5,9 @@ import type {
   LessonSnapshot,
 } from '../../../../packages/simulation-runtime/src/index';
 import BrowserExperienceHud from './BrowserExperienceHud';
+import ExperienceFocusGuide, {
+  type FocusGuideState,
+} from './ExperienceFocusGuide';
 import LaunchPortal, { type ExperiencePreferences } from './LaunchPortal';
 import './simulation-experience.css';
 
@@ -23,6 +26,7 @@ interface SimulationExperienceShellProps {
   evidence: readonly string[];
   scaleNote?: string;
   completed?: boolean;
+  focusGuide?: FocusGuideState;
   error?: string;
   projector?: boolean;
   children: ReactNode;
@@ -43,6 +47,7 @@ export default function SimulationExperienceShell({
   evidence,
   scaleNote,
   completed = false,
+  focusGuide,
   error,
   projector = false,
   children,
@@ -54,6 +59,9 @@ export default function SimulationExperienceShell({
       data-reduced-motion={preferences.reducedMotion}
     >
       <div className="simulation-experience__world">{children}</div>
+      {started && !error && focusGuide && (
+        <ExperienceFocusGuide {...focusGuide} />
+      )}
       {!started && !error && (
         <LaunchPortal
           title={title}

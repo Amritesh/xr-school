@@ -40,6 +40,10 @@ import {
   createScaleTransition,
   type ScaleTransition,
 } from '@/lib/world-builder/scaleTransition';
+import {
+  resolveFocusGuide,
+  type FocusGuideVisibility,
+} from '@/lib/world-builder/focusGuidance';
 import { createToolInteraction } from '@/lib/world-builder/toolInteraction';
 import {
   createWebSimulationRuntime,
@@ -100,6 +104,21 @@ const ACTION_BY_TARGET: Record<string, string> = {
   plumule: 'inspect-germination',
 };
 
+const TARGET_BY_ACTION: Record<string, string> = {
+  'inspect-flower': 'treatment-flower-head',
+  'collect-pollen': 'anther-target',
+  'observe-pollinator': 'pollinator-bee',
+  'transfer-pollen': 'stigma-target',
+  'trace-pollen-tube': 'ovary-cutaway',
+  'advance-time-lapse': 'time-lapse-knob',
+  'compare-control': 'control-flower-head',
+  'open-fruit': 'fruit-halves',
+  'plant-seed': 'plantable-seed',
+  'cover-seed': 'trowel',
+  'water-seed': 'watering-can',
+  'inspect-germination': 'germination-specimen',
+};
+
 const EVIDENCE_LABELS: Record<string, string> = {
   'flower-parts-identified': 'Petals, anthers, and stigma identified',
   'pollen-collected-on-brush': 'Golden pollen adhered to the brush',
@@ -138,6 +157,21 @@ function actionForObject(object?: THREE.Object3D) {
   return undefined;
 }
 
+function advanceAfterObjectAction(
+  source: NormalizedInputSource,
+  snapshot: LessonSnapshot,
+) {
+  return (
+    isObjectActionSource(source)
+    && snapshot.stageComplete
+    && !snapshot.lessonComplete
+  );
+}
+
+function isObjectActionSource(source: NormalizedInputSource) {
+  return source === 'xr-controller' || source === 'mouse';
+}
+
 function createDerivedMaterial(
   source: THREE.MeshStandardMaterial,
   parameters: THREE.MeshStandardMaterialParameters,
@@ -158,6 +192,7 @@ export default function PollinationViewer() {
   const snapshotRef = useRef<LessonSnapshot>(experienceRef.current.snapshot());
   const performRef = useRef<(actionId: string, source: NormalizedInputSource, target?: string) => void>(() => {});
   const previousRef = useRef<() => void>(() => {});
+  const focusActionRef = useRef<string | undefined>(undefined);
 
   const [snapshot, setSnapshot] = useState(snapshotRef.current);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
@@ -169,6 +204,11 @@ export default function PollinationViewer() {
   const [scaleDisclosure, setScaleDisclosure] = useState(
     'The garden and tools are shown at life size.',
   );
+  const [focusVisibility, setFocusVisibility] = useState<FocusGuideVisibility>({
+    direction: 'forward',
+    visible: false,
+  });
+  const focusVisibilityRef = useRef(focusVisibility);
 
   const experienceDefinition = POLLINATION_WORLD.experienceDefinitions![0];
   const currentStage = experienceDefinition.stages[snapshot.stageIndex];
@@ -178,6 +218,7 @@ export default function PollinationViewer() {
     ),
     [currentStage, snapshot.performedActionIds],
   );
+  focusActionRef.current = remainingActions[0];
 
   const applyVisualAction = useCallback((actionId: string) => {
     const world = sceneApiRef.current;
@@ -269,10 +310,29 @@ export default function PollinationViewer() {
       }
       snapshotRef.current = next;
       setSnapshot(next);
+      if (next.lessonComplete && isObjectActionSource(source)) {
+        setCompleted(true);
+      } else if (advanceAfterObjectAction(source, next)) {
+        window.setTimeout(() => {
+          try {
+            const advanced = experienceRef.current.next();
+            snapshotRef.current = advanced;
+            setSnapshot(advanced);
+            sceneApiRef.current?.setStage(advanced.stageIndex);
+            transitionRef.current.reset();
+            setScaleDisclosure(advanced.stageIndex === 4
+              ? 'The next view enlarges the internal flower structures.'
+              : 'The garden and tools are shown at life size.');
+            playNarration(advanced.stageIndex, preferences.audio);
+          } catch (error) {
+            setRuntimeError(error instanceof Error ? error.message : String(error));
+          }
+        }, 280);
+      }
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
-  }, [applyVisualAction, experienceDefinition]);
+  }, [applyVisualAction, experienceDefinition, preferences.audio]);
   performRef.current = performAction;
 
   const previous = useCallback(() => {
@@ -509,21 +569,51 @@ export default function PollinationViewer() {
         source: NormalizedInputSource,
       ) => {
         const actionId = actionForObject(object);
-        if (actionId) performRef.current(actionId, source, object?.name);
+        const activeSnapshot = snapshotRef.current;
+        const activeStage = experienceDefinition.stages[activeSnapshot.stageIndex];
+        if (
+          actionId
+          && activeStage.requiredActionIds.includes(actionId)
+          && !activeSnapshot.performedActionIds.includes(actionId)
+        ) {
+          performRef.current(actionId, source, object?.name);
+        }
       };
-      const onPointerUp = (event: PointerEvent) => {
+      const updatePointerRay = (event: PointerEvent) => {
         const bounds = host!.renderer.domElement.getBoundingClientRect();
         pointer.set(
           ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
           -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
         );
         raycaster.setFromCamera(pointer, camera);
+      };
+      const onPointerMove = (event: PointerEvent) => {
+        updatePointerRay(event);
+        const object = raycaster.intersectObject(world.root, true)[0]?.object;
+        const actionId = actionForObject(object);
+        const activeSnapshot = snapshotRef.current;
+        const activeStage = experienceDefinition.stages[activeSnapshot.stageIndex];
+        const canPerform = Boolean(
+          actionId
+          && activeStage.requiredActionIds.includes(actionId)
+          && !activeSnapshot.performedActionIds.includes(actionId),
+        );
+        host!.renderer.domElement.style.cursor = canPerform
+          ? 'pointer'
+          : 'grab';
+      };
+      const onPointerUp = (event: PointerEvent) => {
+        updatePointerRay(event);
         selectObject(raycaster.intersectObject(world.root, true)[0]?.object, 'mouse');
       };
+      host.renderer.domElement.addEventListener('pointermove', onPointerMove);
       host.renderer.domElement.addEventListener('pointerup', onPointerUp);
       host.resources.register(
         'pollination-pointer',
-        () => host?.renderer.domElement.removeEventListener('pointerup', onPointerUp),
+        () => {
+          host?.renderer.domElement.removeEventListener('pointermove', onPointerMove);
+          host?.renderer.domElement.removeEventListener('pointerup', onPointerUp);
+        },
       );
 
       const controllerRayGeometry = new THREE.BufferGeometry().setFromPoints([
@@ -565,6 +655,7 @@ export default function PollinationViewer() {
 
       const snapTurnLatches = [false, false];
       const backButtonLatches = [false, false];
+      const projectedFocus = new THREE.Vector3();
       renderUpdate = context => {
         world.update(context.frameDeltaSeconds, context.elapsedSeconds);
         transitionRef.current.update(context.frameDeltaSeconds * 1.8);
@@ -581,10 +672,31 @@ export default function PollinationViewer() {
               backButtonLatches[index],
             );
             backButtonLatches[index] = back.latched;
-            if (back.pressed) previousRef.current();
+            if (back.pressed) {
+              if (snapshotRef.current.stageIndex > 0) previousRef.current();
+              else void session.end();
+            }
           });
         } else {
           controls.update();
+          const focusTargetName = focusActionRef.current
+            ? TARGET_BY_ACTION[focusActionRef.current]
+            : undefined;
+          const focusTarget = focusTargetName
+            ? world.root.getObjectByName(focusTargetName)
+            : undefined;
+          if (focusTarget) {
+            focusTarget.getWorldPosition(projectedFocus).project(camera);
+            const nextFocusVisibility = resolveFocusGuide(projectedFocus);
+            const currentFocusVisibility = focusVisibilityRef.current;
+            if (
+              nextFocusVisibility.visible !== currentFocusVisibility.visible
+              || nextFocusVisibility.direction !== currentFocusVisibility.direction
+            ) {
+              focusVisibilityRef.current = nextFocusVisibility;
+              setFocusVisibility(nextFocusVisibility);
+            }
+          }
         }
       };
       fixedUpdate = () => {};
@@ -630,6 +742,13 @@ export default function PollinationViewer() {
       evidence={evidence}
       scaleNote={scaleDisclosure}
       completed={completed}
+      focusGuide={{
+        direction: focusVisibility.direction,
+        label: remainingActions.length > 0
+          ? `Look toward: ${ACTION_LABELS[remainingActions[0]]}`
+          : 'Look toward the experiment result',
+        visible: started && !completed && focusVisibility.visible,
+      }}
       error={runtimeError || undefined}
     >
       <div ref={mountRef} className="pollination-world-mount" />
