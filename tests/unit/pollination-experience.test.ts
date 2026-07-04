@@ -21,12 +21,43 @@ describe('pollination immersive experience', () => {
     experience.perform('inspect-flower');
     experience.observe('flower-parts-identified');
     experience.next();
-    experience.perform('release-pollen');
+    experience.perform('collect-pollen');
     expect(experience.biologySnapshot().pollenProduced).toBe(true);
-    expect(() => experience.perform('release-pollen')).toThrow(/already|expected/i);
+    expect(experience.experimentSnapshot().brushPollen).toBe(24);
+    expect(() => experience.perform('collect-pollen')).toThrow(/already|current stage|expected/i);
 
     experience.restart();
     expect(experience.snapshot().stageId).toBe('stage-flower-garden');
     expect(experience.biologySnapshot().pollenProduced).toBe(false);
+    expect(experience.experimentSnapshot().brushPollen).toBe(0);
+  });
+
+  it('requires the complete treatment/control and planting action sequence', () => {
+    const experience = createPollinationExperience();
+    const completeStage = (actions: string[], evidenceId: string) => {
+      for (const action of actions) experience.perform(action);
+      experience.observe(evidenceId);
+      experience.next();
+    };
+
+    completeStage(['inspect-flower'], 'flower-parts-identified');
+    completeStage(['collect-pollen'], 'pollen-collected-on-brush');
+    completeStage(['observe-pollinator'], 'bee-flower-visit-observed');
+    completeStage(['transfer-pollen'], 'pollen-on-stigma-observed');
+    completeStage(['trace-pollen-tube'], 'fertilisation-route-observed');
+    completeStage(
+      ['advance-time-lapse', 'compare-control'],
+      'treatment-control-difference-observed',
+    );
+    completeStage(
+      ['open-fruit', 'plant-seed', 'cover-seed', 'water-seed'],
+      'germination-conditions-provided',
+    );
+
+    expect(experience.experimentSnapshot()).toMatchObject({
+      treatmentFruitFormed: true,
+      controlFruitFormed: false,
+      germinated: true,
+    });
   });
 });

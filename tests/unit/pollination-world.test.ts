@@ -22,7 +22,7 @@ describe('pollination reference world', () => {
       .toEqual(['observation', 'misconception', 'transfer']);
   });
 
-  it('declares the eight performed stages and literal garden scale', () => {
+  it('declares eight experiment-first stages and literal garden scale', () => {
     expect(POLLINATION_WORLD.world.experienceId)
       .toBe('experience-pollination-cycle');
     expect(POLLINATION_WORLD.world.spatialLayoutId)
@@ -30,17 +30,19 @@ describe('pollination reference world', () => {
     expect(POLLINATION_WORLD.experienceDefinitions?.[0].stages)
       .toHaveLength(8);
     expect(POLLINATION_WORLD.experienceDefinitions?.[0].stages.map(
-      stage => stage.requiredActionIds[0],
+      stage => stage.requiredActionIds,
     )).toEqual([
-      'inspect-flower',
-      'release-pollen',
-      'observe-pollinator',
-      'transfer-pollen',
-      'trace-pollen-tube',
-      'inspect-seed-fruit',
-      'water-seed',
-      'inspect-mature-plant',
+      ['inspect-flower'],
+      ['collect-pollen'],
+      ['observe-pollinator'],
+      ['transfer-pollen'],
+      ['trace-pollen-tube'],
+      ['advance-time-lapse', 'compare-control'],
+      ['open-fruit', 'plant-seed', 'cover-seed', 'water-seed'],
+      ['inspect-germination'],
     ]);
+    expect(POLLINATION_WORLD.scientificModels[0].limitations.join(' '))
+      .toMatch(/enlarged.*representational/i);
     expect(POLLINATION_WORLD.spatialLayouts?.[0]).toMatchObject({
       metersPerWorldUnit: 1,
       scaleRepresentation: 'literal',
