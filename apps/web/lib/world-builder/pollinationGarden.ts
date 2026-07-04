@@ -24,6 +24,33 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
   ground.receiveShadow = true;
   root.add(ground);
 
+  const skyGeometry = new THREE.SphereGeometry(32, 32, 18);
+  const skyColours = new Float32Array(
+    skyGeometry.attributes.position.count * 3,
+  );
+  const horizon = new THREE.Color('#dceef2');
+  const zenith = new THREE.Color('#6fa9bd');
+  for (let index = 0; index < skyGeometry.attributes.position.count; index += 1) {
+    const y = skyGeometry.attributes.position.getY(index);
+    const mix = THREE.MathUtils.clamp((y + 4) / 30, 0, 1);
+    const colour = horizon.clone().lerp(zenith, mix);
+    colour.toArray(skyColours, index * 3);
+  }
+  skyGeometry.setAttribute(
+    'color',
+    new THREE.Float32BufferAttribute(skyColours, 3),
+  );
+  const sky = new THREE.Mesh(
+    skyGeometry,
+    new THREE.MeshBasicMaterial({
+      side: THREE.BackSide,
+      vertexColors: true,
+      fog: false,
+    }),
+  );
+  sky.name = 'garden-sky';
+  root.add(sky);
+
   const path = new THREE.Mesh(
     new RoundedBoxGeometry(2.1, 0.045, 10, 5, 0.18),
     materials.path,
@@ -76,6 +103,102 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
   grass.instanceMatrix.needsUpdate = true;
   grass.castShadow = false;
   root.add(grass);
+
+  const peripheralFlowerBed = new THREE.Group();
+  peripheralFlowerBed.name = 'peripheral-flower-bed';
+  const peripheralCount = 96;
+  const stemGeometry = new THREE.CylinderGeometry(0.012, 0.018, 0.58, 6);
+  const blossomGeometry = new THREE.SphereGeometry(0.065, 10, 7);
+  const stems = new THREE.InstancedMesh(
+    stemGeometry,
+    materials.leaf,
+    peripheralCount,
+  );
+  const blossoms = new THREE.InstancedMesh(
+    blossomGeometry,
+    materials.paintedWood,
+    peripheralCount,
+  );
+  for (let index = 0; index < peripheralCount; index += 1) {
+    const row = Math.floor(index / 24);
+    const column = index % 24;
+    const side = row < 2 ? -1 : 1;
+    const x = side * (3.8 + (row % 2) * 0.75);
+    const z = -5.6 + column / 23 * 11.2;
+    const height = 0.7 + (index % 7) * 0.045;
+    position.set(x, 0.22 + height * 0.25, z);
+    quaternion.setFromEuler(new THREE.Euler(0, index * 0.7, 0));
+    scale.set(1, height, 1);
+    matrix.compose(position, quaternion, scale);
+    stems.setMatrixAt(index, matrix);
+    position.y = 0.45 + height * 0.5;
+    scale.set(1 + index % 3 * 0.18, 0.45, 1 + index % 2 * 0.16);
+    matrix.compose(position, quaternion, scale);
+    blossoms.setMatrixAt(index, matrix);
+  }
+  stems.instanceMatrix.needsUpdate = true;
+  blossoms.instanceMatrix.needsUpdate = true;
+  peripheralFlowerBed.add(stems, blossoms);
+  root.add(peripheralFlowerBed);
+
+  const pollinatorHabitat = new THREE.Group();
+  pollinatorHabitat.name = 'pollinator-habitat';
+  const shrubGeometry = new THREE.IcosahedronGeometry(0.52, 2);
+  const shrubs = new THREE.InstancedMesh(shrubGeometry, materials.leaf, 22);
+  for (let index = 0; index < shrubs.count; index += 1) {
+    const angle = index / shrubs.count * Math.PI * 2;
+    const radius = 6.3 + (index % 4) * 0.22;
+    position.set(
+      Math.cos(angle) * radius,
+      0.48 + index % 3 * 0.08,
+      Math.sin(angle) * radius,
+    );
+    quaternion.setFromEuler(new THREE.Euler(0, angle, 0));
+    scale.set(
+      0.8 + index % 5 * 0.08,
+      0.75 + index % 4 * 0.1,
+      0.82 + index % 3 * 0.09,
+    );
+    matrix.compose(position, quaternion, scale);
+    shrubs.setMatrixAt(index, matrix);
+  }
+  shrubs.instanceMatrix.needsUpdate = true;
+  pollinatorHabitat.add(shrubs);
+  root.add(pollinatorHabitat);
+
+  const schoolBlock = new THREE.Group();
+  schoolBlock.name = 'school-science-block';
+  schoolBlock.position.set(0, 0, -9.4);
+  const facade = new THREE.Mesh(
+    new THREE.BoxGeometry(14, 4.6, 1.4),
+    materials.paintedWood,
+  );
+  facade.position.y = 2.55;
+  facade.receiveShadow = true;
+  schoolBlock.add(facade);
+  const roof = new THREE.Mesh(
+    new THREE.BoxGeometry(14.8, 0.22, 2.1),
+    materials.metal,
+  );
+  roof.position.y = 4.95;
+  schoolBlock.add(roof);
+  for (let floor = 0; floor < 2; floor += 1) {
+    for (let column = 0; column < 7; column += 1) {
+      const window = new THREE.Mesh(
+        new RoundedBoxGeometry(1.15, 1.15, 0.045, 3, 0.05),
+        materials.glass,
+      );
+      window.position.set(-5.7 + column * 1.9, 1.55 + floor * 1.85, 0.73);
+      schoolBlock.add(window);
+    }
+  }
+  const entrance = new THREE.Mesh(
+    new RoundedBoxGeometry(1.45, 2.15, 0.08, 3, 0.05),
+    materials.metal,
+  );
+  entrance.position.set(0, 1.08, 0.76);
+  schoolBlock.add(entrance);
+  root.add(schoolBlock);
 
   const boundary = new THREE.Group();
   boundary.name = 'garden-boundary';
@@ -154,7 +277,12 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
   soilWindow.add(windowSoil, glass);
   root.add(soilWindow);
 
-  const windObjects: THREE.Object3D[] = [trellis, grass];
+  const windObjects: THREE.Object3D[] = [
+    trellis,
+    grass,
+    peripheralFlowerBed,
+    pollinatorHabitat,
+  ];
   return {
     root,
     fieldTable,
@@ -163,6 +291,8 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
     updateWind(elapsedSeconds: number) {
       trellis.rotation.z = Math.sin(elapsedSeconds * 0.7) * 0.006;
       grass.rotation.y = Math.sin(elapsedSeconds * 0.23) * 0.002;
+      peripheralFlowerBed.rotation.z = Math.sin(elapsedSeconds * 0.54) * 0.002;
+      pollinatorHabitat.rotation.y = Math.sin(elapsedSeconds * 0.17) * 0.0015;
     },
   };
 }

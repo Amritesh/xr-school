@@ -400,7 +400,7 @@ export const POLLINATION_WORLD: WorldBundle = {
       {
         id: 'stage-cross-pollination',
         title: 'Transfer pollen',
-        cue: 'Guide the pollen-bearing bee to a different flower’s stigma.',
+        cue: 'Brush the collected pollen onto the experimental flower’s receptive stigma.',
         requiredActionIds: ['transfer-pollen'],
         completionEvidenceIds: ['pollen-on-stigma-observed'],
       },
