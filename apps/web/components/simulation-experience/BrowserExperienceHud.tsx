@@ -77,33 +77,35 @@ export default function BrowserExperienceHud({
         </section>
       )}
 
-      <section className="simulation-experience__mission-dock" aria-labelledby="experience-mission">
-        <div className="simulation-experience__stage-number">
-          {String(snapshot.stageIndex + 1).padStart(2, '0')}
-        </div>
-        <div>
-          <span>{snapshot.stageComplete ? 'Evidence captured' : 'Discover'}</span>
-          <h2 id="experience-mission">{snapshot.stageTitle}</h2>
-          <p>{snapshot.cue}</p>
-        </div>
-        <div className="simulation-experience__mission-actions">
-          <button
-            type="button"
-            className="secondary"
-            disabled={snapshot.stageIndex === 0}
-            onClick={onPrevious}
-          >
-            Back
-          </button>
-          <button
-            type="button"
-            disabled={!snapshot.stageComplete}
-            onClick={onNext}
-          >
-            {snapshot.lessonComplete ? 'Complete' : 'Continue'}
-          </button>
-        </div>
-      </section>
+      {!completed && (
+        <section className="simulation-experience__mission-dock" aria-labelledby="experience-mission">
+          <div className="simulation-experience__stage-number">
+            {String(snapshot.stageIndex + 1).padStart(2, '0')}
+          </div>
+          <div>
+            <span>{snapshot.stageComplete ? 'Evidence captured' : 'Discover'}</span>
+            <h2 id="experience-mission">{snapshot.stageTitle}</h2>
+            <p>{snapshot.cue}</p>
+          </div>
+          <div className="simulation-experience__mission-actions">
+            <button
+              type="button"
+              className="secondary"
+              disabled={snapshot.stageIndex === 0}
+              onClick={onPrevious}
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              disabled={!snapshot.stageComplete}
+              onClick={onNext}
+            >
+              {snapshot.lessonComplete ? 'Complete' : 'Continue'}
+            </button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
