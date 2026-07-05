@@ -85,7 +85,7 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     "id": "course:course-cbse-c7-biology",
     "kind": "course",
     "title": "CBSE Class 7 Biology",
-    "summary": "Life-science concepts made visible through plant structure and reproduction.",
+    "summary": "Life-science concepts made visible through plant structure, reproduction, and human respiration.",
     "href": "/simulations#course-cbse-c7-biology",
     "classLevels": [
       7
@@ -97,7 +97,10 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "concept-flower-structure",
       "concept-pollination",
       "concept-fertilisation",
-      "concept-seed-germination"
+      "concept-seed-germination",
+      "concept-respiratory-system",
+      "concept-breathing-mechanics",
+      "concept-gas-exchange"
     ],
     "tokens": [
       "cbse",
@@ -112,10 +115,14 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "through",
       "plant",
       "structure",
-      "and",
       "reproduction",
+      "and",
+      "human",
+      "respiration",
       "plants",
-      "pollination"
+      "pollination",
+      "breathing",
+      "lungs"
     ]
   },
   {
@@ -326,6 +333,36 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "pollination",
       "growth",
       "cycle"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c7-respiration-organisms",
+    "kind": "chapter",
+    "title": "Respiration in Organisms",
+    "summary": "CBSE Class 7 Biology · Chapter 10",
+    "href": "/simulations#chapter-cbse-c7-respiration-organisms",
+    "classLevels": [
+      7
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-respiratory-system",
+      "concept-breathing-mechanics",
+      "concept-gas-exchange"
+    ],
+    "tokens": [
+      "respiration",
+      "in",
+      "organisms",
+      "cbse",
+      "class",
+      "7",
+      "biology",
+      "chapter",
+      "10",
+      "topic"
     ]
   },
   {
@@ -1322,6 +1359,143 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "concept:concept-respiratory-system",
+    "kind": "concept",
+    "title": "Human respiratory system",
+    "summary": "The connected airway, lungs, and diaphragm that move air into and out of the body.",
+    "href": "/simulations#concept-respiratory-system",
+    "classLevels": [
+      7
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-respiratory-system"
+    ],
+    "tokens": [
+      "human",
+      "respiratory",
+      "system",
+      "the",
+      "connected",
+      "airway",
+      "lungs",
+      "and",
+      "diaphragm",
+      "that",
+      "move",
+      "air",
+      "into",
+      "out",
+      "of",
+      "body",
+      "builds",
+      "awareness",
+      "explains",
+      "breathing",
+      "rate",
+      "changes",
+      "during",
+      "rest",
+      "exercise",
+      "organs",
+      "trachea",
+      "bronchi"
+    ]
+  },
+  {
+    "id": "concept:concept-breathing-mechanics",
+    "kind": "concept",
+    "title": "Breathing mechanics",
+    "summary": "The diaphragm and rib cage movements that change chest volume to draw air in and push it out.",
+    "href": "/simulations#concept-breathing-mechanics",
+    "classLevels": [
+      7
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-breathing-mechanics"
+    ],
+    "tokens": [
+      "breathing",
+      "mechanics",
+      "the",
+      "diaphragm",
+      "and",
+      "rib",
+      "cage",
+      "movements",
+      "that",
+      "change",
+      "chest",
+      "volume",
+      "to",
+      "draw",
+      "air",
+      "in",
+      "push",
+      "it",
+      "out",
+      "explains",
+      "why",
+      "deep",
+      "feels",
+      "different",
+      "from",
+      "shallow",
+      "inhalation",
+      "exhalation",
+      "movement",
+      "inhale",
+      "exhale"
+    ]
+  },
+  {
+    "id": "concept:concept-gas-exchange",
+    "kind": "concept",
+    "title": "Gas exchange",
+    "summary": "The exchange of oxygen and carbon dioxide between air in the alveoli and blood in surrounding capillaries.",
+    "href": "/simulations#concept-gas-exchange",
+    "classLevels": [
+      7
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-gas-exchange"
+    ],
+    "tokens": [
+      "gas",
+      "exchange",
+      "the",
+      "of",
+      "oxygen",
+      "and",
+      "carbon",
+      "dioxide",
+      "between",
+      "air",
+      "in",
+      "alveoli",
+      "blood",
+      "surrounding",
+      "capillaries",
+      "connects",
+      "breathing",
+      "to",
+      "how",
+      "body",
+      "gets",
+      "removes",
+      "waste",
+      "alveolar"
+    ]
+  },
+  {
     "id": "simulation:pollination",
     "kind": "simulation",
     "title": "Plant Pollination & Growth Cycle",
@@ -1787,6 +1961,80 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "vegetables",
       "chewing",
       "exercise"
+    ]
+  },
+  {
+    "id": "simulation:c7-ch10-a02-the-breathing-process-in-human",
+    "kind": "simulation",
+    "title": "The Breathing Process in Human",
+    "summary": "Trace the airway, locate the lungs and diaphragm, trigger an inhale and an exhale, zoom into the alveoli, and compare the two phases of the breathing cycle.",
+    "href": "/simulations/c7-ch10-a02-the-breathing-process-in-human",
+    "classLevels": [
+      7
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-respiratory-system",
+      "concept-breathing-mechanics",
+      "concept-gas-exchange"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "the",
+      "breathing",
+      "process",
+      "in",
+      "human",
+      "trace",
+      "airway",
+      "locate",
+      "lungs",
+      "and",
+      "diaphragm",
+      "trigger",
+      "an",
+      "inhale",
+      "exhale",
+      "zoom",
+      "into",
+      "alveoli",
+      "compare",
+      "two",
+      "phases",
+      "of",
+      "cycle",
+      "students",
+      "will",
+      "identify",
+      "explain",
+      "how",
+      "rib",
+      "cage",
+      "movement",
+      "changes",
+      "chest",
+      "volume",
+      "during",
+      "inhalation",
+      "exhalation",
+      "describe",
+      "gas",
+      "exchange",
+      "at",
+      "biology",
+      "respiratory",
+      "system",
+      "organs",
+      "trachea",
+      "bronchi",
+      "mechanics",
+      "oxygen",
+      "carbon",
+      "dioxide",
+      "alveolar",
+      "capillaries"
     ]
   },
   {
@@ -7325,47 +7573,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "modelinspection",
       "processtimeline",
       "measurementgraph",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c7-ch10-a02-the-breathing-process-in-human",
-    "kind": "simulation",
-    "title": "The breathing process in human",
-    "summary": "Respiration in Organisms part - 1 · Class 7 biology",
-    "href": "/simulations#c7-ch10-a02-the-breathing-process-in-human",
-    "classLevels": [
-      7
-    ],
-    "subjects": [
-      "biology"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "breathing",
-      "process",
-      "in",
-      "human",
-      "respiration",
-      "organisms",
-      "part",
-      "1",
-      "biology",
-      "modelinspection",
-      "processtimeline",
       "use",
       "labeled",
       "3d",
