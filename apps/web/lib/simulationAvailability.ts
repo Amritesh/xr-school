@@ -16,7 +16,11 @@ export type CatalogCard = {
   title: string;
   topic: string;
   subject: string;
+  /** Canonical subject values this card matches against the subject filter. */
+  subjectTags: string[];
   grade: string;
+  /** Class levels this card matches against the class-level filter. */
+  classLevels: number[];
   archetype: string;
   minutes: number;
   color: string;
@@ -29,7 +33,9 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     slug: 'pollination',
     color: '#34d399',
     subject: 'biology, environmental science',
+    subjectTags: ['biology', 'environmentalScience'],
     grade: 'Class 6-10',
+    classLevels: [6, 7, 8, 9, 10],
     title: 'Plant Pollination & Growth Cycle',
     topic: 'Plant reproduction',
     archetype: 'immersive VR',
@@ -39,7 +45,9 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     slug: 'circuit',
     color: '#fbbf24',
     subject: 'physics',
+    subjectTags: ['physics'],
     grade: 'Class 6-10',
+    classLevels: [6, 7, 8, 9, 10],
     title: "Electric Circuits & Resistance (Ohm's Law)",
     topic: 'Electricity',
     archetype: 'interactive 3D',
@@ -49,7 +57,9 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     slug: 'c9-ch01-a02-states-of-matter',
     color: '#38bdf8',
     subject: 'chemistry, physics',
+    subjectTags: ['chemistry', 'physics'],
     grade: 'Class 9',
+    classLevels: [9],
     title: 'States of Matter Particle Lab',
     topic: 'Matter in Our Surroundings',
     archetype: 'interactive3d',
@@ -59,7 +69,9 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     slug: 'c6-ch01-a01-sources-of-food',
     color: '#4ade80',
     subject: 'science, biology',
+    subjectTags: ['science', 'biology'],
     grade: 'Class 6',
+    classLevels: [6],
     title: 'Sources of Food Sorting Lab',
     topic: 'Food: Where does It come from?',
     archetype: 'sortingBoard',
@@ -69,7 +81,9 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     slug: 'c5-ch07-a03-soluble-and-insoluble-substances',
     color: '#67e8f9',
     subject: 'environmentalScience, science',
+    subjectTags: ['environmentalScience', 'science'],
     grade: 'Class 5',
+    classLevels: [5],
     title: 'Soluble and Insoluble Substances Lab',
     topic: 'Experiments with Water',
     archetype: 'experimentBench',
@@ -79,7 +93,9 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     slug: 'c5-ch03-a02-introduction-of-digestive-system',
     color: '#fb7185',
     subject: 'environmentalScience, biology',
+    subjectTags: ['environmentalScience', 'biology'],
     grade: 'Class 5',
+    classLevels: [5],
     title: 'Introduction to the Digestive System',
     topic: 'From Tasting to Digesting',
     archetype: 'immersive VR',
@@ -105,7 +121,9 @@ function toCataloguedCard(item: ScienceSimulationCatalogItem): CatalogCard {
     slug: item.slug,
     color: COLORS[item.primaryArchetype] ?? '#38bdf8',
     subject: item.subject,
+    subjectTags: [item.subject],
     grade: `Class ${item.classLevel}`,
+    classLevels: [item.classLevel],
     title: item.title,
     topic: item.topic,
     archetype: item.primaryArchetype,
@@ -128,4 +146,19 @@ export function getSimulationCatalogSections(catalog: readonly ScienceSimulation
     launchable,
     catalogued,
   };
+}
+
+export interface CatalogCardFilters {
+  classLevel?: number;
+  subject?: string;
+  releaseMaturity?: string;
+}
+
+/** Matches a card against the class/subject/release-maturity filter controls
+ * without falling back to free-text curriculum search. */
+export function matchesCatalogFilters(card: CatalogCard, filters: CatalogCardFilters): boolean {
+  if (filters.classLevel !== undefined && !card.classLevels.includes(filters.classLevel)) return false;
+  if (filters.subject !== undefined && !card.subjectTags.includes(filters.subject)) return false;
+  if (filters.releaseMaturity !== undefined && card.releaseMaturity !== filters.releaseMaturity) return false;
+  return true;
 }

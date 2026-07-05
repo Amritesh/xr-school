@@ -12,6 +12,7 @@ import { searchCurriculum } from '@/lib/curriculumSearch';
 import { SCIENCE_SIMULATION_CATALOG } from '@/lib/scienceCatalog.generated';
 import {
   getSimulationCatalogSections,
+  matchesCatalogFilters,
   type CatalogCard,
 } from '@/lib/simulationAvailability';
 
@@ -60,6 +61,19 @@ export default function SimulationCatalog({
   const [subject, setSubject] = useState('');
   const [releaseMaturity, setReleaseMaturity] = useState('');
 
+  // A text query always runs the full curriculum search (courses, chapters,
+  // concepts, and simulations together). Class/subject/maturity alone
+  // instead filter the existing simulation-card sections in place, so
+  // picking "Class 7" still shows the same card treatment — including the
+  // "no Internal QA build yet" empty state — rather than falling back to a
+  // generic search-result list that can't tell a real build from a
+  // catalogued candidate.
+  const hasTextQuery = Boolean(query);
+  const cardFilters = {
+    classLevel: classLevel ? Number(classLevel) : undefined,
+    subject: subject || undefined,
+    releaseMaturity: releaseMaturity || undefined,
+  };
   const filtersActive = Boolean(query || classLevel || subject || releaseMaturity);
   const results = useMemo(() => searchCurriculum(
     documents,
@@ -71,7 +85,18 @@ export default function SimulationCatalog({
     },
   ), [classLevel, documents, query, releaseMaturity, subject]);
 
-  const courseDocuments = documents.filter(document => document.kind === 'course');
+  const filteredLaunchableCards = useMemo(
+    () => launchableCards.filter(card => matchesCatalogFilters(card, cardFilters)),
+    [launchableCards, classLevel, subject, releaseMaturity],
+  );
+  const filteredCataloguedCards = useMemo(
+    () => cataloguedCards.filter(card => matchesCatalogFilters(card, cardFilters)),
+    [cataloguedCards, classLevel, subject, releaseMaturity],
+  );
+
+  const courseDocuments = documents.filter(document => document.kind === 'course'
+    && (!classLevel || document.classLevels.includes(Number(classLevel)))
+    && (!subject || (document.subjects as readonly string[]).includes(subject)));
   const chapterDocuments = documents.filter(document => document.kind === 'chapter');
   const canonicalConceptCount = documents.filter(document => document.kind === 'concept').length;
 
@@ -163,7 +188,7 @@ export default function SimulationCatalog({
         </div>
       </section>
 
-      {filtersActive ? (
+      {hasTextQuery ? (
         <section className="catalog-section" aria-live="polite">
           <SectionHeading
             eyebrow="Search results"
@@ -183,15 +208,22 @@ export default function SimulationCatalog({
         </section>
       ) : (
         <>
-          <section className="catalog-section">
+          <section className="catalog-section" aria-live="polite">
             <SectionHeading
               eyebrow="Featured simulations"
               title="Working builds for controlled testing"
               copy="These simulations have reached Internal QA. They are ready to demonstrate, but remain explicitly below pilot and school-validated status."
             />
-            <div className="catalog-grid featured-grid">
-              {launchableCards.map(card => <SimulationCard key={card.slug} card={card} />)}
-            </div>
+            {filteredLaunchableCards.length > 0 ? (
+              <div className="catalog-grid featured-grid">
+                {filteredLaunchableCards.map(card => <SimulationCard key={card.slug} card={card} />)}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <strong>No Internal QA build yet for this filter.</strong>
+                <span>Browse the catalogued candidates below, or clear the filter to see all {launchableCards.length} working builds.</span>
+              </div>
+            )}
           </section>
 
           <section className="catalog-section">
@@ -235,10 +267,12 @@ export default function SimulationCatalog({
               copy="These records are searchable planning opportunities—not finished simulations. Launch remains disabled until Internal QA."
             />
             <div className="catalog-grid">
-              {cataloguedCards.slice(0, 9).map(card => <SimulationCard key={card.slug} card={card} />)}
+              {filteredCataloguedCards.slice(0, 9).map(card => <SimulationCard key={card.slug} card={card} />)}
             </div>
             <p className="section-footnote">
-              Search or filter above to explore all {cataloguedCards.length} catalogued candidates.
+              {filtersActive
+                ? `${filteredCataloguedCards.length} catalogued candidates match this filter.`
+                : `Search or filter above to explore all ${cataloguedCards.length} catalogued candidates.`}
             </p>
           </section>
         </>

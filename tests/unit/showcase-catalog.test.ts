@@ -22,6 +22,21 @@ describe('showcase catalog', () => {
     expect(source).toContain('canonicalConceptCount');
   });
 
+  it('filters the featured and roadmap simulation cards in place instead of hiding them behind text search', () => {
+    const source = readFileSync(componentPath, 'utf8');
+
+    // A class/subject/maturity filter alone must keep showing the
+    // simulation-card sections (with an honest empty state when nothing
+    // matches) rather than falling back to the generic search-result list,
+    // which used to hide every real "Featured simulations" build the
+    // moment any filter was set.
+    expect(source).toContain('matchesCatalogFilters');
+    expect(source).toContain('filteredLaunchableCards');
+    expect(source).toContain('filteredCataloguedCards');
+    expect(source).toContain('No Internal QA build yet for this filter.');
+    expect(source).toContain('hasTextQuery');
+  });
+
   it('uses a professional product entry page and responsive visual system', () => {
     const home = readFileSync(homePath, 'utf8');
     const styles = readFileSync(stylesPath, 'utf8');
