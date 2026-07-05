@@ -75,6 +75,26 @@ describe('computeFocusFrame', () => {
 
     expect(frame.position.distanceTo(frame.target)).toBeGreaterThanOrEqual(0.4);
   });
+
+  it('is idempotent — re-focusing the same object from the last result does not creep upward', () => {
+    // Reproduces the reported bug: clicking the same object repeatedly (the
+    // camera having already moved to the previous focus result) must not
+    // tilt the camera progressively higher each time.
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.set(0, 1.5, 3);
+    const target = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3));
+    target.position.set(0, 0.9, -1);
+    target.updateMatrixWorld(true);
+
+    const first = computeFocusFrame(target, camera);
+    camera.position.copy(first.position);
+    const second = computeFocusFrame(target, camera);
+    camera.position.copy(second.position);
+    const third = computeFocusFrame(target, camera);
+
+    expect(second.position.y).toBeCloseTo(first.position.y, 5);
+    expect(third.position.y).toBeCloseTo(first.position.y, 5);
+  });
 });
 
 describe('createGuidedCamera', () => {
@@ -146,16 +166,14 @@ describe('createGuidedCamera', () => {
     guided.dispose();
   });
 
-  it('clamps the scroll zoom to the configured field-of-view range', () => {
+  it('does not change field of view on scroll — no zoom control', () => {
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
     const dom = createFakeDomElement();
-    const guided = createGuidedCamera(camera, dom, { minFov: 40, maxFov: 80 });
+    const guided = createGuidedCamera(camera, dom);
 
     dom.dispatch('wheel', { deltaY: 100000 });
-    expect(camera.fov).toBeLessThanOrEqual(80);
 
-    dom.dispatch('wheel', { deltaY: -100000 });
-    expect(camera.fov).toBeGreaterThanOrEqual(40);
+    expect(camera.fov).toBe(60);
     guided.dispose();
   });
 });

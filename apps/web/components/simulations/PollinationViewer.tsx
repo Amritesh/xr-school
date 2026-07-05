@@ -94,6 +94,7 @@ const ACTION_BY_TARGET: Record<string, string> = {
   'pollinator-bee': 'observe-pollinator',
   'stigma-target': 'transfer-pollen',
   'ovary-cutaway': 'trace-pollen-tube',
+  'target-ovule': 'trace-pollen-tube',
   'time-lapse-dial': 'advance-time-lapse',
   'time-lapse-knob': 'advance-time-lapse',
   'control-flower': 'compare-control',
@@ -114,7 +115,7 @@ const TARGET_BY_ACTION: Record<string, string> = {
   'collect-pollen': 'anther-target',
   'observe-pollinator': 'pollinator-bee',
   'transfer-pollen': 'stigma-target',
-  'trace-pollen-tube': 'ovary-cutaway',
+  'trace-pollen-tube': 'target-ovule',
   'advance-time-lapse': 'time-lapse-knob',
   'compare-control': 'control-flower-head',
   'open-fruit': 'fruit-halves',
@@ -182,6 +183,14 @@ const DEFAULT_POLLINATION_FRAME: CameraFrame = {
   target: new THREE.Vector3(0, 1.02, -0.92),
 };
 
+// The pistil and germination cutaways swap in a whole enlarged group in
+// place of the garden — frame that group (so the style/stem is in view),
+// not the single small evidence target inside it.
+const STAGE_OVERVIEW_GROUP_NAMES: Record<number, string> = {
+  4: 'enlarged-pistil-cutaway',
+  7: 'enlarged-germination-cutaway',
+};
+
 /** Moves the camera once per real stage transition — an explicit, occasional
  * move (like Circuit's), not a per-substep nudge that would fight the
  * learner's own free look-around. */
@@ -191,6 +200,14 @@ function focusStageOverview(
   camera: THREE.PerspectiveCamera,
   world: PollinationScene,
 ) {
+  const overviewGroupName = STAGE_OVERVIEW_GROUP_NAMES[stageIndex];
+  if (overviewGroupName) {
+    const group = world.root.getObjectByName(overviewGroupName);
+    if (group) {
+      guidedCamera.focusOn(computeFocusFrame(group, camera, { fitPadding: 1.7 }));
+      return;
+    }
+  }
   const stage = POLLINATION_WORLD.experienceDefinitions![0].stages[stageIndex];
   const targetName = stage?.requiredActionIds[0]
     ? TARGET_BY_ACTION[stage.requiredActionIds[0]]
@@ -234,9 +251,9 @@ export default function PollinationViewer() {
   const [vrSupported, setVrSupported] = useState(false);
   const [runtimeError, setRuntimeError] = useState('');
   const [evidence, setEvidence] = useState<string[]>([]);
-  const [scaleDisclosure, setScaleDisclosure] = useState(
-    'The garden and tools are shown at life size.',
-  );
+  // Empty by default: the scale note only has something worth saying right
+  // around a cutaway transition, not for the ordinary life-size garden.
+  const [scaleDisclosure, setScaleDisclosure] = useState('');
   const [focusVisibility, setFocusVisibility] = useState<FocusGuideVisibility>({
     direction: 'forward',
     visible: false,
@@ -362,7 +379,7 @@ export default function PollinationViewer() {
             transitionRef.current.reset();
             setScaleDisclosure(advanced.stageIndex === 4
               ? 'The next view enlarges the internal flower structures.'
-              : 'The garden and tools are shown at life size.');
+              : '');
             playNarration(advanced.stageIndex, preferences.audio);
           } catch (error) {
             setRuntimeError(error instanceof Error ? error.message : String(error));
@@ -382,6 +399,10 @@ export default function PollinationViewer() {
     setSnapshot(next);
     sceneApiRef.current?.setStage(next.stageIndex);
     moveCameraToStage(next.stageIndex);
+    transitionRef.current.reset();
+    setScaleDisclosure(next.stageIndex === 4
+      ? 'The next view enlarges the internal flower structures.'
+      : '');
     playNarration(next.stageIndex, preferences.audio);
   }, [moveCameraToStage, preferences.audio]);
   previousRef.current = previous;
@@ -401,7 +422,7 @@ export default function PollinationViewer() {
       transitionRef.current.reset();
       setScaleDisclosure(nextSnapshot.stageIndex === 4
         ? 'The next view enlarges the internal flower structures.'
-        : 'The garden and tools are shown at life size.');
+        : '');
       playNarration(nextSnapshot.stageIndex, preferences.audio);
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : String(error));
@@ -787,7 +808,7 @@ export default function PollinationViewer() {
               </button>
             ))}
           </div>
-          <small>{scaleDisclosure}</small>
+          {scaleDisclosure && <small>{scaleDisclosure}</small>}
         </section>
       )}
     </SimulationExperienceShell>

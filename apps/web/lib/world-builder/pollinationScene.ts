@@ -17,6 +17,54 @@ import {
   type PollinationToolMaterials,
 } from './pollinationTools';
 import { POLLINATION_LAYOUT } from './pollinationLayout';
+import type { Vec3Tuple } from './anchoredPlacement';
+
+// A wandering flight path built from a few overlapping sine waves per axis
+// instead of a single circle — reads as natural meandering rather than
+// perfect circling, while staying near the given center.
+function organicFlightPosition(
+  elapsedSeconds: number,
+  seed: number,
+  center: Vec3Tuple,
+  radius: number,
+  target = new THREE.Vector3(),
+) {
+  const t = elapsedSeconds * 0.5 + seed * 12.9;
+  return target.set(
+    center[0]
+      + Math.sin(t * 0.8 + seed) * radius
+      + Math.sin(t * 2.3 + seed * 1.7) * radius * 0.32,
+    center[1]
+      + Math.sin(t * 1.3 + seed * 2.1) * radius * 0.22
+      + Math.sin(t * 0.4 + seed) * radius * 0.08,
+    center[2]
+      + Math.cos(t * 0.65 + seed * 0.6) * radius
+      + Math.cos(t * 1.9 + seed * 1.3) * radius * 0.3,
+  );
+}
+
+const _beePosition = new THREE.Vector3();
+const _beeAhead = new THREE.Vector3();
+
+function updateBeeFlight(
+  beeRig: ReturnType<typeof createBee>,
+  elapsedSeconds: number,
+  center: Vec3Tuple,
+  seed: number,
+  radius: number,
+) {
+  organicFlightPosition(elapsedSeconds, seed, center, radius, _beePosition);
+  organicFlightPosition(elapsedSeconds + 0.05, seed, center, radius, _beeAhead);
+  beeRig.root.position.copy(_beePosition);
+  beeRig.root.rotation.y = Math.atan2(
+    _beeAhead.x - _beePosition.x,
+    _beeAhead.z - _beePosition.z,
+  );
+  for (const [index, wing] of beeRig.wings.entries()) {
+    wing.rotation.z = (index % 2 ? -1 : 1)
+      * (0.25 + Math.sin(elapsedSeconds * 38 + seed) * 0.48);
+  }
+}
 
 export type PollinationSceneMaterials =
   & PollinationBotanyMaterials
@@ -52,6 +100,20 @@ export function createPollinationScene(config: PollinationSceneConfig) {
   const bee = createBee(config.materials);
   bee.root.position.set(...POLLINATION_LAYOUT.beeFlightCenter);
   root.add(bee.root);
+
+  // Ambient bees: not tied to any lesson action, just a living garden —
+  // visible throughout the experience rather than gated to one stage.
+  const AMBIENT_BEE_CENTERS: Vec3Tuple[] = [
+    [3.3, 1.35, 1.4],
+    [-3.6, 1.3, 2.6],
+  ];
+  const ambientBees = AMBIENT_BEE_CENTERS.map((center, index) => {
+    const ambientBee = createBee(config.materials);
+    ambientBee.root.name = `ambient-bee-${index + 1}`;
+    ambientBee.root.position.set(...center);
+    root.add(ambientBee.root);
+    return { rig: ambientBee, center, seed: 4.7 + index * 3.1, radius: 1.1 + index * 0.25 };
+  });
 
   const fruit = createFruitAndSeed(config.materials);
   fruit.root.position.set(...POLLINATION_LAYOUT.fruit.position);
@@ -169,10 +231,14 @@ export function createPollinationScene(config: PollinationSceneConfig) {
     const inCutaway = inPistilCutaway || inGerminationCutaway;
     garden.root.visible = !inCutaway;
     treatmentFlower.root.visible = !inCutaway;
+    // The fruit forms where the treatment flower head was — hide the head
+    // once the fruit appears so the two don't visually overlap.
+    treatmentFlower.head.visible = !inCutaway && stage < 5;
     controlFlower.root.visible = !inCutaway;
     tools.root.visible = !inCutaway;
     pollen.visible = !inCutaway && stage >= 1 && stage <= 3;
     bee.root.visible = !inCutaway && stage >= 2 && stage <= 3;
+    for (const ambient of ambientBees) ambient.rig.root.visible = !inCutaway;
     pistilCutaway.visible = inPistilCutaway;
     germinationCutaway.visible = inGerminationCutaway;
     fruit.root.visible = !inCutaway && stage >= 5;
@@ -206,17 +272,10 @@ export function createPollinationScene(config: PollinationSceneConfig) {
     update(deltaSeconds: number, elapsedSeconds: number) {
       garden.updateWind(elapsedSeconds);
       if (bee.root.visible) {
-        const orbit = elapsedSeconds * 0.62;
-        bee.root.position.set(
-          POLLINATION_LAYOUT.beeFlightCenter[0] + Math.cos(orbit) * 0.72,
-          POLLINATION_LAYOUT.beeFlightCenter[1] + Math.sin(orbit * 1.7) * 0.12,
-          POLLINATION_LAYOUT.beeFlightCenter[2] + Math.sin(orbit) * 0.42,
-        );
-        bee.root.rotation.y = -orbit + Math.PI / 2;
-        for (const [index, wing] of bee.wings.entries()) {
-          wing.rotation.z = (index % 2 ? -1 : 1)
-            * (0.25 + Math.sin(elapsedSeconds * 38) * 0.48);
-        }
+        updateBeeFlight(bee, elapsedSeconds, POLLINATION_LAYOUT.beeFlightCenter, 0, 0.7);
+      }
+      for (const ambient of ambientBees) {
+        updateBeeFlight(ambient.rig, elapsedSeconds, ambient.center, ambient.seed, ambient.radius);
       }
       if (stage === 7) {
         germination.firstLeaves.rotation.y += deltaSeconds * 0.08;

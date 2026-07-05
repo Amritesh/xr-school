@@ -787,7 +787,7 @@ export default function CircuitViewer() {
           </div>
 
           <div style={{ position: 'absolute', bottom: 16, left: 16, color: '#374151', fontSize: '0.74rem' }}>
-            Click objects to inspect · Drag to look around · Scroll to zoom
+            Click objects to inspect · Drag to look around
           </div>
         </>
       )}

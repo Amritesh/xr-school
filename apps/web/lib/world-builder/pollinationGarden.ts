@@ -106,7 +106,7 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
 
   const peripheralFlowerBed = new THREE.Group();
   peripheralFlowerBed.name = 'peripheral-flower-bed';
-  const peripheralCount = 96;
+  const peripheralCount = 168;
   const stemGeometry = new THREE.CylinderGeometry(0.012, 0.018, 0.58, 6);
   const blossomGeometry = new THREE.SphereGeometry(0.065, 10, 7);
   const stems = new THREE.InstancedMesh(
@@ -114,11 +114,15 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
     materials.leaf,
     peripheralCount,
   );
-  const blossoms = new THREE.InstancedMesh(
+  // Three colour batches instead of one flat wood-toned batch — a scattered
+  // meadow of actual flower colours instead of pale spheres lost in the grass.
+  const blossomColors = [0xf472b6, 0xc084fc, 0xfacc15];
+  const blossomBatches = blossomColors.map(color => new THREE.InstancedMesh(
     blossomGeometry,
-    materials.paintedWood,
-    peripheralCount,
-  );
+    new THREE.MeshStandardMaterial({ color, roughness: 0.55 }),
+    Math.ceil(peripheralCount / blossomColors.length),
+  ));
+  const blossomBatchCounts = new Array(blossomColors.length).fill(0);
   for (let index = 0; index < peripheralCount; index += 1) {
     const row = Math.floor(index / 24);
     const column = index % 24;
@@ -134,11 +138,13 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
     position.y = 0.45 + height * 0.5;
     scale.set(1 + index % 3 * 0.18, 0.45, 1 + index % 2 * 0.16);
     matrix.compose(position, quaternion, scale);
-    blossoms.setMatrixAt(index, matrix);
+    const batchIndex = index % blossomColors.length;
+    blossomBatches[batchIndex].setMatrixAt(blossomBatchCounts[batchIndex], matrix);
+    blossomBatchCounts[batchIndex] += 1;
   }
   stems.instanceMatrix.needsUpdate = true;
-  blossoms.instanceMatrix.needsUpdate = true;
-  peripheralFlowerBed.add(stems, blossoms);
+  for (const batch of blossomBatches) batch.instanceMatrix.needsUpdate = true;
+  peripheralFlowerBed.add(stems, ...blossomBatches);
   root.add(peripheralFlowerBed);
 
   const pollinatorHabitat = new THREE.Group();

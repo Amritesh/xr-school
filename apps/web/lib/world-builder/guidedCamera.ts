@@ -41,8 +41,12 @@ export function computeFocusFrame(
   direction.normalize();
 
   const spherical = new THREE.Spherical().setFromVector3(direction);
+  // Fixed absolute angle above horizontal — not a delta off whatever the
+  // camera's current elevation happens to be. Re-focusing the same object
+  // from a camera that already sat above it must not tilt it up further:
+  // repeated selection should be idempotent, not compounding.
   spherical.phi = THREE.MathUtils.clamp(
-    spherical.phi - (options.elevation ?? 0.18),
+    Math.PI / 2 - (options.elevation ?? 0.18),
     0.05,
     Math.PI - 0.05,
   );
@@ -60,9 +64,6 @@ export interface GuidedCameraOptions {
   lookSpeed?: number;
   /** How far up/down the learner can look, in radians from level. */
   maxPitch?: number;
-  /** Field-of-view zoom range in degrees for the scroll wheel. */
-  minFov?: number;
-  maxFov?: number;
 }
 
 const UP = new THREE.Vector3(0, 1, 0);
@@ -103,9 +104,6 @@ export function createGuidedCamera(
   const transitionSeconds = options.transitionSeconds ?? 0.65;
   const lookSpeed = options.lookSpeed ?? 0.006;
   const maxPitch = options.maxPitch ?? 1.4;
-  const minFov = options.minFov ?? camera.fov * 0.6;
-  const maxFov = options.maxFov ?? camera.fov * 1.15;
-  const baseFov = camera.fov;
 
   const initialDirection = new THREE.Vector3();
   camera.getWorldDirection(initialDirection);
@@ -200,23 +198,14 @@ export function createGuidedCamera(
       domElement.releasePointerCapture(event.pointerId);
     }
   };
-  const onWheel = (event: WheelEvent) => {
-    event.preventDefault();
-    camera.fov = THREE.MathUtils.clamp(camera.fov + event.deltaY * 0.02, minFov, maxFov);
-    camera.updateProjectionMatrix();
-  };
   domElement.addEventListener('pointerdown', onPointerDown);
   domElement.addEventListener('pointermove', onPointerMove);
   domElement.addEventListener('pointerup', onPointerUp);
-  domElement.addEventListener('wheel', onWheel, { passive: false });
 
   function dispose() {
     domElement.removeEventListener('pointerdown', onPointerDown);
     domElement.removeEventListener('pointermove', onPointerMove);
     domElement.removeEventListener('pointerup', onPointerUp);
-    domElement.removeEventListener('wheel', onWheel);
-    camera.fov = baseFov;
-    camera.updateProjectionMatrix();
   }
 
   return { focusOn, update, isTransitioning, dispose };
