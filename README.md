@@ -8,6 +8,7 @@ Use Node.js 22 or newer. The repository is configured as an npm workspace with a
 
 ```powershell
 npm install
+npm run env:check
 ```
 
 ## Useful Commands
@@ -53,8 +54,13 @@ npm run dev -w @xr-school/api
 Before opening a pull request, run:
 
 ```powershell
-npm run contract:compile
-npm run test
-npm run build -w @xr-school/api
-npm run build -w @xr-school/web
+npm run verify
+```
+
+This matches the GitHub Actions quality gate. It checks the local environment, compiles the TypeSpec contract, validates and regenerates the science catalog, runs the unit suite, type-checks the web workspace, and builds the web app.
+
+If you change TypeSpec contracts or generated catalog inputs, also confirm generated sources are current:
+
+```powershell
+git diff --exit-code -- generated/openapi/openapi.json apps/web/lib/scienceCatalog.generated.ts apps/web/lib/curriculumSearch.generated.ts
 ```

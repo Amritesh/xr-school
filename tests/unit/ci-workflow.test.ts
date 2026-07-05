@@ -13,6 +13,7 @@ const qualityWorkflow = normalizeLineEndings(
 const rootPackage = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
   scripts?: Record<string, string>;
 };
+const readme = normalizeLineEndings(readFileSync(resolve(process.cwd(), 'README.md'), 'utf8'));
 const vercelConfigPath = resolve(process.cwd(), 'vercel.json');
 const vercelConfig = (existsSync(vercelConfigPath)
   ? JSON.parse(readFileSync(vercelConfigPath, 'utf8'))
@@ -42,6 +43,12 @@ describe('web build workflows', () => {
 
   it('quality runs the root strict verification gate', () => {
     expect(qualityWorkflow).toContain('run: npm run verify');
+  });
+
+  it('documents the same strict verification gate used by CI', () => {
+    expect(readme).toContain('npm run verify');
+    expect(readme).toContain('GitHub Actions quality gate');
+    expect(readme).toContain('git diff --exit-code -- generated/openapi/openapi.json');
   });
 
   it('exposes a root build script for the Vercel monorepo project', () => {

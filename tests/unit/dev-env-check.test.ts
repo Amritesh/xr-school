@@ -12,10 +12,18 @@ describe('dev environment check', () => {
   });
 
   it('rejects Node versions older than 22', async () => {
-    const { isSupportedNodeVersion } = await import(modulePath);
+    const { isSupportedNodeVersion, runDevEnvCheck } = await import(modulePath);
 
     expect(isSupportedNodeVersion('v14.21.3')).toBe(false);
     expect(isSupportedNodeVersion('v20.19.1')).toBe(false);
+
+    const result = runDevEnvCheck({
+      nodeVersion: 'v20.19.1',
+      platform: 'win32',
+      exists: () => true,
+    });
+
+    expect(result.failures).toContain('Node v20.19.1 is unsupported. Use Node 22 or newer.');
   });
 
   it('reports missing required paths by label', async () => {
