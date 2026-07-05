@@ -1,6 +1,9 @@
 node_modules/
 .next/
 dist/
+**/tsconfig.tsbuildinfo
+apps/*/package-lock.json
+packages/*/package-lock.json
 *.log
 .env*
 !.env.example
