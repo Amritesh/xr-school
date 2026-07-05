@@ -59,8 +59,19 @@ describe('Circuit viewer headset regressions', () => {
   });
 
   it('shows a click cursor only when a physical circuit object is targetable', () => {
-    expect(source).toContain("renderer.domElement.addEventListener('pointermove'");
-    expect(source).toContain("renderer.domElement.style.cursor = hits.length > 0 ? 'pointer' : 'grab'");
-    expect(source).toContain("renderer.domElement.removeEventListener('pointermove'");
+    // Cursor feedback now lives in the shared interaction system so it isn't
+    // duplicated per viewer; verify the viewer wires into it and that the
+    // shared module implements the pointer/grab affordance.
+    expect(source).toContain('createInteractionSystem');
+    expect(source).toContain("circuit-switch-lever'");
+    expect(source).toContain("circuit-resistor'");
+    expect(source).toContain("circuit-bulb'");
+
+    const interactionSource = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/interactionSystem.ts'),
+      'utf8',
+    );
+    expect(interactionSource).toContain("addEventListener('pointermove'");
+    expect(interactionSource).toContain('cursor.hover : cursor.idle');
   });
 });

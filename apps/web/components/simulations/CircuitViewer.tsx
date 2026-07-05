@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
   createAssessmentSession,
   type AssessmentAnswerResult,
@@ -26,6 +25,11 @@ import {
   isQuestBackPressed,
   updateButtonLatch,
 } from '@/lib/xrNavigation';
+import {
+  computeFocusFrame,
+  createGuidedCamera,
+} from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
   createWebSimulationRuntime,
   type WebSimulationRuntime,
@@ -97,7 +101,7 @@ function playNarration(stageIndex: number) {
 export default function CircuitViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
+  const guidedCameraRef = useRef<ReturnType<typeof createGuidedCamera> | null>(null);
   const switchLeverRef = useRef<THREE.Mesh | null>(null);
   const bulbLightRef = useRef<THREE.PointLight | null>(null);
   const bulbMeshRef = useRef<THREE.Mesh | null>(null);
@@ -107,11 +111,6 @@ export default function CircuitViewer() {
   const curveRef = useRef<THREE.CatmullRomCurve3 | null>(null);
   const resistorBodyRef = useRef<THREE.Mesh | null>(null);
   const resistorBandRef = useRef<THREE.Mesh | null>(null);
-
-  // Camera animation
-  const camGoalPos = useRef(STAGE_CAMERAS[0].pos.clone());
-  const camGoalTarget = useRef(STAGE_CAMERAS[0].target.clone());
-  const camAnimating = useRef(false);
 
   const switchClosedRef = useRef(false);
   const resistorIdxRef = useRef(0);
@@ -371,49 +370,50 @@ export default function CircuitViewer() {
     electronMeshesRef.current = electronMeshes;
     electronTsRef.current = electronTs;
 
-    const interactables = [switchLever, resistorGroup, bulbGroup];
     const focusTargets = [switchLever, resistorGroup, bulbGroup, bulbGroup];
     const projectedFocus = new THREE.Vector3();
 
-    const selectedInteractionName = (object: THREE.Object3D) => {
-      let selected: THREE.Object3D | null = object;
-      while (selected) {
-        if (selected.name.startsWith('circuit-')) return selected.name;
-        selected = selected.parent;
-      }
-      return '';
-    };
+    // ── Guided camera: hand-tuned per-stage shots, with a closer dolly-in
+    // whenever the learner selects the switch, resistor, or bulb ──────────
+    const guidedCamera = createGuidedCamera(camera, renderer.domElement, {
+      transitionSeconds: 0.65,
+    });
+    guidedCamera.focusOn(
+      { position: STAGE_CAMERAS[0].pos, target: STAGE_CAMERAS[0].target },
+      { animate: false },
+    );
+    guidedCameraRef.current = guidedCamera;
 
     const moveToCircuitStage = (next: number) => {
       const bounded = Math.max(0, Math.min(STAGES.length - 1, next));
       stageRef.current = bounded;
-      camGoalPos.current.copy(STAGE_CAMERAS[bounded].pos);
-      camGoalTarget.current.copy(STAGE_CAMERAS[bounded].target);
-      camAnimating.current = true;
+      interactionSystem.setSelected(undefined);
+      guidedCamera.focusOn({
+        position: STAGE_CAMERAS[bounded].pos,
+        target: STAGE_CAMERAS[bounded].target,
+      });
       setStage(bounded);
       playNarration(bounded);
     };
 
-    const handleCircuitObjectSelection = (object: THREE.Object3D) => {
-      const name = selectedInteractionName(object);
-      if (name === 'circuit-switch-lever') {
+    const handleCircuitObjectSelection = (id: string, object: THREE.Object3D) => {
+      if (id === 'circuit-switch-lever') {
         setSwitchClosed(previous => {
           const closed = !previous;
           switchClosedRef.current = closed;
           if (closed && stageRef.current === 0) moveToCircuitStage(1);
           return closed;
         });
-      } else if (
-        name === 'circuit-resistor'
-        && stageRef.current >= 1
-      ) {
+      } else if (id === 'circuit-resistor' && stageRef.current >= 1) {
         const nextResistor = (resistorIdxRef.current + 1) % RESISTORS.length;
         resistorIdxRef.current = nextResistor;
         setResistorIdx(nextResistor);
         if (stageRef.current < 2) moveToCircuitStage(2);
-      } else if (name === 'circuit-bulb' && stageRef.current >= 2) {
+      } else if (id === 'circuit-bulb' && stageRef.current >= 2) {
         moveToCircuitStage(3);
       }
+      interactionSystem.setSelected(id);
+      guidedCamera.focusOn(computeFocusFrame(object, camera));
     };
 
     // ── XR Controllers ────────────────────────────────────────────────────
@@ -429,46 +429,16 @@ export default function CircuitViewer() {
     ctrl0.add(buildControllerVisual()); ctrl1.add(buildControllerVisual());
     scene.add(ctrl0, ctrl1);
 
-    const ctrlRaycaster = new THREE.Raycaster();
-    const onCtrlSelect = (event: Event) => {
-      const ctrl = event.target as unknown as THREE.XRTargetRaySpace;
-      ctrlRaycaster.ray.origin.setFromMatrixPosition(ctrl.matrixWorld);
-      ctrlRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(ctrl.quaternion);
-      const hits = ctrlRaycaster.intersectObjects(interactables, true);
-      if (hits.length > 0) handleCircuitObjectSelection(hits[0].object);
-    };
-    ctrl0.addEventListener('selectstart', onCtrlSelect as any);
-    ctrl1.addEventListener('selectstart', onCtrlSelect as any);
-
-    // ── Mouse click on physical circuit objects ───────────────────────────
-    const mouseRaycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    const updatePointerRay = (event: MouseEvent) => {
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-      mouseRaycaster.setFromCamera(mouse, camera);
-    };
-    const onPointerMove = (event: MouseEvent) => {
-      updatePointerRay(event);
-      const hits = mouseRaycaster.intersectObjects(interactables, true);
-      renderer.domElement.style.cursor = hits.length > 0 ? 'pointer' : 'grab';
-    };
-    const onMouseDown = (event: MouseEvent) => {
-      updatePointerRay(event);
-      const hits = mouseRaycaster.intersectObjects(interactables, true);
-      if (hits.length > 0) handleCircuitObjectSelection(hits[0].object);
-    };
-    renderer.domElement.addEventListener('pointermove', onPointerMove);
-    renderer.domElement.addEventListener('mousedown', onMouseDown);
-
-    // ── OrbitControls ────────────────────────────────────────────────────
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.copy(STAGE_CAMERAS[0].target);
-    controls.enableDamping = true; controls.dampingFactor = 0.06;
-    controls.minDistance = 0.3; controls.maxDistance = 5;
-    controls.maxPolarAngle = Math.PI / 2 - 0.02;
-    controlsRef.current = controls;
+    // ── Selection: one shared raycasting/highlight system for mouse + XR ──
+    const interactionSystem = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: [ctrl0, ctrl1],
+      onSelect: handleCircuitObjectSelection,
+    });
+    interactionSystem.register('circuit-switch-lever', switchLever, { highlightColor: '#ffcf5c' });
+    interactionSystem.register('circuit-resistor', resistorGroup, { highlightColor: '#ffcf5c' });
+    interactionSystem.register('circuit-bulb', bulbGroup, { highlightColor: '#ffcf5c' });
 
     let circuitState = evaluateCircuit({
       voltage: VOLTAGE,
@@ -492,21 +462,12 @@ export default function CircuitViewer() {
       });
     };
 
-    renderUpdate = ({ elapsedSeconds, interpolationAlpha, renderer }) => {
+    renderUpdate = ({ elapsedSeconds, interpolationAlpha, frameDeltaSeconds, renderer }) => {
       const closed = switchClosedRef.current;
       const rIdx = resistorIdxRef.current;
       const R = RESISTORS[rIdx].ohms;
       const { current: I, brightness } = circuitState;
-      // Smooth camera animation between stages (browser only)
-      if (!renderer.xr.isPresenting && camAnimating.current) {
-        camera.position.lerp(camGoalPos.current, 0.045);
-        controls.target.lerp(camGoalTarget.current, 0.045);
-        if (camera.position.distanceTo(camGoalPos.current) < 0.008) {
-          camera.position.copy(camGoalPos.current);
-          controls.target.copy(camGoalTarget.current);
-          camAnimating.current = false;
-        }
-      }
+      if (!renderer.xr.isPresenting) guidedCamera.update(frameDeltaSeconds);
 
       // Switch lever
       if (switchLeverRef.current) {
@@ -556,7 +517,6 @@ export default function CircuitViewer() {
           else void session.end();
         });
       } else {
-        controls.update();
         focusTargets[stageRef.current]
           .getWorldPosition(projectedFocus)
           .project(camera);
@@ -572,13 +532,8 @@ export default function CircuitViewer() {
       }
     };
 
-    host.resources.register('circuit-controls', () => controls.dispose());
-    host.resources.register('circuit-listeners', () => {
-      renderer.domElement.removeEventListener('pointermove', onPointerMove);
-      renderer.domElement.removeEventListener('mousedown', onMouseDown);
-      ctrl0.removeEventListener('selectstart', onCtrlSelect as any);
-      ctrl1.removeEventListener('selectstart', onCtrlSelect as any);
-    });
+    host.resources.register('circuit-camera', () => guidedCamera.dispose());
+    host.resources.register('circuit-interaction', () => interactionSystem.dispose());
     host.resources.register('circuit-scene', () => {
       scene.traverse(object => {
         if (!(object instanceof THREE.Mesh)) return;
@@ -610,10 +565,10 @@ export default function CircuitViewer() {
 
   const goToStage = useCallback((next: number) => {
     stageRef.current = next;
-    // Animate camera to stage-specific position
-    camGoalPos.current.copy(STAGE_CAMERAS[next].pos);
-    camGoalTarget.current.copy(STAGE_CAMERAS[next].target);
-    camAnimating.current = true;
+    guidedCameraRef.current?.focusOn({
+      position: STAGE_CAMERAS[next].pos,
+      target: STAGE_CAMERAS[next].target,
+    });
     setStage(next);
     playNarration(next);
   }, []);

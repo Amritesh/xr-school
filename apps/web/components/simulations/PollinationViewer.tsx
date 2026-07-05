@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type {
   NormalizedInputSource,
 } from '../../../../packages/simulation-schema/src/index';
@@ -50,6 +49,12 @@ import {
   type WebSimulationRuntime,
   type WebSimulationUpdates,
 } from '@/lib/world-builder/webSimulationRuntime';
+import {
+  computeFocusFrame,
+  createGuidedCamera,
+  type CameraFrame,
+} from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
 const NARRATIONS = [
   'You are the field biologist for this school pollinator garden. Inspect the experimental flower and identify the petals, pollen-bearing anthers, and receptive stigma.',
@@ -553,17 +558,41 @@ export default function PollinationViewer() {
       sceneApiRef.current = world;
       host.resources.register('pollination-scene', () => world.dispose());
 
-      const controls = new OrbitControls(camera, host.renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.055;
-      controls.target.set(0, 1.02, -0.92);
-      controls.minDistance = 1.25;
-      controls.maxDistance = 6;
-      controls.maxPolarAngle = Math.PI * 0.49;
-      host.resources.register('pollination-orbit-controls', () => controls.dispose());
+      // ── Guided camera: dollies onto whichever object the current stage is
+      // asking for, and closer still onto whatever the learner just
+      // selected — replacing a single free-roam OrbitControls target ──────
+      const defaultFrame: CameraFrame = {
+        position: new THREE.Vector3(0, 1.55, 3.15),
+        target: new THREE.Vector3(0, 1.02, -0.92),
+      };
+      const guidedCamera = createGuidedCamera(camera, host.renderer.domElement, {
+        transitionSeconds: 0.7,
+        orbitPadding: { distance: 0.4, polarRadians: 0.3, azimuthRadians: 0.4 },
+      });
+      guidedCamera.focusOn(defaultFrame, { animate: false });
+      host.resources.register('pollination-camera', () => guidedCamera.dispose());
 
-      const raycaster = new THREE.Raycaster();
-      const pointer = new THREE.Vector2();
+      let elapsedClock = 0;
+      let lastGuidanceTarget: string | undefined;
+      let guidanceSuppressedUntil = 0;
+      const applyStageGuidance = () => {
+        if (elapsedClock < guidanceSuppressedUntil) return;
+        const targetName = focusActionRef.current
+          ? TARGET_BY_ACTION[focusActionRef.current]
+          : undefined;
+        if (targetName === lastGuidanceTarget) return;
+        lastGuidanceTarget = targetName;
+        const targetObject = targetName
+          ? world.root.getObjectByName(targetName)
+          : undefined;
+        guidedCamera.focusOn(
+          targetObject
+            ? computeFocusFrame(targetObject, camera, { fitPadding: 4.5 })
+            : defaultFrame,
+        );
+      };
+
+      // ── Selection: one shared raycasting/highlight system for mouse + XR ─
       const selectObject = (
         object: THREE.Object3D | undefined,
         source: NormalizedInputSource,
@@ -579,42 +608,6 @@ export default function PollinationViewer() {
           performRef.current(actionId, source, object?.name);
         }
       };
-      const updatePointerRay = (event: PointerEvent) => {
-        const bounds = host!.renderer.domElement.getBoundingClientRect();
-        pointer.set(
-          ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
-          -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
-        );
-        raycaster.setFromCamera(pointer, camera);
-      };
-      const onPointerMove = (event: PointerEvent) => {
-        updatePointerRay(event);
-        const object = raycaster.intersectObject(world.root, true)[0]?.object;
-        const actionId = actionForObject(object);
-        const activeSnapshot = snapshotRef.current;
-        const activeStage = experienceDefinition.stages[activeSnapshot.stageIndex];
-        const canPerform = Boolean(
-          actionId
-          && activeStage.requiredActionIds.includes(actionId)
-          && !activeSnapshot.performedActionIds.includes(actionId),
-        );
-        host!.renderer.domElement.style.cursor = canPerform
-          ? 'pointer'
-          : 'grab';
-      };
-      const onPointerUp = (event: PointerEvent) => {
-        updatePointerRay(event);
-        selectObject(raycaster.intersectObject(world.root, true)[0]?.object, 'mouse');
-      };
-      host.renderer.domElement.addEventListener('pointermove', onPointerMove);
-      host.renderer.domElement.addEventListener('pointerup', onPointerUp);
-      host.resources.register(
-        'pollination-pointer',
-        () => {
-          host?.renderer.domElement.removeEventListener('pointermove', onPointerMove);
-          host?.renderer.domElement.removeEventListener('pointerup', onPointerUp);
-        },
-      );
 
       const controllerRayGeometry = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
@@ -625,26 +618,11 @@ export default function PollinationViewer() {
         transparent: true,
         opacity: 0.72,
       });
-      const controllerMatrix = new THREE.Matrix4();
       const controllers = [0, 1].map(index => {
         const controller = host!.renderer.xr.getController(index);
         controller.name = `quest-controller-${index}`;
         controller.add(new THREE.Line(controllerRayGeometry, controllerRayMaterial));
         playerRig.add(controller);
-        const onSelect = () => {
-          controllerMatrix.identity().extractRotation(controller.matrixWorld);
-          raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-          raycaster.ray.direction.set(0, 0, -1).applyMatrix4(controllerMatrix);
-          selectObject(
-            raycaster.intersectObject(world.root, true)[0]?.object,
-            'xr-controller',
-          );
-        };
-        controller.addEventListener('selectstart', onSelect);
-        host!.resources.register(
-          `pollination-controller-${index}`,
-          () => controller.removeEventListener('selectstart', onSelect),
-        );
         return controller;
       });
       host.resources.register('pollination-controller-rays', () => {
@@ -652,6 +630,24 @@ export default function PollinationViewer() {
         controllerRayMaterial.dispose();
         for (const controller of controllers) playerRig.remove(controller);
       });
+
+      const interactionSystem = createInteractionSystem({
+        camera,
+        domElement: host.renderer.domElement,
+        xrControllers: controllers,
+        onSelect: (id, object, source) => {
+          selectObject(object, source);
+          interactionSystem.setSelected(id);
+          lastGuidanceTarget = id;
+          guidanceSuppressedUntil = elapsedClock + 1.1;
+          guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 2.1 }));
+        },
+      });
+      for (const targetName of Object.keys(ACTION_BY_TARGET)) {
+        const target = world.root.getObjectByName(targetName);
+        if (target) interactionSystem.register(targetName, target, { highlightColor: '#ffe08a' });
+      }
+      host.resources.register('pollination-interaction', () => interactionSystem.dispose());
 
       const snapTurnLatches = [false, false];
       const backButtonLatches = [false, false];
@@ -678,7 +674,9 @@ export default function PollinationViewer() {
             }
           });
         } else {
-          controls.update();
+          elapsedClock = context.elapsedSeconds;
+          applyStageGuidance();
+          guidedCamera.update(context.frameDeltaSeconds);
           const focusTargetName = focusActionRef.current
             ? TARGET_BY_ACTION[focusActionRef.current]
             : undefined;
