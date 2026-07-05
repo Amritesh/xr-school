@@ -8,6 +8,7 @@ export const IMPLEMENTED_SIMULATION_SLUGS = [
   'c5-ch07-a03-soluble-and-insoluble-substances',
   'c5-ch03-a02-introduction-of-digestive-system',
   'c7-ch10-a02-the-breathing-process-in-human',
+  'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
 ] as const;
 
 type ImplementedSlug = (typeof IMPLEMENTED_SIMULATION_SLUGS)[number];
@@ -111,6 +112,18 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     classLevels: [7],
     title: 'The Breathing Process in Human',
     topic: 'Respiration in Organisms',
+    archetype: 'interactive 3D',
+    minutes: 10,
+  },
+  'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape': {
+    slug: 'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
+    color: '#4ade80',
+    subject: 'physics',
+    subjectTags: ['physics'],
+    grade: 'Class 8',
+    classLevels: [8],
+    title: "The Effects of Force on an Object's Motion and Shape",
+    topic: 'Force and Pressure',
     archetype: 'interactive 3D',
     minutes: 10,
   },

@@ -126,6 +126,41 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "course:course-cbse-c8-physics",
+    "kind": "course",
+    "title": "CBSE Class 8 Physics",
+    "summary": "Hands-on physical science exploring how force changes motion and shape.",
+    "href": "/simulations#course-cbse-c8-physics",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-force-and-motion",
+      "concept-force-and-shape"
+    ],
+    "tokens": [
+      "cbse",
+      "class",
+      "8",
+      "physics",
+      "hands",
+      "on",
+      "physical",
+      "science",
+      "exploring",
+      "how",
+      "force",
+      "changes",
+      "motion",
+      "and",
+      "shape",
+      "pressure"
+    ]
+  },
+  {
     "id": "course:course-cbse-c9-science",
     "kind": "course",
     "title": "CBSE Class 9 Science",
@@ -360,6 +395,35 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "class",
       "7",
       "biology",
+      "chapter",
+      "10",
+      "topic"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c8-force-and-pressure",
+    "kind": "chapter",
+    "title": "Force and Pressure",
+    "summary": "CBSE Class 8 Physics · Chapter 10",
+    "href": "/simulations#chapter-cbse-c8-force-and-pressure",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-force-and-motion",
+      "concept-force-and-shape"
+    ],
+    "tokens": [
+      "force",
+      "and",
+      "pressure",
+      "cbse",
+      "class",
+      "8",
+      "physics",
       "chapter",
       "10",
       "topic"
@@ -1496,6 +1560,112 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "concept:concept-force-and-motion",
+    "kind": "concept",
+    "title": "Force and motion",
+    "summary": "A push or pull that can start, stop, speed up, slow down, or change the direction of a moving object.",
+    "href": "/simulations#concept-force-and-motion",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-force-and-motion"
+    ],
+    "tokens": [
+      "force",
+      "and",
+      "motion",
+      "a",
+      "push",
+      "or",
+      "pull",
+      "that",
+      "can",
+      "start",
+      "stop",
+      "speed",
+      "up",
+      "slow",
+      "down",
+      "change",
+      "the",
+      "direction",
+      "of",
+      "moving",
+      "object",
+      "explains",
+      "everyday",
+      "pushes",
+      "pulls",
+      "kicking",
+      "ball",
+      "braking",
+      "throwing",
+      "harder",
+      "redirecting",
+      "rolling",
+      "effects",
+      "on",
+      "brake"
+    ]
+  },
+  {
+    "id": "concept:concept-force-and-shape",
+    "kind": "concept",
+    "title": "Force and shape",
+    "summary": "A push or pull that changes an object's shape or size, which may or may not reverse once the force is removed.",
+    "href": "/simulations#concept-force-and-shape",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-force-and-shape"
+    ],
+    "tokens": [
+      "force",
+      "and",
+      "shape",
+      "a",
+      "push",
+      "or",
+      "pull",
+      "that",
+      "changes",
+      "an",
+      "object",
+      "s",
+      "size",
+      "which",
+      "may",
+      "not",
+      "reverse",
+      "once",
+      "the",
+      "is",
+      "removed",
+      "explains",
+      "squeezing",
+      "sponge",
+      "stretching",
+      "rubber",
+      "band",
+      "denting",
+      "can",
+      "deformation",
+      "elastic",
+      "non",
+      "change",
+      "squeeze",
+      "stretch"
+    ]
+  },
+  {
     "id": "simulation:pollination",
     "kind": "simulation",
     "title": "Plant Pollination & Growth Cycle",
@@ -2035,6 +2205,73 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "dioxide",
       "alveolar",
       "capillaries"
+    ]
+  },
+  {
+    "id": "simulation:c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+    "kind": "simulation",
+    "title": "The Effects of Force on an Object's Motion and Shape",
+    "summary": "Push a resting ball into motion, brake it to a stop, speed it up, redirect it sideways, then squeeze and release a second ball to see force change shape.",
+    "href": "/simulations/c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-force-and-motion",
+      "concept-force-and-shape"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "the",
+      "effects",
+      "of",
+      "force",
+      "on",
+      "an",
+      "object",
+      "s",
+      "motion",
+      "and",
+      "shape",
+      "push",
+      "a",
+      "resting",
+      "ball",
+      "into",
+      "brake",
+      "it",
+      "to",
+      "stop",
+      "speed",
+      "up",
+      "redirect",
+      "sideways",
+      "then",
+      "squeeze",
+      "release",
+      "second",
+      "see",
+      "change",
+      "students",
+      "will",
+      "identify",
+      "that",
+      "can",
+      "start",
+      "or",
+      "direction",
+      "moving",
+      "distinguishing",
+      "elastic",
+      "from",
+      "non",
+      "deformation",
+      "physics",
+      "pull",
+      "stretch"
     ]
   },
   {
@@ -11228,47 +11465,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "the",
       "force",
       "and",
-      "pressure",
-      "physics",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
-    "kind": "simulation",
-    "title": "The effects of force on object's motion and shape",
-    "summary": "Force and Pressure · Class 8 physics",
-    "href": "/simulations#c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
-    "classLevels": [
-      8
-    ],
-    "subjects": [
-      "physics"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "effects",
-      "of",
-      "force",
-      "on",
-      "object",
-      "s",
-      "motion",
-      "and",
-      "shape",
       "pressure",
       "physics",
       "modelinspection",

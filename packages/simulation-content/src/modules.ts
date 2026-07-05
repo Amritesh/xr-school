@@ -84,6 +84,18 @@ Ask students to explain, in their own words, why the diaphragm contracting cause
 REVISION TRIGGER
 One week later, show an unlabeled rib cage and diaphragm diagram and ask students to mark the diaphragm's position during an inhale versus an exhale and explain the pressure change that results.`;
 
+const forceMotionScript = `SETUP
+Ask students to predict what happens to a ball sitting still on the floor if nobody touches it. Non-headset students list five ways they used a push or pull today.
+
+DURING HEADSET BATCH
+Have students push the ball into motion, brake it to a stop, push harder to speed it up, push sideways to redirect it, then squeeze and release a second ball. Pause at each trigger to name which effect of force just happened.
+
+DEBRIEF
+Ask students to list the five effects of force they just caused: starting motion, stopping motion, speeding up, changing direction, and changing shape. Ask whether the squeezed ball's shape change was permanent.
+
+REVISION TRIGGER
+One week later, show a photo of a stretched rubber band and a dented can and ask students which shape changes are elastic (spring back) and which are not, and to name the effect of force in each case.`;
+
 export const POLLINATION_MODULE: SimulationModuleRecord = {
   id: 'sim-pollination-001',
   slug: 'pollination',
@@ -400,6 +412,64 @@ export const BREATHING_PROCESS_MODULE: SimulationModuleRecord = {
   status: 'released',
 };
 
+export const FORCE_MOTION_MODULE: SimulationModuleRecord = {
+  id: 'sim-c08-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
+  slug: 'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
+  title: "The Effects of Force on an Object's Motion and Shape",
+  summary: 'Push a resting ball into motion, brake it to a stop, speed it up, redirect it sideways, then squeeze and release a second ball to see force change shape.',
+  gradeBands: ['class6To8'],
+  subjects: ['physics'],
+  applicableBoards: ['cbse', 'icse'],
+  curriculumMapIds: ['cm-cbse-c8-ch10-force-and-pressure'],
+  conceptIds: [
+    'concept-force-and-motion',
+    'concept-force-and-shape',
+  ],
+  simulationFormat: 'interactive3d',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'Seeing the same ball respond differently to five distinct forces, back to back, makes the cause-and-effect relationship between a force and its outcome far clearer than five separate static diagrams.',
+  learningObjective: 'Students will identify that a force can start, stop, speed up, or change the direction of a moving object, and that a force can change an object\'s shape, distinguishing elastic from non-elastic deformation.',
+  scientificConceptExplanation: 'A force is a push or a pull. Applying a force to a resting object can start its motion; applying a force opposing motion can stop it; applying a force in the direction of motion can speed it up; applying a force at an angle to motion can change its direction. A force can also change an object\'s shape or size — some materials return to their original shape once the force is removed (elastic deformation), while others do not.',
+  misconceptionsAddressed: [
+    'A moving object needs a continuous force to keep moving.',
+    'Only touching an object can apply a force to it.',
+    'Any shape change caused by force is permanent.',
+  ],
+  visualizationStrategy: 'Use a rolling ball on a track with distinct, color-coded push/brake/accelerate/deflect controls, plus a separate squeezable ball between two visible plates for the shape-change demonstration.',
+  interactionStrategy: 'Students trigger each force in turn — push, brake, accelerate, deflect, squeeze, release — and observe the immediate, visible effect before reviewing a comparison board summarizing all five.',
+  imaginationHelperStrategy: 'Each force is color-coded and paired with a single, immediate, visible consequence, so the abstract idea of "a force changes motion or shape" becomes five concrete before/after moments.',
+  practicalUseCase: 'Connects directly to everyday pushes and pulls: kicking a ball, braking a bicycle, throwing harder, redirecting a rolling object, and squeezing a stress ball or sponge.',
+  cueCardIds: [
+    'cue-force-push-001',
+    'cue-force-brake-002',
+    'cue-force-accelerate-003',
+    'cue-force-deflect-004',
+    'cue-force-shape-005',
+  ],
+  revisionCardIds: ['rev-force-effects-001'],
+  assessmentHookIds: [
+    'assess-force-pre-001',
+    'assess-force-post-001',
+    'assess-force-misconception-001',
+  ],
+  instructorScript: forceMotionScript,
+  batchActivityPrompt: 'List the five effects of force you observed, and for each one, name a real push or pull from your own day that caused the same effect.',
+  expectedDurationMinutes: 10,
+  maxSessionDurationMinutes: 12,
+  comfortRiskLevel: 'low',
+  safetyNotes: [
+    'Use stationary or seated play with no forced camera movement.',
+  ],
+  offlineContentPackId: 'pack-physics-force-motion-class8-v1',
+  estimatedPackageSizeMb: 130,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 6,
+  status: 'released',
+};
+
 export const SIMULATION_MODULES = [
   POLLINATION_MODULE,
   CIRCUIT_MODULE,
@@ -408,4 +478,5 @@ export const SIMULATION_MODULES = [
   SOLUBLE_INSOLUBLE_MODULE,
   DIGESTIVE_SYSTEM_MODULE,
   BREATHING_PROCESS_MODULE,
+  FORCE_MOTION_MODULE,
 ] as const;

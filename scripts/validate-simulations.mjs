@@ -65,6 +65,7 @@ const viewerNameMap = {
   'c5-ch07-a03-soluble-and-insoluble-substances': 'SolubilityLabViewer',
   'c5-ch03-a02-introduction-of-digestive-system': 'DigestiveSystemViewer',
   'c7-ch10-a02-the-breathing-process-in-human': 'BreathingProcessViewer',
+  'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape': 'ForceMotionViewer',
 };
 
 for (const slug of slugs) {
