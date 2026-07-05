@@ -30,7 +30,7 @@ export function runDevEnvCheck({
   const failures = [];
 
   if (!isSupportedNodeVersion(nodeVersion)) {
-    failures.push(`Node ${nodeVersion} is unsupported. Use Node 22+; this repo currently targets .nvmrc Node 23.`);
+    failures.push(`Node ${nodeVersion} is unsupported. Use Node 22 or newer.`);
   }
 
   const missingPaths = collectMissingRequiredPaths(buildRequiredPaths(root), exists);
