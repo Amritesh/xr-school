@@ -187,6 +187,16 @@ interface StageCameraFocus {
   /** Object(s) to frame together. Multiple names fit all of them in one shot. */
   names: string[];
   fitPadding: number;
+  /**
+   * World point to approach the subject from. computeFocusFrame() defaults
+   * this to the camera's current position, which for a fresh stage overview
+   * is really just "wherever the previous stage's shot happened to leave
+   * the camera" — an arbitrary angle, not a composed one. Stages that union
+   * widely-separated objects need an explicit vantage so the shot looks
+   * deliberately composed instead of orbiting in from whatever direction
+   * the last stage's subject happened to be.
+   */
+  approachFrom?: THREE.Vector3;
 }
 
 // One explicit shot per stage — deliberately NOT derived from
@@ -198,13 +208,20 @@ interface StageCameraFocus {
 // field table, when the stage is actually about comparing the two
 // flowers. Each stage's shot is authored here instead, so it's obvious at
 // a glance what the learner sees when a stage begins.
+const SOUTH_OF_BEDS = new THREE.Vector3(0, 1.6, 3.2);
 const STAGE_CAMERA_FOCUS: StageCameraFocus[] = [
   { names: ['treatment-flower'], fitPadding: 3.2 }, // 0: inspect the flower
   { names: ['anther-target'], fitPadding: 4.5 }, // 1: collect pollen
   { names: ['pollinator-bee'], fitPadding: 4.5 }, // 2: observe the pollinator
   { names: ['stigma-target'], fitPadding: 4.5 }, // 3: transfer pollen
   { names: ['enlarged-pistil-cutaway'], fitPadding: 1.7 }, // 4: trace the pollen tube
-  { names: ['treatment-flower', 'control-flower'], fitPadding: 1.7 }, // 5: compare both flowers
+  // The two flowers sit 4.7m apart, so their combined bounding sphere is far
+  // larger than a single flower's. A tighter padding keeps this a "stand
+  // between the two beds" shot, and an explicit south-facing approachFrom
+  // (matching the spawn view) stops it inheriting stage 4's leftover
+  // off-to-the-side angle, which used to sweep the shot wide enough to
+  // reveal the whole garden and field table behind the flowers.
+  { names: ['treatment-flower', 'control-flower'], fitPadding: 1.25, approachFrom: SOUTH_OF_BEDS }, // 5: compare both flowers
   { names: ['fruit-halves'], fitPadding: 4.2 }, // 6: open the fruit, plant a seed
   { names: ['enlarged-germination-cutaway'], fitPadding: 1.7 }, // 7: inspect germination
 ];
@@ -222,11 +239,13 @@ function focusStageOverview(
   const objects = focus?.names
     .map(name => world.root.getObjectByName(name))
     .filter((object): object is THREE.Object3D => Boolean(object)) ?? [];
-  guidedCamera.focusOn(
-    objects.length > 0
-      ? computeFocusFrame(objects, camera, { fitPadding: focus.fitPadding })
-      : DEFAULT_POLLINATION_FRAME,
-  );
+  const frame = objects.length > 0
+    ? computeFocusFrame(objects, camera, {
+      fitPadding: focus.fitPadding,
+      approachFrom: focus.approachFrom,
+    })
+    : DEFAULT_POLLINATION_FRAME;
+  guidedCamera.focusOn(frame);
 }
 
 // Stage 4 swaps the whole garden for the enlarged pistil cutaway — worth a
