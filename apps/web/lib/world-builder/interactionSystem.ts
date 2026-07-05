@@ -98,9 +98,28 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
     raycaster.setFromCamera(pointer, config.camera);
   }
 
+  // three.js raycasting ignores the `.visible` flag entirely (neither the
+  // traversal nor Mesh.raycast checks it), so a hidden stage's objects are
+  // otherwise still clickable. Walk the full ancestor chain, not just up to
+  // the registered id, since a toggled group can sit above where the id
+  // was resolved.
+  function isEffectivelyVisible(object: THREE.Object3D | null) {
+    let node: THREE.Object3D | null = object;
+    while (node) {
+      if (!node.visible) return false;
+      node = node.parent;
+    }
+    return true;
+  }
+
   function hitFromRay() {
-    const hit = raycaster.intersectObjects(intersectableObjects(), true)[0]?.object;
-    return resolve(hit);
+    const hits = raycaster.intersectObjects(intersectableObjects(), true);
+    for (const hit of hits) {
+      if (!isEffectivelyVisible(hit.object)) continue;
+      const resolved = resolve(hit.object);
+      if (resolved) return resolved;
+    }
+    return undefined;
   }
 
   // A click selects; a drag (used to look around) must not. Track the

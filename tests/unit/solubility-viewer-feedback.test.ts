@@ -23,14 +23,16 @@ describe('Solubility Lab viewer headset regressions', () => {
   });
 
   it('adds VR controller targets for the complete lab workflow', () => {
+    // Raycasting/selection now lives in the shared interaction system used
+    // by every migrated viewer, rather than a bespoke per-viewer raycaster.
     expect(source).toContain("button.name = `substance-button-${substance.id}`");
     expect(source).toContain("button.name = `prediction-button-${outcome.id}`");
     expect(source).toContain("runButton.name = 'action-button-run'");
     expect(source).toContain("resetButton.name = 'action-button-reset'");
     expect(source).toContain('renderer.xr.getController(0)');
-    expect(source).toContain('intersectObjects(vrButtonRefs.current');
-    expect(source).toContain("object.name.startsWith('substance-button-')");
-    expect(source).toContain("object.name.startsWith('prediction-button-')");
-    expect(source).toContain("object.name === 'action-button-run'");
+    expect(source).toContain('createInteractionSystem');
+    expect(source).toContain("id.startsWith('substance-button-')");
+    expect(source).toContain("id.startsWith('prediction-button-')");
+    expect(source).toContain("id === 'action-button-run'");
   });
 });

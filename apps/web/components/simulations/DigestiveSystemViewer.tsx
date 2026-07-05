@@ -2,7 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {
+  computeFocusFrame,
+  createGuidedCamera,
+} from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
   DIGESTIVE_PATHWAY,
   DIGESTIVE_QUIZ_QUESTIONS,
@@ -730,15 +734,12 @@ export default function DigestiveSystemViewer() {
       0.05,
       50,
     );
-    camera.position.set(0, 1.7, 5.2);
-    camera.lookAt(0, 1.25, 0);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1.25, 0);
-    controls.enableDamping = true;
-    controls.minDistance = 3.8;
-    controls.maxDistance = 6.8;
-    controls.maxPolarAngle = Math.PI * 0.62;
+    const guidedCamera = createGuidedCamera(camera, renderer.domElement);
+    guidedCamera.focusOn(
+      { position: new THREE.Vector3(0, 1.7, 5.2), target: new THREE.Vector3(0, 1.25, 0) },
+      { animate: false },
+    );
 
     scene.add(new THREE.HemisphereLight(0xc7eeff, 0x132036, 1.75));
     const key = new THREE.DirectionalLight(0xffffff, 2.1);
@@ -811,25 +812,6 @@ export default function DigestiveSystemViewer() {
     nextTarget.userData.navigationDelta = 1;
     scene.add(vrNavigation);
 
-    const raycaster = new THREE.Raycaster();
-    const controllerMatrix = new THREE.Matrix4();
-    const onControllerSelect = (event: any) => {
-      const controller = event.target as THREE.Object3D;
-      controllerMatrix.identity().extractRotation(controller.matrixWorld);
-      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      raycaster.ray.direction.set(0, 0, -1).applyMatrix4(controllerMatrix);
-      const hits = raycaster.intersectObjects(interactiveTargets, false)
-        .filter(hit => hit.object.visible && hit.object.parent?.visible);
-      const hit = hits[0]?.object;
-      const navigationDelta = hit?.userData.navigationDelta as number | undefined;
-      if (typeof navigationDelta === 'number') {
-        goToStageRef.current(stageIndexRef.current + navigationDelta);
-        return;
-      }
-      const actionId = hit?.userData.actionId as string | undefined;
-      if (actionId) performActionRef.current(actionId);
-    };
-
     const makeControllerRay = () => new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
@@ -842,13 +824,43 @@ export default function DigestiveSystemViewer() {
     const controller1 = renderer.xr.getController(1);
     controller0.add(makeControllerRay());
     controller1.add(makeControllerRay());
-    controller0.addEventListener('select', onControllerSelect);
-    controller1.addEventListener('select', onControllerSelect);
     scene.add(controller0, controller1);
 
+    // ── Selection: one shared raycasting/highlight system for mouse + XR.
+    // Lets desktop learners click organs directly, not just the HTML
+    // action buttons, matching Circuit and Pollination ──────────────────
+    const interactionSystem = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: [controller0, controller1],
+      onSelect: (id, object) => {
+        const navigationDelta = object.userData.navigationDelta as number | undefined;
+        if (typeof navigationDelta === 'number') {
+          goToStageRef.current(stageIndexRef.current + navigationDelta);
+          return;
+        }
+        const actionId = object.userData.actionId as string | undefined;
+        if (actionId) performActionRef.current(actionId);
+        interactionSystem.setSelected(id);
+        guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 3 }));
+      },
+    });
+    for (const target of interactiveTargets) {
+      const isNavigationTarget = typeof target.userData.navigationDelta === 'number';
+      interactionSystem.register(
+        target.name,
+        target,
+        isNavigationTarget ? {} : { highlightColor: '#ffe08a' },
+      );
+    }
+
     const clock = new THREE.Clock();
+    let elapsed = 0;
     renderer.setAnimationLoop(() => {
-      const time = clock.getElapsedTime();
+      const delta = clock.getDelta();
+      elapsed += delta;
+      const time = elapsed;
+      if (!renderer.xr.isPresenting) guidedCamera.update(delta);
       const intensity = comfortModeRef.current ? 0.35 : 1;
       const { guideOrb, stomachOrgan, bolus, chyme, bloodVessel } = animatedRefs.current;
       if (guideOrb) {
@@ -870,7 +882,6 @@ export default function DigestiveSystemViewer() {
           target.rotation.y = time * 0.35 + index * 0.2;
         }
       });
-      controls.update();
       renderer.render(scene, camera);
     });
 
@@ -885,9 +896,8 @@ export default function DigestiveSystemViewer() {
     return () => {
       renderer.setAnimationLoop(null);
       window.removeEventListener('resize', onResize);
-      controller0.removeEventListener('select', onControllerSelect);
-      controller1.removeEventListener('select', onControllerSelect);
-      controls.dispose();
+      interactionSystem.dispose();
+      guidedCamera.dispose();
       scene.traverse(object => {
         const mesh = object as THREE.Mesh;
         mesh.geometry?.dispose();

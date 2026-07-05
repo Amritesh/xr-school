@@ -13,15 +13,22 @@ describe('Digestive System viewer experience contract', () => {
     expect(existsSync(viewerPath)).toBe(true);
     const source = readFileSync(viewerPath, 'utf8');
 
+    // Raycasting/selection now lives in the shared interaction system used
+    // by every migrated viewer, rather than a bespoke per-viewer raycaster.
     expect(source).toContain("renderer.xr.setReferenceSpaceType('local-floor')");
     expect(source).toContain('renderer.xr.getController(0)');
     expect(source).toContain('renderer.xr.getController(1)');
-    expect(source).toContain('intersectObjects(interactiveTargets');
-    expect(source).toContain("controller0.addEventListener('select'");
-    expect(source).toContain("controller1.addEventListener('select'");
+    expect(source).toContain('createInteractionSystem');
+    expect(source).toContain('xrControllers: [controller0, controller1]');
     expect(source).toContain('digestive-nav-previous');
     expect(source).toContain('digestive-nav-next');
     expect(source).toContain('goToStageRef.current');
+
+    const interactionSource = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/interactionSystem.ts'),
+      'utf8',
+    );
+    expect(interactionSource).toContain("addEventListener('selectstart'");
   });
 
   it('uses the shared narration, persistent subtitles, comfort mode, and badge', () => {

@@ -71,6 +71,25 @@ describe('createInteractionSystem', () => {
     system.dispose();
   });
 
+  it('ignores hits on objects hidden by a toggled ancestor (three.js raycast ignores .visible)', () => {
+    const camera = createLookingCamera();
+    const dom = createFakeDomElement();
+    const stageGroup = new THREE.Group();
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2));
+    stageGroup.add(mesh);
+    stageGroup.updateMatrixWorld(true);
+    stageGroup.visible = false; // e.g. a different stage's content
+
+    const system = createInteractionSystem({ camera, domElement: dom });
+    system.register('anther-target', mesh);
+
+    dom.dispatch('pointermove', { clientX: 50, clientY: 50 });
+
+    expect(system.hoveredId).toBeUndefined();
+    expect(dom.style.cursor).toBe('grab');
+    system.dispose();
+  });
+
   it('fires onSelect with the registered id on a click (down then up nearby)', () => {
     const camera = createLookingCamera();
     const dom = createFakeDomElement();

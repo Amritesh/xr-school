@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
 const SUBSTANCES = [
   { id: 'salt', label: 'Salt', outcome: 'dissolves', color: 0xe0f2fe, explanation: 'Salt spreads through the water and forms a clear solution.' },
@@ -129,7 +130,6 @@ function trialAudioUrl(substanceId: SubstanceId, prediction: OutcomeId) {
 export default function SolubilityLabViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
   const particlesRef = useRef<THREE.Mesh[]>([]);
   const waterRef = useRef<THREE.Mesh | null>(null);
   const layerRef = useRef<THREE.Mesh | null>(null);
@@ -186,8 +186,11 @@ export default function SolubilityLabViewer() {
     scene.fog = new THREE.Fog(0x07131d, 7, 18);
 
     const camera = new THREE.PerspectiveCamera(64, mount.clientWidth / mount.clientHeight, 0.05, 50);
-    camera.position.set(0, 2.55, 5.2);
-    camera.lookAt(0, 1, 0);
+    const guidedCamera = createGuidedCamera(camera, renderer.domElement);
+    guidedCamera.focusOn(
+      { position: new THREE.Vector3(0, 2.55, 5.2), target: new THREE.Vector3(0, 1, 0) },
+      { animate: false },
+    );
 
     scene.add(new THREE.HemisphereLight(0xe0f2fe, 0x07131d, 1.4));
     const key = new THREE.DirectionalLight(0xffffff, 1.9);
@@ -267,7 +270,6 @@ export default function SolubilityLabViewer() {
       return particle;
     });
 
-    const controllerRaycaster = new THREE.Raycaster();
     const controller0 = renderer.xr.getController(0);
     const controller1 = renderer.xr.getController(1);
     controller0.add(makeControllerRay());
@@ -308,38 +310,36 @@ export default function SolubilityLabViewer() {
         trialAudioUrl(activeId, currentPrediction)
       );
     };
-    const onControllerSelect = (event: Event) => {
-      const controller = event.target as unknown as THREE.Group;
-      controllerRaycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      controllerRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(controller.quaternion);
-      const hits = controllerRaycaster.intersectObjects(vrButtonRefs.current);
-      if (!hits.length) return;
-      const object = hits[0].object;
-      if (object.name.startsWith('substance-button-')) {
-        selectSubstanceInScene(object.name.replace('substance-button-', '') as SubstanceId);
-        return;
-      }
-      if (object.name.startsWith('prediction-button-')) {
-        setPredictionInScene(object.name.replace('prediction-button-', '') as OutcomeId);
-        return;
-      }
-      if (object.name === 'action-button-run') runTrialInScene();
-      if (object.name === 'action-button-reset') selectSubstanceInScene(substanceIdRef.current);
-    };
-    controller0.addEventListener('selectstart', onControllerSelect as any);
-    controller1.addEventListener('selectstart', onControllerSelect as any);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1, -0.2);
-    controls.enableDamping = true;
-    controls.minDistance = 3;
-    controls.maxDistance = 7;
-    controls.maxPolarAngle = Math.PI / 2 - 0.04;
-    controlsRef.current = controls;
+    // ── Selection: one shared raycasting/highlight system for mouse + XR ─
+    const interactionSystem = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: [controller0, controller1],
+      onSelect: (id, object) => {
+        if (id.startsWith('substance-button-')) {
+          selectSubstanceInScene(id.replace('substance-button-', '') as SubstanceId);
+        } else if (id.startsWith('prediction-button-')) {
+          setPredictionInScene(id.replace('prediction-button-', '') as OutcomeId);
+        } else if (id === 'action-button-run') {
+          runTrialInScene();
+        } else if (id === 'action-button-reset') {
+          selectSubstanceInScene(substanceIdRef.current);
+        }
+        interactionSystem.setSelected(id);
+        guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 3 }));
+      },
+    });
+    for (const button of vrButtonRefs.current) {
+      interactionSystem.register(button.name, button, { highlightColor: '#67e8f9' });
+    }
 
     const clock = new THREE.Clock();
+    let elapsedTotal = 0;
     renderer.setAnimationLoop(() => {
-      const elapsed = clock.getElapsedTime();
+      const delta = clock.getDelta();
+      elapsedTotal += delta;
+      const elapsed = elapsedTotal;
+      if (!renderer.xr.isPresenting) guidedCamera.update(delta);
       const active = activeSubstanceRef.current;
       const isRunning = runningRef.current;
 
@@ -380,7 +380,6 @@ export default function SolubilityLabViewer() {
       });
 
       vrButtonRefs.current.forEach(button => button.lookAt(camera.position));
-      if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);
     });
 
@@ -396,9 +395,8 @@ export default function SolubilityLabViewer() {
     return () => {
       window.removeEventListener('resize', handleResize);
       renderer.setAnimationLoop(null);
-      controller0.removeEventListener('selectstart', onControllerSelect as any);
-      controller1.removeEventListener('selectstart', onControllerSelect as any);
-      controls.dispose();
+      interactionSystem.dispose();
+      guidedCamera.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       particlesRef.current = [];

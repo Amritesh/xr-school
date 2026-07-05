@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createParticleCloud, createPhysicsWorld, type RuntimePhysicsWorld } from '@/lib/runtimePhysics';
 import type { ScienceSimulationCatalogItem } from '@/lib/scienceCatalog.generated';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
 type Stage = {
   title: string;
@@ -234,8 +235,11 @@ export default function GenericCatalogSimulationViewer({ simulation }: { simulat
     scene.background = new THREE.Color(0x07111f);
     scene.fog = new THREE.Fog(0x07111f, 7, 18);
     const camera = new THREE.PerspectiveCamera(66, mount.clientWidth / mount.clientHeight, 0.05, 50);
-    camera.position.set(0, 2.15, 4.8);
-    camera.lookAt(0, 1, 0);
+    const guidedCamera = createGuidedCamera(camera, renderer.domElement);
+    guidedCamera.focusOn(
+      { position: new THREE.Vector3(0, 2.15, 4.8), target: new THREE.Vector3(0, 1, 0) },
+      { animate: false },
+    );
     scene.add(new THREE.HemisphereLight(0xf8fafc, 0x111827, 1.35));
     const key = new THREE.DirectionalLight(0xffffff, 1.8);
     key.position.set(4, 6, 4);
@@ -260,38 +264,37 @@ export default function GenericCatalogSimulationViewer({ simulation }: { simulat
     const movingObjects = addArchetypeScene(scene, simulation, physicsWorld, color);
     const stageButtons = addStageButtons(scene, stages, colorString);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1, 0);
-    controls.enableDamping = true;
-    controls.minDistance = 3;
-    controls.maxDistance = 7;
-    controls.maxPolarAngle = Math.PI / 2 - 0.04;
-
-    const raycaster = new THREE.Raycaster();
     const ctrl0 = renderer.xr.getController(0);
     const ctrl1 = renderer.xr.getController(1);
     ctrl0.add(makeControllerRay());
     ctrl1.add(makeControllerRay());
     scene.add(ctrl0, ctrl1);
-    const onSelect = (event: Event) => {
-      const controller = event.target as unknown as THREE.Group;
-      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      raycaster.ray.direction.set(0, 0, -1).applyQuaternion(controller.quaternion);
-      const hit = raycaster.intersectObjects(stageButtons)[0];
-      if (!hit) return;
-      const nextIndex = Number(hit.object.name.replace('catalog-stage-button-', ''));
-      if (!Number.isInteger(nextIndex)) return;
-      stageRef.current = nextIndex;
-      setStageIndex(nextIndex);
-      narrateStage(nextIndex);
-    };
-    ctrl0.addEventListener('selectstart', onSelect as any);
-    ctrl1.addEventListener('selectstart', onSelect as any);
+
+    // ── Selection: one shared raycasting/highlight system for mouse + XR ─
+    const interactionSystem = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: [ctrl0, ctrl1],
+      onSelect: (id, object) => {
+        const nextIndex = Number(id.replace('catalog-stage-button-', ''));
+        if (Number.isInteger(nextIndex)) {
+          stageRef.current = nextIndex;
+          setStageIndex(nextIndex);
+          narrateStage(nextIndex);
+        }
+        interactionSystem.setSelected(id);
+        guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 3 }));
+      },
+    });
+    for (const button of stageButtons) {
+      interactionSystem.register(button.name, button, { highlightColor: colorString });
+    }
 
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
       const dt = Math.min(clock.getDelta(), 0.033);
       const elapsed = clock.elapsedTime;
+      if (!renderer.xr.isPresenting) guidedCamera.update(dt);
       physicsWorld.bodies().forEach(body => {
         physicsWorld.applyForce(body.id, {
           x: Math.sin(elapsed * 1.2 + body.position.y * 7) * 0.8,
@@ -311,7 +314,6 @@ export default function GenericCatalogSimulationViewer({ simulation }: { simulat
       });
       title.lookAt(camera.position);
       stageButtons.forEach(button => button.lookAt(camera.position));
-      if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);
     });
 
@@ -325,9 +327,8 @@ export default function GenericCatalogSimulationViewer({ simulation }: { simulat
     return () => {
       renderer.setAnimationLoop(null);
       window.removeEventListener('resize', onResize);
-      ctrl0.removeEventListener('selectstart', onSelect as any);
-      ctrl1.removeEventListener('selectstart', onSelect as any);
-      controls.dispose();
+      interactionSystem.dispose();
+      guidedCamera.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       physicsWorldRef.current = null;

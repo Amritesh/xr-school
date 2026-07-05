@@ -17,11 +17,14 @@ describe('States of Matter viewer headset regressions', () => {
   });
 
   it('adds in-scene stage buttons for immersive VR controller use', () => {
+    // Raycasting/selection now lives in the shared interaction system used
+    // by every migrated viewer, rather than a bespoke per-viewer raycaster.
     expect(source).toContain('makeStageButtonLabelTexture');
     expect(source).toContain('stageButtons');
     expect(source).toContain("button.name = `stage-button-${index}`");
     expect(source).toContain('renderer.xr.getController(0)');
-    expect(source).toContain('intersectObjects(stageButtons');
+    expect(source).toContain('createInteractionSystem');
+    expect(source).toContain("id.startsWith('stage-button-')");
   });
 
   it('uses the shared runtime physics engine for particle motion', () => {

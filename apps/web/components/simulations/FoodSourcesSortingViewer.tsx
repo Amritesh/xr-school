@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
 const CATEGORIES = [
   { id: 'plant', label: 'Plant source', color: '#4ade80', threeColor: 0x4ade80, cue: 'Fields, trees, grains, pulses, fruits, vegetables, oils, and spices.' },
@@ -138,7 +139,6 @@ function assignmentAudioUrl(itemId: ItemId, categoryId: CategoryId) {
 export default function FoodSourcesSortingViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
   const tokenRefs = useRef<THREE.Mesh[]>([]);
   const platformRefs = useRef<THREE.Mesh[]>([]);
   const assignmentRef = useRef<Assignments>({});
@@ -182,8 +182,11 @@ export default function FoodSourcesSortingViewer() {
     scene.fog = new THREE.Fog(0x10140f, 8, 18);
 
     const camera = new THREE.PerspectiveCamera(64, mount.clientWidth / mount.clientHeight, 0.05, 50);
-    camera.position.set(0, 3.6, 5.4);
-    camera.lookAt(0, 0.7, 0);
+    const guidedCamera = createGuidedCamera(camera, renderer.domElement);
+    guidedCamera.focusOn(
+      { position: new THREE.Vector3(0, 3.6, 5.4), target: new THREE.Vector3(0, 0.7, 0) },
+      { animate: false },
+    );
 
     scene.add(new THREE.HemisphereLight(0xf8fafc, 0x172013, 1.5));
     const key = new THREE.DirectionalLight(0xffffff, 1.8);
@@ -238,57 +241,59 @@ export default function FoodSourcesSortingViewer() {
       return token;
     });
 
-    const controllerRaycaster = new THREE.Raycaster();
     const controller0 = renderer.xr.getController(0);
     const controller1 = renderer.xr.getController(1);
     controller0.add(makeControllerRay());
     controller1.add(makeControllerRay());
     scene.add(controller0, controller1);
-    const onControllerSelect = (event: Event) => {
-      const controller = event.target as unknown as THREE.Group;
-      controllerRaycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      controllerRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(controller.quaternion);
-      const hits = controllerRaycaster.intersectObjects([...tokenRefs.current, ...platformRefs.current]);
-      if (!hits.length) return;
-      const object = hits[0].object;
-      if (object.name.startsWith('food-token-')) {
-        const itemId = object.name.replace('food-token-', '') as ItemId;
-        const item = itemById[itemId];
-        if (!item) return;
-        selectedItemRef.current = itemId;
-        setSelectedItemId(itemId);
-        void playSimulationNarration(`${item.label}. ${item.clue}`, ITEMS.findIndex(option => option.id === itemId), ITEM_AUDIO_URLS[itemId]);
-        return;
-      }
-      if (object.name.startsWith('food-platform-')) {
-        const categoryId = object.name.replace('food-platform-', '') as CategoryId;
-        const itemId = selectedItemRef.current;
-        const item = itemById[itemId];
-        const category = categoryById[categoryId];
-        if (!item || !category) return;
-        setAssignments(current => ({ ...current, [itemId]: categoryId }));
-        const cueIndex = CATEGORIES.findIndex(option => option.id === categoryId);
-        void playSimulationNarration(
-          `${item.label}. ${item.clue} You placed it in ${category.label}. ${categoryId === item.source ? 'That is correct.' : `Check again: it belongs to ${categoryById[item.source].label}.`}`,
-          cueIndex,
-          assignmentAudioUrl(itemId, categoryId)
-        );
-      }
-    };
-    controller0.addEventListener('selectstart', onControllerSelect as any);
-    controller1.addEventListener('selectstart', onControllerSelect as any);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 0.7, 0);
-    controls.enableDamping = true;
-    controls.minDistance = 3.4;
-    controls.maxDistance = 8;
-    controls.maxPolarAngle = Math.PI / 2 - 0.04;
-    controlsRef.current = controls;
+    // ── Selection: one shared raycasting/highlight system for mouse + XR.
+    // Lets desktop learners click tokens and platforms directly ──────────
+    const interactionSystem = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: [controller0, controller1],
+      onSelect: (id, object) => {
+        if (id.startsWith('food-token-')) {
+          const itemId = id.replace('food-token-', '') as ItemId;
+          const item = itemById[itemId];
+          if (!item) return;
+          selectedItemRef.current = itemId;
+          setSelectedItemId(itemId);
+          void playSimulationNarration(`${item.label}. ${item.clue}`, ITEMS.findIndex(option => option.id === itemId), ITEM_AUDIO_URLS[itemId]);
+        } else if (id.startsWith('food-platform-')) {
+          const categoryId = id.replace('food-platform-', '') as CategoryId;
+          const itemId = selectedItemRef.current;
+          const item = itemById[itemId];
+          const category = categoryById[categoryId];
+          if (!item || !category) return;
+          setAssignments(current => ({ ...current, [itemId]: categoryId }));
+          const cueIndex = CATEGORIES.findIndex(option => option.id === categoryId);
+          void playSimulationNarration(
+            `${item.label}. ${item.clue} You placed it in ${category.label}. ${categoryId === item.source ? 'That is correct.' : `Check again: it belongs to ${categoryById[item.source].label}.`}`,
+            cueIndex,
+            assignmentAudioUrl(itemId, categoryId)
+          );
+        }
+        interactionSystem.setSelected(id);
+        guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 3.2 }));
+      },
+    });
+    for (const token of tokenRefs.current) {
+      interactionSystem.register(token.name, token, { highlightColor: '#facc15' });
+    }
+    for (const platform of platformRefs.current) {
+      const categoryId = platform.name.replace('food-platform-', '') as CategoryId;
+      interactionSystem.register(platform.name, platform, { highlightColor: categoryById[categoryId].color });
+    }
 
     const clock = new THREE.Clock();
+    let elapsedTotal = 0;
     renderer.setAnimationLoop(() => {
-      const elapsed = clock.getElapsedTime();
+      const delta = clock.getDelta();
+      elapsedTotal += delta;
+      const elapsed = elapsedTotal;
+      if (!renderer.xr.isPresenting) guidedCamera.update(delta);
       tokenRefs.current.forEach((token, index) => {
         const target = tokenPosition(index, assignmentRef.current);
         token.position.lerp(target, 0.08);
@@ -309,7 +314,6 @@ export default function FoodSourcesSortingViewer() {
           material.emissiveIntensity = 0.28;
         }
       });
-      if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);
     });
 
@@ -325,9 +329,8 @@ export default function FoodSourcesSortingViewer() {
     return () => {
       window.removeEventListener('resize', handleResize);
       renderer.setAnimationLoop(null);
-      controller0.removeEventListener('selectstart', onControllerSelect as any);
-      controller1.removeEventListener('selectstart', onControllerSelect as any);
-      controls.dispose();
+      interactionSystem.dispose();
+      guidedCamera.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       tokenRefs.current = [];

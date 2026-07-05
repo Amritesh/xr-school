@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createParticleCloud, createPhysicsWorld, type RuntimePhysicsWorld } from '@/lib/runtimePhysics';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
   createAssessmentSession,
   type AssessmentAnswerResult,
@@ -158,7 +159,6 @@ function makeControllerRay() {
 export default function StatesOfMatterViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
   const particlesRef = useRef<THREE.Mesh[]>([]);
   const physicsWorldRef = useRef<RuntimePhysicsWorld | null>(null);
   const cueCanvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -197,8 +197,6 @@ export default function StatesOfMatterViewer() {
     setRuntimeError('');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(68, 1, 0.05, 50);
-    camera.position.set(0, 1.65, 4.4);
-    camera.lookAt(0, 1.2, 0);
 
     host = createWebSimulationRuntime({
       mount: hostMount,
@@ -211,6 +209,12 @@ export default function StatesOfMatterViewer() {
     });
     const renderer = host.renderer;
     rendererRef.current = renderer;
+
+    const guidedCamera = createGuidedCamera(camera, renderer.domElement);
+    guidedCamera.focusOn(
+      { position: new THREE.Vector3(0, 1.65, 4.4), target: new THREE.Vector3(0, 1.2, 0) },
+      { animate: false },
+    );
 
     const factory = createMaterialFactory({
       assets: STATES_WORLD.assetManifests[0],
@@ -335,7 +339,6 @@ export default function StatesOfMatterViewer() {
       stageButtons.push(button);
     });
 
-    const controllerRaycaster = new THREE.Raycaster();
     const applyStage = (nextIndex: number) => {
       const next = STAGES[nextIndex];
       stageRef.current = nextIndex;
@@ -349,25 +352,24 @@ export default function StatesOfMatterViewer() {
     controller0.add(makeControllerRay());
     controller1.add(makeControllerRay());
     scene.add(controller0, controller1);
-    const onControllerSelect = (event: Event) => {
-      const controller = event.target as unknown as THREE.Group;
-      controllerRaycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      controllerRaycaster.ray.direction.set(0, 0, -1).applyQuaternion(controller.quaternion);
-      const hits = controllerRaycaster.intersectObjects(stageButtons);
-      if (!hits.length) return;
-      const nextIndex = Number(hits[0].object.name.replace('stage-button-', ''));
-      if (Number.isInteger(nextIndex)) applyStage(nextIndex);
-    };
-    controller0.addEventListener('selectstart', onControllerSelect as any);
-    controller1.addEventListener('selectstart', onControllerSelect as any);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1.2, 0);
-    controls.enableDamping = true;
-    controls.minDistance = 2.4;
-    controls.maxDistance = 8;
-    controls.maxPolarAngle = Math.PI / 2 - 0.05;
-    controlsRef.current = controls;
+    // ── Selection: one shared raycasting/highlight system for mouse + XR ─
+    const interactionSystem = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: [controller0, controller1],
+      onSelect: (id, object) => {
+        if (id.startsWith('stage-button-')) {
+          const nextIndex = Number(id.replace('stage-button-', ''));
+          if (Number.isInteger(nextIndex)) applyStage(nextIndex);
+        }
+        interactionSystem.setSelected(id);
+        guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 3.4 }));
+      },
+    });
+    for (const button of stageButtons) {
+      interactionSystem.register(button.name, button, { highlightColor: '#38bdf8' });
+    }
 
     fixedUpdate = ({ deltaSeconds, elapsedSeconds }) => {
       const activeStage = STAGES[stageRef.current];
@@ -387,7 +389,8 @@ export default function StatesOfMatterViewer() {
       }
     };
 
-    renderUpdate = ({ elapsedSeconds, interpolationAlpha, renderer }) => {
+    renderUpdate = ({ elapsedSeconds, interpolationAlpha, frameDeltaSeconds, renderer }) => {
+      if (!renderer.xr.isPresenting) guidedCamera.update(frameDeltaSeconds);
       const activeStage = STAGES[stageRef.current];
       const activeHeat = heatRef.current;
       const visualState = activeStage.key === 'phase-change' ? stateFromHeat(activeHeat) : activeStage;
@@ -419,14 +422,10 @@ export default function StatesOfMatterViewer() {
       const activeCamera = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
       cueMesh.lookAt(activeCamera.position);
       stageButtons.forEach(button => button.lookAt(activeCamera.position));
-      if (!renderer.xr.isPresenting) controls.update();
     };
 
-    host.resources.register('states-controls', () => controls.dispose());
-    host.resources.register('states-listeners', () => {
-      controller0.removeEventListener('selectstart', onControllerSelect as any);
-      controller1.removeEventListener('selectstart', onControllerSelect as any);
-    });
+    host.resources.register('states-camera', () => guidedCamera.dispose());
+    host.resources.register('states-interaction', () => interactionSystem.dispose());
     host.resources.register('states-scene', () => {
       scene.traverse(object => {
         if (!(object instanceof THREE.Mesh)) return;
@@ -589,7 +588,7 @@ export default function StatesOfMatterViewer() {
           </div>
 
           <div style={{ position: 'absolute', left: 18, bottom: 18, color: '#64748b', fontSize: 13 }}>
-            Drag to orbit. Use Phase Change, then adjust heat.
+            Drag to look around. Use Phase Change, then adjust heat.
           </div>
         </>
       )}
