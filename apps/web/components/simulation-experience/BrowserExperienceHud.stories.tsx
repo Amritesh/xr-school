@@ -80,3 +80,25 @@ export const ErrorState = {
     onNext: noAction,
   },
 };
+
+// The completion panel's copy is per-simulation (completionEyebrow/
+// Headline/Body/ActionLabel) rather than hardcoded, so a second simulation
+// (here, the Class 7 Breathing Process lab) can show its own summary
+// instead of inheriting Pollination's "Cycle observed and recorded" text.
+export const CustomCompletion = {
+  args: {
+    title: 'Human Respiratory System Lab',
+    snapshot: { ...COMPLETE_STAGE_SNAPSHOT, lessonComplete: true },
+    evidence: [
+      'Diaphragm flattened and the rib cage lifted as air moved in',
+      'Diaphragm domed upward and the rib cage fell as air moved out',
+    ],
+    completed: true,
+    completionEyebrow: 'Model complete',
+    completionHeadline: 'Breathing cycle observed and recorded',
+    completionBody: 'You traced the airway, located the lungs and diaphragm, triggered inhalation and exhalation, zoomed into the alveoli, and compared the two phases of the breathing cycle.',
+    completionActionLabel: 'Review final comparison',
+    onPrevious: noAction,
+    onNext: noAction,
+  },
+};

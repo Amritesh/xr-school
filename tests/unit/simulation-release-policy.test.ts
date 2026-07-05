@@ -34,7 +34,7 @@ describe('simulation release policy', () => {
   });
 
   it('classifies bespoke working simulations as internal QA', () => {
-    expect(SIMULATION_MODULES).toHaveLength(6);
+    expect(SIMULATION_MODULES).toHaveLength(7);
     expect(SIMULATION_MODULES.every(module => module.releaseMaturity === 'internalQA')).toBe(true);
   });
 

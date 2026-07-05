@@ -7,6 +7,7 @@ export const IMPLEMENTED_SIMULATION_SLUGS = [
   'c6-ch01-a01-sources-of-food',
   'c5-ch07-a03-soluble-and-insoluble-substances',
   'c5-ch03-a02-introduction-of-digestive-system',
+  'c7-ch10-a02-the-breathing-process-in-human',
 ] as const;
 
 type ImplementedSlug = (typeof IMPLEMENTED_SIMULATION_SLUGS)[number];
@@ -99,6 +100,18 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     title: 'Introduction to the Digestive System',
     topic: 'From Tasting to Digesting',
     archetype: 'immersive VR',
+    minutes: 10,
+  },
+  'c7-ch10-a02-the-breathing-process-in-human': {
+    slug: 'c7-ch10-a02-the-breathing-process-in-human',
+    color: '#38bdf8',
+    subject: 'biology',
+    subjectTags: ['biology'],
+    grade: 'Class 7',
+    classLevels: [7],
+    title: 'The Breathing Process in Human',
+    topic: 'Respiration in Organisms',
+    archetype: 'interactive 3D',
     minutes: 10,
   },
 };

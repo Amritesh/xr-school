@@ -11,6 +11,10 @@ interface BrowserExperienceHudProps {
   evidence: readonly string[];
   scaleNote?: string;
   completed?: boolean;
+  completionEyebrow?: string;
+  completionHeadline?: string;
+  completionBody?: string;
+  completionActionLabel?: string;
   onPrevious(): void;
   onNext(): void;
 }
@@ -21,6 +25,11 @@ export default function BrowserExperienceHud({
   evidence,
   scaleNote,
   completed = false,
+  completionEyebrow = 'Experiment complete',
+  completionHeadline = 'Cycle observed and recorded',
+  completionBody = 'You inspected the flower, transferred pollen, traced fertilisation, '
+    + 'compared treatment with control, planted a seed, and identified the radicle and plumule.',
+  completionActionLabel = 'Review final observation',
   onPrevious,
   onNext,
 }: BrowserExperienceHudProps) {
@@ -64,15 +73,11 @@ export default function BrowserExperienceHud({
 
       {completed && (
         <section className="simulation-experience__complete-panel" aria-labelledby="experience-complete">
-          <span>Experiment complete</span>
-          <h2 id="experience-complete">Cycle observed and recorded</h2>
-          <p>
-            You inspected the flower, transferred pollen, traced fertilisation,
-            compared treatment with control, planted a seed, and identified the
-            radicle and plumule.
-          </p>
+          <span>{completionEyebrow}</span>
+          <h2 id="experience-complete">{completionHeadline}</h2>
+          <p>{completionBody}</p>
           <button type="button" className="secondary" onClick={onPrevious}>
-            Review final observation
+            {completionActionLabel}
           </button>
         </section>
       )}

@@ -18,8 +18,11 @@ describe('simulation availability routing', () => {
   it('keeps unfinished catalog rows visible but non-launchable', () => {
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
 
+    // Of IMPLEMENTED_SIMULATION_SLUGS, only the ones backed by a real catalog
+    // CSV row get removed from `catalogued` here — Pollination and Circuit
+    // are bespoke builds with no matching row, so they don't count.
     expect(sections.catalogued).toHaveLength(
-      SCIENCE_SIMULATION_CATALOG.length - 4,
+      SCIENCE_SIMULATION_CATALOG.length - 5,
     );
     expect(sections.catalogued.every(item => item.releaseMaturity === 'catalogued')).toBe(true);
     expect(sections.catalogued.every(item => item.href === undefined)).toBe(true);

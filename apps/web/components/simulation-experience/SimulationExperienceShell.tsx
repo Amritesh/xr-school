@@ -26,6 +26,10 @@ interface SimulationExperienceShellProps {
   evidence: readonly string[];
   scaleNote?: string;
   completed?: boolean;
+  completionEyebrow?: string;
+  completionHeadline?: string;
+  completionBody?: string;
+  completionActionLabel?: string;
   focusGuide?: FocusGuideState;
   error?: string;
   projector?: boolean;
@@ -47,6 +51,10 @@ export default function SimulationExperienceShell({
   evidence,
   scaleNote,
   completed = false,
+  completionEyebrow,
+  completionHeadline,
+  completionBody,
+  completionActionLabel,
   focusGuide,
   error,
   projector = false,
@@ -80,6 +88,10 @@ export default function SimulationExperienceShell({
           evidence={evidence}
           scaleNote={scaleNote}
           completed={completed}
+          completionEyebrow={completionEyebrow}
+          completionHeadline={completionHeadline}
+          completionBody={completionBody}
+          completionActionLabel={completionActionLabel}
           onPrevious={onPrevious}
           onNext={onNext}
         />

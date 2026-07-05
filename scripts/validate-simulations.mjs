@@ -64,6 +64,7 @@ const viewerNameMap = {
   'c6-ch01-a01-sources-of-food': 'FoodSourcesSortingViewer',
   'c5-ch07-a03-soluble-and-insoluble-substances': 'SolubilityLabViewer',
   'c5-ch03-a02-introduction-of-digestive-system': 'DigestiveSystemViewer',
+  'c7-ch10-a02-the-breathing-process-in-human': 'BreathingProcessViewer',
 };
 
 for (const slug of slugs) {

@@ -72,6 +72,18 @@ Ask students to sequence Mouth, Esophagus, Stomach, Small Intestine, Large Intes
 REVISION TRIGGER
 One week later, show an unlabeled digestive-system pathway and ask students to label the organs, name where nutrients and water are absorbed, and explain one healthy digestion habit.`;
 
+const breathingProcessScript = `SETUP
+Ask students what they feel move when they take a deep breath. Non-headset students place a hand on their ribs and chest and describe what happens on an inhale and an exhale.
+
+DURING HEADSET BATCH
+Guide students through the airway, lungs, and diaphragm, then have them trigger an inhale and an exhale in turn. Pause at each trigger so students connect the diaphragm's shape and position to the rib cage and lung volume.
+
+DEBRIEF
+Ask students to explain, in their own words, why the diaphragm contracting causes air to move into the lungs. Review the alveoli as the site of gas exchange.
+
+REVISION TRIGGER
+One week later, show an unlabeled rib cage and diaphragm diagram and ask students to mark the diaphragm's position during an inhale versus an exhale and explain the pressure change that results.`;
+
 export const POLLINATION_MODULE: SimulationModuleRecord = {
   id: 'sim-pollination-001',
   slug: 'pollination',
@@ -328,6 +340,66 @@ export const DIGESTIVE_SYSTEM_MODULE: SimulationModuleRecord = {
   status: 'released',
 };
 
+export const BREATHING_PROCESS_MODULE: SimulationModuleRecord = {
+  id: 'sim-c07-ch10-a02-the-breathing-process-in-human',
+  slug: 'c7-ch10-a02-the-breathing-process-in-human',
+  title: 'The Breathing Process in Human',
+  summary: 'Trace the airway, locate the lungs and diaphragm, trigger an inhale and an exhale, zoom into the alveoli, and compare the two phases of the breathing cycle.',
+  gradeBands: ['class6To8'],
+  subjects: ['biology'],
+  applicableBoards: ['cbse', 'icse'],
+  curriculumMapIds: ['cm-cbse-c7-ch10-breathing-process'],
+  conceptIds: [
+    'concept-respiratory-system',
+    'concept-breathing-mechanics',
+    'concept-gas-exchange',
+  ],
+  simulationFormat: 'interactive3d',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'The diaphragm and rib cage move together inside the chest where they cannot be directly observed. A stationary VR cutaway makes that hidden, simultaneous motion spatially clear from any angle.',
+  learningObjective: 'Students will trace the airway, identify the lungs and diaphragm, explain how diaphragm and rib cage movement changes chest volume during inhalation and exhalation, and describe gas exchange at the alveoli.',
+  scientificConceptExplanation: 'Breathing is driven by the diaphragm and rib muscles. On inhalation the diaphragm contracts and flattens while the rib cage lifts, increasing chest volume and drawing air in. On exhalation the diaphragm relaxes and domes upward while the rib cage falls, decreasing chest volume and pushing air out. Gas exchange happens at the alveoli, tiny air sacs where oxygen enters the blood and carbon dioxide leaves it.',
+  misconceptionsAddressed: [
+    'The lungs actively pull themselves open to breathe in.',
+    'Breathing in and breathing out use the same muscle motion.',
+    'Gas exchange happens in the bronchi rather than the alveoli.',
+  ],
+  visualizationStrategy: 'Use a labelled, color-coded chest cutaway with a diaphragm that visibly flattens and drops on inhale and domes upward on exhale, a rib cage that lifts and expands in sync, and an enlarged alveoli cluster with capillary wrapping for the gas-exchange close-up.',
+  interactionStrategy: 'Students inspect the airway, lungs, and diaphragm, pull a control to trigger inhalation, release it to trigger exhalation, zoom into an enlarged alveoli cutaway, and review a comparison board contrasting the two phases.',
+  imaginationHelperStrategy: 'The diaphragm and rib cage animate together in real time so the normally invisible, simultaneous chest-volume change becomes something students can watch happen on demand.',
+  practicalUseCase: 'Connects directly to noticing one’s own breathing rate, understanding why deep breathing feels different from shallow breathing, and recognising breathlessness after exercise.',
+  cueCardIds: [
+    'cue-breathing-airway-001',
+    'cue-breathing-lungs-diaphragm-002',
+    'cue-breathing-inhale-003',
+    'cue-breathing-exhale-004',
+    'cue-breathing-alveoli-005',
+  ],
+  revisionCardIds: ['rev-breathing-cycle-001'],
+  assessmentHookIds: [
+    'assess-breathing-pre-001',
+    'assess-breathing-post-001',
+    'assess-breathing-misconception-001',
+  ],
+  instructorScript: breathingProcessScript,
+  batchActivityPrompt: 'Draw the rib cage and diaphragm in the inhale position and again in the exhale position, labelling what changes shape or moves in each.',
+  expectedDurationMinutes: 10,
+  maxSessionDurationMinutes: 12,
+  comfortRiskLevel: 'low',
+  safetyNotes: [
+    'Use stationary or seated play with no forced camera movement.',
+    'Encourage students to breathe normally rather than mimicking the pace of the animation.',
+  ],
+  offlineContentPackId: 'pack-biology-breathing-process-class7-v1',
+  estimatedPackageSizeMb: 140,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 6,
+  status: 'released',
+};
+
 export const SIMULATION_MODULES = [
   POLLINATION_MODULE,
   CIRCUIT_MODULE,
@@ -335,4 +407,5 @@ export const SIMULATION_MODULES = [
   SOURCES_OF_FOOD_MODULE,
   SOLUBLE_INSOLUBLE_MODULE,
   DIGESTIVE_SYSTEM_MODULE,
+  BREATHING_PROCESS_MODULE,
 ] as const;

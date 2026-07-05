@@ -119,3 +119,18 @@ export const ErrorState = {
     },
   },
 };
+
+// completionEyebrow/Headline/Body/ActionLabel pass through to
+// BrowserExperienceHud so each simulation can show its own completion
+// summary instead of a hardcoded, Pollination-specific one.
+export const CustomCompletion = {
+  args: {
+    ...Default.args,
+    snapshot: { ...COMPLETE_SNAPSHOT, lessonComplete: true },
+    completed: true,
+    completionEyebrow: 'Model complete',
+    completionHeadline: 'Breathing cycle observed and recorded',
+    completionBody: 'You traced the airway, located the lungs and diaphragm, triggered inhalation and exhalation, zoomed into the alveoli, and compared the two phases of the breathing cycle.',
+    completionActionLabel: 'Review final comparison',
+  },
+};
