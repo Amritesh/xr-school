@@ -150,6 +150,49 @@ describe('createInteractionSystem', () => {
     system.dispose();
   });
 
+  it('pulses a suggested target even when nothing is hovering or selected', () => {
+    const camera = createLookingCamera();
+    const dom = createFakeDomElement();
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2));
+    mesh.updateMatrixWorld(true);
+
+    const system = createInteractionSystem({ camera, domElement: dom });
+    system.register('anther-target', mesh, { highlightColor: '#ffe08a' });
+
+    system.setSuggested('anther-target');
+    system.update(0);
+
+    const outline = mesh.children.find(child => child.name.endsWith('-outline')) as THREE.Mesh;
+    expect(outline.visible).toBe(true);
+    expect((outline.material as THREE.MeshBasicMaterial).opacity).toBeGreaterThan(0);
+    system.dispose();
+  });
+
+  it('lets hover outrank a suggested target, and selected outrank both', () => {
+    const camera = createLookingCamera();
+    const dom = createFakeDomElement();
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2));
+    mesh.updateMatrixWorld(true);
+
+    const system = createInteractionSystem({ camera, domElement: dom });
+    system.register('anther-target', mesh, { highlightColor: '#ffe08a' });
+    system.setSuggested('anther-target');
+
+    // Hovering the same object should promote it past the passive pulse.
+    dom.dispatch('pointermove', { clientX: 50, clientY: 50 });
+    const outline = mesh.children.find(child => child.name.endsWith('-outline')) as THREE.Mesh;
+    const hoverOpacity = (outline.material as THREE.MeshBasicMaterial).opacity;
+
+    // Selecting it should be brighter still, and stay that way once the
+    // pointer moves away (selection persists past hover).
+    system.setSelected('anther-target');
+    dom.dispatch('pointermove', { clientX: 1, clientY: 1 });
+    const selectedOpacity = (outline.material as THREE.MeshBasicMaterial).opacity;
+
+    expect(selectedOpacity).toBeGreaterThan(hoverOpacity);
+    system.dispose();
+  });
+
   it('disposes highlight shells and removes all listeners', () => {
     const camera = createLookingCamera();
     const dom = createFakeDomElement();

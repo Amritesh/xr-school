@@ -17,16 +17,20 @@ export interface FocusFrameOptions {
 }
 
 /**
- * Frames any object by fitting its world bounding sphere into the camera's
- * field of view, approaching from the given (or current) camera direction.
- * Avoids hand-authoring a camera position per selectable object.
+ * Frames one or more objects by fitting their combined world bounding
+ * sphere into the camera's field of view, approaching from the given (or
+ * current) camera direction. Avoids hand-authoring a camera position per
+ * selectable object — pass an array to frame several objects together
+ * (e.g. two flowers being compared side by side).
  */
 export function computeFocusFrame(
-  object: THREE.Object3D,
+  objectOrObjects: THREE.Object3D | THREE.Object3D[],
   camera: THREE.PerspectiveCamera,
   options: FocusFrameOptions = {},
 ): CameraFrame {
-  const box = new THREE.Box3().setFromObject(object);
+  const objects = Array.isArray(objectOrObjects) ? objectOrObjects : [objectOrObjects];
+  const box = new THREE.Box3();
+  for (const object of objects) box.expandByObject(object);
   const sphere = new THREE.Sphere();
   box.getBoundingSphere(sphere);
   const radius = Math.max(sphere.radius, 0.05);

@@ -1,11 +1,15 @@
 import * as THREE from 'three';
 
-export type HighlightState = 'none' | 'hover' | 'selected';
+export type HighlightState = 'none' | 'suggested' | 'hover' | 'selected';
 
 export interface SelectionHighlightOptions {
   color?: THREE.ColorRepresentation;
   hoverOpacity?: number;
   selectedOpacity?: number;
+  /** Peak opacity of the passive "click this next" pulse. */
+  suggestedOpacity?: number;
+  /** Pulse cycles per second for the 'suggested' state. */
+  suggestedPulseSpeed?: number;
   /** Scale of the outline shell relative to the source mesh. */
   scale?: number;
 }
@@ -22,9 +26,11 @@ export function createSelectionHighlight(
   options: SelectionHighlightOptions = {},
 ) {
   const color = new THREE.Color(options.color ?? '#ffcf5c');
-  const scale = options.scale ?? 1.035;
+  const scale = options.scale ?? 1.055;
   const hoverOpacity = options.hoverOpacity ?? 0.55;
   const selectedOpacity = options.selectedOpacity ?? 0.95;
+  const suggestedOpacity = options.suggestedOpacity ?? 0.68;
+  const suggestedPulseSpeed = options.suggestedPulseSpeed ?? 2.1;
 
   const shells: THREE.Mesh[] = [];
   const targets: THREE.Mesh[] = [];
@@ -55,13 +61,27 @@ export function createSelectionHighlight(
 
   function setState(next: HighlightState) {
     state = next;
+    // 'suggested' opacity is driven continuously by update() instead — just
+    // make the shells visible here so the first pulse frame isn't blank.
     const opacity = next === 'selected'
       ? selectedOpacity
       : next === 'hover'
         ? hoverOpacity
-        : 0;
+        : next === 'suggested'
+          ? suggestedOpacity
+          : 0;
     for (const shell of shells) {
       shell.visible = next !== 'none';
+      (shell.material as THREE.MeshBasicMaterial).opacity = opacity;
+    }
+  }
+
+  /** Advances the passive "click this next" pulse. No-op unless suggested. */
+  function update(elapsedSeconds: number) {
+    if (state !== 'suggested') return;
+    const pulse = (Math.sin(elapsedSeconds * suggestedPulseSpeed) + 1) / 2;
+    const opacity = suggestedOpacity * (0.3 + pulse * 0.85);
+    for (const shell of shells) {
       (shell.material as THREE.MeshBasicMaterial).opacity = opacity;
     }
   }
@@ -75,6 +95,7 @@ export function createSelectionHighlight(
 
   return {
     setState,
+    update,
     dispose,
     get state() {
       return state;

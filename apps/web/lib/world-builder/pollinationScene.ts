@@ -43,6 +43,40 @@ function organicFlightPosition(
   );
 }
 
+interface GroundObstacle {
+  minX: number;
+  maxX: number;
+  minZ: number;
+  maxZ: number;
+  topY: number;
+}
+
+// Known solid garden fixtures a wandering bee shouldn't fly through.
+// Footprints are approximate rectangles — good enough to stop visible
+// clipping without modelling exact geometry. The interactive lesson bee
+// is exempt (it's centered inside the treatment bed on purpose, to visit
+// the flower); only ambient background bees avoid these.
+const GARDEN_OBSTACLES: GroundObstacle[] = [
+  { minX: -3.85, maxX: -0.85, minZ: -2.5, maxZ: 2.5, topY: 2.05 }, // treatment bed + flower
+  { minX: 0.85, maxX: 3.85, minZ: -2.5, maxZ: 2.5, topY: 1.95 }, // control bed + flower
+  { minX: -5.7, maxX: -3.4, minZ: -5.8, maxZ: 5.8, topY: 1.6 }, // peripheral flowers, west row
+  { minX: 3.4, maxX: 5.7, minZ: -5.8, maxZ: 5.8, topY: 1.6 }, // peripheral flowers, east row
+  { minX: 2.1, maxX: 3.7, minZ: 1.25, maxZ: 2.15, topY: 1.35 }, // field table + tools
+];
+
+export function clearGroundObstacles(position: THREE.Vector3, margin = 0.16) {
+  for (const zone of GARDEN_OBSTACLES) {
+    if (
+      position.x >= zone.minX && position.x <= zone.maxX
+      && position.z >= zone.minZ && position.z <= zone.maxZ
+      && position.y < zone.topY + margin
+    ) {
+      position.y = zone.topY + margin;
+    }
+  }
+  return position;
+}
+
 const _beePosition = new THREE.Vector3();
 const _beeAhead = new THREE.Vector3();
 
@@ -52,9 +86,14 @@ function updateBeeFlight(
   center: Vec3Tuple,
   seed: number,
   radius: number,
+  avoidObstacles: boolean,
 ) {
   organicFlightPosition(elapsedSeconds, seed, center, radius, _beePosition);
   organicFlightPosition(elapsedSeconds + 0.05, seed, center, radius, _beeAhead);
+  if (avoidObstacles) {
+    clearGroundObstacles(_beePosition);
+    clearGroundObstacles(_beeAhead);
+  }
   beeRig.root.position.copy(_beePosition);
   beeRig.root.rotation.y = Math.atan2(
     _beeAhead.x - _beePosition.x,
@@ -103,16 +142,22 @@ export function createPollinationScene(config: PollinationSceneConfig) {
 
   // Ambient bees: not tied to any lesson action, just a living garden —
   // visible throughout the experience rather than gated to one stage.
+  // Centers sit in open lawn clear of every GARDEN_OBSTACLES footprint, so
+  // the obstacle-avoidance step below only kicks in occasionally at the
+  // edge of a wander, not constantly. Lower-detail meshes (6 draw calls
+  // each instead of 16) keep several of them affordable at once.
   const AMBIENT_BEE_CENTERS: Vec3Tuple[] = [
-    [3.3, 1.35, 1.4],
-    [-3.6, 1.3, 2.6],
+    [1.3, 1.45, 3.6],
+    [-1.4, 1.4, 3.3],
+    [0, 1.5, -3.8],
+    [2.8, 1.35, -3.5],
   ];
   const ambientBees = AMBIENT_BEE_CENTERS.map((center, index) => {
-    const ambientBee = createBee(config.materials);
+    const ambientBee = createBee(config.materials, 'simple');
     ambientBee.root.name = `ambient-bee-${index + 1}`;
     ambientBee.root.position.set(...center);
     root.add(ambientBee.root);
-    return { rig: ambientBee, center, seed: 4.7 + index * 3.1, radius: 1.1 + index * 0.25 };
+    return { rig: ambientBee, center, seed: 4.7 + index * 3.1, radius: 1.1 + index * 0.2 };
   });
 
   const fruit = createFruitAndSeed(config.materials);
@@ -272,10 +317,12 @@ export function createPollinationScene(config: PollinationSceneConfig) {
     update(deltaSeconds: number, elapsedSeconds: number) {
       garden.updateWind(elapsedSeconds);
       if (bee.root.visible) {
-        updateBeeFlight(bee, elapsedSeconds, POLLINATION_LAYOUT.beeFlightCenter, 0, 0.7);
+        updateBeeFlight(bee, elapsedSeconds, POLLINATION_LAYOUT.beeFlightCenter, 0, 0.7, false);
       }
       for (const ambient of ambientBees) {
-        updateBeeFlight(ambient.rig, elapsedSeconds, ambient.center, ambient.seed, ambient.radius);
+        updateBeeFlight(
+          ambient.rig, elapsedSeconds, ambient.center, ambient.seed, ambient.radius, true,
+        );
       }
       if (stage === 7) {
         germination.firstLeaves.rotation.y += deltaSeconds * 0.08;

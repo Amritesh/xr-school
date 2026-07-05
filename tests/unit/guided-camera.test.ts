@@ -48,6 +48,27 @@ describe('computeFocusFrame', () => {
     expect(frame.target.z).toBeCloseTo(-3, 5);
   });
 
+  it('frames several objects together when given an array', () => {
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.set(0, 0, 10);
+
+    const left = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3));
+    left.position.set(-2, 0, 0);
+    left.updateMatrixWorld(true);
+    const right = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3));
+    right.position.set(2, 0, 0);
+    right.updateMatrixWorld(true);
+
+    const soloFrame = computeFocusFrame(left, camera);
+    const pairFrame = computeFocusFrame([left, right], camera);
+
+    // The pair's target sits between both objects, not on either one, and
+    // the camera must back off further to fit both in frame.
+    expect(pairFrame.target.x).toBeCloseTo(0, 5);
+    expect(pairFrame.position.distanceTo(pairFrame.target))
+      .toBeGreaterThan(soloFrame.position.distanceTo(soloFrame.target));
+  });
+
   it('dollies closer for a smaller object than a larger one', () => {
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
     camera.position.set(0, 0, 10);

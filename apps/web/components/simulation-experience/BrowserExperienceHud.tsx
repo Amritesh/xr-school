@@ -87,23 +87,20 @@ export default function BrowserExperienceHud({
             <h2 id="experience-mission">{snapshot.stageTitle}</h2>
             <p>{snapshot.cue}</p>
           </div>
-          <div className="simulation-experience__mission-actions">
-            <button
-              type="button"
-              className="secondary"
-              disabled={snapshot.stageIndex === 0}
-              onClick={onPrevious}
-            >
-              Back
-            </button>
-            <button
-              type="button"
-              disabled={!snapshot.stageComplete}
-              onClick={onNext}
-            >
-              {snapshot.lessonComplete ? 'Complete' : 'Continue'}
-            </button>
-          </div>
+          {(snapshot.stageIndex > 0 || snapshot.stageComplete) && (
+            <div className="simulation-experience__mission-actions">
+              {snapshot.stageIndex > 0 && (
+                <button type="button" className="secondary" onClick={onPrevious}>
+                  Back
+                </button>
+              )}
+              {snapshot.stageComplete && (
+                <button type="button" onClick={onNext}>
+                  {snapshot.lessonComplete ? 'Complete' : 'Continue'}
+                </button>
+              )}
+            </div>
+          )}
         </section>
       )}
     </div>

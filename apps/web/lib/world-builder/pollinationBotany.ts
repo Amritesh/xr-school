@@ -226,49 +226,61 @@ export function createFlowerSpecimen(
   };
 }
 
-export function createBee(materials: PollinationBotanyMaterials) {
+// Shared across every bee instance — none of these carry per-instance state
+// (only the mesh transforms that reference them do), so building them once
+// and reusing them for "many bees" costs nothing extra per additional bee.
+const BEE_GEOMETRY = {
+  abdomen: new THREE.SphereGeometry(0.075, 20, 14),
+  stripe: new THREE.TorusGeometry(0.066, 0.008, 6, 24),
+  thorax: new THREE.SphereGeometry(0.07, 18, 12),
+  head: new THREE.SphereGeometry(0.052, 16, 12),
+  frontWing: new THREE.SphereGeometry(0.07, 18, 10),
+  rearWing: new THREE.SphereGeometry(0.052, 18, 10),
+  leg: new THREE.CylinderGeometry(0.003, 0.004, 0.14, 5),
+};
+
+export type BeeDetail = 'full' | 'simple';
+
+/**
+ * `detail: 'simple'` drops legs and rear wings and thins the abdomen
+ * stripes to one — meant for ambient background bees, which are seen from
+ * a distance and never inspected up close, so the missing detail is
+ * imperceptible. Keeps "many bees" affordable: a simple bee is 6 draw
+ * calls instead of 16.
+ */
+export function createBee(materials: PollinationBotanyMaterials, detail: BeeDetail = 'full') {
   const root = new THREE.Group();
   root.name = 'pollinator-bee';
 
-  const abdomen = new THREE.Mesh(
-    new THREE.SphereGeometry(0.075, 20, 14),
-    materials.beeYellow,
-  );
+  const abdomen = new THREE.Mesh(BEE_GEOMETRY.abdomen, materials.beeYellow);
   abdomen.scale.set(0.9, 0.82, 1.55);
   abdomen.position.z = -0.055;
-  abdomen.castShadow = true;
+  abdomen.castShadow = detail === 'full';
   root.add(abdomen);
 
-  for (let index = 0; index < 3; index += 1) {
-    const stripe = new THREE.Mesh(
-      new THREE.TorusGeometry(0.066, 0.008, 6, 24),
-      materials.beeDark,
-    );
+  const stripeCount = detail === 'full' ? 3 : 1;
+  for (let index = 0; index < stripeCount; index += 1) {
+    const stripe = new THREE.Mesh(BEE_GEOMETRY.stripe, materials.beeDark);
     stripe.position.z = -0.12 + index * 0.06;
     stripe.rotation.x = Math.PI / 2;
     root.add(stripe);
   }
 
-  const thorax = new THREE.Mesh(
-    new THREE.SphereGeometry(0.07, 18, 12),
-    materials.beeDark,
-  );
+  const thorax = new THREE.Mesh(BEE_GEOMETRY.thorax, materials.beeDark);
   thorax.position.z = 0.075;
   thorax.scale.set(1.06, 1, 1.12);
   root.add(thorax);
 
-  const head = new THREE.Mesh(
-    new THREE.SphereGeometry(0.052, 16, 12),
-    materials.beeDark,
-  );
+  const head = new THREE.Mesh(BEE_GEOMETRY.head, materials.beeDark);
   head.position.z = 0.17;
   root.add(head);
 
   const wings: THREE.Mesh[] = [];
+  const wingRears = detail === 'full' ? [0, 1] : [0];
   for (const side of [-1, 1]) {
-    for (const rear of [0, 1]) {
+    for (const rear of wingRears) {
       const wing = new THREE.Mesh(
-        new THREE.SphereGeometry(rear ? 0.052 : 0.07, 18, 10),
+        rear ? BEE_GEOMETRY.rearWing : BEE_GEOMETRY.frontWing,
         materials.beeWing,
       );
       wing.name = 'bee-wing';
@@ -280,15 +292,14 @@ export function createBee(materials: PollinationBotanyMaterials) {
     }
   }
 
-  for (const side of [-1, 1]) {
-    for (let index = 0; index < 3; index += 1) {
-      const leg = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.003, 0.004, 0.14, 5),
-        materials.beeDark,
-      );
-      leg.position.set(side * 0.075, -0.065, 0.09 - index * 0.07);
-      leg.rotation.z = side * 0.85;
-      root.add(leg);
+  if (detail === 'full') {
+    for (const side of [-1, 1]) {
+      for (let index = 0; index < 3; index += 1) {
+        const leg = new THREE.Mesh(BEE_GEOMETRY.leg, materials.beeDark);
+        leg.position.set(side * 0.075, -0.065, 0.09 - index * 0.07);
+        leg.rotation.z = side * 0.85;
+        root.add(leg);
+      }
     }
   }
 

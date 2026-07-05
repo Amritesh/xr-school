@@ -183,13 +183,31 @@ const DEFAULT_POLLINATION_FRAME: CameraFrame = {
   target: new THREE.Vector3(0, 1.02, -0.92),
 };
 
-// The pistil and germination cutaways swap in a whole enlarged group in
-// place of the garden — frame that group (so the style/stem is in view),
-// not the single small evidence target inside it.
-const STAGE_OVERVIEW_GROUP_NAMES: Record<number, string> = {
-  4: 'enlarged-pistil-cutaway',
-  7: 'enlarged-germination-cutaway',
-};
+interface StageCameraFocus {
+  /** Object(s) to frame together. Multiple names fit all of them in one shot. */
+  names: string[];
+  fitPadding: number;
+}
+
+// One explicit shot per stage — deliberately NOT derived from
+// TARGET_BY_ACTION (which exists for the continuous arrow/beacon guidance,
+// a different concern: "what's the very next clickable thing" vs "what's
+// this whole stage about"). Deriving the stage shot from the first
+// required action's target used to send the camera to whatever object
+// that action happened to touch — for stage 5 that was a tool on the far
+// field table, when the stage is actually about comparing the two
+// flowers. Each stage's shot is authored here instead, so it's obvious at
+// a glance what the learner sees when a stage begins.
+const STAGE_CAMERA_FOCUS: StageCameraFocus[] = [
+  { names: ['treatment-flower'], fitPadding: 3.2 }, // 0: inspect the flower
+  { names: ['anther-target'], fitPadding: 4.5 }, // 1: collect pollen
+  { names: ['pollinator-bee'], fitPadding: 4.5 }, // 2: observe the pollinator
+  { names: ['stigma-target'], fitPadding: 4.5 }, // 3: transfer pollen
+  { names: ['enlarged-pistil-cutaway'], fitPadding: 1.7 }, // 4: trace the pollen tube
+  { names: ['treatment-flower', 'control-flower'], fitPadding: 1.7 }, // 5: compare both flowers
+  { names: ['fruit-halves'], fitPadding: 4.2 }, // 6: open the fruit, plant a seed
+  { names: ['enlarged-germination-cutaway'], fitPadding: 1.7 }, // 7: inspect germination
+];
 
 /** Moves the camera once per real stage transition — an explicit, occasional
  * move (like Circuit's), not a per-substep nudge that would fight the
@@ -200,24 +218,24 @@ function focusStageOverview(
   camera: THREE.PerspectiveCamera,
   world: PollinationScene,
 ) {
-  const overviewGroupName = STAGE_OVERVIEW_GROUP_NAMES[stageIndex];
-  if (overviewGroupName) {
-    const group = world.root.getObjectByName(overviewGroupName);
-    if (group) {
-      guidedCamera.focusOn(computeFocusFrame(group, camera, { fitPadding: 1.7 }));
-      return;
-    }
-  }
-  const stage = POLLINATION_WORLD.experienceDefinitions![0].stages[stageIndex];
-  const targetName = stage?.requiredActionIds[0]
-    ? TARGET_BY_ACTION[stage.requiredActionIds[0]]
-    : undefined;
-  const targetObject = targetName ? world.root.getObjectByName(targetName) : undefined;
+  const focus = STAGE_CAMERA_FOCUS[stageIndex];
+  const objects = focus?.names
+    .map(name => world.root.getObjectByName(name))
+    .filter((object): object is THREE.Object3D => Boolean(object)) ?? [];
   guidedCamera.focusOn(
-    targetObject
-      ? computeFocusFrame(targetObject, camera, { fitPadding: 4.5 })
+    objects.length > 0
+      ? computeFocusFrame(objects, camera, { fitPadding: focus.fitPadding })
       : DEFAULT_POLLINATION_FRAME,
   );
+}
+
+// Stage 4 swaps the whole garden for the enlarged pistil cutaway — worth a
+// heads-up on arrival. Every other stage transition stays silent (see the
+// scale-note removal rationale above the `scaleDisclosure` state).
+function scaleDisclosureForStage(stageIndex: number) {
+  return stageIndex === 4
+    ? 'The next view enlarges the internal flower structures.'
+    : '';
 }
 
 function createDerivedMaterial(
@@ -377,9 +395,7 @@ export default function PollinationViewer() {
             sceneApiRef.current?.setStage(advanced.stageIndex);
             moveCameraToStage(advanced.stageIndex);
             transitionRef.current.reset();
-            setScaleDisclosure(advanced.stageIndex === 4
-              ? 'The next view enlarges the internal flower structures.'
-              : '');
+            setScaleDisclosure(scaleDisclosureForStage(advanced.stageIndex));
             playNarration(advanced.stageIndex, preferences.audio);
           } catch (error) {
             setRuntimeError(error instanceof Error ? error.message : String(error));
@@ -400,9 +416,7 @@ export default function PollinationViewer() {
     sceneApiRef.current?.setStage(next.stageIndex);
     moveCameraToStage(next.stageIndex);
     transitionRef.current.reset();
-    setScaleDisclosure(next.stageIndex === 4
-      ? 'The next view enlarges the internal flower structures.'
-      : '');
+    setScaleDisclosure(scaleDisclosureForStage(next.stageIndex));
     playNarration(next.stageIndex, preferences.audio);
   }, [moveCameraToStage, preferences.audio]);
   previousRef.current = previous;
@@ -420,9 +434,7 @@ export default function PollinationViewer() {
       sceneApiRef.current?.setStage(nextSnapshot.stageIndex);
       moveCameraToStage(nextSnapshot.stageIndex);
       transitionRef.current.reset();
-      setScaleDisclosure(nextSnapshot.stageIndex === 4
-        ? 'The next view enlarges the internal flower structures.'
-        : '');
+      setScaleDisclosure(scaleDisclosureForStage(nextSnapshot.stageIndex));
       playNarration(nextSnapshot.stageIndex, preferences.audio);
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : String(error));
@@ -693,6 +705,16 @@ export default function PollinationViewer() {
       renderUpdate = context => {
         world.update(context.frameDeltaSeconds, context.elapsedSeconds);
         transitionRef.current.update(context.frameDeltaSeconds * 1.8);
+
+        // The next required action's target pulses persistently — in both
+        // browser and VR — so there's always a positive "click this" cue,
+        // not just a reactive hover highlight or an off-screen arrow.
+        const suggestedTargetName = focusActionRef.current
+          ? TARGET_BY_ACTION[focusActionRef.current]
+          : undefined;
+        interactionSystem.setSuggested(suggestedTargetName);
+        interactionSystem.update(context.elapsedSeconds);
+
         if (host!.renderer.xr.isPresenting) {
           const session = host!.renderer.xr.getSession();
           session?.inputSources.forEach((inputSource, index) => {
@@ -713,11 +735,8 @@ export default function PollinationViewer() {
           });
         } else {
           guidedCamera.update(context.frameDeltaSeconds);
-          const focusTargetName = focusActionRef.current
-            ? TARGET_BY_ACTION[focusActionRef.current]
-            : undefined;
-          const focusTarget = focusTargetName
-            ? world.root.getObjectByName(focusTargetName)
+          const focusTarget = suggestedTargetName
+            ? world.root.getObjectByName(suggestedTargetName)
             : undefined;
           if (focusTarget) {
             focusTarget.getWorldPosition(projectedFocus).project(camera);

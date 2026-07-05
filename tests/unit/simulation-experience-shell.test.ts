@@ -30,6 +30,14 @@ describe('shared simulation experience shell', () => {
     expect(source).toContain('aria-expanded');
   });
 
+  it('only shows Back/Continue when they would actually do something, not as permanently-disabled buttons', () => {
+    const source = read('BrowserExperienceHud.tsx');
+    expect(source).toContain('snapshot.stageIndex > 0 && (');
+    expect(source).toContain('snapshot.stageComplete && (');
+    expect(source).not.toContain('disabled={snapshot.stageIndex === 0}');
+    expect(source).not.toContain('disabled={!snapshot.stageComplete}');
+  });
+
   it('reserves a clear center and honors reduced motion', () => {
     const source = read('simulation-experience.css');
     expect(source).toContain('--experience-clear-width: 60%');

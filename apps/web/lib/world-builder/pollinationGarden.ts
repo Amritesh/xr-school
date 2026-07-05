@@ -106,7 +106,10 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
 
   const peripheralFlowerBed = new THREE.Group();
   peripheralFlowerBed.name = 'peripheral-flower-bed';
-  const peripheralCount = 168;
+  const columnsPerRow = 24;
+  const rows = 10;
+  const rowsPerSide = rows / 2;
+  const peripheralCount = columnsPerRow * rows;
   const stemGeometry = new THREE.CylinderGeometry(0.012, 0.018, 0.58, 6);
   const blossomGeometry = new THREE.SphereGeometry(0.065, 10, 7);
   const stems = new THREE.InstancedMesh(
@@ -124,11 +127,14 @@ export function createSchoolGarden(materials: PollinationGardenMaterials) {
   ));
   const blossomBatchCounts = new Array(blossomColors.length).fill(0);
   for (let index = 0; index < peripheralCount; index += 1) {
-    const row = Math.floor(index / 24);
-    const column = index % 24;
-    const side = row < 2 ? -1 : 1;
-    const x = side * (3.8 + (row % 2) * 0.75);
-    const z = -5.6 + column / 23 * 11.2;
+    const row = Math.floor(index / columnsPerRow);
+    const column = index % columnsPerRow;
+    // Rows split evenly across both sides of the path (previously only the
+    // first 2 of 7 rows went west, leaving the garden lopsided).
+    const side = row < rowsPerSide ? -1 : 1;
+    const sideRow = row % rowsPerSide;
+    const x = side * (3.8 + sideRow * 0.42);
+    const z = -5.6 + column / (columnsPerRow - 1) * 11.2;
     const height = 0.7 + (index % 7) * 0.045;
     position.set(x, 0.22 + height * 0.25, z);
     quaternion.setFromEuler(new THREE.Euler(0, index * 0.7, 0));

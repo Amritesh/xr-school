@@ -39,8 +39,13 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
   const controllerDirection = new THREE.Vector3();
   const cursor = config.cursor ?? { hover: 'pointer', idle: 'grab' };
 
+  // Highlight state is resolved by priority (selected > hover > suggested)
+  // from these three independently-tracked ids, so e.g. hovering the
+  // passively-pulsing "click next" target correctly promotes it to the
+  // brighter hover look instead of fighting the pulse.
   let hoveredId: string | undefined;
   let selectedId: string | undefined;
+  let suggestedId: string | undefined;
 
   function register(id: string, object: THREE.Object3D, options: RegisterOptions = {}) {
     object.userData.interactionId = id;
@@ -61,28 +66,49 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
     return undefined;
   }
 
-  function refreshHighlight(id: string | undefined, entry: Entry | undefined) {
-    if (!entry?.highlight) return;
-    entry.highlight.setState(id === selectedId ? 'selected' : 'hover');
+  function effectiveState(id: string) {
+    if (id === selectedId) return 'selected' as const;
+    if (id === hoveredId) return 'hover' as const;
+    if (id === suggestedId) return 'suggested' as const;
+    return 'none' as const;
+  }
+
+  function refreshHighlight(id: string | undefined) {
+    if (!id) return;
+    entries.get(id)?.highlight?.setState(effectiveState(id));
   }
 
   function setHover(next: { id: string; entry: Entry } | undefined) {
     if (next?.id === hoveredId) return;
-    if (hoveredId) {
-      const previous = entries.get(hoveredId);
-      previous?.highlight?.setState(hoveredId === selectedId ? 'selected' : 'none');
-    }
+    const previousId = hoveredId;
     hoveredId = next?.id;
-    if (next) refreshHighlight(next.id, next.entry);
+    refreshHighlight(previousId);
+    refreshHighlight(hoveredId);
     config.onHoverChange?.(hoveredId);
   }
 
   function setSelected(id: string | undefined) {
-    if (selectedId && selectedId !== id) {
-      entries.get(selectedId)?.highlight?.setState(selectedId === hoveredId ? 'hover' : 'none');
-    }
+    if (id === selectedId) return;
+    const previousId = selectedId;
     selectedId = id;
-    if (id) refreshHighlight(id, entries.get(id));
+    refreshHighlight(previousId);
+    refreshHighlight(selectedId);
+  }
+
+  /** Marks the object the learner should click next with a passive pulse —
+   * not tied to hover/click, so it reads even before anyone touches it. */
+  function setSuggested(id: string | undefined) {
+    if (id === suggestedId) return;
+    const previousId = suggestedId;
+    suggestedId = id;
+    refreshHighlight(previousId);
+    refreshHighlight(suggestedId);
+  }
+
+  /** Advances the suggested-target pulse. Cheap: only the one entry (if
+   * any) currently in the 'suggested' state does any work per frame. */
+  function update(elapsedSeconds: number) {
+    if (suggestedId) entries.get(suggestedId)?.highlight?.update(elapsedSeconds);
   }
 
   function intersectableObjects() {
@@ -177,6 +203,8 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
   return {
     register,
     setSelected,
+    setSuggested,
+    update,
     get hoveredId() {
       return hoveredId;
     },
