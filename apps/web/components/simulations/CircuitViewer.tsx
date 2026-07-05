@@ -307,6 +307,7 @@ export default function CircuitViewer() {
 
     // ── Battery ────────────────────────────────────────────────────────────
     const batGroup = new THREE.Group();
+    batGroup.name = 'circuit-battery';
     batGroup.position.set(-1.8, 0, 0); batGroup.rotation.z = Math.PI / 2;
     const batBody = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.9, 16), batteryMat);
     batGroup.add(batBody);
@@ -439,6 +440,7 @@ export default function CircuitViewer() {
     interactionSystem.register('circuit-switch-lever', switchLever, { highlightColor: '#ffcf5c' });
     interactionSystem.register('circuit-resistor', resistorGroup, { highlightColor: '#ffcf5c' });
     interactionSystem.register('circuit-bulb', bulbGroup, { highlightColor: '#ffcf5c' });
+    interactionSystem.register('circuit-battery', batGroup, { highlightColor: '#ffcf5c' });
 
     let circuitState = evaluateCircuit({
       voltage: VOLTAGE,
@@ -785,7 +787,7 @@ export default function CircuitViewer() {
           </div>
 
           <div style={{ position: 'absolute', bottom: 16, left: 16, color: '#374151', fontSize: '0.74rem' }}>
-            Click switch · Drag to orbit · Scroll to zoom
+            Click objects to inspect · Drag to look around · Scroll to zoom
           </div>
         </>
       )}

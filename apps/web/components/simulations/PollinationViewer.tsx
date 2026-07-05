@@ -177,6 +177,32 @@ function isObjectActionSource(source: NormalizedInputSource) {
   return source === 'xr-controller' || source === 'mouse';
 }
 
+const DEFAULT_POLLINATION_FRAME: CameraFrame = {
+  position: new THREE.Vector3(0, 1.55, 3.15),
+  target: new THREE.Vector3(0, 1.02, -0.92),
+};
+
+/** Moves the camera once per real stage transition — an explicit, occasional
+ * move (like Circuit's), not a per-substep nudge that would fight the
+ * learner's own free look-around. */
+function focusStageOverview(
+  stageIndex: number,
+  guidedCamera: ReturnType<typeof createGuidedCamera>,
+  camera: THREE.PerspectiveCamera,
+  world: PollinationScene,
+) {
+  const stage = POLLINATION_WORLD.experienceDefinitions![0].stages[stageIndex];
+  const targetName = stage?.requiredActionIds[0]
+    ? TARGET_BY_ACTION[stage.requiredActionIds[0]]
+    : undefined;
+  const targetObject = targetName ? world.root.getObjectByName(targetName) : undefined;
+  guidedCamera.focusOn(
+    targetObject
+      ? computeFocusFrame(targetObject, camera, { fitPadding: 4.5 })
+      : DEFAULT_POLLINATION_FRAME,
+  );
+}
+
 function createDerivedMaterial(
   source: THREE.MeshStandardMaterial,
   parameters: THREE.MeshStandardMaterialParameters,
@@ -190,6 +216,8 @@ function createDerivedMaterial(
 export default function PollinationViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const guidedCameraRef = useRef<ReturnType<typeof createGuidedCamera> | null>(null);
   const playerRigRef = useRef<THREE.Group | null>(null);
   const sceneApiRef = useRef<PollinationScene | null>(null);
   const experienceRef = useRef<PollinationExperience>(createPollinationExperience());
@@ -271,6 +299,12 @@ export default function PollinationViewer() {
     }
   }, []);
 
+  const moveCameraToStage = useCallback((stageIndex: number) => {
+    if (guidedCameraRef.current && cameraRef.current && sceneApiRef.current) {
+      focusStageOverview(stageIndex, guidedCameraRef.current, cameraRef.current, sceneApiRef.current);
+    }
+  }, []);
+
   const performAction = useCallback((
     actionId: string,
     source: NormalizedInputSource,
@@ -324,6 +358,7 @@ export default function PollinationViewer() {
             snapshotRef.current = advanced;
             setSnapshot(advanced);
             sceneApiRef.current?.setStage(advanced.stageIndex);
+            moveCameraToStage(advanced.stageIndex);
             transitionRef.current.reset();
             setScaleDisclosure(advanced.stageIndex === 4
               ? 'The next view enlarges the internal flower structures.'
@@ -337,7 +372,7 @@ export default function PollinationViewer() {
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
-  }, [applyVisualAction, experienceDefinition, preferences.audio]);
+  }, [applyVisualAction, experienceDefinition, moveCameraToStage, preferences.audio]);
   performRef.current = performAction;
 
   const previous = useCallback(() => {
@@ -346,8 +381,9 @@ export default function PollinationViewer() {
     snapshotRef.current = next;
     setSnapshot(next);
     sceneApiRef.current?.setStage(next.stageIndex);
+    moveCameraToStage(next.stageIndex);
     playNarration(next.stageIndex, preferences.audio);
-  }, [preferences.audio]);
+  }, [moveCameraToStage, preferences.audio]);
   previousRef.current = previous;
 
   const next = useCallback(() => {
@@ -361,6 +397,7 @@ export default function PollinationViewer() {
       snapshotRef.current = nextSnapshot;
       setSnapshot(nextSnapshot);
       sceneApiRef.current?.setStage(nextSnapshot.stageIndex);
+      moveCameraToStage(nextSnapshot.stageIndex);
       transitionRef.current.reset();
       setScaleDisclosure(nextSnapshot.stageIndex === 4
         ? 'The next view enlarges the internal flower structures.'
@@ -369,7 +406,7 @@ export default function PollinationViewer() {
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
-  }, [preferences.audio]);
+  }, [moveCameraToStage, preferences.audio]);
 
   const enterVr = useCallback(async () => {
     if (!rendererRef.current || !('xr' in navigator)) return;
@@ -437,6 +474,7 @@ export default function PollinationViewer() {
         },
       });
       rendererRef.current = host.renderer;
+      cameraRef.current = camera;
 
       const materialFactory = createMaterialFactory({
         assets: POLLINATION_WORLD.assetManifests[0],
@@ -558,39 +596,20 @@ export default function PollinationViewer() {
       sceneApiRef.current = world;
       host.resources.register('pollination-scene', () => world.dispose());
 
-      // ── Guided camera: dollies onto whichever object the current stage is
-      // asking for, and closer still onto whatever the learner just
-      // selected — replacing a single free-roam OrbitControls target ──────
-      const defaultFrame: CameraFrame = {
-        position: new THREE.Vector3(0, 1.55, 3.15),
-        target: new THREE.Vector3(0, 1.02, -0.92),
-      };
+      // ── Guided camera: moves once per real stage transition (mirroring
+      // Circuit), and closer still onto whatever the learner just selected.
+      // Rotation itself is always free — the off-screen arrow (below) is
+      // the only cue for "look over there", so the camera never fights the
+      // learner's own look-around input ──────────────────────────────────
       const guidedCamera = createGuidedCamera(camera, host.renderer.domElement, {
         transitionSeconds: 0.7,
-        orbitPadding: { distance: 0.4, polarRadians: 0.3, azimuthRadians: 0.4 },
       });
-      guidedCamera.focusOn(defaultFrame, { animate: false });
-      host.resources.register('pollination-camera', () => guidedCamera.dispose());
-
-      let elapsedClock = 0;
-      let lastGuidanceTarget: string | undefined;
-      let guidanceSuppressedUntil = 0;
-      const applyStageGuidance = () => {
-        if (elapsedClock < guidanceSuppressedUntil) return;
-        const targetName = focusActionRef.current
-          ? TARGET_BY_ACTION[focusActionRef.current]
-          : undefined;
-        if (targetName === lastGuidanceTarget) return;
-        lastGuidanceTarget = targetName;
-        const targetObject = targetName
-          ? world.root.getObjectByName(targetName)
-          : undefined;
-        guidedCamera.focusOn(
-          targetObject
-            ? computeFocusFrame(targetObject, camera, { fitPadding: 4.5 })
-            : defaultFrame,
-        );
-      };
+      guidedCamera.focusOn(DEFAULT_POLLINATION_FRAME, { animate: false });
+      guidedCameraRef.current = guidedCamera;
+      host.resources.register('pollination-camera', () => {
+        guidedCameraRef.current = null;
+        guidedCamera.dispose();
+      });
 
       // ── Selection: one shared raycasting/highlight system for mouse + XR ─
       const selectObject = (
@@ -638,8 +657,6 @@ export default function PollinationViewer() {
         onSelect: (id, object, source) => {
           selectObject(object, source);
           interactionSystem.setSelected(id);
-          lastGuidanceTarget = id;
-          guidanceSuppressedUntil = elapsedClock + 1.1;
           guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 2.1 }));
         },
       });
@@ -674,8 +691,6 @@ export default function PollinationViewer() {
             }
           });
         } else {
-          elapsedClock = context.elapsedSeconds;
-          applyStageGuidance();
           guidedCamera.update(context.frameDeltaSeconds);
           const focusTargetName = focusActionRef.current
             ? TARGET_BY_ACTION[focusActionRef.current]
@@ -712,6 +727,7 @@ export default function PollinationViewer() {
       stopSimulationNarration();
       sceneApiRef.current = null;
       rendererRef.current = null;
+      cameraRef.current = null;
       void host?.dispose();
     };
   }, []);

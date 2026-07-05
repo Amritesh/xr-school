@@ -71,7 +71,7 @@ describe('createInteractionSystem', () => {
     system.dispose();
   });
 
-  it('fires onSelect with the registered id on pointerdown', () => {
+  it('fires onSelect with the registered id on a click (down then up nearby)', () => {
     const camera = createLookingCamera();
     const dom = createFakeDomElement();
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2));
@@ -86,8 +86,30 @@ describe('createInteractionSystem', () => {
     system.register('resistor', mesh);
 
     dom.dispatch('pointerdown', { clientX: 50, clientY: 50 });
+    dom.dispatch('pointerup', { clientX: 51, clientY: 49 });
 
     expect(selections).toEqual(['resistor']);
+    system.dispose();
+  });
+
+  it('does not select when the pointer drags away to look around', () => {
+    const camera = createLookingCamera();
+    const dom = createFakeDomElement();
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2));
+    mesh.updateMatrixWorld(true);
+
+    const selections: string[] = [];
+    const system = createInteractionSystem({
+      camera,
+      domElement: dom,
+      onSelect: id => selections.push(id),
+    });
+    system.register('resistor', mesh);
+
+    dom.dispatch('pointerdown', { clientX: 50, clientY: 50 });
+    dom.dispatch('pointerup', { clientX: 90, clientY: 50 });
+
+    expect(selections).toEqual([]);
     system.dispose();
   });
 
@@ -100,7 +122,6 @@ describe('createInteractionSystem', () => {
     const system = createInteractionSystem({ camera, domElement: dom });
     system.register('bulb', mesh, { highlightColor: '#ffffff' });
 
-    dom.dispatch('pointerdown', { clientX: 50, clientY: 50 });
     system.setSelected('bulb');
     dom.dispatch('pointermove', { clientX: 1, clientY: 1 });
 

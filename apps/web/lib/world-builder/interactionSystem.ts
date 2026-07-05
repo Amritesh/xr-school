@@ -103,6 +103,11 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
     return resolve(hit);
   }
 
+  // A click selects; a drag (used to look around) must not. Track the
+  // down position and only treat it as a click if the pointer barely moved.
+  const DRAG_THRESHOLD_PX = 6;
+  let pointerDownAt: { x: number; y: number } | undefined;
+
   const onPointerMove = (event: PointerEvent) => {
     pointerRay(event);
     const hit = hitFromRay();
@@ -110,12 +115,22 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
     config.domElement.style.cursor = hit ? cursor.hover : cursor.idle;
   };
   const onPointerDown = (event: PointerEvent) => {
+    pointerDownAt = { x: event.clientX, y: event.clientY };
+  };
+  const onPointerUp = (event: PointerEvent) => {
+    const start = pointerDownAt;
+    pointerDownAt = undefined;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) return;
     pointerRay(event);
     const hit = hitFromRay();
     if (hit) config.onSelect?.(hit.id, hit.entry.object, 'mouse');
   };
   config.domElement.addEventListener('pointermove', onPointerMove);
   config.domElement.addEventListener('pointerdown', onPointerDown);
+  config.domElement.addEventListener('pointerup', onPointerUp);
 
   const controllerListeners = (config.xrControllers ?? []).map(controller => {
     const onSelectStart = () => {
@@ -132,6 +147,7 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
   function dispose() {
     config.domElement.removeEventListener('pointermove', onPointerMove);
     config.domElement.removeEventListener('pointerdown', onPointerDown);
+    config.domElement.removeEventListener('pointerup', onPointerUp);
     for (const { controller, onSelectStart } of controllerListeners) {
       controller.removeEventListener('selectstart', onSelectStart);
     }
