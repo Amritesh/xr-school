@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -81,5 +82,17 @@ describe('web build workflows', () => {
     expect(driftJob).toBeDefined();
     expect(driftJob).not.toContain('npm ci');
     expect(driftJob).toContain('npm run spec:drift');
+  });
+
+  it('keeps generated workspace artifacts out of version control', () => {
+    const trackedFiles = execFileSync(
+      'git',
+      ['ls-files', 'apps/web/package-lock.json', 'apps/web/tsconfig.tsbuildinfo'],
+      { cwd: process.cwd(), encoding: 'utf8' },
+    )
+      .split(/\r?\n/)
+      .filter(Boolean);
+
+    expect(trackedFiles).toEqual([]);
   });
 });
