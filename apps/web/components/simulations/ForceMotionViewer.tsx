@@ -44,10 +44,10 @@ import {
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
 const NARRATIONS = [
-  'You are watching a ball at rest on a track. Apply a push and see what happens to an object with no force acting on it.',
-  'The ball is already rolling. Apply the brake and watch a force bring a moving object to rest.',
-  'The ball is rolling at a steady speed. Apply a stronger push in the same direction and watch it speed up.',
-  'The ball is rolling straight ahead. Apply a sideways push and watch the force change its direction.',
+  'A ball sits at rest inside the arena. Give it one push, then watch closely: it keeps rolling on its own even after your push ends, and only turns when it bounces off a wall. That tendency to keep moving is called inertia. The yellow arrow shows its speed and direction.',
+  'The ball is already rolling and, with no force acting on it, it would keep going forever. Apply the brake — a force opposing its motion — and watch the arrow shrink as the ball slows to a stop.',
+  'The ball is rolling at a steady speed. Apply a stronger push in the same direction and watch the arrow grow as the ball speeds up.',
+  'The ball is rolling straight ahead. Apply a sideways push and watch its path bend as the arrow swings to a new direction.',
   'Squeeze the ball between the two plates, then release it. Notice whether it returns to its original shape once the force is removed.',
   'Review the comparison board to see all five ways a force changed this ball\'s motion or shape.',
 ];
@@ -80,16 +80,17 @@ const DEFAULT_PREFERENCES: ExperiencePreferences = {
 };
 
 const DEFAULT_FORCE_MOTION_FRAME: CameraFrame = {
-  position: new THREE.Vector3(0.9, 1.0, -1.8),
-  target: new THREE.Vector3(-0.2, 0.15, -0.5),
+  position: new THREE.Vector3(0.4, 3.0, 2.6),
+  target: new THREE.Vector3(0, 0.15, 0),
 };
 
-// Every stage approaches from the same elevated, off-to-the-side vantage
-// instead of wherever the previous stage happened to leave the camera —
-// see the Pollination stage-5 fix this pattern is copied from: letting the
-// approach angle drift between stages produced an accidental wide shot
-// once the framed subjects were far enough apart.
-const APPROACH_FROM = new THREE.Vector3(1.6, 1.5, -1.5);
+// Every stage approaches from the same elevated front-3/4 vantage instead
+// of wherever the previous stage happened to leave the camera — see the
+// Pollination stage-5 fix this pattern is copied from: letting the approach
+// angle drift between stages produced an accidental wide shot once the
+// framed subjects were far enough apart. From the front (+Z) and above, the
+// left-side control panel and the board behind the arena both stay visible.
+const APPROACH_FROM = new THREE.Vector3(0.4, 3.0, 2.6);
 
 type ForceMotionObjectKey =
   | 'track' | 'ball' | 'pushControl' | 'brakeControl' | 'accelerateControl'
@@ -110,19 +111,17 @@ interface StageCameraFocus {
   fitPadding: number;
 }
 
-// Each motion stage's frame is computed once, from the ball's position at
-// the moment the stage begins — but the ball then rolls well beyond that
-// starting point before the learner reacts. A tight fitPadding sized to
-// the ball+control's *starting* bounding box would let the ball roll
-// straight out of frame, so stages 1-3 use a generous padding that keeps
-// the ball's whole short travel range in view instead of just its start.
+// The ball now keeps its velocity and roams the whole arena (bouncing off
+// the walls), so the motion stages frame the entire arena — never just the
+// ball's starting spot — with the stage's control included so the whole
+// play area stays in view no matter where the ball rolls.
 const STAGE_CAMERA_FOCUS: StageCameraFocus[] = [
-  { objectIds: ['ball', 'pushControl'], fitPadding: 3.4 }, // 0: push into motion
-  { objectIds: ['ball', 'brakeControl'], fitPadding: 4.4 }, // 1: brake to a stop
-  { objectIds: ['ball', 'accelerateControl'], fitPadding: 4.4 }, // 2: speed up
-  { objectIds: ['ball', 'deflectControl'], fitPadding: 4.4 }, // 3: change direction
+  { objectIds: ['track', 'pushControl'], fitPadding: 1.2 }, // 0: push into motion
+  { objectIds: ['track', 'brakeControl'], fitPadding: 1.2 }, // 1: brake to a stop
+  { objectIds: ['track', 'accelerateControl'], fitPadding: 1.2 }, // 2: speed up
+  { objectIds: ['track', 'deflectControl'], fitPadding: 1.2 }, // 3: change direction
   { objectIds: ['shapeRig', 'squeezeControl', 'releaseControl'], fitPadding: 1.8 }, // 4: change shape
-  { objectIds: ['comparisonBoard', 'ball', 'shapeRig'], fitPadding: 1.6 }, // 5: compare
+  { objectIds: ['comparisonBoard', 'track'], fitPadding: 1.25 }, // 5: compare
 ];
 
 function focusStageOverview(
@@ -171,6 +170,7 @@ function createForceMotionMaterials(): { materials: ForceMotionMaterials; dispos
     accelerateControl: material({ color: '#fb923c', roughness: 0.35, metalness: 0.1, emissive: '#7c2d12', emissiveIntensity: 0.4 }),
     deflectControl: material({ color: '#a78bfa', roughness: 0.35, metalness: 0.1, emissive: '#4c1d95', emissiveIntensity: 0.4 }),
     shapeControl: material({ color: '#22d3ee', roughness: 0.35, metalness: 0.1, emissive: '#164e63', emissiveIntensity: 0.4 }),
+    velocity: material({ color: '#fde047', roughness: 0.3, metalness: 0.1, emissive: '#a16207', emissiveIntensity: 0.55 }),
     board: material({ color: '#1e293b', roughness: 0.7, metalness: 0.05 }),
   };
 

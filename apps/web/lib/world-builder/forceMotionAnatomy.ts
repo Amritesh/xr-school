@@ -10,15 +10,62 @@ export interface ForceMotionMaterials {
   accelerateControl: THREE.Material;
   deflectControl: THREE.Material;
   shapeControl: THREE.Material;
+  velocity: THREE.Material;
   board: THREE.Material;
 }
 
-export function createTrack(material: THREE.Material) {
-  const track = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.04, 2.8), material);
-  track.name = 'track';
-  track.position.set(0, -0.02, 0.35);
-  track.receiveShadow = true;
-  return track;
+/** Play area the motion ball rolls inside. The ball keeps its velocity
+ * (no drag) until a force acts on it, so it needs bounding walls to stay
+ * in view — and a wall bounce is itself "a force changing direction", so
+ * the enclosure reinforces the lesson rather than fighting it. */
+export const ARENA = { width: 1.8, depth: 2.6, wall: 0.045, wallHeight: 0.09 };
+
+export function createArena(material: THREE.Material) {
+  const group = new THREE.Group();
+  group.name = 'track';
+
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(ARENA.width, 0.04, ARENA.depth), material);
+  floor.position.y = -0.02;
+  floor.receiveShadow = true;
+  group.add(floor);
+
+  const halfW = ARENA.width / 2;
+  const halfD = ARENA.depth / 2;
+  const addWall = (w: number, d: number, x: number, z: number) => {
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(w, ARENA.wallHeight, d), material);
+    wall.position.set(x, ARENA.wallHeight / 2, z);
+    wall.castShadow = true;
+    wall.receiveShadow = true;
+    group.add(wall);
+  };
+  addWall(ARENA.width, ARENA.wall, 0, -halfD);
+  addWall(ARENA.width, ARENA.wall, 0, halfD);
+  addWall(ARENA.wall, ARENA.depth, -halfW, 0);
+  addWall(ARENA.wall, ARENA.depth, halfW, 0);
+
+  return group;
+}
+
+/** An arrow that emanates from the moving ball along its direction of
+ * travel, its length scaling with speed — this makes velocity (otherwise
+ * an invisible quantity) something the learner can actually watch grow,
+ * shrink, and swing around. Built pointing +Z with its tail at the origin
+ * so the scene can rotate it to the heading and scale Z by speed. */
+export function createVelocityArrow(material: THREE.Material) {
+  const group = new THREE.Group();
+  group.name = 'velocity-arrow';
+
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.28, 10), material);
+  shaft.rotation.x = Math.PI / 2;
+  shaft.position.z = 0.14;
+  group.add(shaft);
+
+  const head = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.12, 14), material);
+  head.rotation.x = Math.PI / 2;
+  head.position.z = 0.34;
+  group.add(head);
+
+  return group;
 }
 
 export function createMotionBall(material: THREE.Material) {
