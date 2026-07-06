@@ -187,8 +187,10 @@ export default function SolubilityLabViewer() {
 
     const camera = new THREE.PerspectiveCamera(64, mount.clientWidth / mount.clientHeight, 0.05, 50);
     const guidedCamera = createGuidedCamera(camera, renderer.domElement);
+    // Look slightly to the right of the beaker so the beaker itself sits in
+    // the clear left area of the screen, not behind the right-hand HUD panel.
     guidedCamera.focusOn(
-      { position: new THREE.Vector3(0, 2.55, 5.2), target: new THREE.Vector3(0, 1, 0) },
+      { position: new THREE.Vector3(0, 2.55, 5.2), target: new THREE.Vector3(1.35, 1, 0) },
       { animate: false },
     );
 
