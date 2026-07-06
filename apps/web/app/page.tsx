@@ -4,6 +4,18 @@ import { getSimulationCatalogSections } from '@/lib/simulationAvailability';
 
 const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
 
+// One flagship, teachable simulation per class. `teaches` describes what the
+// student actually does — the interaction, not a topic label — because the
+// interaction is where the learning is.
+const FLAGSHIPS: { classLevel: number; slug: string; teaches: string }[] = [
+  { classLevel: 5, slug: 'c5-ch03-a02-introduction-of-digestive-system', teaches: 'Move food through each organ in order and see where nutrients and water are absorbed.' },
+  { classLevel: 6, slug: 'c6-ch01-a01-sources-of-food', teaches: 'Sort foods to their plant, animal, or fungal source with instant right-or-wrong feedback.' },
+  { classLevel: 7, slug: 'c7-ch10-a02-the-breathing-process-in-human', teaches: 'Pull the diaphragm and watch the rib cage lift and the lungs fill — the mechanics of a breath.' },
+  { classLevel: 8, slug: 'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape', teaches: 'Push a ball and see it keep rolling (inertia), then brake, speed up, and curve it with force.' },
+  { classLevel: 9, slug: 'c9-ch01-a02-states-of-matter', teaches: 'Add heat and watch particles lock into a lattice, cluster as a liquid, or spread to fill the box.' },
+  { classLevel: 10, slug: 'circuit', teaches: 'Change the resistance and watch current, electron speed, and bulb brightness respond (V = I·R).' },
+];
+
 export default function Home() {
   return (
     <main className="home-shell">
@@ -78,6 +90,27 @@ export default function Home() {
           title="Release maturity, clearly shown"
           copy="Catalogued ideas remain discoverable, but only verified Internal QA builds receive launch access."
         />
+      </section>
+
+      <section className="class-showcase">
+        <div className="section-heading">
+          <span className="eyebrow">One flagship per class</span>
+          <h2>A working simulation for every class, 5 through 10.</h2>
+          <p>Each one makes an invisible idea visible and lets students change it with their own hands.</p>
+        </div>
+        <div className="class-grid">
+          {FLAGSHIPS.map(flagship => {
+            const card = sections.launchable.find(item => item.slug === flagship.slug);
+            return (
+              <Link key={flagship.slug} className="class-card" href={`/simulations/${flagship.slug}`}>
+                <span className="class-tag">Class {flagship.classLevel}</span>
+                <h3>{card?.title ?? flagship.slug}</h3>
+                <p>{flagship.teaches}</p>
+                <span className="class-card-cta">Launch simulation ↗</span>
+              </Link>
+            );
+          })}
+        </div>
       </section>
 
       <section className="home-cta">
