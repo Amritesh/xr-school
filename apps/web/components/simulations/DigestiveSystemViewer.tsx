@@ -863,16 +863,33 @@ export default function DigestiveSystemViewer() {
       if (!renderer.xr.isPresenting) guidedCamera.update(delta);
       const intensity = comfortModeRef.current ? 0.35 : 1;
       const { guideOrb, stomachOrgan, bolus, chyme, bloodVessel } = animatedRefs.current;
+      // Drive the anatomy from what the learner has actually done, so the
+      // motion reflects the mechanism (each peristalsis wave pushes the bolus
+      // further down; each mixer turn churns harder) instead of an idle loop.
+      const performed = Object.values(progressRef.current.completedActions).flat();
+      const waveCount = performed.filter(a => typeof a === 'string' && a.startsWith('peristalsis-wave')).length;
+      const churnCount = performed.filter(a => typeof a === 'string' && a.startsWith('mixer-turn')).length;
+      const churnT = churnCount / 3;
       if (guideOrb) {
         guideOrb.position.y = 2.25 + Math.sin(time * 1.6) * 0.08 * intensity;
         guideOrb.rotation.y = time * 0.45;
       }
       if (stomachOrgan) {
-        stomachOrgan.scale.x = 0.84 + Math.sin(time * 2.2) * 0.035 * intensity;
-        stomachOrgan.scale.y = 1.18 - Math.sin(time * 2.2) * 0.045 * intensity;
+        const churnAmp = 0.25 + churnT * 0.9;
+        stomachOrgan.scale.x = 0.84 + Math.sin(time * 2.4) * 0.045 * intensity * churnAmp;
+        stomachOrgan.scale.y = 1.18 - Math.sin(time * 2.4) * 0.055 * intensity * churnAmp;
       }
-      if (bolus) bolus.position.y = 1.5 + Math.sin(time * 0.8) * 0.62 * intensity;
-      if (chyme) chyme.rotation.y = time * 1.2 * intensity;
+      if (bolus) {
+        const descent = waveCount / 3; // 0 = top of esophagus, 1 = in the stomach
+        const squeeze = descent > 0 && descent < 1 ? Math.sin(time * 3.2) * 0.04 * intensity : 0;
+        const targetY = 2.1 - descent * 0.78 + squeeze;
+        bolus.position.y += (targetY - bolus.position.y) * Math.min(1, delta * 4);
+      }
+      if (chyme) {
+        chyme.rotation.y += delta * (0.3 + churnT * 2.4) * intensity;
+        const grow = 1 + churnT * 0.14;
+        chyme.scale.set(0.85 * grow, 0.55 * grow, 0.45 * grow);
+      }
       if (bloodVessel) {
         const material = bloodVessel.material as THREE.MeshStandardMaterial;
         material.emissiveIntensity = 0.18 + (Math.sin(time * 2) + 1) * 0.14 * intensity;
