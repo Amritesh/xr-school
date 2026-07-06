@@ -12,6 +12,7 @@ import {
 } from '../../../../packages/simulation-runtime/src/world/assessment';
 import { createScientificModelRegistry } from '../../../../packages/simulation-runtime/src/world/scientificModels';
 import { evaluateMatterState } from '../../../../packages/simulation-runtime/src/models/matterStateModel';
+import { matterAgitationForce } from '@/lib/world-builder/matterParticleForces';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
 import { STATES_WORLD } from '@/lib/world-builder/statesWorld';
@@ -375,18 +376,21 @@ export default function StatesOfMatterViewer() {
       const activeStage = STAGES[stageRef.current];
       const activeHeat = heatRef.current;
       const visualState = activeStage.key === 'phase-change' ? stateFromHeat(activeHeat) : activeStage;
-      const forceScale = 0.45 + activeHeat * 4.2;
       const physicsWorld = physicsWorldRef.current;
-      if (visualState.key !== 'solid') {
-        particles.forEach((_, i) => {
-          physicsWorld?.applyForce(`matter-particle-${i}`, {
-            x: Math.sin(elapsedSeconds * 1.7 + i * 12.9898) * forceScale,
-            y: Math.cos(elapsedSeconds * 1.3 + i * 78.233) * forceScale * 0.72,
-            z: Math.sin(elapsedSeconds * 1.1 + i * 37.719) * forceScale,
-          });
-        });
-        physicsWorld?.step(deltaSeconds);
-      }
+      if (visualState.key === 'solid' || !physicsWorld) return;
+
+      // spacingFactor (solid 0.12, liquid 0.5, gas 1.0) is the whole point of
+      // this lesson — drive the visual with it so a liquid clusters and a gas
+      // fills the chamber, instead of both just filling the box identically.
+      const { spacingFactor } = evaluateMatterState(clamp(activeHeat, 0, 1));
+      const bodies = physicsWorld.bodies();
+      bodies.forEach((body, i) => {
+        physicsWorld.applyForce(
+          body.id,
+          matterAgitationForce(i, elapsedSeconds, activeHeat, spacingFactor, body.position),
+        );
+      });
+      physicsWorld.step(deltaSeconds);
     };
 
     renderUpdate = ({ elapsedSeconds, interpolationAlpha, frameDeltaSeconds, renderer }) => {
