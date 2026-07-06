@@ -335,6 +335,10 @@ export default function SolubilityLabViewer() {
 
     const clock = new THREE.Clock();
     let elapsedTotal = 0;
+    let runStartElapsed = 0;
+    let wasRunning = false;
+    const waterBase = new THREE.Color(0x38bdf8);
+    const soluteTint = new THREE.Color();
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
       elapsedTotal += delta;
@@ -342,11 +346,27 @@ export default function SolubilityLabViewer() {
       if (!renderer.xr.isPresenting) guidedCamera.update(delta);
       const active = activeSubstanceRef.current;
       const isRunning = runningRef.current;
+      if (isRunning && !wasRunning) runStartElapsed = elapsed;
+      wasRunning = isRunning;
+      // How far the trial has progressed (0 -> 1 over ~3.5s), used to show a
+      // soluble substance gradually spreading out and fading into a uniform
+      // solution rather than lingering as visible floating particles.
+      const dissolveProgress = isRunning ? Math.min(1, (elapsed - runStartElapsed) / 3.5) : 0;
 
       if (waterRef.current) {
         const material = waterRef.current.material as THREE.MeshStandardMaterial;
-        material.color.setHex(active.outcome === 'clouds' && isRunning ? 0xdbeafe : 0x38bdf8);
-        material.opacity = active.outcome === 'clouds' && isRunning ? 0.55 : 0.38;
+        if (active.outcome === 'clouds' && isRunning) {
+          material.color.setHex(0xdbeafe);
+          material.opacity = 0.55;
+        } else if (active.outcome === 'dissolves' && isRunning) {
+          // Water takes on a faint even tint as the solute forms a solution.
+          soluteTint.setHex(active.color);
+          material.color.copy(waterBase).lerp(soluteTint, 0.28 * dissolveProgress);
+          material.opacity = 0.38 + 0.06 * dissolveProgress;
+        } else {
+          material.color.copy(waterBase);
+          material.opacity = 0.38;
+        }
       }
       if (layerRef.current) {
         const material = layerRef.current.material as THREE.MeshStandardMaterial;
@@ -361,9 +381,13 @@ export default function SolubilityLabViewer() {
 
         const angle = elapsed * (0.6 + index * 0.004) + index;
         if (active.outcome === 'dissolves') {
-          particle.position.x = Math.cos(angle) * (0.08 + (index % 9) * 0.065);
-          particle.position.y = 0.62 + ((index * 0.071 + elapsed * 0.05) % 0.9);
-          particle.position.z = -0.25 + Math.sin(angle) * (0.08 + (index % 7) * 0.07);
+          // Spread from a tight just-poured cluster to fill the water evenly,
+          // and fade out as the particles become an invisible clear solution.
+          const spread = 0.28 + 0.72 * dissolveProgress;
+          particle.position.x = Math.cos(angle) * (0.08 + (index % 9) * 0.065) * spread;
+          particle.position.y = 0.62 + ((index * 0.071 + elapsed * 0.05) % (0.35 + 0.55 * dissolveProgress));
+          particle.position.z = -0.25 + Math.sin(angle) * (0.08 + (index % 7) * 0.07) * spread;
+          material.opacity = 0.86 * (1 - 0.8 * dissolveProgress);
         } else if (active.outcome === 'settles') {
           particle.position.x = Math.cos(angle) * 0.48;
           particle.position.y = 0.42 + (index % 5) * 0.018;
