@@ -22,7 +22,7 @@ describe('simulation availability routing', () => {
     // CSV row get removed from `catalogued` here — Pollination and Circuit
     // are bespoke builds with no matching row, so they don't count.
     expect(sections.catalogued).toHaveLength(
-      SCIENCE_SIMULATION_CATALOG.length - 6,
+      SCIENCE_SIMULATION_CATALOG.length - 7,
     );
     expect(sections.catalogued.every(item => item.releaseMaturity === 'catalogued')).toBe(true);
     expect(sections.catalogued.every(item => item.href === undefined)).toBe(true);

@@ -9,6 +9,7 @@ export const IMPLEMENTED_SIMULATION_SLUGS = [
   'c5-ch03-a02-introduction-of-digestive-system',
   'c7-ch10-a02-the-breathing-process-in-human',
   'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
+  'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
 ] as const;
 
 type ImplementedSlug = (typeof IMPLEMENTED_SIMULATION_SLUGS)[number];
@@ -125,6 +126,18 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     title: "The Effects of Force on an Object's Motion and Shape",
     topic: 'Force and Pressure',
     archetype: 'interactive 3D',
+    minutes: 10,
+  },
+  'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test': {
+    slug: 'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
+    color: '#22c55e',
+    subject: 'chemistry',
+    subjectTags: ['chemistry'],
+    grade: 'Class 10',
+    classLevels: [10],
+    title: 'Acids, Bases & Neutralisation',
+    topic: 'Acids, Bases and Salts',
+    archetype: 'experiment bench',
     minutes: 10,
   },
 };

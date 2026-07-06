@@ -233,6 +233,40 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "course:course-cbse-c10-chemistry",
+    "kind": "course",
+    "title": "CBSE Class 10 Chemistry",
+    "summary": "Interactive chemistry focused on acids, bases, the pH scale, and neutralisation.",
+    "href": "/simulations#course-cbse-c10-chemistry",
+    "classLevels": [
+      10
+    ],
+    "subjects": [
+      "chemistry"
+    ],
+    "conceptIds": [
+      "concept-acids-bases",
+      "concept-ph-indicators",
+      "concept-neutralisation"
+    ],
+    "tokens": [
+      "cbse",
+      "class",
+      "10",
+      "chemistry",
+      "interactive",
+      "focused",
+      "on",
+      "acids",
+      "bases",
+      "the",
+      "ph",
+      "scale",
+      "and",
+      "neutralisation"
+    ]
+  },
+  {
     "id": "chapter:chapter-cbse-c5-from-tasting-to-digesting",
     "kind": "chapter",
     "title": "From Tasting to Digesting",
@@ -491,6 +525,37 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "topic",
       "current",
       "resistance"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c10-acids-bases-salts",
+    "kind": "chapter",
+    "title": "Acids, Bases and Salts",
+    "summary": "CBSE Class 10 Chemistry · Chapter 2",
+    "href": "/simulations#chapter-cbse-c10-acids-bases-salts",
+    "classLevels": [
+      10
+    ],
+    "subjects": [
+      "chemistry"
+    ],
+    "conceptIds": [
+      "concept-acids-bases",
+      "concept-ph-indicators",
+      "concept-neutralisation"
+    ],
+    "tokens": [
+      "acids",
+      "bases",
+      "and",
+      "salts",
+      "cbse",
+      "class",
+      "10",
+      "chemistry",
+      "chapter",
+      "2",
+      "topic"
     ]
   },
   {
@@ -1666,6 +1731,143 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "concept:concept-acids-bases",
+    "kind": "concept",
+    "title": "Acids and bases",
+    "summary": "Acids turn blue litmus red and have a pH below 7; bases turn red litmus blue and have a pH above 7.",
+    "href": "/simulations#concept-acids-bases",
+    "classLevels": [
+      10
+    ],
+    "subjects": [
+      "chemistry"
+    ],
+    "conceptIds": [
+      "concept-acids-bases"
+    ],
+    "tokens": [
+      "acids",
+      "and",
+      "bases",
+      "turn",
+      "blue",
+      "litmus",
+      "red",
+      "have",
+      "a",
+      "ph",
+      "below",
+      "7",
+      "above",
+      "explains",
+      "household",
+      "antacids",
+      "reading",
+      "product",
+      "labels",
+      "test",
+      "acidic",
+      "basic",
+      "solutions",
+      "acid",
+      "base"
+    ]
+  },
+  {
+    "id": "concept:concept-ph-indicators",
+    "kind": "concept",
+    "title": "pH and indicators",
+    "summary": "A universal indicator shows a colour that maps to a solution's pH, from red (strong acid) through green (neutral) to violet (strong base).",
+    "href": "/simulations#concept-ph-indicators",
+    "classLevels": [
+      10
+    ],
+    "subjects": [
+      "chemistry"
+    ],
+    "conceptIds": [
+      "concept-ph-indicators"
+    ],
+    "tokens": [
+      "ph",
+      "and",
+      "indicators",
+      "a",
+      "universal",
+      "indicator",
+      "shows",
+      "colour",
+      "that",
+      "maps",
+      "to",
+      "solution",
+      "s",
+      "from",
+      "red",
+      "strong",
+      "acid",
+      "through",
+      "green",
+      "neutral",
+      "violet",
+      "base",
+      "explains",
+      "soil",
+      "test",
+      "kits",
+      "pool",
+      "testing",
+      "food",
+      "acidity",
+      "scale"
+    ]
+  },
+  {
+    "id": "concept:concept-neutralisation",
+    "kind": "concept",
+    "title": "Neutralisation",
+    "summary": "Adding a base to an acid raises the pH toward 7 and produces a salt and water.",
+    "href": "/simulations#concept-neutralisation",
+    "classLevels": [
+      10
+    ],
+    "subjects": [
+      "chemistry"
+    ],
+    "conceptIds": [
+      "concept-neutralisation"
+    ],
+    "tokens": [
+      "neutralisation",
+      "adding",
+      "a",
+      "base",
+      "to",
+      "an",
+      "acid",
+      "raises",
+      "the",
+      "ph",
+      "toward",
+      "7",
+      "and",
+      "produces",
+      "salt",
+      "water",
+      "explains",
+      "antacids",
+      "relieving",
+      "acidity",
+      "treating",
+      "acidic",
+      "soil",
+      "with",
+      "lime",
+      "reaction",
+      "neutralise"
+    ]
+  },
+  {
     "id": "simulation:pollination",
     "kind": "simulation",
     "title": "Plant Pollination & Growth Cycle",
@@ -2272,6 +2474,69 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "physics",
       "pull",
       "stretch"
+    ]
+  },
+  {
+    "id": "simulation:c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+    "kind": "simulation",
+    "title": "Acids, Bases & Neutralisation",
+    "summary": "Identify an acid and a base with litmus, read pH from a universal indicator, and neutralise an acid with a base to form a salt and water.",
+    "href": "/simulations/c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+    "classLevels": [
+      10
+    ],
+    "subjects": [
+      "chemistry"
+    ],
+    "conceptIds": [
+      "concept-acids-bases",
+      "concept-ph-indicators",
+      "concept-neutralisation"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "acids",
+      "bases",
+      "neutralisation",
+      "identify",
+      "an",
+      "acid",
+      "and",
+      "a",
+      "base",
+      "with",
+      "litmus",
+      "read",
+      "ph",
+      "from",
+      "universal",
+      "indicator",
+      "neutralise",
+      "to",
+      "form",
+      "salt",
+      "water",
+      "students",
+      "will",
+      "using",
+      "relate",
+      "colour",
+      "explain",
+      "that",
+      "adding",
+      "neutralises",
+      "it",
+      "at",
+      "7",
+      "chemistry",
+      "test",
+      "acidic",
+      "basic",
+      "solutions",
+      "indicators",
+      "scale",
+      "neutral",
+      "reaction"
     ]
   },
   {
@@ -16544,51 +16809,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "reactions",
       "and",
       "equations",
-      "chemistry",
-      "experimentbench",
-      "use",
-      "variable",
-      "controls",
-      "predict",
-      "observe",
-      "explain",
-      "prompts",
-      "resettable",
-      "safe",
-      "lab",
-      "state",
-      "visible",
-      "invisible",
-      "forces",
-      "or",
-      "particles",
-      "where",
-      "useful"
-    ]
-  },
-  {
-    "id": "simulation:c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
-    "kind": "simulation",
-    "title": "Introduction to Acids and Bases and litmus test",
-    "summary": "Acids, Bases and Salts · Class 10 chemistry",
-    "href": "/simulations#c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
-    "classLevels": [
-      10
-    ],
-    "subjects": [
-      "chemistry"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "introduction",
-      "to",
-      "acids",
-      "and",
-      "bases",
-      "litmus",
-      "test",
-      "salts",
       "chemistry",
       "experimentbench",
       "use",

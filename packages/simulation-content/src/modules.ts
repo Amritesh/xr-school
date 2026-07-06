@@ -470,6 +470,74 @@ export const FORCE_MOTION_MODULE: SimulationModuleRecord = {
   status: 'released',
 };
 
+const acidBaseScript = `SETUP
+Ask students how they could tell an acid from a base without tasting or touching it. Non-headset students list household acids and bases and predict litmus colours.
+
+DURING HEADSET BATCH
+Guide students to dip litmus in an acid, then a base, add a universal indicator to read pH from colour, then add base to the acid drop by drop until it neutralises at pH 7. Pause at neutralisation to name the products (a salt and water).
+
+DEBRIEF
+Ask students to state the litmus rule (blue reddens in acid, red blues in base) and explain what neutralisation produces and why the pH reaches 7.
+
+REVISION TRIGGER
+One week later, show three unlabelled indicator colours and ask students to give the approximate pH and whether each is an acid, a base, or neutral.`;
+
+export const ACID_BASE_MODULE: SimulationModuleRecord = {
+  id: 'sim-c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
+  slug: 'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
+  title: 'Acids, Bases & Neutralisation',
+  summary: 'Identify an acid and a base with litmus, read pH from a universal indicator, and neutralise an acid with a base to form a salt and water.',
+  gradeBands: ['class9To10'],
+  subjects: ['chemistry'],
+  applicableBoards: ['cbse', 'icse'],
+  curriculumMapIds: ['cm-cbse-c10-ch02-acids-bases-salts'],
+  conceptIds: ['concept-acids-bases', 'concept-ph-indicators', 'concept-neutralisation'],
+  simulationFormat: 'practicalLabSimulation',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'pH is invisible, and colour changes are fast and easy to miss on a classroom bench. A stationary VR lab lets students repeat litmus dips and titrate a neutralisation while a live pH scale makes the hidden quantity readable.',
+  learningObjective: 'Students will identify acids and bases using litmus, relate universal-indicator colour to pH, and explain that adding a base to an acid neutralises it to form a salt and water at pH 7.',
+  scientificConceptExplanation: 'Acids turn blue litmus red and have a pH below 7; bases turn red litmus blue and have a pH above 7. A universal indicator shows a colour that maps to the exact pH, red through green (neutral) to violet. Adding a base to an acid neutralises it: the pH rises toward 7 and the products are a salt and water.',
+  misconceptionsAddressed: [
+    'A stronger acid has a higher pH.',
+    'Neutral means nothing happened, rather than acid and base cancelling to pH 7.',
+    'Litmus and universal indicator are the same test.',
+  ],
+  visualizationStrategy: 'A beaker whose solution colour is driven by a real pH model (universal-indicator colour = f(pH)), litmus strips that redden or blue by the same model, and a segmented pH scale with a live marker that moves as base is added.',
+  interactionStrategy: 'Students dip litmus into an acid then a base, add a universal indicator to read the pH colour, add base drop by drop to titrate the acid to pH 7, and compare acidic, neutral, and basic solutions on the scale.',
+  imaginationHelperStrategy: 'pH — invisible on a real bench — is shown twice over: as the solution and litmus colours, and as a moving marker on a colour-coded pH scale, so the abstract number becomes something students watch change.',
+  practicalUseCase: 'Connects to reading household product labels, antacids relieving acidity, and why soil pH matters for plants.',
+  cueCardIds: [
+    'cue-acidbase-litmus-001',
+    'cue-acidbase-base-002',
+    'cue-acidbase-indicator-003',
+    'cue-acidbase-neutralise-004',
+    'cue-acidbase-compare-005',
+  ],
+  revisionCardIds: ['rev-acidbase-ph-001'],
+  assessmentHookIds: [
+    'assess-acidbase-pre-001',
+    'assess-acidbase-post-001',
+    'assess-acidbase-misconception-001',
+  ],
+  instructorScript: acidBaseScript,
+  batchActivityPrompt: 'Draw the pH scale from 0 to 14, mark where the acid, the neutral product, and the base sit, and write the litmus colour rule beside it.',
+  expectedDurationMinutes: 10,
+  maxSessionDurationMinutes: 12,
+  comfortRiskLevel: 'low',
+  safetyNotes: [
+    'Use stationary or seated play with no forced camera movement.',
+    'Reinforce that real acids and bases are handled only with teacher supervision and safety gear.',
+  ],
+  offlineContentPackId: 'pack-chemistry-acids-bases-class10-v1',
+  estimatedPackageSizeMb: 135,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 5,
+  status: 'released',
+};
+
 export const SIMULATION_MODULES = [
   POLLINATION_MODULE,
   CIRCUIT_MODULE,
@@ -479,4 +547,5 @@ export const SIMULATION_MODULES = [
   DIGESTIVE_SYSTEM_MODULE,
   BREATHING_PROCESS_MODULE,
   FORCE_MOTION_MODULE,
+  ACID_BASE_MODULE,
 ] as const;
