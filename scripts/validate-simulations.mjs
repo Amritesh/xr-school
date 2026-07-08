@@ -64,6 +64,9 @@ const viewerNameMap = {
   'c6-ch01-a01-sources-of-food': 'FoodSourcesSortingViewer',
   'c5-ch07-a03-soluble-and-insoluble-substances': 'SolubilityLabViewer',
   'c5-ch03-a02-introduction-of-digestive-system': 'DigestiveSystemViewer',
+  'c1-math-ch01-introduction-to-money': 'MoneyTownViewer',
+  'c2-english-ch01-prepositions': 'PrepositionAdventureViewer',
+  'c8-10-science-solar-system': 'SolarSystemMissionViewer',
 };
 
 for (const slug of slugs) {

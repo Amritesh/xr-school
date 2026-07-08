@@ -72,6 +72,42 @@ Ask students to sequence Mouth, Esophagus, Stomach, Small Intestine, Large Intes
 REVISION TRIGGER
 One week later, show an unlabeled digestive-system pathway and ask students to label the organs, name where nutrients and water are absorbed, and explain one healthy digestion habit.`;
 
+const moneyTownScript = `SETUP
+Show Indian coins and notes and ask students to name where they have seen them used. Non-headset students prepare a simple shop table with item prices.
+
+DURING HEADSET BATCH
+Guide students through Magic Money Town. Ask them to inspect coins and notes, identify values, buy simple items, and match money to prices using playful shop interactions.
+
+DEBRIEF
+Ask students to separate coins from notes, name the values, and explain why we count money carefully before buying.
+
+REVISION TRIGGER
+One week later, show mixed coin and note pictures and ask students to identify each value and choose enough money for one simple item.`;
+
+const prepositionAdventureScript = `SETUP
+Place a toy, box, table, and chair in front of the class. Ask students to describe where the toy is using words such as in, on, under, behind, and between.
+
+DURING HEADSET BATCH
+Guide students through a child-friendly adventure where they place objects in different positions and hear the correct preposition in context after each action.
+
+DEBRIEF
+Ask students to act out each preposition with classroom objects, then speak one sentence using the target word.
+
+REVISION TRIGGER
+One week later, show three position pictures and ask students to choose the matching preposition and say a complete sentence.`;
+
+const solarSystemMissionScript = `SETUP
+Ask students to name planets they know and predict why planets look different. Non-headset students prepare a planet-order strip from Mercury to Neptune.
+
+DURING HEADSET BATCH
+Guide students from a spacecraft cockpit through the Sun, rocky planets, asteroid belt, gas giants, ice giants, dwarf planets, and comet paths. Pause for scale, orbit, and feature scans.
+
+DEBRIEF
+Ask students to sequence the eight planets, compare inner and outer planets, and explain one reason Earth is special for life.
+
+REVISION TRIGGER
+One week later, show planet feature cards and ask students to match each clue to the correct planet or region of the solar system.`;
+
 export const POLLINATION_MODULE: SimulationModuleRecord = {
   id: 'sim-pollination-001',
   slug: 'pollination',
@@ -328,6 +364,136 @@ export const DIGESTIVE_SYSTEM_MODULE: SimulationModuleRecord = {
   status: 'released',
 };
 
+export const MONEY_TOWN_MODULE: SimulationModuleRecord = {
+  id: 'sim-c1-math-ch01-introduction-to-money',
+  slug: 'c1-math-ch01-introduction-to-money',
+  title: 'Introduction to Money',
+  summary: 'Explore Magic Money Town, identify Indian coins and notes, buy simple items, and earn a careful shopper badge.',
+  gradeBands: ['class1To2'],
+  subjects: ['mathematics'],
+  applicableBoards: ['cbse', 'icse', 'stateBoard'],
+  curriculumMapIds: ['cm-cbse-c1-math-money'],
+  conceptIds: ['concept-money-values', 'concept-indian-coins-notes', 'concept-simple-shopping'],
+  simulationFormat: 'interactive3d',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'Young learners understand money better when they can pick up, compare, and use coins and notes in a safe pretend shop instead of only seeing flat textbook pictures.',
+  learningObjective: 'Students will identify common Indian coins and notes, compare their values, and choose suitable money for simple purchases.',
+  scientificConceptExplanation: 'Money is a standard medium of exchange. Coins and notes carry values that can be counted, compared, combined, and exchanged for goods in everyday transactions.',
+  misconceptionsAddressed: [
+    'All coins have the same value.',
+    'A bigger note picture always means a larger physical size.',
+    'Buying does not require matching price and value.',
+  ],
+  visualizationStrategy: 'Use a colourful town market with oversized coins, notes, price tags, shop counters, and reward feedback that makes value comparison visible.',
+  interactionStrategy: 'Students inspect money tokens, sort coins and notes, match values, buy items, and complete a memory check through large Quest-friendly targets.',
+  imaginationHelperStrategy: 'Abstract value is represented with glowing number labels, item price beams, and coin-note comparison trays.',
+  practicalUseCase: 'Connects classroom counting to shops, pocket money, saving, and careful everyday transactions.',
+  cueCardIds: ['cue-money-coin-001', 'cue-money-note-002', 'cue-money-price-003', 'cue-money-shopping-004'],
+  revisionCardIds: ['rev-money-values-001'],
+  assessmentHookIds: ['assess-money-pre-001', 'assess-money-post-001', 'assess-money-misconception-001'],
+  instructorScript: moneyTownScript,
+  batchActivityPrompt: 'Draw two coins and two notes, write their values, and choose money for one pretend shop item.',
+  expectedDurationMinutes: 9,
+  maxSessionDurationMinutes: 10,
+  comfortRiskLevel: 'low',
+  safetyNotes: ['Use stationary shop mode.', 'Keep all targets large, slow, and reachable for Class 1 learners.'],
+  offlineContentPackId: 'pack-math-money-class1-v1',
+  estimatedPackageSizeMb: 150,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 5,
+  status: 'released',
+};
+
+export const PREPOSITION_ADVENTURE_MODULE: SimulationModuleRecord = {
+  id: 'sim-c2-english-ch01-prepositions',
+  slug: 'c2-english-ch01-prepositions',
+  title: 'Preposition Adventure',
+  summary: 'Move objects through a playful world and learn position words such as in, on, under, behind, near, and between.',
+  gradeBands: ['class1To2'],
+  subjects: ['english'],
+  applicableBoards: ['cbse', 'icse', 'stateBoard'],
+  curriculumMapIds: ['cm-cbse-c2-english-prepositions'],
+  conceptIds: ['concept-position-words', 'concept-spatial-sentences', 'concept-preposition-use'],
+  simulationFormat: 'immersiveVr',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'Prepositions describe spatial relationships, so students benefit from seeing and changing object positions directly instead of only memorizing word lists.',
+  learningObjective: 'Students will understand common prepositions by placing objects in correct positions and speaking simple sentences that describe location.',
+  scientificConceptExplanation: 'Prepositions are words that show relationships between nouns or pronouns and other words, often describing position, direction, or place.',
+  misconceptionsAddressed: [
+    'In and on can be used for the same position.',
+    'Under and behind mean the same thing.',
+    'A preposition can be learned without noticing the object relationship.',
+  ],
+  visualizationStrategy: 'Use a storybook playroom with large objects, animated position cues, friendly rewards, and clear before-after placement scenes.',
+  interactionStrategy: 'Students select an object, place it in the requested spatial relationship, hear the sentence aloud, and complete memory checks.',
+  imaginationHelperStrategy: 'Invisible grammar relationships become visible through arrows, glow zones, and object-position snapshots.',
+  practicalUseCase: 'Supports everyday classroom instructions, reading comprehension, and speaking complete location sentences.',
+  cueCardIds: ['cue-preposition-in-001', 'cue-preposition-on-002', 'cue-preposition-under-003', 'cue-preposition-between-004'],
+  revisionCardIds: ['rev-preposition-picture-match-001'],
+  assessmentHookIds: ['assess-preposition-pre-001', 'assess-preposition-post-001', 'assess-preposition-misconception-001'],
+  instructorScript: prepositionAdventureScript,
+  batchActivityPrompt: 'Use a pencil and book to make three positions, then say one sentence for each preposition.',
+  expectedDurationMinutes: 9,
+  maxSessionDurationMinutes: 10,
+  comfortRiskLevel: 'low',
+  safetyNotes: ['Use stationary playroom mode.', 'Avoid fast object movement and keep all placement zones close to the learner.'],
+  offlineContentPackId: 'pack-english-prepositions-class2-v1',
+  estimatedPackageSizeMb: 160,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 5,
+  status: 'released',
+};
+
+export const SOLAR_SYSTEM_MISSION_MODULE: SimulationModuleRecord = {
+  id: 'sim-c8-10-science-solar-system',
+  slug: 'c8-10-science-solar-system',
+  title: 'Exploring Our Solar System',
+  summary: 'Pilot a spacecraft through the Sun, planets, moons, asteroids, comets, and dwarf planets while scanning key features.',
+  gradeBands: ['class6To8', 'class9To10'],
+  subjects: ['science', 'physics', 'geography'],
+  applicableBoards: ['cbse', 'icse', 'stateBoard'],
+  curriculumMapIds: ['cm-cbse-c8-science-solar-system'],
+  conceptIds: ['concept-solar-system', 'concept-planet-order', 'concept-orbits-gravity', 'concept-planet-features'],
+  simulationFormat: 'immersiveVr',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'The solar system is too large, distant, and dynamic to experience in a classroom. VR lets students compare scale, order, motion, and surface features from a guided spacecraft viewpoint.',
+  learningObjective: 'Students will sequence the eight planets, compare rocky planets and gas/ice giants, and explain important solar-system objects and motions.',
+  scientificConceptExplanation: 'The solar system contains the Sun, eight planets, dwarf planets, moons, asteroids, and comets. Gravity keeps planets in orbit, and each planet has distinct size, composition, atmosphere, and motion.',
+  misconceptionsAddressed: [
+    'Planets are equally spaced from the Sun.',
+    'The asteroid belt is a dense wall of rocks.',
+    'All planets have solid surfaces like Earth.',
+    'Pluto is one of the eight main planets.',
+  ],
+  visualizationStrategy: 'Use a cockpit mission with realistic procedural planet materials, orbit paths, scale comparison panels, comet trails, Saturn ring particles, and deep-space lighting.',
+  interactionStrategy: 'Students scan each planet, trigger comparison modes, arrange planets in order, inspect special features, and complete planet matching challenges.',
+  imaginationHelperStrategy: 'Large distances, gravity, and invisible orbital paths are represented with guided routes, holographic scale lines, and scan overlays.',
+  practicalUseCase: 'Connects astronomy lessons to night-sky observation, seasons, space missions, satellites, and scientific modelling.',
+  cueCardIds: ['cue-solar-sun-001', 'cue-solar-rocky-002', 'cue-solar-gas-giants-003', 'cue-solar-orbits-004'],
+  revisionCardIds: ['rev-solar-planet-order-001'],
+  assessmentHookIds: ['assess-solar-pre-001', 'assess-solar-post-001', 'assess-solar-misconception-001'],
+  instructorScript: solarSystemMissionScript,
+  batchActivityPrompt: 'Build a planet-order strip, mark rocky planets and gas or ice giants, and write one unique feature for three planets.',
+  expectedDurationMinutes: 10,
+  maxSessionDurationMinutes: 12,
+  comfortRiskLevel: 'low',
+  safetyNotes: ['Use cockpit comfort mode.', 'Keep transitions cinematic but stationary to reduce motion discomfort.'],
+  offlineContentPackId: 'pack-science-solar-system-v1',
+  estimatedPackageSizeMb: 280,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 8,
+  status: 'released',
+};
+
 export const SIMULATION_MODULES = [
   POLLINATION_MODULE,
   CIRCUIT_MODULE,
@@ -335,4 +501,7 @@ export const SIMULATION_MODULES = [
   SOURCES_OF_FOOD_MODULE,
   SOLUBLE_INSOLUBLE_MODULE,
   DIGESTIVE_SYSTEM_MODULE,
+  MONEY_TOWN_MODULE,
+  PREPOSITION_ADVENTURE_MODULE,
+  SOLAR_SYSTEM_MISSION_MODULE,
 ] as const;

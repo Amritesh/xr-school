@@ -84,5 +84,16 @@ describe('web catalog generator', () => {
         classLevels: [5],
       }),
     ]);
+    for (const slug of [
+      'c1-math-ch01-introduction-to-money',
+      'c2-english-ch01-prepositions',
+      'c8-10-science-solar-system',
+    ]) {
+      expect(documents.find(document => document.id === `simulation:${slug}`)).toMatchObject({
+        kind: 'simulation',
+        releaseMaturity: 'internalQA',
+        href: `/simulations/${slug}`,
+      });
+    }
   });
 });

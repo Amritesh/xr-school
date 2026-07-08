@@ -60,10 +60,12 @@ enum GradeBand {
 
 enum Subject {
   science,
+  english,
   physics,
   chemistry,
   biology,
   mathematics,
+  art,
   geography,
   history,
   environmentalScience,

@@ -9,7 +9,7 @@ import { SIMULATION_MODULES } from '../../packages/simulation-content/src/module
 const VALID_XR_FIT_TYPES = ['strongVrFit', 'arTabletFit'];
 const VALID_BOARDS = ['cbse', 'icse', 'stateBoard'];
 const VALID_GRADE_BANDS = ['kindergarten', 'class1To2', 'class3To5', 'class6To8', 'class9To10', 'class11To12'];
-const VALID_SUBJECTS = ['science', 'physics', 'chemistry', 'biology', 'mathematics', 'geography', 'history', 'environmentalScience', 'computerScience', 'vocationalSkills', 'careerExposure'];
+const VALID_SUBJECTS = ['science', 'physics', 'chemistry', 'biology', 'mathematics', 'english', 'geography', 'history', 'environmentalScience', 'computerScience', 'vocationalSkills', 'careerExposure'];
 const VALID_STATUSES = ['draft', 'approved', 'released', 'deprecated', 'archived'];
 const VALID_COMFORT_RISKS = ['low', 'medium', 'high'];
 const VALID_FORMATS = ['immersiveVr', 'threeSixtyVr', 'interactive3d', 'guidedVisualization', 'practicalLabSimulation', 'virtualFieldVisit', 'revisionMode'];
