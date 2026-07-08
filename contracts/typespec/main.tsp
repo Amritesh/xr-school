@@ -913,6 +913,293 @@ namespace EvaluationRecords {
   op get(@path evaluationRecordId: string): EvaluationRecord;
 }
 
+/* =========================
+   Robotree VR Smart Classroom
+   Local-first classroom control: one teacher tablet drives many
+   headset clients on the same Wi-Fi. Demo mode only — no real auth.
+   ========================= */
+
+@route("/robotree")
+namespace Robotree {
+  enum ClassroomMode {
+    instructorLed,
+    selfPlay,
+  }
+
+  enum ClassroomSessionStatus {
+    draft,
+    open,
+    running,
+    paused,
+    stopped,
+    ended,
+  }
+
+  enum DeviceConnectionStatus {
+    connected,
+    offline,
+    batteryLow,
+    syncing,
+  }
+
+  enum RobotreeDeviceType {
+    vrHeadset,
+    tablet,
+    desktop,
+    `unknown`,
+  }
+
+  enum ActivityType {
+    vrActivity,
+    arActivity,
+    threeDModel,
+    quiz,
+    assessment,
+  }
+
+  enum TeacherCommandType {
+    startSelected,
+    startAll,
+    pauseAll,
+    stopAll,
+    syncContent,
+    selectContent,
+    setMode,
+    endDemo,
+  }
+
+  enum StudentProgressStatus {
+    notStarted,
+    running,
+    paused,
+    completed,
+    stopped,
+  }
+
+  model DemoLogin {
+    teacherName: string;
+    schoolName: string;
+    schoolCode: string;
+    selectedClass: string;
+  }
+
+  model ClassOption {
+    id: string;
+    label: string;
+    icon: string;
+  }
+
+  model SubjectOption {
+    id: string;
+    label: string;
+    icon: string;
+  }
+
+  model ChapterOption {
+    id: string;
+    label: string;
+    summary: string;
+  }
+
+  model ActivityOption {
+    id: string;
+    title: string;
+    type: ActivityType;
+    estimatedMinutes: int32;
+    totalSteps: int32;
+    description: string;
+  }
+
+  model HeadsetDevice {
+    id: string;
+    label: string;
+    deviceType: RobotreeDeviceType;
+    status: DeviceConnectionStatus;
+    batteryPercent: int32;
+    selected: boolean;
+    currentActivityId?: string;
+    currentStepIndex: int32;
+    lastSeenAt: utcDateTime;
+  }
+
+  model StudentProgress {
+    deviceId: string;
+    activityId: string;
+    status: StudentProgressStatus;
+    currentStepIndex: int32;
+    totalSteps: int32;
+    answersSubmitted: int32;
+    scorePercent?: float64;
+    lastUpdatedAt: utcDateTime;
+  }
+
+  model ClassroomSession {
+    id: string;
+    joinCode: string;
+    schoolCode: string;
+    schoolName: string;
+    teacherName: string;
+    selectedClass?: string;
+    selectedSubject?: string;
+    selectedChapter?: string;
+    selectedActivity?: ActivityOption;
+    mode: ClassroomMode;
+    status: ClassroomSessionStatus;
+    devices: HeadsetDevice[];
+    progress: StudentProgress[];
+    currentStepIndex: int32;
+    createdAt: utcDateTime;
+    updatedAt: utcDateTime;
+  }
+
+  model ProgressSummary {
+    sessionId: string;
+    totalDevices: int32;
+    connectedDevices: int32;
+    runningCount: int32;
+    pausedCount: int32;
+    completedCount: int32;
+    stoppedCount: int32;
+    totalAnswersSubmitted: int32;
+    averageScorePercent?: float64;
+    entries: StudentProgress[];
+  }
+
+  model ClassroomStateSnapshot {
+    session: ClassroomSession;
+    summary: ProgressSummary;
+    serverTime: utcDateTime;
+  }
+
+  model CreateRobotreeSessionRequest {
+    login: DemoLogin;
+  }
+
+  model JoinHeadsetRequest {
+    deviceType?: RobotreeDeviceType;
+    label?: string;
+  }
+
+  model SimulateHeadsetsRequest {
+    count?: int32;
+  }
+
+  model SelectContentRequest {
+    selectedClass?: string;
+    subject?: string;
+    chapter?: string;
+    activityId?: string;
+  }
+
+  model SelectDeviceRequest {
+    selected: boolean;
+  }
+
+  model UpdateDeviceStatusRequest {
+    status: DeviceConnectionStatus;
+  }
+
+  model TeacherCommand {
+    type: TeacherCommandType;
+    deviceIds?: string[];
+    mode?: ClassroomMode;
+    selectedClass?: string;
+    selectedSubject?: string;
+    selectedChapter?: string;
+    activityId?: string;
+  }
+
+  model SubmitProgressRequest {
+    deviceId: string;
+    activityId?: string;
+    status?: StudentProgressStatus;
+    currentStepIndex?: int32;
+    totalSteps?: int32;
+    answersSubmitted?: int32;
+    scorePercent?: float64;
+  }
+
+  model HeadsetEvent {
+    type: string;
+    payload: unknown;
+  }
+
+  model AnswerSubmission {
+    deviceId: string;
+    activityId: string;
+    questionIndex: int32;
+    answer: string;
+    correct?: boolean;
+  }
+
+  @route("/sessions")
+  namespace Sessions {
+    @post
+    op create(@body request: CreateRobotreeSessionRequest): ClassroomSession;
+
+    @get
+    @route("/{sessionId}")
+    op getSnapshot(@path sessionId: string): ClassroomStateSnapshot;
+
+    @post
+    @route("/{sessionId}/open")
+    op open(@path sessionId: string): ClassroomSession;
+
+    @post
+    @route("/{sessionId}/join-headset")
+    op joinHeadset(@path sessionId: string, @body request: JoinHeadsetRequest): HeadsetDevice;
+
+    @post
+    @route("/{sessionId}/simulate-headsets")
+    op simulateHeadsets(
+      @path sessionId: string,
+      @body request: SimulateHeadsetsRequest,
+    ): HeadsetDevice[];
+
+    @post
+    @route("/{sessionId}/select-content")
+    op selectContent(
+      @path sessionId: string,
+      @body request: SelectContentRequest,
+    ): ClassroomSession;
+
+    @post
+    @route("/{sessionId}/device/{deviceId}/select")
+    op selectDevice(
+      @path sessionId: string,
+      @path deviceId: string,
+      @body request: SelectDeviceRequest,
+    ): HeadsetDevice;
+
+    @post
+    @route("/{sessionId}/device/{deviceId}/status")
+    op updateDeviceStatus(
+      @path sessionId: string,
+      @path deviceId: string,
+      @body request: UpdateDeviceStatusRequest,
+    ): HeadsetDevice;
+
+    @post
+    @route("/{sessionId}/command")
+    op sendCommand(@path sessionId: string, @body command: TeacherCommand): ClassroomSession;
+
+    @post
+    @route("/{sessionId}/progress")
+    op submitProgress(
+      @path sessionId: string,
+      @body request: SubmitProgressRequest,
+    ): StudentProgress;
+
+    @get
+    @route("/{sessionId}/progress-summary")
+    op getProgressSummary(@path sessionId: string): ProgressSummary;
+
+    @post
+    @route("/{sessionId}/end")
+    op end(@path sessionId: string): ClassroomSession;
+  }
+}
+
 @route("/sync-jobs")
 namespace SyncJobs {
   @get

@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { SIMULATION_MODULES } from '../../../packages/simulation-content/src/modules';
+import { registerRobotreeRoutes } from './robotree';
 
 const app = Fastify({ logger: { level: 'info' } });
 
@@ -20,6 +21,8 @@ app.get<{ Params: { moduleId: string } }>('/v1/simulation-modules/:moduleId', as
   if (!sim) { reply.code(404); return { code: 'NOT_FOUND', message: 'Simulation not found' }; }
   return sim;
 });
+
+registerRobotreeRoutes(app);
 
 app.get('/health', async () => ({ status: 'ok', service: 'xr-school-api', version: '0.1.0' }));
 

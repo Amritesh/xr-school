@@ -741,6 +741,420 @@
         }
       }
     },
+    "/v1/robotree/sessions": {
+      "post": {
+        "operationId": "Sessions_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ClassroomSession"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.CreateRobotreeSessionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}": {
+      "get": {
+        "operationId": "Sessions_getSnapshot",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ClassroomStateSnapshot"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/command": {
+      "post": {
+        "operationId": "Sessions_sendCommand",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ClassroomSession"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.TeacherCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/device/{deviceId}/select": {
+      "post": {
+        "operationId": "Sessions_selectDevice",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.HeadsetDevice"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.SelectDeviceRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/device/{deviceId}/status": {
+      "post": {
+        "operationId": "Sessions_updateDeviceStatus",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.HeadsetDevice"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.UpdateDeviceStatusRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/end": {
+      "post": {
+        "operationId": "Sessions_end",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ClassroomSession"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/join-headset": {
+      "post": {
+        "operationId": "Sessions_joinHeadset",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.HeadsetDevice"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.JoinHeadsetRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/open": {
+      "post": {
+        "operationId": "Sessions_open",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ClassroomSession"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/progress": {
+      "post": {
+        "operationId": "Sessions_submitProgress",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.StudentProgress"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.SubmitProgressRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/progress-summary": {
+      "get": {
+        "operationId": "Sessions_getProgressSummary",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ProgressSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/select-content": {
+      "post": {
+        "operationId": "Sessions_selectContent",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Robotree.ClassroomSession"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.SelectContentRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/robotree/sessions/{sessionId}/simulate-headsets": {
+      "post": {
+        "operationId": "Sessions_simulateHeadsets",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Robotree.HeadsetDevice"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Robotree.SimulateHeadsetsRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/simulation-modules": {
       "get": {
         "operationId": "SimulationModules_list",
@@ -3091,6 +3505,604 @@
           "high",
           "examCritical"
         ]
+      },
+      "Robotree.ActivityOption": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "type",
+          "estimatedMinutes",
+          "totalSteps",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/Robotree.ActivityType"
+          },
+          "estimatedMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalSteps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.ActivityType": {
+        "type": "string",
+        "enum": [
+          "vrActivity",
+          "arActivity",
+          "threeDModel",
+          "quiz",
+          "assessment"
+        ]
+      },
+      "Robotree.AnswerSubmission": {
+        "type": "object",
+        "required": [
+          "deviceId",
+          "activityId",
+          "questionIndex",
+          "answer"
+        ],
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "activityId": {
+            "type": "string"
+          },
+          "questionIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "correct": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Robotree.ChapterOption": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "summary"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.ClassOption": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "icon"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.ClassroomMode": {
+        "type": "string",
+        "enum": [
+          "instructorLed",
+          "selfPlay"
+        ]
+      },
+      "Robotree.ClassroomSession": {
+        "type": "object",
+        "required": [
+          "id",
+          "joinCode",
+          "schoolCode",
+          "schoolName",
+          "teacherName",
+          "mode",
+          "status",
+          "devices",
+          "progress",
+          "currentStepIndex",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "joinCode": {
+            "type": "string"
+          },
+          "schoolCode": {
+            "type": "string"
+          },
+          "schoolName": {
+            "type": "string"
+          },
+          "teacherName": {
+            "type": "string"
+          },
+          "selectedClass": {
+            "type": "string"
+          },
+          "selectedSubject": {
+            "type": "string"
+          },
+          "selectedChapter": {
+            "type": "string"
+          },
+          "selectedActivity": {
+            "$ref": "#/components/schemas/Robotree.ActivityOption"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/Robotree.ClassroomMode"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Robotree.ClassroomSessionStatus"
+          },
+          "devices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Robotree.HeadsetDevice"
+            }
+          },
+          "progress": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Robotree.StudentProgress"
+            }
+          },
+          "currentStepIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Robotree.ClassroomSessionStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "open",
+          "running",
+          "paused",
+          "stopped",
+          "ended"
+        ]
+      },
+      "Robotree.ClassroomStateSnapshot": {
+        "type": "object",
+        "required": [
+          "session",
+          "summary",
+          "serverTime"
+        ],
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/Robotree.ClassroomSession"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Robotree.ProgressSummary"
+          },
+          "serverTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Robotree.CreateRobotreeSessionRequest": {
+        "type": "object",
+        "required": [
+          "login"
+        ],
+        "properties": {
+          "login": {
+            "$ref": "#/components/schemas/Robotree.DemoLogin"
+          }
+        }
+      },
+      "Robotree.DemoLogin": {
+        "type": "object",
+        "required": [
+          "teacherName",
+          "schoolName",
+          "schoolCode",
+          "selectedClass"
+        ],
+        "properties": {
+          "teacherName": {
+            "type": "string"
+          },
+          "schoolName": {
+            "type": "string"
+          },
+          "schoolCode": {
+            "type": "string"
+          },
+          "selectedClass": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.DeviceConnectionStatus": {
+        "type": "string",
+        "enum": [
+          "connected",
+          "offline",
+          "batteryLow",
+          "syncing"
+        ]
+      },
+      "Robotree.HeadsetDevice": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "deviceType",
+          "status",
+          "batteryPercent",
+          "selected",
+          "currentStepIndex",
+          "lastSeenAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/Robotree.RobotreeDeviceType"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Robotree.DeviceConnectionStatus"
+          },
+          "batteryPercent": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "selected": {
+            "type": "boolean"
+          },
+          "currentActivityId": {
+            "type": "string"
+          },
+          "currentStepIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Robotree.HeadsetEvent": {
+        "type": "object",
+        "required": [
+          "type",
+          "payload"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "payload": {}
+        }
+      },
+      "Robotree.JoinHeadsetRequest": {
+        "type": "object",
+        "properties": {
+          "deviceType": {
+            "$ref": "#/components/schemas/Robotree.RobotreeDeviceType"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.ProgressSummary": {
+        "type": "object",
+        "required": [
+          "sessionId",
+          "totalDevices",
+          "connectedDevices",
+          "runningCount",
+          "pausedCount",
+          "completedCount",
+          "stoppedCount",
+          "totalAnswersSubmitted",
+          "entries"
+        ],
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "totalDevices": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "connectedDevices": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "runningCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pausedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "completedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stoppedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalAnswersSubmitted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "averageScorePercent": {
+            "type": "number",
+            "format": "double"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Robotree.StudentProgress"
+            }
+          }
+        }
+      },
+      "Robotree.RobotreeDeviceType": {
+        "type": "string",
+        "enum": [
+          "vrHeadset",
+          "tablet",
+          "desktop",
+          "unknown"
+        ]
+      },
+      "Robotree.SelectContentRequest": {
+        "type": "object",
+        "properties": {
+          "selectedClass": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "chapter": {
+            "type": "string"
+          },
+          "activityId": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.SelectDeviceRequest": {
+        "type": "object",
+        "required": [
+          "selected"
+        ],
+        "properties": {
+          "selected": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Robotree.SimulateHeadsetsRequest": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Robotree.StudentProgress": {
+        "type": "object",
+        "required": [
+          "deviceId",
+          "activityId",
+          "status",
+          "currentStepIndex",
+          "totalSteps",
+          "answersSubmitted",
+          "lastUpdatedAt"
+        ],
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "activityId": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Robotree.StudentProgressStatus"
+          },
+          "currentStepIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalSteps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "answersSubmitted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "scorePercent": {
+            "type": "number",
+            "format": "double"
+          },
+          "lastUpdatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Robotree.StudentProgressStatus": {
+        "type": "string",
+        "enum": [
+          "notStarted",
+          "running",
+          "paused",
+          "completed",
+          "stopped"
+        ]
+      },
+      "Robotree.SubjectOption": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "icon"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.SubmitProgressRequest": {
+        "type": "object",
+        "required": [
+          "deviceId"
+        ],
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "activityId": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Robotree.StudentProgressStatus"
+          },
+          "currentStepIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalSteps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "answersSubmitted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "scorePercent": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Robotree.TeacherCommand": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/Robotree.TeacherCommandType"
+          },
+          "deviceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mode": {
+            "$ref": "#/components/schemas/Robotree.ClassroomMode"
+          },
+          "selectedClass": {
+            "type": "string"
+          },
+          "selectedSubject": {
+            "type": "string"
+          },
+          "selectedChapter": {
+            "type": "string"
+          },
+          "activityId": {
+            "type": "string"
+          }
+        }
+      },
+      "Robotree.TeacherCommandType": {
+        "type": "string",
+        "enum": [
+          "startSelected",
+          "startAll",
+          "pauseAll",
+          "stopAll",
+          "syncContent",
+          "selectContent",
+          "setMode",
+          "endDemo"
+        ]
+      },
+      "Robotree.UpdateDeviceStatusRequest": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Robotree.DeviceConnectionStatus"
+          }
+        }
       },
       "School": {
         "type": "object",
