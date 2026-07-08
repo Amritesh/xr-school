@@ -134,6 +134,16 @@ export default function RobotreeTeacherPage() {
         {classLabel} · {subjectLabel} · {chapterLabel} ·{' '}
         {session?.selectedActivity?.title ?? 'No activity selected'}
       </p>
+      {session?.selectedActivity?.simulationHref ? (
+        <div className="rt-btn-row rt-section">
+          <Link className="rt-btn rt-btn-primary" href={session.selectedActivity.simulationHref} target="_blank">
+            Open selected original demo
+          </Link>
+          <Link className="rt-btn" href="/robotree/headset">
+            Open student join page
+          </Link>
+        </div>
+      ) : null}
 
       {error ? (
         <p className="rt-note rt-section" style={{ color: 'var(--rt-red)' }}>

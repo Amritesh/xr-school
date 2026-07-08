@@ -27,7 +27,11 @@ export default function Home() {
             <small>Immersive science platform</small>
           </span>
         </Link>
-        <Link className="nav-link" href="/simulations">Curriculum library</Link>
+        <div className="home-nav-links">
+          <Link className="nav-link" href="/simulations">Curriculum library</Link>
+          <Link className="nav-link" href="/robotree/login">Teacher room setup</Link>
+          <Link className="nav-link" href="/robotree/headset">Join room</Link>
+        </div>
       </nav>
 
       <section className="home-hero">
@@ -40,7 +44,8 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <Link className="primary-action" href="/simulations">Explore curriculum library</Link>
-            <Link className="secondary-action" href="/simulations/pollination">View featured simulation</Link>
+            <Link className="secondary-action" href="/robotree/login">Set up teacher room</Link>
+            <Link className="secondary-action" href="/robotree/headset">Join room</Link>
           </div>
           <div className="trust-line">
             <span>✓ Stationary comfort design</span>

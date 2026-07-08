@@ -133,6 +133,12 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 .nav-link:hover { color: var(--ink); }
 
+.home-nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .home-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.07fr) minmax(340px, 0.93fr);
@@ -408,6 +414,29 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 700;
+}
+
+.catalog-room-links {
+  display: inline-flex;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.catalog-room-links a {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  padding-inline: 0.75rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.catalog-room-links a:hover {
+  border-color: rgba(119, 216, 212, 0.4);
+  color: var(--ink);
 }
 
 .catalog-hero {
@@ -804,7 +833,8 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .home-nav,
   .product-header { min-height: 4.5rem; }
   .header-status,
-  .nav-link { display: none; }
+  .nav-link,
+  .catalog-room-links { display: none; }
   .home-hero { min-height: auto; padding-block: 4rem; }
   .hero-copy h1,
   .catalog-hero h1 { letter-spacing: -0.052em; }

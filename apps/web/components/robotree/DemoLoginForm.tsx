@@ -81,8 +81,8 @@ export function DemoLoginForm() {
         <select id="rt-class" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
           <option value="">Choose later on the dashboard</option>
           {DEMO_CLASSES.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
+            <option key={c.id} value={c.id} disabled={!c.available}>
+              {c.available ? c.label : `${c.label} (not available yet)`}
             </option>
           ))}
         </select>
@@ -95,7 +95,7 @@ export function DemoLoginForm() {
       ) : null}
 
       <button type="submit" className="rt-btn rt-btn-primary" disabled={busy} style={{ width: '100%' }}>
-        {busy ? 'Starting…' : '▶ Start Demo'}
+        {busy ? 'Setting up…' : 'Set Up Teacher Room'}
       </button>
     </form>
   );

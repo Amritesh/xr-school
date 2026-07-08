@@ -15,8 +15,10 @@ export function SubjectGrid({
         <button
           key={s.id}
           type="button"
-          className={`rt-tile${selectedSubject === s.id ? ' rt-tile-active' : ''}`}
+          className={`rt-tile${selectedSubject === s.id ? ' rt-tile-active' : ''}${!s.available ? ' rt-tile-disabled' : ''}`}
+          disabled={!s.available}
           onClick={() => onSelect(s.id)}
+          title={s.available ? undefined : 'No working demo available for this subject yet'}
         >
           <span className="rt-tile-icon" aria-hidden>
             {s.icon}

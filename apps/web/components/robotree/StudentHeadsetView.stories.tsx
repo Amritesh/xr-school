@@ -7,7 +7,7 @@ const meta = {
     layout: 'fullscreen',
     a11y: {
       notes:
-        'Connection, session and battery states are text pills; the activity stage announces the current command state as its heading. In Storybook the snapshot poll and join call must be mocked (msw) — no real API calls in stories. Interaction test: Send Progress advances the step; Disconnect toggles to Reconnect.',
+        'Connection, session and battery states are text pills; the assigned original demo opens from a button only while running. In Storybook the snapshot poll and join call must be mocked (msw) — no real API calls in stories.',
     },
   },
 };

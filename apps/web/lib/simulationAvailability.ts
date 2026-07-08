@@ -155,6 +155,10 @@ const COLORS: Record<string, string> = {
 
 const implementedSet = new Set<string>(IMPLEMENTED_SIMULATION_SLUGS);
 
+export function isImplementedSimulationSlug(slug: string): slug is ImplementedSlug {
+  return implementedSet.has(slug);
+}
+
 function toCataloguedCard(item: ScienceSimulationCatalogItem): CatalogCard {
   return {
     slug: item.slug,

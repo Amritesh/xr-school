@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import {
   getSnapshot,
   joinHeadset,
@@ -171,6 +172,17 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
           >
             ⏫ Send Progress
           </button>
+          {activity?.simulationHref ? (
+            <Link
+              className="rt-btn rt-btn-primary"
+              href={activity.simulationHref}
+              target="_blank"
+              aria-disabled={commandState !== 'Running'}
+              style={commandState !== 'Running' ? { pointerEvents: 'none', opacity: 0.45 } : undefined}
+            >
+              Open Assigned Demo
+            </Link>
+          ) : null}
           <button
             type="button"
             className="rt-btn"

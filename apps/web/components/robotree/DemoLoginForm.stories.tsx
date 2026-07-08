@@ -19,7 +19,7 @@ export const Default = {};
 /** Fields empty; submit falls back to demo defaults (Demo Teacher / Robotree Demo School). */
 export const EmptyState = {};
 
-/** While createSession is in flight the button reads "Starting…" and disables (mock a delayed response). */
+/** While createSession is in flight the button reads "Setting up…" and disables (mock a delayed response). */
 export const LoadingState = {};
 
 /** With the classroom API unreachable the form shows the "could not reach the classroom API" banner (mock a network failure). */

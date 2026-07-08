@@ -77,7 +77,7 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
     a11y: {
-      notes: 'Search has a programmatic label; filters use native labelled selects; release state is never communicated by colour alone.',
+      notes: 'Search has a programmatic label; filters use native labelled selects; release state is never communicated by colour alone. Header includes teacher setup and student join room links.',
     },
   },
 };

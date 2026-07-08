@@ -18,7 +18,8 @@ describe('catalog runtime simulations', () => {
     expect(routeSource).toContain('generateStaticParams');
     expect(routeSource).toContain('GenericCatalogSimulationViewer');
     expect(routeSource).toContain('SCIENCE_SIMULATION_CATALOG.find');
-    expect(routeSource).toContain("item.releaseMaturity !== 'catalogued'");
+    expect(routeSource).toContain('IMPLEMENTED_SIMULATION_SLUGS.map');
+    expect(routeSource).toContain('isImplementedSimulationSlug(slug)');
 
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
     expect(SCIENCE_SIMULATION_CATALOG).toHaveLength(497);

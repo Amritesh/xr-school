@@ -9,7 +9,7 @@ const meta = {
     layout: 'padded',
     a11y: {
       notes:
-        'Each class is a real button with a text label; selection is marked with aria-pressed styling plus a highlighted border, never colour alone. Interaction test: clicking a tile fires onSelect with the class id.',
+        'Each class is a real button with a text label; unavailable classes stay visible as disabled greyed-out buttons. Interaction test: clicking an available tile fires onSelect with the class id.',
     },
   },
 };
@@ -36,6 +36,6 @@ export const ErrorState = {
 };
 
 export const Mobile = {
-  args: { selectedClass: 'class-3', onSelect: noop },
+  args: { selectedClass: 'class-6', onSelect: noop },
   parameters: { viewport: { defaultViewport: 'mobile1' } },
 };

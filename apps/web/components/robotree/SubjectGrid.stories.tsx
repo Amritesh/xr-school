@@ -9,7 +9,7 @@ const meta = {
     layout: 'padded',
     a11y: {
       notes:
-        'Subject tiles are buttons with text labels; icons are decorative. Interaction test: clicking a tile fires onSelect with the subject id.',
+        'Subject tiles are buttons with text labels; roadmap subjects stay visible as disabled greyed-out buttons. Interaction test: clicking an available tile fires onSelect with the subject id.',
     },
   },
 };
@@ -35,6 +35,6 @@ export const ErrorState = {
 };
 
 export const Mobile = {
-  args: { selectedSubject: 'robotics', onSelect: noop },
+  args: { selectedSubject: 'biology', onSelect: noop },
   parameters: { viewport: { defaultViewport: 'mobile1' } },
 };

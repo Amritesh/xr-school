@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { SCIENCE_SIMULATION_CATALOG } from '../../apps/web/lib/scienceCatalog.generated';
 import {
   IMPLEMENTED_SIMULATION_SLUGS,
+  isImplementedSimulationSlug,
   getSimulationCatalogSections,
   matchesCatalogFilters,
 } from '../../apps/web/lib/simulationAvailability';
@@ -13,6 +14,11 @@ describe('simulation availability routing', () => {
     expect(sections.launchable.map(item => item.slug)).toEqual([...IMPLEMENTED_SIMULATION_SLUGS]);
     expect(sections.launchable).toHaveLength(IMPLEMENTED_SIMULATION_SLUGS.length);
     expect(sections.launchable.every(item => item.releaseMaturity === 'internalQA')).toBe(true);
+  });
+
+  it('exposes a route guard for exactly the implemented demos', () => {
+    expect(isImplementedSimulationSlug('pollination')).toBe(true);
+    expect(isImplementedSimulationSlug('c5-ch01-a01-supersense-of-smell')).toBe(false);
   });
 
   it('keeps unfinished catalog rows visible but non-launchable', () => {

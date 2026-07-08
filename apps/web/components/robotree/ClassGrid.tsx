@@ -15,8 +15,10 @@ export function ClassGrid({
         <button
           key={c.id}
           type="button"
-          className={`rt-tile${selectedClass === c.id ? ' rt-tile-active' : ''}`}
+          className={`rt-tile${selectedClass === c.id ? ' rt-tile-active' : ''}${!c.available ? ' rt-tile-disabled' : ''}`}
+          disabled={!c.available}
           onClick={() => onSelect(c.id)}
+          title={c.available ? undefined : 'No working demo available for this class yet'}
         >
           <span className="rt-tile-icon" aria-hidden>
             {c.icon}

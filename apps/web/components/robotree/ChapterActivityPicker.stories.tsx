@@ -9,7 +9,7 @@ const meta = {
     layout: 'padded',
     a11y: {
       notes:
-        'Chapter uses a native labelled select; activities are buttons with title, description and duration text. Interaction test: choosing a chapter fires onSelectChapter; clicking an activity card fires onSelectActivity.',
+        'Chapter uses a native labelled select; original demo activities are buttons with title, description and duration text. Non-matching demos stay visible as disabled greyed-out buttons.',
     },
   },
 };
@@ -18,8 +18,10 @@ export default meta;
 
 export const Default = {
   args: {
-    selectedChapter: 'chapter-2',
-    selectedActivityId: 'vr-activity-1',
+    selectedChapter: 'circuit',
+    selectedActivityId: 'circuit',
+    selectedClass: 'class-8',
+    selectedSubject: 'physics',
     onSelectChapter: noop,
     onSelectActivity: noop,
   },
@@ -29,6 +31,8 @@ export const EmptyState = {
   args: {
     selectedChapter: undefined,
     selectedActivityId: undefined,
+    selectedClass: undefined,
+    selectedSubject: undefined,
     onSelectChapter: noop,
     onSelectActivity: noop,
   },
@@ -39,6 +43,8 @@ export const LoadingState = {
   args: {
     selectedChapter: undefined,
     selectedActivityId: undefined,
+    selectedClass: 'class-5',
+    selectedSubject: 'evs',
     onSelectChapter: noop,
     onSelectActivity: noop,
   },
@@ -47,8 +53,10 @@ export const LoadingState = {
 /** Save errors surface in the parent dashboard; the picker stays interactive. */
 export const ErrorState = {
   args: {
-    selectedChapter: 'chapter-1',
+    selectedChapter: 'pollination',
     selectedActivityId: undefined,
+    selectedClass: 'class-7',
+    selectedSubject: 'biology',
     onSelectChapter: noop,
     onSelectActivity: noop,
   },
@@ -56,8 +64,10 @@ export const ErrorState = {
 
 export const Mobile = {
   args: {
-    selectedChapter: 'chapter-3',
-    selectedActivityId: 'quiz',
+    selectedChapter: 'c6-ch01-a01-sources-of-food',
+    selectedActivityId: 'c6-ch01-a01-sources-of-food',
+    selectedClass: 'class-6',
+    selectedSubject: 'science',
     onSelectChapter: noop,
     onSelectActivity: noop,
   },

@@ -44,18 +44,24 @@ export interface ClassOption {
   id: string;
   label: string;
   icon: string;
+  available?: boolean;
 }
 
 export interface SubjectOption {
   id: string;
   label: string;
   icon: string;
+  available?: boolean;
 }
 
 export interface ChapterOption {
   id: string;
   label: string;
   summary: string;
+  classIds?: string[];
+  subjectIds?: string[];
+  activityId?: string;
+  available?: boolean;
 }
 
 export interface ActivityOption {
@@ -65,6 +71,12 @@ export interface ActivityOption {
   estimatedMinutes: number;
   totalSteps: number;
   description: string;
+  classIds?: string[];
+  subjectIds?: string[];
+  chapterId?: string;
+  subjectLabel?: string;
+  gradeLabel?: string;
+  simulationHref?: string;
 }
 
 export interface HeadsetDevice {

@@ -78,11 +78,14 @@ export default function RobotreeDashboardPage() {
       </div>
 
       <PremiumTechCard icon="🎓" title="Select Class">
-        <ClassGrid
+          <ClassGrid
           selectedClass={selectedClass}
           onSelect={(classId) => {
             setSelectedClass(classId);
-            pushSelection({ selectedClass: classId });
+            setSelectedSubject(undefined);
+            setSelectedChapter(undefined);
+            setSelectedActivityId(undefined);
+            pushSelection({ selectedClass: classId, subject: '', chapter: '', activityId: '' });
           }}
         />
       </PremiumTechCard>
@@ -94,7 +97,9 @@ export default function RobotreeDashboardPage() {
               selectedSubject={selectedSubject}
               onSelect={(subjectId) => {
                 setSelectedSubject(subjectId);
-                pushSelection({ subject: subjectId });
+                setSelectedChapter(undefined);
+                setSelectedActivityId(undefined);
+                pushSelection({ subject: subjectId, chapter: '', activityId: '' });
               }}
             />
           </PremiumTechCard>
@@ -107,9 +112,14 @@ export default function RobotreeDashboardPage() {
             <ChapterActivityPicker
               selectedChapter={selectedChapter}
               selectedActivityId={selectedActivityId}
+              selectedClass={selectedClass}
+              selectedSubject={selectedSubject}
               onSelectChapter={(chapterId) => {
+                const chapter = DEMO_CHAPTERS.find((item) => item.id === chapterId);
+                const activityId = chapter?.activityId;
                 setSelectedChapter(chapterId);
-                pushSelection({ chapter: chapterId });
+                setSelectedActivityId(activityId);
+                pushSelection({ chapter: chapterId, activityId });
               }}
               onSelectActivity={(activityId) => {
                 setSelectedActivityId(activityId);
@@ -140,7 +150,7 @@ export default function RobotreeDashboardPage() {
           className="rt-btn rt-btn-ghost"
           onClick={() => router.push(`/robotree/classroom/${sessionId}/teacher`)}
         >
-          Skip — go straight to headsets
+          Open room before devices join
         </button>
       </div>
     </RobotreeShell>

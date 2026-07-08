@@ -133,6 +133,10 @@ export default function SimulationCatalog({
           <span className="status-dot" />
           {launchableCards.length} Internal QA builds
         </div>
+        <div className="catalog-room-links">
+          <Link href="/robotree/login">Teacher setup</Link>
+          <Link href="/robotree/headset">Join room</Link>
+        </div>
       </header>
 
       <section className="catalog-hero">

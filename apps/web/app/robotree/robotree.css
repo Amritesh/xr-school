@@ -282,6 +282,19 @@
   background: var(--rt-green-dim);
 }
 
+.rt-tile:disabled,
+.rt-tile-disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.rt-tile:disabled:hover,
+.rt-tile-disabled:hover {
+  border-color: var(--rt-line);
+  transform: none;
+}
+
 .rt-tile-icon { font-size: 1.5rem; }
 .rt-tile-label { font-weight: 700; font-size: 0.92rem; }
 

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   ClassroomSessionManager,
+  DEMO_ACTIVITIES,
   type ClassroomSession,
   type DemoLogin,
 } from '../../packages/classroom-sync/src/index';
@@ -22,8 +23,23 @@ describe('Robotree classroom session manager', () => {
   });
 
   function selectDemoContent() {
-    manager.selectContent(session.id, 'class-8', 'science', 'chapter-2', 'vr-activity-1');
+    manager.selectContent(session.id, 'class-8', 'physics', 'circuit', 'circuit');
   }
+
+  it('offers only the original implemented demos as classroom activities', () => {
+    expect(DEMO_ACTIVITIES.map((activity) => activity.id)).toEqual([
+      'pollination',
+      'circuit',
+      'c9-ch01-a02-states-of-matter',
+      'c6-ch01-a01-sources-of-food',
+      'c5-ch07-a03-soluble-and-insoluble-substances',
+      'c5-ch03-a02-introduction-of-digestive-system',
+      'c7-ch10-a02-the-breathing-process-in-human',
+      'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
+      'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
+    ]);
+    expect(DEMO_ACTIVITIES.every((activity) => activity.simulationHref === `/simulations/${activity.id}`)).toBe(true);
+  });
 
   it('creates a session in open state with a join code', () => {
     expect(session.status).toBe('open');
@@ -48,9 +64,9 @@ describe('Robotree classroom session manager', () => {
     selectDemoContent();
     const updated = manager.getSession(session.id)!;
     expect(updated.selectedClass).toBe('class-8');
-    expect(updated.selectedSubject).toBe('science');
-    expect(updated.selectedChapter).toBe('chapter-2');
-    expect(updated.selectedActivity?.id).toBe('vr-activity-1');
+    expect(updated.selectedSubject).toBe('physics');
+    expect(updated.selectedChapter).toBe('circuit');
+    expect(updated.selectedActivity?.id).toBe('circuit');
     expect(updated.selectedActivity?.totalSteps).toBeGreaterThan(0);
   });
 
@@ -65,7 +81,7 @@ describe('Robotree classroom session manager', () => {
     );
     expect(startable.length).toBeGreaterThan(0);
     for (const device of startable) {
-      expect(device.currentActivityId).toBe('vr-activity-1');
+      expect(device.currentActivityId).toBe('circuit');
     }
   });
 
@@ -75,7 +91,7 @@ describe('Robotree classroom session manager', () => {
     const [first, second] = manager.getSession(session.id)!.devices;
     manager.selectDevice(session.id, first.id, true);
     manager.sendTeacherCommand(session.id, { type: 'startSelected' });
-    expect(first.currentActivityId).toBe('vr-activity-1');
+    expect(first.currentActivityId).toBe('circuit');
     expect(second.currentActivityId).toBeUndefined();
   });
 
@@ -117,13 +133,13 @@ describe('Robotree classroom session manager', () => {
     const [first, second] = manager.getSession(session.id)!.devices;
     manager.sendTeacherCommand(session.id, { type: 'startAll' });
     manager.submitProgress(session.id, first.id, {
-      activityId: 'vr-activity-1',
+      activityId: 'circuit',
       currentStepIndex: 6,
       totalSteps: 6,
       scorePercent: 90,
     });
     manager.submitProgress(session.id, second.id, {
-      activityId: 'vr-activity-1',
+      activityId: 'circuit',
       currentStepIndex: 2,
       answersSubmitted: 3,
     });
@@ -143,7 +159,7 @@ describe('Robotree classroom session manager', () => {
     manager.sendTeacherCommand(session.id, { type: 'startAll' });
     const updated = manager.getSession(session.id)!.devices[0];
     expect(updated.status).toBe('batteryLow');
-    expect(updated.currentActivityId).toBe('vr-activity-1');
+    expect(updated.currentActivityId).toBe('circuit');
   });
 
   it('offline device does not start the activity', () => {
@@ -176,7 +192,7 @@ describe('Robotree classroom session manager', () => {
     expect(device.label).toBe('Headset 4');
     fresh.sendTeacherCommand(stored.id, { type: 'startAll' });
     expect(fresh.getSession(stored.id)!.status).toBe('running');
-    expect(fresh.getSession(stored.id)!.selectedActivity?.id).toBe('vr-activity-1');
+    expect(fresh.getSession(stored.id)!.selectedActivity?.id).toBe('circuit');
   });
 
   it('starting without a selected activity throws a clear error', () => {
