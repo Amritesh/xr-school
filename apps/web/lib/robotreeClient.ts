@@ -12,8 +12,10 @@ import type {
 
 /**
  * REST client for the Robotree classroom API.
- * Uses the browser hostname so headsets on the same Wi-Fi reach the
- * teacher machine's API without extra configuration.
+ * Defaults to the same-origin Next.js route handlers, so one deployed URL
+ * serves both apps (teacher tablet and headsets) with no separate server.
+ * Set NEXT_PUBLIC_ROBOTREE_API_URL to target the standalone Fastify API
+ * (e.g. http://<teacher-ip>:3001) instead.
  *
  * Realtime strategy: snapshot polling every 2 seconds.
  * TODO: upgrade to the /live WebSocket channel and keep polling as fallback.
@@ -23,9 +25,7 @@ const DEMO_LOGIN_KEY = 'robotree.demoLogin';
 const SESSION_KEY = 'robotree.sessionId';
 
 export function robotreeApiBase(): string {
-  if (process.env.NEXT_PUBLIC_ROBOTREE_API_URL) return process.env.NEXT_PUBLIC_ROBOTREE_API_URL;
-  if (typeof window !== 'undefined') return `http://${window.location.hostname}:3001`;
-  return 'http://localhost:3001';
+  return process.env.NEXT_PUBLIC_ROBOTREE_API_URL ?? '';
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {

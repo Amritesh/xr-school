@@ -59,17 +59,27 @@ Requires Node 23 (see `.nvmrc`).
 
 ```bash
 npm install                      # once
-
-# Terminal 1 — API (Fastify, port 3001)
-npm --workspace apps/api run dev
-
-# Terminal 2 — Web (Next.js, port 3000)
-npm --workspace apps/web run dev
+npm --workspace apps/web run dev # Next.js on port 3000 — serves UI *and* API
 ```
+
+The classroom API is served same-origin by Next.js route handlers
+(`/v1/robotree/...`), so one process is enough.
 
 Teacher: `http://localhost:3000/robotree`
 Headsets on the same Wi-Fi: `http://<teacher-machine-ip>:3000/robotree/headset`
-(the web client automatically calls the API on the same hostname, port 3001).
+
+The standalone Fastify API (`npm --workspace apps/api run dev`, port 3001)
+still exists for API-only use; point the web app at it with
+`NEXT_PUBLIC_ROBOTREE_API_URL=http://<host>:3001`.
+
+### Hosted deployment (e.g. Vercel)
+
+The app deploys as a single Next.js project — teacher and headsets just open
+different URLs of the same deployment. On **serverless** hosts sessions live in
+per-instance memory, which can split under load; for a reliable multi-device
+demo attach a free Redis and set either `KV_REST_API_URL` +
+`KV_REST_API_TOKEN` (Vercel KV / Upstash marketplace) or
+`UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`. No code change needed.
 
 ## 5. How to create a demo session
 
@@ -123,7 +133,9 @@ without a realtime WebSocket channel.
 
 ## 12. Current MVP limitations
 
-- Sessions live in memory: restarting the API clears all classrooms.
+- Sessions live in memory (or a demo Redis): restarting the server clears
+  classrooms unless Redis is configured; on serverless hosts without Redis,
+  concurrent instances may not share sessions.
 - Demo login only — no real school authentication.
 - Battery, sync and activities are simulated; no real headset APIs or XR
   rendering (the headset app shows a simulated activity panel).

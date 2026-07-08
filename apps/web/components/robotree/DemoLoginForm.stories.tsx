@@ -22,7 +22,7 @@ export const EmptyState = {};
 /** While createSession is in flight the button reads "Starting…" and disables (mock a delayed response). */
 export const LoadingState = {};
 
-/** With the API unreachable the form shows the error banner with a port-3001 hint (mock a network failure). */
+/** With the classroom API unreachable the form shows the "could not reach the classroom API" banner (mock a network failure). */
 export const ErrorState = {};
 
 export const Mobile = {

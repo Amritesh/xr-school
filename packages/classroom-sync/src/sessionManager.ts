@@ -60,6 +60,15 @@ export class ClassroomSessionManager {
     return session;
   }
 
+  /**
+   * Rehydrates a session loaded from external storage (e.g. Redis on a
+   * serverless host) so a fresh manager instance can operate on it.
+   */
+  restoreSession(session: ClassroomSession): void {
+    this.sessions.set(session.id, session);
+    this.deviceCounter.set(session.id, session.devices.length);
+  }
+
   /** Looks a session up by id or by join code (headsets type the short code). */
   getSession(sessionId: string): ClassroomSession | undefined {
     const direct = this.sessions.get(sessionId);

@@ -37,7 +37,7 @@ export function DemoLoginForm() {
     } catch (err) {
       setError(
         err instanceof Error
-          ? `${err.message} — is the API running on port 3001?`
+          ? `${err.message} — could not reach the classroom API.`
           : 'Could not start the demo session.',
       );
       setBusy(false);

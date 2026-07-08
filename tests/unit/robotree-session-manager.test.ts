@@ -165,6 +165,20 @@ describe('Robotree classroom session manager', () => {
     expect(manager.getSession(other.id)!.status).toBe('ended');
   });
 
+  it('restoreSession rehydrates a stored session so a fresh manager can continue it', () => {
+    manager.simulateHeadsets(session.id, 3);
+    selectDemoContent();
+    const stored = JSON.parse(JSON.stringify(manager.getSession(session.id))) as ClassroomSession;
+
+    const fresh = new ClassroomSessionManager();
+    fresh.restoreSession(stored);
+    const device = fresh.joinHeadset(stored.id);
+    expect(device.label).toBe('Headset 4');
+    fresh.sendTeacherCommand(stored.id, { type: 'startAll' });
+    expect(fresh.getSession(stored.id)!.status).toBe('running');
+    expect(fresh.getSession(stored.id)!.selectedActivity?.id).toBe('vr-activity-1');
+  });
+
   it('starting without a selected activity throws a clear error', () => {
     manager.simulateHeadsets(session.id, 1);
     expect(() => manager.sendTeacherCommand(session.id, { type: 'startAll' })).toThrow(
