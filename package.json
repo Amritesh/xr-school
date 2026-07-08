@@ -16,7 +16,7 @@
     "spec:drift": "node scripts/spec-drift-check.mjs",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md,yaml}\"",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

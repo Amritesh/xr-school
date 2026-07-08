@@ -14,3 +14,4 @@ certificates/
 .DS_Store
 **/.DS_Store
 .superpowers/
+.vercel
