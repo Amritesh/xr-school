@@ -23,12 +23,15 @@ describe('simulation availability routing', () => {
 
   it('keeps unfinished catalog rows visible but non-launchable', () => {
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
+    const implementedCatalogRows = SCIENCE_SIMULATION_CATALOG.filter(item => (
+      IMPLEMENTED_SIMULATION_SLUGS.includes(item.slug as (typeof IMPLEMENTED_SIMULATION_SLUGS)[number])
+    ));
 
     // Of IMPLEMENTED_SIMULATION_SLUGS, only the ones backed by a real catalog
     // CSV row get removed from `catalogued` here — Pollination and Circuit
     // are bespoke builds with no matching row, so they don't count.
     expect(sections.catalogued).toHaveLength(
-      SCIENCE_SIMULATION_CATALOG.length - 7,
+      SCIENCE_SIMULATION_CATALOG.length - implementedCatalogRows.length,
     );
     expect(sections.catalogued.every(item => item.releaseMaturity === 'catalogued')).toBe(true);
     expect(sections.catalogued.every(item => item.href === undefined)).toBe(true);
@@ -73,5 +76,18 @@ describe('simulation availability routing', () => {
     expect(matchesCatalogFilters(card, { releaseMaturity: 'catalogued' })).toBe(false);
     expect(matchesCatalogFilters(card, { classLevel: 8, subject: 'physics' })).toBe(true);
     expect(matchesCatalogFilters(card, { classLevel: 8, subject: 'biology' })).toBe(false);
+  });
+
+  it('launches the newly authored simulations through the same managed list', () => {
+    const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
+
+    expect(sections.launchable.map(item => item.slug)).toEqual(
+      expect.arrayContaining([
+        'c1-art-a01-learning-of-colours',
+        'c1-math-ch01-introduction-to-money',
+        'c2-english-ch01-prepositions',
+        'c8-10-science-solar-system',
+      ]),
+    );
   });
 });

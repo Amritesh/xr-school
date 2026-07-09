@@ -7,6 +7,7 @@ const viewerPath = resolve(
   'apps/web/components/simulations/DigestiveSystemViewer.tsx',
 );
 const stylesPath = resolve(process.cwd(), 'apps/web/app/globals.css');
+const assetReadmePath = resolve(process.cwd(), 'apps/web/public/assets/digestive/README.md');
 
 describe('Digestive System viewer experience contract', () => {
   it('provides Quest WebXR controller selection in a stationary local-floor world', () => {
@@ -59,10 +60,102 @@ describe('Digestive System viewer experience contract', () => {
       'mixer-turn',
       'absorb-nutrient',
       'absorb-water',
-      'healthy-fruit',
+      'sort-apple-healthy',
+      'sort-pizza-unhealthy',
+      'sort-soft-drink-unhealthy',
       'DIGESTIVE_QUIZ_QUESTIONS',
     ]) {
       expect(source).toContain(identifier);
+    }
+  });
+
+  it('renders the requested immersive science room and teacher-led journey affordances', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+
+    for (const identifier of [
+      'modern-futuristic-science-classroom',
+      'interactive-smart-board-digestive-journey',
+      'teacher-ai-avatar',
+      'human-body-hologram',
+      'digestive-system-hologram-growing',
+      'glowing-shrink-portal-to-mouth',
+      'holographic-window-soft-ambient-lighting',
+      'animated-lighting-projector-spatial-speakers',
+      'floating-ui-panel-digestive-journey',
+      'science-lab-equipment-holographic-table',
+      'spatial-science-room-ambience-no-student-npcs',
+      'Teacher AI:',
+      'Cinematic:',
+      'Spatial audio:',
+      'DIGESTIVE_VR_FEATURES',
+      'DIGESTIVE_IMMERSION_REQUIREMENTS',
+      'DIGESTIVE_HEALTHY_SORT_ACTIONS',
+    ]) {
+      expect(source).toContain(identifier);
+    }
+    expect(source).not.toContain('student-desk-${index + 1}');
+    expect(source).not.toContain('animated-student-${index + 1}');
+  });
+
+  it('adds body-scale environments and cinematic transition effects', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+    const styles = readFileSync(stylesPath, 'utf8');
+
+    for (const identifier of [
+      'BODY_TRAVEL_STAGE_IDS',
+      'STAGE_CAMERA_FRAMES',
+      'scienceRoomObjectsRef',
+      'object.visible = !isInsideBody',
+      'digestive-cinematic-transition',
+      'digestive-cinematic-fade',
+      'inside-mouth-gum-walls-warm-lighting',
+      'surrounding-realistic-tooth',
+      'flowing-saliva-streams',
+      'living-esophagus-tunnel-peristalsis-walls',
+      'huge-living-stomach-chamber-contracting-walls',
+      'animated-bile-flow-stream',
+      'largest-scene-giant-intestinal-folds',
+      'cool-large-intestine-water-absorption-environment',
+      'floating-holographic-quiz-card-arena',
+      'procedural-pbr-organ-fold',
+      'soft-organ-bloom-light',
+    ]) {
+      expect(`${source}\n${styles}`).toContain(identifier);
+    }
+  });
+
+  it('animates active body environments instead of leaving static stage models', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+
+    for (const identifier of [
+      'activeStageGroup?.traverse',
+      'object instanceof THREE.Points',
+      'peristalsis-wall-contraction-ring',
+      'acid-particle-steam-bubble',
+      'large-surrounding-villus',
+      'food-falls-from-above',
+    ]) {
+      expect(source).toContain(identifier);
+    }
+  });
+
+  it('prefers authored GLB production assets over procedural fallback geometry', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+    const assetReadme = readFileSync(assetReadmePath, 'utf8');
+
+    for (const identifier of [
+      'GLTFLoader',
+      'DIGESTIVE_GLTF_ASSET_SLOTS',
+      'loadProductionDigestiveAssets',
+      'production-gltf-${slot.id}',
+      'THREE.AnimationMixer',
+      'createPresentationPipeline',
+      'browserEnhanced',
+      'mouth-interior-environment.glb',
+      'small-intestine-villi-world.glb',
+      'holographic-quiz-arena.glb',
+    ]) {
+      expect(`${source}\n${assetReadme}`).toContain(identifier);
     }
   });
 

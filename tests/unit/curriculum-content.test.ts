@@ -9,9 +9,9 @@ import { validateCurriculumGraph } from '../../packages/simulation-schema/src/in
 
 describe('canonical curriculum content', () => {
   it('defines typed courses, chapters, and concepts for every working simulation', () => {
-    expect(COURSES).toHaveLength(7);
-    expect(CURRICULUM_CHAPTERS).toHaveLength(9);
-    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(22);
+    expect(COURSES).toHaveLength(10);
+    expect(CURRICULUM_CHAPTERS).toHaveLength(12);
+    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(40);
 
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
     for (const simulation of SIMULATION_MODULES) {
@@ -45,5 +45,27 @@ describe('canonical curriculum content', () => {
       title: 'From Tasting to Digesting',
       simulationIds: ['sim-c05-ch03-a02-introduction-of-digestive-system'],
     });
+  });
+
+  it('links newly authored simulations through the managed curriculum system', () => {
+    const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
+
+    for (const simulationId of [
+      'sim-c1-math-ch01-introduction-to-money',
+      'sim-c2-english-ch01-prepositions',
+      'sim-c8-10-science-solar-system',
+    ]) {
+      expect(linkedSimulationIds.has(simulationId)).toBe(true);
+    }
+
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c1-math-money',
+    )?.simulationIds).toEqual(['sim-c1-math-ch01-introduction-to-money']);
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c2-english-prepositions',
+    )?.simulationIds).toEqual(['sim-c2-english-ch01-prepositions']);
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c8-solar-system',
+    )?.simulationIds).toEqual(['sim-c8-10-science-solar-system']);
   });
 });

@@ -9,10 +9,12 @@ export const VALID_GRADE_BANDS = [
 
 export const VALID_SUBJECTS = [
   'science',
+  'english',
   'physics',
   'chemistry',
   'biology',
   'mathematics',
+  'art',
   'geography',
   'history',
   'environmentalScience',

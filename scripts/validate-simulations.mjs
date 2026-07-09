@@ -48,6 +48,10 @@ export const VIEWER_NAME_BY_SLUG = {
   'c7-ch10-a02-the-breathing-process-in-human': 'BreathingProcessViewer',
   'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape': 'ForceMotionViewer',
   'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test': 'AcidBaseViewer',
+  'c1-art-a01-learning-of-colours': 'ColourAdventureViewer',
+  'c1-math-ch01-introduction-to-money': 'MoneyTownViewer',
+  'c2-english-ch01-prepositions': 'PrepositionAdventureViewer',
+  'c8-10-science-solar-system': 'SolarSystemMissionViewer',
 };
 
 export function extractSimulationSlugs(modulesCode) {
