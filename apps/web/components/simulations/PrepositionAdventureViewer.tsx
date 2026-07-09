@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
@@ -650,6 +651,12 @@ export default function PrepositionAdventureViewer() {
       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
     }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <ClassroomSync
+        stageIndex={stageIndex}
+        stageCount={PREPOSITION_STAGES.length}
+        completed={stageIndex >= PREPOSITION_STAGES.length - 1 && stageComplete}
+        started={started}
+      />
 
       {!started && (
         <div style={{

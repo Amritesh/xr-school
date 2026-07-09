@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
@@ -859,6 +860,12 @@ export default function SolarSystemMissionViewer() {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', background: '#020617', color: '#f8fafc', fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <ClassroomSync
+        stageIndex={stageIndex}
+        stageCount={SOLAR_MISSION_STAGES.length}
+        completed={stageIndex >= SOLAR_MISSION_STAGES.length - 1 && stageComplete}
+        started={started}
+      />
       {!started && (
         <div style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'grid', placeItems: 'center', padding: 24, background: 'radial-gradient(circle at 50% 34%, rgba(14,165,233,.18), rgba(2,6,23,.96) 70%)', textAlign: 'center' }}>
           <section style={{ width: 'min(820px, 100%)' }}>

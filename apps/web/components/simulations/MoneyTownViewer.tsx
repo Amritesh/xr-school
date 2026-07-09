@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
@@ -748,6 +749,12 @@ export default function MoneyTownViewer() {
       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
     }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <ClassroomSync
+        stageIndex={stageIndex}
+        stageCount={MONEY_TOWN_STAGES.length}
+        completed={stageIndex >= MONEY_TOWN_STAGES.length - 1 && stageComplete}
+        started={started}
+      />
 
       {!started && (
         <div style={{
