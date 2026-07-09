@@ -12,14 +12,14 @@ const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/Gener
 const availabilityPath = resolve(process.cwd(), 'apps/web/lib/simulationAvailability.ts');
 
 describe('catalog runtime simulations', () => {
-  it('keeps reusable catalog runtimes available for development without advertising them as released', () => {
-    expect(existsSync(routePath)).toBe(true);
-    const routeSource = readFileSync(routePath, 'utf8');
-    expect(routeSource).toContain('generateStaticParams');
-    expect(routeSource).toContain('GenericCatalogSimulationViewer');
-    expect(routeSource).toContain('SCIENCE_SIMULATION_CATALOG.find');
-    expect(routeSource).toContain('IMPLEMENTED_SIMULATION_SLUGS.map');
-    expect(routeSource).toContain('isImplementedSimulationSlug(slug)');
+  it('serves every implemented simulation from its dedicated page, with no catch-all route to shadow it', () => {
+    // A dynamic /simulations/[slug] route once prerendered over the dedicated
+    // pages on Vercel (same output paths), 404ing pollination and circuit and
+    // replacing the rest with the generic viewer. It must not come back.
+    expect(existsSync(routePath)).toBe(false);
+    for (const slug of IMPLEMENTED_SIMULATION_SLUGS) {
+      expect(existsSync(resolve(process.cwd(), `apps/web/app/simulations/${slug}/page.tsx`))).toBe(true);
+    }
 
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
     expect(SCIENCE_SIMULATION_CATALOG).toHaveLength(497);
