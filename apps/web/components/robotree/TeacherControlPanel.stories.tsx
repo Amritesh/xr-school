@@ -46,6 +46,16 @@ export const LoadingState = {
   },
 };
 
+/** Paused session: the Pause All slot switches to Resume All. */
+export const Paused = {
+  args: {
+    session: { ...MOCK_SESSION, status: 'paused' },
+    selectedCount: 1,
+    busyAction: null,
+    onAction: noop,
+  },
+};
+
 /** Command errors render in the parent page banner; End Demo stays available. */
 export const ErrorState = {
   args: {

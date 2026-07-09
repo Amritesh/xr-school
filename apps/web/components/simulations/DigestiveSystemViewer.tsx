@@ -24,6 +24,7 @@ import {
   playSimulationNarration,
   stopSimulationNarration,
 } from '@/lib/simulationAudio';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 
 const COLORS = {
   cyan: 0x38bdf8,
@@ -973,6 +974,12 @@ export default function DigestiveSystemViewer() {
       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
     }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <ClassroomSync
+        stageIndex={stageIndex}
+        stageCount={DIGESTIVE_STAGES.length}
+        completed={stageIndex >= DIGESTIVE_STAGES.length - 1 && stageComplete}
+        started={started}
+      />
 
       {!started && (
         <div style={{

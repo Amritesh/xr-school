@@ -12,6 +12,7 @@ import {
   evaluateCircuit,
 } from '../../../../packages/simulation-runtime/src/models/circuitModel';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import ExperienceFocusGuide from '@/components/simulation-experience/ExperienceFocusGuide';
 import '@/components/simulation-experience/simulation-experience.css';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
@@ -648,6 +649,12 @@ export default function CircuitViewer() {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', background: '#dce8ef', overflow: 'hidden' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <ClassroomSync
+        stageIndex={stage}
+        stageCount={STAGES.length}
+        completed={stage >= STAGES.length - 1}
+        started={started}
+      />
 
       {runtimeError && (
         <div role="alert" style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'grid', placeContent: 'center', padding: 24, background: 'rgba(8,5,2,0.95)', color: '#fecaca', textAlign: 'center' }}>

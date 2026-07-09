@@ -7,7 +7,7 @@ const meta = {
     layout: 'fullscreen',
     a11y: {
       notes:
-        'Connection, session and battery states are text pills; the assigned original demo opens from a button only while running. In Storybook the snapshot poll and join call must be mocked (msw) — no real API calls in stories.',
+        'Connection, session and battery states are text pills; while running, a single Start Activity link opens the assigned VR activity, which reports phase progress automatically. In Storybook the snapshot poll and join call must be mocked (msw) — no real API calls in stories.',
     },
   },
 };

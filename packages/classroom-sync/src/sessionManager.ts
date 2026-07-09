@@ -96,8 +96,8 @@ export class ClassroomSessionManager {
       label: request.label ?? `Headset ${count}`,
       deviceType: request.deviceType ?? 'vrHeadset',
       status: 'connected',
-      // TODO: replace simulated battery with native headset battery API.
-      batteryPercent: 100 - ((count * 7) % 55),
+      // Devices report their real battery when the browser exposes it.
+      batteryPercent: request.batteryPercent ?? 100,
       selected: false,
       currentStepIndex: 0,
       lastSeenAt: now(),
@@ -183,6 +183,12 @@ export class ClassroomSessionManager {
         session.status = 'paused';
         for (const entry of session.progress) {
           if (entry.status === 'running') entry.status = 'paused';
+        }
+        break;
+      case 'resumeAll':
+        session.status = 'running';
+        for (const entry of session.progress) {
+          if (entry.status === 'paused') entry.status = 'running';
         }
         break;
       case 'stopAll':

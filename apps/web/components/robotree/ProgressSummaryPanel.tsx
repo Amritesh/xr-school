@@ -1,6 +1,7 @@
 'use client';
 
 import type { ClassroomSession, ProgressSummary } from '@/lib/robotreeTypes';
+import { findActivity } from '@/lib/robotreeTypes';
 
 export function ProgressSummaryPanel({
   session,
@@ -21,24 +22,19 @@ export function ProgressSummaryPanel({
         </div>
         <div className="rt-stat">
           <strong>{summary.runningCount}</strong>
-          <span>Running</span>
+          <span>In Activity</span>
         </div>
         <div className="rt-stat">
           <strong>{summary.completedCount}</strong>
           <span>Completed</span>
         </div>
-        <div className="rt-stat">
-          <strong>{summary.totalAnswersSubmitted}</strong>
-          <span>Answers</span>
-        </div>
-        <div className="rt-stat">
-          <strong>{summary.averageScorePercent != null ? `${summary.averageScorePercent}%` : '—'}</strong>
-          <span>Avg Score</span>
-        </div>
       </div>
 
       {summary.entries.length === 0 ? (
-        <p className="rt-note">No student progress yet. Start an activity to see live progress.</p>
+        <p className="rt-note">
+          No student progress yet. Start an activity — each headset reports phases automatically
+          as students complete them in VR.
+        </p>
       ) : (
         <div style={{ overflowX: 'auto' }}>
           <table className="rt-table">
@@ -48,8 +44,6 @@ export function ProgressSummaryPanel({
                 <th>Activity</th>
                 <th>Status</th>
                 <th>Progress</th>
-                <th>Answers</th>
-                <th>Score</th>
               </tr>
             </thead>
             <tbody>
@@ -61,18 +55,18 @@ export function ProgressSummaryPanel({
                 return (
                   <tr key={`${entry.deviceId}-${entry.activityId}`}>
                     <td>{deviceLabel(entry.deviceId)}</td>
-                    <td>{entry.activityId}</td>
-                    <td style={{ textTransform: 'capitalize' }}>{entry.status}</td>
+                    <td>{findActivity(entry.activityId)?.title ?? entry.activityId}</td>
+                    <td style={{ textTransform: 'capitalize' }}>
+                      {entry.status === 'completed' ? '✅ Completed' : entry.status}
+                    </td>
                     <td style={{ minWidth: '9rem' }}>
                       <div className="rt-progress-track">
                         <div className="rt-progress-fill" style={{ width: `${percent}%` }} />
                       </div>
                       <span className="rt-note" style={{ fontSize: '0.72rem' }}>
-                        Step {entry.currentStepIndex}/{entry.totalSteps}
+                        Phase {entry.currentStepIndex}/{entry.totalSteps}
                       </span>
                     </td>
-                    <td>{entry.answersSubmitted}</td>
-                    <td>{entry.scorePercent != null ? `${entry.scorePercent}%` : '—'}</td>
                   </tr>
                 );
               })}

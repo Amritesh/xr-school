@@ -1,14 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import {
-  getSnapshot,
-  joinHeadset,
-  submitProgress,
-  updateDeviceStatus,
-} from '@/lib/robotreeClient';
-import type { ClassroomStateSnapshot, HeadsetDevice } from '@/lib/robotreeTypes';
+import { getSnapshot, joinHeadset } from '@/lib/robotreeClient';
+import type { ClassroomStateSnapshot, HeadsetDevice, StudentProgress } from '@/lib/robotreeTypes';
 import { DEMO_CHAPTERS, DEMO_CLASSES, DEMO_SUBJECTS, findActivity } from '@/lib/robotreeTypes';
 import { DeviceStatusPill, SessionStatusPill } from './StatusPill';
 import { PremiumTechCard } from './PremiumTechCard';
@@ -19,9 +13,24 @@ function label(list: { id: string; label: string }[], id?: string): string {
   return list.find((item) => item.id === id)?.label ?? '—';
 }
 
+/** Reads the headset battery where the browser supports it (Quest Browser does). */
+async function readBatteryPercent(): Promise<number | undefined> {
+  try {
+    const nav = navigator as Navigator & {
+      getBattery?: () => Promise<{ level: number }>;
+    };
+    if (!nav.getBattery) return undefined;
+    const battery = await nav.getBattery();
+    return Math.round(battery.level * 100);
+  } catch {
+    return undefined;
+  }
+}
+
 /**
- * Simulated VR activity panel for the student/headset client.
- * TODO: connect selected activity to real XR simulation.
+ * Student/headset client. Pairs with the classroom, waits for the teacher to
+ * start, then hands the student into the assigned VR activity. Progress is
+ * reported automatically by the activity itself as phases are completed.
  */
 export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
   const [snapshot, setSnapshot] = useState<ClassroomStateSnapshot | null>(null);
@@ -39,7 +48,8 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
     }
     if (joining.current) return;
     joining.current = true;
-    joinHeadset(sessionId, { deviceType: 'vrHeadset' })
+    readBatteryPercent()
+      .then((batteryPercent) => joinHeadset(sessionId, { deviceType: 'vrHeadset', batteryPercent }))
       .then((device) => {
         localStorage.setItem(storageKey, device.id);
         setDeviceId(device.id);
@@ -68,11 +78,17 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
   const activity = device?.currentActivityId
     ? findActivity(device.currentActivityId)
     : session?.selectedActivity;
+  const progress: StudentProgress | undefined = snapshot?.summary.entries.find(
+    (e) => e.deviceId === device?.id && e.activityId === device?.currentActivityId,
+  );
+  const completedActivity = progress?.status === 'completed';
 
   const commandState = !session
     ? 'Connecting'
     : session.status === 'running' && device?.currentActivityId
-      ? 'Running'
+      ? completedActivity
+        ? 'Completed'
+        : 'Running'
       : session.status === 'paused'
         ? 'Paused'
         : session.status === 'stopped'
@@ -81,17 +97,13 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
             ? 'Demo Ended'
             : 'Waiting for teacher';
 
-  async function act(fn: () => Promise<unknown>) {
-    try {
-      await fn();
-      refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Action failed');
-    }
-  }
+  const stepIndex = progress?.currentStepIndex ?? device?.currentStepIndex ?? 0;
+  const totalSteps = progress?.totalSteps ?? activity?.totalSteps ?? 0;
 
-  const stepIndex = device?.currentStepIndex ?? 0;
-  const totalSteps = activity?.totalSteps ?? 0;
+  const activityLink =
+    device && activity?.simulationHref && device.currentActivityId
+      ? `${activity.simulationHref}?rtSession=${encodeURIComponent(session?.id ?? sessionId)}&rtDevice=${encodeURIComponent(device.id)}&rtActivity=${encodeURIComponent(activity.id)}`
+      : null;
 
   return (
     <div style={{ display: 'grid', gap: '1.2rem' }}>
@@ -107,11 +119,23 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
           ) : null}
         </div>
         <div className="rt-headset-activity">
-          {commandState === 'Running' && activity ? activity.title : commandState}
+          {commandState === 'Running' && activity
+            ? activity.title
+            : commandState === 'Completed'
+              ? '✅ Activity Complete'
+              : commandState}
         </div>
-        {activity && commandState === 'Running' ? (
+
+        {commandState === 'Running' && activity && activityLink ? (
           <>
             <p className="rt-note">{activity.description}</p>
+            <a
+              className="rt-btn rt-btn-primary"
+              href={activityLink}
+              style={{ fontSize: '1.05rem', padding: '0.9rem 2.2rem' }}
+            >
+              🥽 Start Activity — Enter VR
+            </a>
             <div style={{ width: 'min(320px, 100%)' }}>
               <div className="rt-progress-track">
                 <div
@@ -120,16 +144,27 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
                 />
               </div>
               <p className="rt-note">
-                Step {stepIndex}/{totalSteps}
+                Phase {stepIndex}/{totalSteps} — progress updates automatically as you complete
+                each phase inside the activity.
               </p>
             </div>
           </>
+        ) : commandState === 'Completed' && activity ? (
+          <p className="rt-note">
+            Great work! You finished “{activity.title}” ({totalSteps}/{totalSteps} phases). Your
+            teacher can see your result. Wait for the next instruction.
+          </p>
         ) : (
           <p className="rt-note">
             {device?.label ?? 'This headset'} is paired with the teacher tablet. The activity
             appears here the moment the teacher presses Start.
           </p>
         )}
+        {error ? (
+          <p className="rt-note" style={{ color: 'var(--rt-red)' }}>
+            {error}
+          </p>
+        ) : null}
       </div>
 
       <PremiumTechCard icon="📚" title="Assigned Content">
@@ -151,89 +186,6 @@ export function StudentHeadsetView({ sessionId }: { sessionId: string }) {
             <span>Activity</span>
           </div>
         </div>
-      </PremiumTechCard>
-
-      <PremiumTechCard icon="🎮" title="Headset Demo Controls">
-        <div className="rt-btn-row">
-          <button
-            type="button"
-            className="rt-btn rt-btn-primary"
-            disabled={!device?.currentActivityId || commandState !== 'Running'}
-            onClick={() =>
-              act(() =>
-                submitProgress(sessionId, {
-                  deviceId: device!.id,
-                  activityId: device!.currentActivityId!,
-                  currentStepIndex: Math.min(stepIndex + 1, totalSteps),
-                  totalSteps,
-                }),
-              )
-            }
-          >
-            ⏫ Send Progress
-          </button>
-          {activity?.simulationHref ? (
-            <Link
-              className="rt-btn rt-btn-primary"
-              href={activity.simulationHref}
-              target="_blank"
-              aria-disabled={commandState !== 'Running'}
-              style={commandState !== 'Running' ? { pointerEvents: 'none', opacity: 0.45 } : undefined}
-            >
-              Open Assigned Demo
-            </Link>
-          ) : null}
-          <button
-            type="button"
-            className="rt-btn"
-            disabled={!device?.currentActivityId || commandState !== 'Running'}
-            onClick={() => {
-              const entry = snapshot?.summary.entries.find(
-                (e) => e.deviceId === device!.id && e.activityId === device!.currentActivityId,
-              );
-              const answers = (entry?.answersSubmitted ?? 0) + 1;
-              return act(() =>
-                submitProgress(sessionId, {
-                  deviceId: device!.id,
-                  activityId: device!.currentActivityId!,
-                  answersSubmitted: answers,
-                  scorePercent: Math.min(100, 55 + answers * 9),
-                }),
-              );
-            }}
-          >
-            ✅ Submit Demo Answer
-          </button>
-          <button
-            type="button"
-            className="rt-btn"
-            disabled={!device}
-            onClick={() => act(() => updateDeviceStatus(sessionId, device!.id, 'batteryLow'))}
-          >
-            🪫 Simulate Battery Low
-          </button>
-          <button
-            type="button"
-            className="rt-btn"
-            disabled={!device}
-            onClick={() =>
-              act(() =>
-                updateDeviceStatus(
-                  sessionId,
-                  device!.id,
-                  device!.status === 'offline' ? 'connected' : 'offline',
-                ),
-              )
-            }
-          >
-            {device?.status === 'offline' ? '📶 Reconnect' : '📴 Disconnect'}
-          </button>
-        </div>
-        {error ? (
-          <p className="rt-note" style={{ color: 'var(--rt-red)', marginTop: '0.7rem' }}>
-            {error}
-          </p>
-        ) : null}
       </PremiumTechCard>
     </div>
   );

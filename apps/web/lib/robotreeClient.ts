@@ -49,10 +49,6 @@ export function getSnapshot(sessionId: string): Promise<ClassroomStateSnapshot> 
   return request(`/sessions/${encodeURIComponent(sessionId)}`);
 }
 
-export function openSession(sessionId: string): Promise<ClassroomSession> {
-  return request(`/sessions/${sessionId}/open`, { method: 'POST' });
-}
-
 export function joinHeadset(
   sessionId: string,
   body: JoinHeadsetRequest = {},
@@ -60,13 +56,6 @@ export function joinHeadset(
   return request(`/sessions/${encodeURIComponent(sessionId)}/join-headset`, {
     method: 'POST',
     body: JSON.stringify(body),
-  });
-}
-
-export function simulateHeadsets(sessionId: string, count = 10): Promise<HeadsetDevice[]> {
-  return request(`/sessions/${sessionId}/simulate-headsets`, {
-    method: 'POST',
-    body: JSON.stringify({ count }),
   });
 }
 

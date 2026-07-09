@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type {
   LessonSnapshot,
 } from '../../../../packages/simulation-runtime/src/index';
+import { ClassroomSync } from '../robotree/ClassroomSync';
 import BrowserExperienceHud from './BrowserExperienceHud';
 import ExperienceFocusGuide, {
   type FocusGuideState,
@@ -67,6 +68,12 @@ export default function SimulationExperienceShell({
       data-reduced-motion={preferences.reducedMotion}
     >
       <div className="simulation-experience__world">{children}</div>
+      <ClassroomSync
+        stageIndex={snapshot.stageIndex}
+        stageCount={snapshot.stageCount}
+        completed={completed || snapshot.lessonComplete}
+        started={started}
+      />
       {started && !error && focusGuide && (
         <ExperienceFocusGuide {...focusGuide} />
       )}

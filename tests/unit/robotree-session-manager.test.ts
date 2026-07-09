@@ -105,6 +105,24 @@ describe('Robotree classroom session manager', () => {
     expect(updated.progress.every((p) => p.status === 'paused')).toBe(true);
   });
 
+  it('resumeAll returns a paused session and its progress to running', () => {
+    manager.simulateHeadsets(session.id, 2);
+    selectDemoContent();
+    manager.sendTeacherCommand(session.id, { type: 'startAll' });
+    manager.sendTeacherCommand(session.id, { type: 'pauseAll' });
+    manager.sendTeacherCommand(session.id, { type: 'resumeAll' });
+    const updated = manager.getSession(session.id)!;
+    expect(updated.status).toBe('running');
+    expect(updated.progress.every((p) => p.status === 'running')).toBe(true);
+  });
+
+  it('joinHeadset stores the battery level reported by the device', () => {
+    const device = manager.joinHeadset(session.id, { batteryPercent: 67 });
+    expect(device.batteryPercent).toBe(67);
+    const fallback = manager.joinHeadset(session.id);
+    expect(fallback.batteryPercent).toBe(100);
+  });
+
   it('stopAll changes the session status and resets running activities', () => {
     manager.simulateHeadsets(session.id, 2);
     selectDemoContent();

@@ -6,11 +6,10 @@ export type TeacherAction =
   | 'startSelected'
   | 'startAll'
   | 'pauseAll'
+  | 'resumeAll'
   | 'stopAll'
   | 'syncContent'
-  | 'openSession'
   | 'copyJoinLink'
-  | 'simulateHeadsets'
   | 'viewProgress'
   | 'endDemo';
 
@@ -26,6 +25,7 @@ export function TeacherControlPanel({
   onAction: (action: TeacherAction) => void;
 }) {
   const hasActivity = Boolean(session.selectedActivity);
+  const paused = session.status === 'paused';
   const btn = (
     action: TeacherAction,
     label: string,
@@ -45,7 +45,7 @@ export function TeacherControlPanel({
   return (
     <div style={{ display: 'grid', gap: '0.8rem' }}>
       <div className="rt-btn-row">
-        {btn('startSelected', `▶ Start on Selected Headset (${selectedCount})`, {
+        {btn('startSelected', `▶ Start on Selected Headsets (${selectedCount})`, {
           primary: true,
           disabled: !hasActivity || selectedCount === 0,
           title: hasActivity ? undefined : 'Select chapter and activity first',
@@ -55,15 +55,13 @@ export function TeacherControlPanel({
           disabled: !hasActivity,
           title: hasActivity ? undefined : 'Select chapter and activity first',
         })}
-        {btn('pauseAll', '⏸ Pause All')}
+        {paused ? btn('resumeAll', '▶ Resume All') : btn('pauseAll', '⏸ Pause All')}
         {btn('stopAll', '⏹ Stop All')}
         {btn('syncContent', '🔄 Sync Content')}
         {btn('viewProgress', '📊 View Student Progress')}
       </div>
       <div className="rt-btn-row">
-        {btn('openSession', '🔓 Open Session')}
         {btn('copyJoinLink', '🔗 Copy Student Join Link')}
-        {btn('simulateHeadsets', '🥽 Simulate 10 Headsets')}
         {btn('endDemo', '⏻ End Demo', { danger: true })}
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import * as THREE from 'three';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
@@ -394,6 +395,12 @@ export default function FoodSourcesSortingViewer() {
   return (
     <>
       <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />
+      <ClassroomSync
+        stageIndex={stageIndex}
+        stageCount={STAGES.length}
+        completed={stageIndex >= STAGES.length - 1}
+        started={started}
+      />
       {!started && (
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'grid', placeItems: 'center', padding: 24, background: 'radial-gradient(circle at 50% 20%, rgba(38,61,35,0.92), rgba(16,20,15,0.96) 62%)' }}>
         <div style={{ maxWidth: 680, color: '#f8fafc', textAlign: 'center' }}>

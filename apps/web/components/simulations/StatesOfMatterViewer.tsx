@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { createParticleCloud, createPhysicsWorld, type RuntimePhysicsWorld } from '@/lib/runtimePhysics';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
@@ -517,6 +518,12 @@ export default function StatesOfMatterViewer() {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', background: '#08111f' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <ClassroomSync
+        stageIndex={stageIndex}
+        stageCount={STAGES.length}
+        completed={stageIndex >= STAGES.length - 1}
+        started={started}
+      />
 
       {runtimeError && (
         <div role="alert" style={{ position: 'absolute', inset: 0, zIndex: 20, display: 'grid', placeContent: 'center', padding: 24, background: 'rgba(2,6,23,0.96)', color: '#fecaca', textAlign: 'center' }}>

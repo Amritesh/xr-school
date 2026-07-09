@@ -41,7 +41,7 @@ export function HeadsetDeviceCard({
           <span aria-hidden>{batteryIcon(device.batteryPercent)}</span>
           {device.batteryPercent}%
         </span>
-        <span>{device.currentActivityId ? `Step ${device.currentStepIndex + 1}` : 'Idle'}</span>
+        <span>{device.currentActivityId ? `Phase ${device.currentStepIndex} done` : 'Idle'}</span>
       </div>
       <span className="rt-note" style={{ fontSize: '0.72rem' }}>
         {device.selected ? '✓ Selected for targeted start' : 'Tap to select'}

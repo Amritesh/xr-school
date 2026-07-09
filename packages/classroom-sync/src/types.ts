@@ -25,6 +25,7 @@ export type TeacherCommandType =
   | 'startSelected'
   | 'startAll'
   | 'pauseAll'
+  | 'resumeAll'
   | 'stopAll'
   | 'syncContent'
   | 'selectContent'
@@ -149,6 +150,8 @@ export interface CreateRobotreeSessionRequest {
 export interface JoinHeadsetRequest {
   deviceType?: DeviceType;
   label?: string;
+  /** Real battery level reported by the joining device, when available. */
+  batteryPercent?: number;
 }
 
 export interface TeacherCommand {
