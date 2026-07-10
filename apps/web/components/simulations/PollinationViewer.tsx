@@ -18,11 +18,9 @@ import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import {
-  isQuestBackPressed,
-  updateButtonLatch,
-  updateSnapTurn,
-} from '@/lib/xrNavigation';
+import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
 import {
@@ -183,6 +181,13 @@ const DEFAULT_POLLINATION_FRAME: CameraFrame = {
   target: new THREE.Vector3(0, 1.02, -0.92),
 };
 
+// Feet on the garden path a couple of metres south of the flower beds,
+// facing the experimental flower — standing height comes from the headset.
+const VR_SPAWN = {
+  position: new THREE.Vector3(0, 0, 2.4),
+  lookAt: new THREE.Vector3(0, 1.0, -0.9),
+};
+
 interface StageCameraFocus {
   /** Object(s) to frame together. Multiple names fit all of them in one shot. */
   names: string[];
@@ -279,6 +284,10 @@ export default function PollinationViewer() {
   const snapshotRef = useRef<LessonSnapshot>(experienceRef.current.snapshot());
   const performRef = useRef<(actionId: string, source: NormalizedInputSource, target?: string) => void>(() => {});
   const previousRef = useRef<() => void>(() => {});
+  const nextRef = useRef<() => void>(() => {});
+  const replayRef = useRef<() => void>(() => {});
+  const completedRef = useRef(false);
+  const evidenceRef = useRef<string[]>([]);
   const focusActionRef = useRef<string | undefined>(undefined);
 
   const [snapshot, setSnapshot] = useState(snapshotRef.current);
@@ -296,6 +305,11 @@ export default function PollinationViewer() {
     visible: false,
   });
   const focusVisibilityRef = useRef(focusVisibility);
+
+  // Mirrored into refs so the render loop (which drives the VR HUD panel)
+  // reads current values without re-subscribing the effect.
+  useEffect(() => { completedRef.current = completed; }, [completed]);
+  useEffect(() => { evidenceRef.current = evidence; }, [evidence]);
 
   const experienceDefinition = POLLINATION_WORLD.experienceDefinitions![0];
   const currentStage = experienceDefinition.stages[snapshot.stageIndex];
@@ -459,6 +473,21 @@ export default function PollinationViewer() {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
   }, [moveCameraToStage, preferences.audio]);
+  nextRef.current = next;
+
+  const replay = useCallback(() => {
+    setCompleted(false);
+    setEvidence([]);
+    const fresh = experienceRef.current.restart();
+    snapshotRef.current = fresh;
+    setSnapshot(fresh);
+    sceneApiRef.current?.setStage(fresh.stageIndex);
+    moveCameraToStage(fresh.stageIndex);
+    transitionRef.current.reset();
+    setScaleDisclosure(scaleDisclosureForStage(fresh.stageIndex));
+    playNarration(fresh.stageIndex, preferences.audio);
+  }, [moveCameraToStage, preferences.audio]);
+  replayRef.current = replay;
 
   const enterVr = useCallback(async () => {
     if (!rendererRef.current || !('xr' in navigator)) return;
@@ -506,11 +535,6 @@ export default function PollinationViewer() {
       const camera = new THREE.PerspectiveCamera(58, 1, 0.04, 80);
       camera.position.set(0, 1.55, 3.15);
       camera.lookAt(0, 1.05, -0.8);
-      const playerRig = new THREE.Group();
-      playerRig.name = 'player-rig';
-      playerRig.add(camera);
-      scene.add(playerRig);
-      playerRigRef.current = playerRig;
 
       host = createWebSimulationRuntime({
         mount: mountElement,
@@ -527,6 +551,16 @@ export default function PollinationViewer() {
       });
       rendererRef.current = host.renderer;
       cameraRef.current = camera;
+
+      const vrRig = createVrPlayerRig({
+        renderer: host.renderer,
+        scene,
+        camera,
+        spawn: VR_SPAWN,
+        rayColor: '#d9f99d',
+      });
+      playerRigRef.current = vrRig.rig;
+      host.resources.register('pollination-player-rig', () => vrRig.dispose());
 
       const materialFactory = createMaterialFactory({
         assets: POLLINATION_WORLD.assetManifests[0],
@@ -680,46 +714,68 @@ export default function PollinationViewer() {
         }
       };
 
-      const controllerRayGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 0, -2.5),
-      ]);
-      const controllerRayMaterial = new THREE.LineBasicMaterial({
-        color: '#d9f99d',
-        transparent: true,
-        opacity: 0.72,
-      });
-      const controllers = [0, 1].map(index => {
-        const controller = host!.renderer.xr.getController(index);
-        controller.name = `quest-controller-${index}`;
-        controller.add(new THREE.Line(controllerRayGeometry, controllerRayMaterial));
-        playerRig.add(controller);
-        return controller;
-      });
-      host.resources.register('pollination-controller-rays', () => {
-        controllerRayGeometry.dispose();
-        controllerRayMaterial.dispose();
-        for (const controller of controllers) playerRig.remove(controller);
-      });
+      const hud = createVrHudPanel({ scene });
+      host.resources.register('pollination-vr-hud', () => hud.dispose());
 
       const interactionSystem = createInteractionSystem({
         camera,
         domElement: host.renderer.domElement,
-        xrControllers: controllers,
+        xrControllers: vrRig.controllers,
         onSelect: (id, object, source) => {
+          const hudButton = hud.buttonIdFor(id);
+          if (hudButton) {
+            if (hudButton === 'previous') previousRef.current();
+            if (hudButton === 'next') nextRef.current();
+            if (hudButton === 'replay') replayRef.current();
+            if (hudButton === 'exit') void host!.renderer.xr.getSession()?.end();
+            return;
+          }
           selectObject(object, source);
           interactionSystem.setSelected(id);
           guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 2.1 }));
         },
       });
+      for (const mesh of Object.values(hud.buttons)) {
+        interactionSystem.register(mesh.name, mesh);
+      }
       for (const targetName of Object.keys(ACTION_BY_TARGET)) {
         const target = world.root.getObjectByName(targetName);
         if (target) interactionSystem.register(targetName, target, { highlightColor: '#ffe08a' });
       }
       host.resources.register('pollination-interaction', () => interactionSystem.dispose());
 
-      const snapTurnLatches = [false, false];
-      const backButtonLatches = [false, false];
+      const locomotion = createVrLocomotion({
+        renderer: host.renderer,
+        rig: vrRig.rig,
+        onBack: () => {
+          if (snapshotRef.current.stageIndex > 0) previousRef.current();
+          else void host!.renderer.xr.getSession()?.end();
+        },
+      });
+
+      const vrHudContent = (): VrHudContent => {
+        if (completedRef.current) {
+          return {
+            eyebrow: 'Lesson complete',
+            title: 'Today you learned',
+            body: 'Great field work! Review what your experiment proved.',
+            bullets: evidenceRef.current,
+            buttons: ['replay', 'exit'],
+          };
+        }
+        const active = snapshotRef.current;
+        const focusAction = focusActionRef.current;
+        return {
+          eyebrow: `Stage ${active.stageIndex + 1} / ${active.stageCount}`,
+          title: active.stageTitle,
+          body: active.cue,
+          hint: focusAction
+            ? `Do: ${ACTION_LABELS[focusAction]}`
+            : 'Stage complete — press Next ▶',
+          buttons: active.stageIndex > 0 ? ['previous', 'next'] : ['next'],
+        };
+      };
+
       const projectedFocus = new THREE.Vector3();
       renderUpdate = context => {
         world.update(context.frameDeltaSeconds, context.elapsedSeconds);
@@ -735,24 +791,13 @@ export default function PollinationViewer() {
         interactionSystem.update(context.elapsedSeconds);
 
         if (host!.renderer.xr.isPresenting) {
-          const session = host!.renderer.xr.getSession();
-          session?.inputSources.forEach((inputSource, index) => {
-            const gamepad = inputSource.gamepad;
-            if (!gamepad) return;
-            const snap = updateSnapTurn(gamepad.axes[2] ?? gamepad.axes[0] ?? 0, snapTurnLatches[index]);
-            snapTurnLatches[index] = snap.latched;
-            playerRig.rotation.y += snap.radians;
-            const back = updateButtonLatch(
-              isQuestBackPressed(gamepad.buttons, inputSource.handedness),
-              backButtonLatches[index],
-            );
-            backButtonLatches[index] = back.latched;
-            if (back.pressed) {
-              if (snapshotRef.current.stageIndex > 0) previousRef.current();
-              else void session.end();
-            }
-          });
+          locomotion.update(context.frameDeltaSeconds);
+          interactionSystem.updateXrHover();
+          hud.setVisible(true);
+          hud.setContent(vrHudContent());
+          hud.update(host!.renderer.xr.getCamera(), context.frameDeltaSeconds);
         } else {
+          hud.setVisible(false);
           guidedCamera.update(context.frameDeltaSeconds);
           const focusTarget = suggestedTargetName
             ? world.root.getObjectByName(suggestedTargetName)

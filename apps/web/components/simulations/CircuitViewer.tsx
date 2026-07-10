@@ -18,14 +18,13 @@ import '@/components/simulation-experience/simulation-experience.css';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
 import { CIRCUIT_WORLD } from '@/lib/world-builder/circuitWorld';
+import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import {
   resolveFocusGuide,
   type FocusGuideVisibility,
 } from '@/lib/world-builder/focusGuidance';
-import {
-  isQuestBackPressed,
-  updateButtonLatch,
-} from '@/lib/xrNavigation';
 import {
   computeFocusFrame,
   createGuidedCamera,
@@ -76,6 +75,13 @@ const STAGE_CAMERAS = [
   { pos: new THREE.Vector3(0.48, 1.5, 0.72), target: new THREE.Vector3(0.48, 0.9, -0.8) },
 ];
 
+const COMPLETION_BULLETS = [
+  'A complete circuit path is required for current to flow.',
+  'Opening the switch breaks the path and turns the bulb off.',
+  'Closing the switch lets current move around the loop.',
+  "Higher resistance lowers current and dims the bulb, matching Ohm's Law.",
+];
+
 // Wire loop — internal coordinates within circuitGroup (scaled 0.155×, placed at z=-0.8)
 const WIRE_POINTS = [
   new THREE.Vector3(-1.8, 0.08, 0),
@@ -92,6 +98,10 @@ const WIRE_POINTS = [
 const CIRCUIT_SCALE = 0.155;
 // World-space bench center: Z = -0.8  (user starts at Z=0, facing -Z)
 const BZ = -0.8;
+const VR_SPAWN = {
+  position: new THREE.Vector3(0.35, 0, 1.25),
+  lookAt: new THREE.Vector3(0.35, 0.9, BZ),
+};
 const ASSESSMENT_STAGE_REQUIREMENTS = [1, 2, 3] as const;
 const ASSESSMENT_SEQUENCE = CIRCUIT_WORLD.assessments[0];
 
@@ -166,6 +176,14 @@ export default function CircuitViewer() {
     });
     const renderer = host.renderer;
     rendererRef.current = renderer;
+
+    const vrRig = createVrPlayerRig({
+      renderer,
+      scene,
+      camera,
+      spawn: VR_SPAWN,
+    });
+    host.resources.register('circuit-player-rig', () => vrRig.dispose());
 
     const materialFactory = createMaterialFactory({
       assets: CIRCUIT_WORLD.assetManifests[0],
@@ -418,26 +436,29 @@ export default function CircuitViewer() {
       guidedCamera.focusOn(computeFocusFrame(object, camera));
     };
 
-    // ── XR Controllers ────────────────────────────────────────────────────
-    function buildControllerVisual() {
-      const g = new THREE.Group();
-      g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.026, 0.1, 8), new THREE.MeshStandardMaterial({ color: 0x2d2d2d, metalness: 0.6 })));
-      const ray = new THREE.Mesh(new THREE.CylinderGeometry(0.002, 0.002, 1.5, 4), new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.4 }));
-      ray.position.z = -0.75; ray.rotation.x = Math.PI / 2; g.add(ray);
-      return g;
-    }
-    const ctrl0 = renderer.xr.getController(0);
-    const ctrl1 = renderer.xr.getController(1);
-    ctrl0.add(buildControllerVisual()); ctrl1.add(buildControllerVisual());
-    scene.add(ctrl0, ctrl1);
+    const hud = createVrHudPanel({ scene });
+    host.resources.register('circuit-vr-hud', () => hud.dispose());
 
     // ── Selection: one shared raycasting/highlight system for mouse + XR ──
     const interactionSystem = createInteractionSystem({
       camera,
       domElement: renderer.domElement,
-      xrControllers: [ctrl0, ctrl1],
-      onSelect: handleCircuitObjectSelection,
+      xrControllers: vrRig.controllers,
+      onSelect: (id, object) => {
+        const hudButton = hud.buttonIdFor(id);
+        if (hudButton) {
+          if (hudButton === 'previous') moveToCircuitStage(stageRef.current - 1);
+          if (hudButton === 'next') moveToCircuitStage(stageRef.current + 1);
+          if (hudButton === 'replay') replayCircuit();
+          if (hudButton === 'exit') void renderer.xr.getSession()?.end();
+          return;
+        }
+        handleCircuitObjectSelection(id, object);
+      },
     });
+    for (const mesh of Object.values(hud.buttons)) {
+      interactionSystem.register(mesh.name, mesh);
+    }
     interactionSystem.register('circuit-switch-lever', switchLever, { highlightColor: '#ffcf5c' });
     interactionSystem.register('circuit-resistor', resistorGroup, { highlightColor: '#ffcf5c' });
     interactionSystem.register('circuit-bulb', bulbGroup, { highlightColor: '#ffcf5c' });
@@ -448,7 +469,46 @@ export default function CircuitViewer() {
       resistance: RESISTORS[0].ohms,
       closed: false,
     });
-    const questBackLatches = [false, false];
+    const replayCircuit = () => {
+      switchClosedRef.current = false;
+      resistorIdxRef.current = 0;
+      setSwitchClosed(false);
+      setResistorIdx(0);
+      assessmentRef.current = createAssessmentSession(ASSESSMENT_SEQUENCE);
+      setAssessmentPromptIndex(0);
+      setAssessmentResult(null);
+      setMastered(false);
+      moveToCircuitStage(0);
+    };
+
+    const locomotion = createVrLocomotion({
+      renderer,
+      rig: vrRig.rig,
+      onBack: () => {
+        if (stageRef.current > 0) moveToCircuitStage(stageRef.current - 1);
+        else void renderer.xr.getSession()?.end();
+      },
+    });
+
+    const vrHudContent = (): VrHudContent => {
+      const activeStage = STAGES[stageRef.current];
+      if (stageRef.current >= STAGES.length - 1) {
+        return {
+          eyebrow: 'Lesson complete',
+          title: 'Today you learned',
+          body: 'You built evidence for current, resistance, brightness, and Ohm\'s Law.',
+          bullets: COMPLETION_BULLETS,
+          buttons: ['replay', 'exit'],
+        };
+      }
+      return {
+        eyebrow: `Stage ${stageRef.current + 1} / ${STAGES.length}`,
+        title: activeStage.title,
+        body: activeStage.detail,
+        hint: activeStage.note,
+        buttons: stageRef.current > 0 ? ['previous', 'next'] : ['next'],
+      };
+    };
 
     fixedUpdate = ({ deltaSeconds }) => {
       const closed = switchClosedRef.current;
@@ -506,20 +566,13 @@ export default function CircuitViewer() {
       if (resistorBandRef.current) (resistorBandRef.current.material as THREE.MeshStandardMaterial).color.setHex(RESISTORS[rIdx].bandColor);
 
       if (renderer.xr.isPresenting) {
-        const session = renderer.xr.getSession();
-        session?.inputSources.forEach((inputSource, index) => {
-          const gamepad = inputSource.gamepad;
-          if (!gamepad) return;
-          const back = updateButtonLatch(
-            isQuestBackPressed(gamepad.buttons, inputSource.handedness),
-            questBackLatches[index],
-          );
-          questBackLatches[index] = back.latched;
-          if (!back.pressed) return;
-          if (stageRef.current > 0) moveToCircuitStage(stageRef.current - 1);
-          else void session.end();
-        });
+        locomotion.update(frameDeltaSeconds);
+        interactionSystem.updateXrHover();
+        hud.setVisible(true);
+        hud.setContent(vrHudContent());
+        hud.update(renderer.xr.getCamera(), frameDeltaSeconds);
       } else {
+        hud.setVisible(false);
         focusTargets[stageRef.current]
           .getWorldPosition(projectedFocus)
           .project(camera);

@@ -193,6 +193,39 @@ describe('createInteractionSystem', () => {
     system.dispose();
   });
 
+  it('casts controller rays in world space even after the player rig has turned', () => {
+    const camera = createLookingCamera();
+    const dom = createFakeDomElement();
+    const rig = new THREE.Group();
+    const controller = new THREE.Group() as unknown as THREE.XRTargetRaySpace;
+    rig.add(controller);
+    rig.rotation.y = Math.PI / 2; // locomotion has yawed the rig 90°
+    rig.updateMatrixWorld(true);
+
+    // The controller's local forward is -Z; after the rig turn its world
+    // forward is -X, where this target sits. Building the ray from the
+    // controller's local quaternion (the pre-fix behavior) misses it.
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1));
+    mesh.position.set(-3, 0, 0);
+    mesh.updateMatrixWorld(true);
+
+    const selections: string[] = [];
+    const system = createInteractionSystem({
+      camera,
+      domElement: dom,
+      xrControllers: [controller],
+      onSelect: id => selections.push(id),
+    });
+    system.register('flower', mesh);
+
+    controller.dispatchEvent({ type: 'selectstart' } as never);
+    expect(selections).toEqual(['flower']);
+
+    system.updateXrHover();
+    expect(system.hoveredId).toBe('flower');
+    system.dispose();
+  });
+
   it('disposes highlight shells and removes all listeners', () => {
     const camera = createLookingCamera();
     const dom = createFakeDomElement();

@@ -7,6 +7,9 @@ import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulati
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
+import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import {
   createAssessmentSession,
   type AssessmentAnswerResult,
@@ -70,6 +73,16 @@ const NARRATION_AUDIO_URLS = [
 ];
 const ASSESSMENT_STAGE_REQUIREMENTS = [1, 2, 3] as const;
 const ASSESSMENT_SEQUENCE = STATES_WORLD.assessments[0];
+const VR_SPAWN = {
+  position: new THREE.Vector3(0, 0, 4.1),
+  lookAt: new THREE.Vector3(0, 1.2, 0),
+};
+const COMPLETION_BULLETS = [
+  'Solid particles vibrate in fixed positions.',
+  'Liquid particles stay close while sliding past each other.',
+  'Gas particles spread out and move quickly through the container.',
+  'Changing heat energy can move matter between solid, liquid, and gas states.',
+];
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -153,11 +166,6 @@ function makeStageButtonLabelMesh(label: string, color: string) {
   return mesh;
 }
 
-function makeControllerRay() {
-  const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -2.6)]);
-  return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: 0x7dd3fc, transparent: true, opacity: 0.8 }));
-}
-
 export default function StatesOfMatterViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -211,6 +219,14 @@ export default function StatesOfMatterViewer() {
     });
     const renderer = host.renderer;
     rendererRef.current = renderer;
+
+    const vrRig = createVrPlayerRig({
+      renderer,
+      scene,
+      camera,
+      spawn: VR_SPAWN,
+    });
+    host.resources.register('states-player-rig', () => vrRig.dispose());
 
     const guidedCamera = createGuidedCamera(camera, renderer.domElement);
     guidedCamera.focusOn(
@@ -349,18 +365,31 @@ export default function StatesOfMatterViewer() {
       setHeat(next.heat);
       void playSimulationNarration(NARRATIONS[nextIndex], nextIndex, NARRATION_AUDIO_URLS[nextIndex]);
     };
-    const controller0 = renderer.xr.getController(0);
-    const controller1 = renderer.xr.getController(1);
-    controller0.add(makeControllerRay());
-    controller1.add(makeControllerRay());
-    scene.add(controller0, controller1);
+    const replayMatter = () => {
+      assessmentRef.current = createAssessmentSession(ASSESSMENT_SEQUENCE);
+      setAssessmentPromptIndex(0);
+      setAssessmentResult(null);
+      setMastered(false);
+      applyStage(0);
+    };
+
+    const hud = createVrHudPanel({ scene });
+    host.resources.register('states-vr-hud', () => hud.dispose());
 
     // ── Selection: one shared raycasting/highlight system for mouse + XR ─
     const interactionSystem = createInteractionSystem({
       camera,
       domElement: renderer.domElement,
-      xrControllers: [controller0, controller1],
+      xrControllers: vrRig.controllers,
       onSelect: (id, object) => {
+        const hudButton = hud.buttonIdFor(id);
+        if (hudButton) {
+          if (hudButton === 'previous') applyStage(clamp(stageRef.current - 1, 0, STAGES.length - 1));
+          if (hudButton === 'next') applyStage(clamp(stageRef.current + 1, 0, STAGES.length - 1));
+          if (hudButton === 'replay') replayMatter();
+          if (hudButton === 'exit') void renderer.xr.getSession()?.end();
+          return;
+        }
         if (id.startsWith('stage-button-')) {
           const nextIndex = Number(id.replace('stage-button-', ''));
           if (Number.isInteger(nextIndex)) applyStage(nextIndex);
@@ -372,6 +401,40 @@ export default function StatesOfMatterViewer() {
     for (const button of stageButtons) {
       interactionSystem.register(button.name, button, { highlightColor: '#38bdf8' });
     }
+    for (const mesh of Object.values(hud.buttons)) {
+      interactionSystem.register(mesh.name, mesh);
+    }
+
+    const locomotion = createVrLocomotion({
+      renderer,
+      rig: vrRig.rig,
+      onBack: () => {
+        if (stageRef.current > 0) applyStage(stageRef.current - 1);
+        else void renderer.xr.getSession()?.end();
+      },
+    });
+
+    const vrHudContent = (): VrHudContent => {
+      const activeStage = STAGES[stageRef.current];
+      const activeHeat = heatRef.current;
+      const visualState = activeStage.key === 'phase-change' ? stateFromHeat(activeHeat) : activeStage;
+      if (stageRef.current >= STAGES.length - 1) {
+        return {
+          eyebrow: 'Lesson complete',
+          title: 'Today you learned',
+          body: 'Heat energy changes particle motion, spacing, and sometimes the state of matter.',
+          bullets: COMPLETION_BULLETS,
+          buttons: ['previous', 'replay', 'exit'],
+        };
+      }
+      return {
+        eyebrow: `Stage ${stageRef.current + 1} / ${STAGES.length}`,
+        title: visualState.title,
+        body: visualState.cue,
+        hint: `Heat energy: ${Math.round(activeHeat * 100)}%`,
+        buttons: stageRef.current > 0 ? ['previous', 'next'] : ['next'],
+      };
+    };
 
     fixedUpdate = ({ deltaSeconds, elapsedSeconds }) => {
       const activeStage = STAGES[stageRef.current];
@@ -395,7 +458,16 @@ export default function StatesOfMatterViewer() {
     };
 
     renderUpdate = ({ elapsedSeconds, interpolationAlpha, frameDeltaSeconds, renderer }) => {
-      if (!renderer.xr.isPresenting) guidedCamera.update(frameDeltaSeconds);
+      if (renderer.xr.isPresenting) {
+        locomotion.update(frameDeltaSeconds);
+        interactionSystem.updateXrHover();
+        hud.setVisible(true);
+        hud.setContent(vrHudContent());
+        hud.update(renderer.xr.getCamera(), frameDeltaSeconds);
+      } else {
+        hud.setVisible(false);
+        guidedCamera.update(frameDeltaSeconds);
+      }
       const activeStage = STAGES[stageRef.current];
       const activeHeat = heatRef.current;
       const visualState = activeStage.key === 'phase-change' ? stateFromHeat(activeHeat) : activeStage;

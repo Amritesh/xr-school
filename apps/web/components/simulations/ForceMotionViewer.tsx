@@ -12,11 +12,9 @@ import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import {
-  isQuestBackPressed,
-  updateButtonLatch,
-  updateSnapTurn,
-} from '@/lib/xrNavigation';
+import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import {
   FORCE_MOTION_EXPERIENCE_DEFINITION,
   createForceMotionExperience,
@@ -82,6 +80,11 @@ const DEFAULT_PREFERENCES: ExperiencePreferences = {
 const DEFAULT_FORCE_MOTION_FRAME: CameraFrame = {
   position: new THREE.Vector3(0.4, 3.0, 2.6),
   target: new THREE.Vector3(0, 0.15, 0),
+};
+
+const VR_SPAWN = {
+  position: new THREE.Vector3(0.2, -0.05, 2.75),
+  lookAt: new THREE.Vector3(0, 0.35, 0),
 };
 
 // Every stage approaches from the same elevated front-3/4 vantage instead
@@ -187,6 +190,10 @@ export default function ForceMotionViewer() {
   const experienceRef = useRef<ForceMotionExperience>(createForceMotionExperience());
   const snapshotRef = useRef<LessonSnapshot>(experienceRef.current.snapshot());
   const previousRef = useRef<() => void>(() => {});
+  const nextRef = useRef<() => void>(() => {});
+  const replayRef = useRef<() => void>(() => {});
+  const completedRef = useRef(false);
+  const evidenceRef = useRef<string[]>([]);
   const focusActionRef = useRef<string | undefined>(undefined);
 
   const [snapshot, setSnapshot] = useState(snapshotRef.current);
@@ -201,6 +208,9 @@ export default function ForceMotionViewer() {
     visible: false,
   });
   const focusVisibilityRef = useRef(focusVisibility);
+
+  useEffect(() => { completedRef.current = completed; }, [completed]);
+  useEffect(() => { evidenceRef.current = evidence; }, [evidence]);
 
   const currentStage = FORCE_MOTION_EXPERIENCE_DEFINITION.stages[snapshot.stageIndex];
   const remainingActions = useMemo(
@@ -301,6 +311,19 @@ export default function ForceMotionViewer() {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
   }, [moveCameraToStage, preferences.audio]);
+  nextRef.current = next;
+
+  const replay = useCallback(() => {
+    setCompleted(false);
+    setEvidence([]);
+    const fresh = experienceRef.current.restart();
+    snapshotRef.current = fresh;
+    setSnapshot(fresh);
+    sceneApiRef.current?.setStage(fresh.stageIndex);
+    moveCameraToStage(fresh.stageIndex);
+    playNarration(fresh.stageIndex, preferences.audio);
+  }, [moveCameraToStage, preferences.audio]);
+  replayRef.current = replay;
 
   const enterVr = useCallback(async () => {
     if (!rendererRef.current || !('xr' in navigator)) return;
@@ -342,11 +365,6 @@ export default function ForceMotionViewer() {
       const camera = new THREE.PerspectiveCamera(52, 1, 0.04, 40);
       camera.position.copy(DEFAULT_FORCE_MOTION_FRAME.position);
       camera.lookAt(DEFAULT_FORCE_MOTION_FRAME.target);
-      const playerRig = new THREE.Group();
-      playerRig.name = 'player-rig';
-      playerRig.add(camera);
-      scene.add(playerRig);
-      playerRigRef.current = playerRig;
 
       host = createWebSimulationRuntime({
         mount: mountElement,
@@ -359,6 +377,15 @@ export default function ForceMotionViewer() {
       });
       rendererRef.current = host.renderer;
       cameraRef.current = camera;
+
+      const vrRig = createVrPlayerRig({
+        renderer: host.renderer,
+        scene,
+        camera,
+        spawn: VR_SPAWN,
+      });
+      playerRigRef.current = vrRig.rig;
+      host.resources.register('force-motion-player-rig', () => vrRig.dispose());
 
       const hemisphere = new THREE.HemisphereLight('#cfe8ff', '#101826', 1.6);
       scene.add(hemisphere);
@@ -412,33 +439,22 @@ export default function ForceMotionViewer() {
         guidedCamera.dispose();
       });
 
-      const controllerRayGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 0, -2.5),
-      ]);
-      const controllerRayMaterial = new THREE.LineBasicMaterial({
-        color: '#7dd3fc',
-        transparent: true,
-        opacity: 0.72,
-      });
-      const controllers = [0, 1].map(index => {
-        const controller = host!.renderer.xr.getController(index);
-        controller.name = `quest-controller-${index}`;
-        controller.add(new THREE.Line(controllerRayGeometry, controllerRayMaterial));
-        playerRig.add(controller);
-        return controller;
-      });
-      host.resources.register('force-motion-controller-rays', () => {
-        controllerRayGeometry.dispose();
-        controllerRayMaterial.dispose();
-        for (const controller of controllers) playerRig.remove(controller);
-      });
+      const hud = createVrHudPanel({ scene });
+      host.resources.register('force-motion-vr-hud', () => hud.dispose());
 
       const interactionSystem = createInteractionSystem({
         camera,
         domElement: host.renderer.domElement,
-        xrControllers: controllers,
+        xrControllers: vrRig.controllers,
         onSelect: (id, object, source) => {
+          const hudButton = hud.buttonIdFor(id);
+          if (hudButton) {
+            if (hudButton === 'previous') previousRef.current();
+            if (hudButton === 'next') nextRef.current();
+            if (hudButton === 'replay') replayRef.current();
+            if (hudButton === 'exit') void host!.renderer.xr.getSession()?.end();
+            return;
+          }
           const activeSnapshot = snapshotRef.current;
           const activeStage = FORCE_MOTION_EXPERIENCE_DEFINITION.stages[activeSnapshot.stageIndex];
           if (activeStage.requiredActionIds.includes(id) && !activeSnapshot.performedActionIds.includes(id)) {
@@ -448,6 +464,9 @@ export default function ForceMotionViewer() {
           guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 2.4 }));
         },
       });
+      for (const mesh of Object.values(hud.buttons)) {
+        interactionSystem.register(mesh.name, mesh);
+      }
       interactionSystem.register('apply-push', world.pushControl, { highlightColor: '#4ade80' });
       interactionSystem.register('apply-brake', world.brakeControl, { highlightColor: '#f87171' });
       interactionSystem.register('apply-accelerate', world.accelerateControl, { highlightColor: '#fb923c' });
@@ -457,8 +476,38 @@ export default function ForceMotionViewer() {
       interactionSystem.register('compare-motion-effects', world.comparisonBoard, { highlightColor: '#94a3b8' });
       host.resources.register('force-motion-interaction', () => interactionSystem.dispose());
 
-      const snapTurnLatches = [false, false];
-      const backButtonLatches = [false, false];
+      const locomotion = createVrLocomotion({
+        renderer: host.renderer,
+        rig: vrRig.rig,
+        onBack: () => {
+          if (snapshotRef.current.stageIndex > 0) previousRef.current();
+          else void host!.renderer.xr.getSession()?.end();
+        },
+      });
+
+      const vrHudContent = (): VrHudContent => {
+        if (completedRef.current) {
+          return {
+            eyebrow: 'Lesson complete',
+            title: 'Today you learned',
+            body: 'You tested how forces change motion, direction, speed, and shape.',
+            bullets: evidenceRef.current,
+            buttons: ['replay', 'exit'],
+          };
+        }
+        const active = snapshotRef.current;
+        const focusAction = focusActionRef.current;
+        return {
+          eyebrow: `Stage ${active.stageIndex + 1} / ${active.stageCount}`,
+          title: active.stageTitle,
+          body: active.cue,
+          hint: focusAction
+            ? `Do: ${ACTION_LABELS[focusAction]}`
+            : 'Stage complete - press Next',
+          buttons: active.stageIndex > 0 ? ['previous', 'next'] : ['next'],
+        };
+      };
+
       const projectedFocus = new THREE.Vector3();
       renderUpdate = context => {
         world.update(context.frameDeltaSeconds);
@@ -468,24 +517,13 @@ export default function ForceMotionViewer() {
         interactionSystem.update(context.elapsedSeconds);
 
         if (host!.renderer.xr.isPresenting) {
-          const session = host!.renderer.xr.getSession();
-          session?.inputSources.forEach((inputSource, index) => {
-            const gamepad = inputSource.gamepad;
-            if (!gamepad) return;
-            const snap = updateSnapTurn(gamepad.axes[2] ?? gamepad.axes[0] ?? 0, snapTurnLatches[index]);
-            snapTurnLatches[index] = snap.latched;
-            playerRig.rotation.y += snap.radians;
-            const back = updateButtonLatch(
-              isQuestBackPressed(gamepad.buttons, inputSource.handedness),
-              backButtonLatches[index],
-            );
-            backButtonLatches[index] = back.latched;
-            if (back.pressed) {
-              if (snapshotRef.current.stageIndex > 0) previousRef.current();
-              else void session.end();
-            }
-          });
+          locomotion.update(context.frameDeltaSeconds);
+          interactionSystem.updateXrHover();
+          hud.setVisible(true);
+          hud.setContent(vrHudContent());
+          hud.update(host!.renderer.xr.getCamera(), context.frameDeltaSeconds);
         } else {
+          hud.setVisible(false);
           guidedCamera.update(context.frameDeltaSeconds);
           const focusTarget = suggestedTargetId
             ? world[OBJECT_KEY_BY_ACTION[suggestedTargetId]]

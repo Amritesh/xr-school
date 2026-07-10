@@ -12,11 +12,9 @@ import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import {
-  isQuestBackPressed,
-  updateButtonLatch,
-  updateSnapTurn,
-} from '@/lib/xrNavigation';
+import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import {
   BREATHING_EXPERIENCE_DEFINITION,
   createBreathingExperience,
@@ -86,6 +84,11 @@ const DEFAULT_PREFERENCES: ExperiencePreferences = {
 const DEFAULT_BREATHING_FRAME: CameraFrame = {
   position: new THREE.Vector3(0, 0.85, 2.2),
   target: new THREE.Vector3(0, 0.6, 0),
+};
+
+const VR_SPAWN = {
+  position: new THREE.Vector3(0, -0.9, 2.15),
+  lookAt: new THREE.Vector3(0, 0.55, 0),
 };
 
 // Every stage approaches from the same "standing in front, chest height"
@@ -198,6 +201,10 @@ export default function BreathingProcessViewer() {
   const transitionRef = useRef<ScaleTransition>(createScaleTransition());
   const snapshotRef = useRef<LessonSnapshot>(experienceRef.current.snapshot());
   const previousRef = useRef<() => void>(() => {});
+  const nextRef = useRef<() => void>(() => {});
+  const replayRef = useRef<() => void>(() => {});
+  const completedRef = useRef(false);
+  const evidenceRef = useRef<string[]>([]);
   const focusActionRef = useRef<string | undefined>(undefined);
 
   const [snapshot, setSnapshot] = useState(snapshotRef.current);
@@ -213,6 +220,9 @@ export default function BreathingProcessViewer() {
     visible: false,
   });
   const focusVisibilityRef = useRef(focusVisibility);
+
+  useEffect(() => { completedRef.current = completed; }, [completed]);
+  useEffect(() => { evidenceRef.current = evidence; }, [evidence]);
 
   const currentStage = BREATHING_EXPERIENCE_DEFINITION.stages[snapshot.stageIndex];
   const remainingActions = useMemo(
@@ -316,6 +326,21 @@ export default function BreathingProcessViewer() {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
   }, [moveCameraToStage, preferences.audio]);
+  nextRef.current = next;
+
+  const replay = useCallback(() => {
+    setCompleted(false);
+    setEvidence([]);
+    const fresh = experienceRef.current.restart();
+    snapshotRef.current = fresh;
+    setSnapshot(fresh);
+    sceneApiRef.current?.setStage(fresh.stageIndex);
+    moveCameraToStage(fresh.stageIndex);
+    transitionRef.current.reset();
+    setScaleDisclosure(scaleDisclosureForStage(fresh.stageIndex));
+    playNarration(fresh.stageIndex, preferences.audio);
+  }, [moveCameraToStage, preferences.audio]);
+  replayRef.current = replay;
 
   const enterVr = useCallback(async () => {
     if (!rendererRef.current || !('xr' in navigator)) return;
@@ -357,11 +382,6 @@ export default function BreathingProcessViewer() {
       const camera = new THREE.PerspectiveCamera(52, 1, 0.04, 40);
       camera.position.copy(DEFAULT_BREATHING_FRAME.position);
       camera.lookAt(DEFAULT_BREATHING_FRAME.target);
-      const playerRig = new THREE.Group();
-      playerRig.name = 'player-rig';
-      playerRig.add(camera);
-      scene.add(playerRig);
-      playerRigRef.current = playerRig;
 
       host = createWebSimulationRuntime({
         mount: mountElement,
@@ -374,6 +394,15 @@ export default function BreathingProcessViewer() {
       });
       rendererRef.current = host.renderer;
       cameraRef.current = camera;
+
+      const vrRig = createVrPlayerRig({
+        renderer: host.renderer,
+        scene,
+        camera,
+        spawn: VR_SPAWN,
+      });
+      playerRigRef.current = vrRig.rig;
+      host.resources.register('breathing-player-rig', () => vrRig.dispose());
 
       const hemisphere = new THREE.HemisphereLight('#cfe8ff', '#101826', 1.6);
       scene.add(hemisphere);
@@ -417,33 +446,22 @@ export default function BreathingProcessViewer() {
         guidedCamera.dispose();
       });
 
-      const controllerRayGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 0, -2.5),
-      ]);
-      const controllerRayMaterial = new THREE.LineBasicMaterial({
-        color: '#7dd3fc',
-        transparent: true,
-        opacity: 0.72,
-      });
-      const controllers = [0, 1].map(index => {
-        const controller = host!.renderer.xr.getController(index);
-        controller.name = `quest-controller-${index}`;
-        controller.add(new THREE.Line(controllerRayGeometry, controllerRayMaterial));
-        playerRig.add(controller);
-        return controller;
-      });
-      host.resources.register('breathing-controller-rays', () => {
-        controllerRayGeometry.dispose();
-        controllerRayMaterial.dispose();
-        for (const controller of controllers) playerRig.remove(controller);
-      });
+      const hud = createVrHudPanel({ scene });
+      host.resources.register('breathing-vr-hud', () => hud.dispose());
 
       const interactionSystem = createInteractionSystem({
         camera,
         domElement: host.renderer.domElement,
-        xrControllers: controllers,
+        xrControllers: vrRig.controllers,
         onSelect: (id, _object, source) => {
+          const hudButton = hud.buttonIdFor(id);
+          if (hudButton) {
+            if (hudButton === 'previous') previousRef.current();
+            if (hudButton === 'next') nextRef.current();
+            if (hudButton === 'replay') replayRef.current();
+            if (hudButton === 'exit') void host!.renderer.xr.getSession()?.end();
+            return;
+          }
           const activeSnapshot = snapshotRef.current;
           const activeStage = BREATHING_EXPERIENCE_DEFINITION.stages[activeSnapshot.stageIndex];
           if (activeStage.requiredActionIds.includes(id) && !activeSnapshot.performedActionIds.includes(id)) {
@@ -453,6 +471,9 @@ export default function BreathingProcessViewer() {
           guidedCamera.focusOn(computeFocusFrame(_object, camera, { fitPadding: 2.1 }));
         },
       });
+      for (const mesh of Object.values(hud.buttons)) {
+        interactionSystem.register(mesh.name, mesh);
+      }
       interactionSystem.register('inspect-airway', world.airway, { highlightColor: '#7dd3fc' });
       interactionSystem.register('inspect-lungs', world.lungs, { highlightColor: '#f9a8d4' });
       interactionSystem.register('inspect-diaphragm', world.diaphragm, { highlightColor: '#fca5a5' });
@@ -462,8 +483,38 @@ export default function BreathingProcessViewer() {
       interactionSystem.register('compare-breathing-cycle', world.comparisonBoard, { highlightColor: '#a78bfa' });
       host.resources.register('breathing-interaction', () => interactionSystem.dispose());
 
-      const snapTurnLatches = [false, false];
-      const backButtonLatches = [false, false];
+      const locomotion = createVrLocomotion({
+        renderer: host.renderer,
+        rig: vrRig.rig,
+        onBack: () => {
+          if (snapshotRef.current.stageIndex > 0) previousRef.current();
+          else void host!.renderer.xr.getSession()?.end();
+        },
+      });
+
+      const vrHudContent = (): VrHudContent => {
+        if (completedRef.current) {
+          return {
+            eyebrow: 'Lesson complete',
+            title: 'Today you learned',
+            body: 'You connected visible breathing motion to the anatomy that causes it.',
+            bullets: evidenceRef.current,
+            buttons: ['replay', 'exit'],
+          };
+        }
+        const active = snapshotRef.current;
+        const focusAction = focusActionRef.current;
+        return {
+          eyebrow: `Stage ${active.stageIndex + 1} / ${active.stageCount}`,
+          title: active.stageTitle,
+          body: active.cue,
+          hint: focusAction
+            ? `Do: ${ACTION_LABELS[focusAction]}`
+            : 'Stage complete - press Next',
+          buttons: active.stageIndex > 0 ? ['previous', 'next'] : ['next'],
+        };
+      };
+
       const projectedFocus = new THREE.Vector3();
       renderUpdate = context => {
         world.update(context.frameDeltaSeconds, context.elapsedSeconds);
@@ -474,24 +525,13 @@ export default function BreathingProcessViewer() {
         interactionSystem.update(context.elapsedSeconds);
 
         if (host!.renderer.xr.isPresenting) {
-          const session = host!.renderer.xr.getSession();
-          session?.inputSources.forEach((inputSource, index) => {
-            const gamepad = inputSource.gamepad;
-            if (!gamepad) return;
-            const snap = updateSnapTurn(gamepad.axes[2] ?? gamepad.axes[0] ?? 0, snapTurnLatches[index]);
-            snapTurnLatches[index] = snap.latched;
-            playerRig.rotation.y += snap.radians;
-            const back = updateButtonLatch(
-              isQuestBackPressed(gamepad.buttons, inputSource.handedness),
-              backButtonLatches[index],
-            );
-            backButtonLatches[index] = back.latched;
-            if (back.pressed) {
-              if (snapshotRef.current.stageIndex > 0) previousRef.current();
-              else void session.end();
-            }
-          });
+          locomotion.update(context.frameDeltaSeconds);
+          interactionSystem.updateXrHover();
+          hud.setVisible(true);
+          hud.setContent(vrHudContent());
+          hud.update(host!.renderer.xr.getCamera(), context.frameDeltaSeconds);
         } else {
+          hud.setVisible(false);
           guidedCamera.update(context.frameDeltaSeconds);
           const focusTarget = suggestedTargetId
             ? world[OBJECT_KEY_BY_ACTION[suggestedTargetId]]

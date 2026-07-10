@@ -177,17 +177,41 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
   config.domElement.addEventListener('pointerdown', onPointerDown);
   config.domElement.addEventListener('pointerup', onPointerUp);
 
+  // World-space ray, not the controller's local quaternion: the controller
+  // is parented to the player rig, so once locomotion has yawed the rig a
+  // local-direction ray points where the controller would be if the rig had
+  // never turned — QA's "rotation works but selection misses" bug.
+  function controllerRay(controller: THREE.XRTargetRaySpace) {
+    controller.updateMatrixWorld(true);
+    raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+    raycaster.ray.direction
+      .copy(controllerDirection.set(0, 0, -1))
+      .transformDirection(controller.matrixWorld);
+  }
+
   const controllerListeners = (config.xrControllers ?? []).map(controller => {
     const onSelectStart = () => {
-      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      controllerDirection.set(0, 0, -1).applyQuaternion(controller.quaternion);
-      raycaster.ray.direction.copy(controllerDirection);
+      controllerRay(controller);
       const hit = hitFromRay();
       if (hit) config.onSelect?.(hit.id, hit.entry.object, 'xr-controller');
     };
     controller.addEventListener('selectstart', onSelectStart);
     return { controller, onSelectStart };
   });
+
+  /** Per-frame hover highlight from the controller rays — without it, VR
+   * aiming is blind (pointermove hover only exists for the mouse). */
+  function updateXrHover() {
+    for (const controller of config.xrControllers ?? []) {
+      controllerRay(controller);
+      const hit = hitFromRay();
+      if (hit) {
+        setHover(hit);
+        return;
+      }
+    }
+    setHover(undefined);
+  }
 
   function dispose() {
     config.domElement.removeEventListener('pointermove', onPointerMove);
@@ -205,6 +229,7 @@ export function createInteractionSystem(config: InteractionSystemConfig) {
     setSelected,
     setSuggested,
     update,
+    updateXrHover,
     get hoveredId() {
       return hoveredId;
     },

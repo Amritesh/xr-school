@@ -79,9 +79,10 @@ describe('Pollination production viewer', () => {
     expect(source).toContain("'mouse'");
     expect(source).toContain("'keyboard'");
     expect(source).toContain("'xr-controller'");
-    expect(source).toContain('renderer.xr.getController');
-    expect(source).toContain('updateSnapTurn');
-    expect(source).toContain('isQuestBackPressed');
+    expect(source).toContain('createVrPlayerRig');
+    expect(source).toContain('createVrLocomotion');
+    expect(source).toContain('createVrHudPanel');
+    expect(source).toContain('updateXrHover');
   });
 
   it('keeps scale representation explicit during cutaway and germination views', () => {

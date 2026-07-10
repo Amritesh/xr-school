@@ -22,7 +22,10 @@ describe('States of Matter viewer headset regressions', () => {
     expect(source).toContain('makeStageButtonLabelTexture');
     expect(source).toContain('stageButtons');
     expect(source).toContain("button.name = `stage-button-${index}`");
-    expect(source).toContain('renderer.xr.getController(0)');
+    expect(source).toContain('createVrPlayerRig');
+    expect(source).toContain('createVrLocomotion');
+    expect(source).toContain('createVrHudPanel');
+    expect(source).toContain('updateXrHover');
     expect(source).toContain('createInteractionSystem');
     expect(source).toContain("id.startsWith('stage-button-')");
   });
