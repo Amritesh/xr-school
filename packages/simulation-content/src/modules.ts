@@ -121,16 +121,16 @@ REVISION TRIGGER
 One week later, show three position pictures and ask students to choose the matching preposition and say a complete sentence.`;
 
 const solarSystemMissionScript = `SETUP
-Ask students to name planets they know and predict why planets look different. Non-headset students prepare a planet-order strip from Mercury to Neptune.
+Pose the central question: what keeps eight worlds circling one star, and why don't they all move alike? Collect predictions for the hottest planet and the fastest orbit. Non-headset students prepare a planet-order strip and write their two predictions on it.
 
 DURING HEADSET BATCH
-Guide students from a spacecraft cockpit through the Sun, rocky planets, asteroid belt, gas giants, ice giants, dwarf planets, and comet paths. Pause for scale, orbit, and feature scans.
+Students explore a live orbiting solar system: they switch on the gravity lens, race Mercury against Earth and Mars, probe Mercury and Venus with the infrared thermometer, tour the four giants, pull the true-scale lever, and ride a comet through perihelion. Narrate each prediction moment aloud and ask students to say their guess before acting.
 
 DEBRIEF
-Ask students to sequence the eight planets, compare inner and outer planets, and explain one reason Earth is special for life.
+Confront the predictions with the recorded evidence: Venus beat Mercury on the thermometer, Mercury won the orbit race, the true-scale lever showed mostly empty space, and the comet tail pointed away from the Sun. Ask students to explain each surprise using the Sun's gravity or the greenhouse effect.
 
 REVISION TRIGGER
-One week later, show planet feature cards and ask students to match each clue to the correct planet or region of the solar system.`;
+One week later, ask: a new probe orbits at twice Earth's distance — is its year longer or shorter, and why? Then have students sketch a comet's tail on both sides of its orbit.`;
 
 export const POLLINATION_MODULE: SimulationModuleRecord = {
   id: 'sim-pollination-001',
@@ -663,8 +663,8 @@ export const PREPOSITION_ADVENTURE_MODULE: SimulationModuleRecord = {
 export const SOLAR_SYSTEM_MISSION_MODULE: SimulationModuleRecord = {
   id: 'sim-c8-10-science-solar-system',
   slug: 'c8-10-science-solar-system',
-  title: 'Exploring Our Solar System',
-  summary: 'Pilot a spacecraft through the Sun, planets, moons, asteroids, comets, and dwarf planets while scanning key features.',
+  title: 'Solar System: Gravity’s Orchestra',
+  summary: 'Explore a live orbiting solar system: make the Sun’s gravity visible, race the planets, probe the hottest world, stretch space to true scale, and ride a comet.',
   gradeBands: ['class6To8', 'class9To10'],
   subjects: ['science', 'physics', 'geography'],
   applicableBoards: ['cbse', 'icse', 'stateBoard'],
@@ -674,28 +674,32 @@ export const SOLAR_SYSTEM_MISSION_MODULE: SimulationModuleRecord = {
   evidenceConfidenceLevel: 'expertDesigned',
   releaseMaturity: 'internalQA',
   xrFitType: 'strongVrFit',
-  xrFitJustification: 'The solar system is too large, distant, and dynamic to experience in a classroom. VR lets students compare scale, order, motion, and surface features from a guided spacecraft viewpoint.',
-  learningObjective: 'Students will sequence the eight planets, compare rocky planets and gas/ice giants, and explain important solar-system objects and motions.',
-  scientificConceptExplanation: 'The solar system contains the Sun, eight planets, dwarf planets, moons, asteroids, and comets. Gravity keeps planets in orbit, and each planet has distinct size, composition, atmosphere, and motion.',
+  xrFitJustification: 'The solar system is too large, distant, and dynamic to experience in a classroom. VR lets students watch real orbital motion, test predictions against measurements, and feel the emptiness of true scale.',
+  learningObjective: 'Students will explain how the Sun’s gravity sets each planet’s speed and year, why Venus outheats Mercury, how empty true-scale space is, and why a comet’s tail points away from the Sun.',
+  scientificConceptExplanation: 'The Sun’s gravity weakens with distance, so closer planets orbit faster (Kepler’s laws). Venus’s CO₂ atmosphere traps heat, making it hotter than Mercury. Distances between planets dwarf the planets themselves, and radiation pressure with solar wind pushes comet tails away from the Sun.',
   misconceptionsAddressed: [
-    'Planets are equally spaced from the Sun.',
-    'The asteroid belt is a dense wall of rocks.',
-    'All planets have solid surfaces like Earth.',
-    'Pluto is one of the eight main planets.',
+    'All planets take about the same time to orbit the Sun.',
+    'Mercury must be the hottest planet because it is closest to the Sun.',
+    'The planets are spaced as closely as textbook diagrams show.',
+    'A comet’s tail trails behind it like smoke from a train.',
   ],
-  visualizationStrategy: 'Use a cockpit mission with realistic procedural planet materials, orbit paths, scale comparison panels, comet trails, Saturn ring particles, and deep-space lighting.',
-  interactionStrategy: 'Students scan each planet, trigger comparison modes, arrange planets in order, inspect special features, and complete planet matching challenges.',
-  imaginationHelperStrategy: 'Large distances, gravity, and invisible orbital paths are represented with guided routes, holographic scale lines, and scan overlays.',
+  visualizationStrategy: 'One persistent orbiting solar system driven by real periods: a gravity-lens arrow field makes the Sun’s pull visible, lap boards score the orbit race, infrared readouts confront the heat prediction, and a lever blends the world to honest distances.',
+  interactionStrategy: 'Students predict before every observation: lock a race winner then confirm from the lap board, probe Mercury and Venus, inspect each giant’s signature feature, find Earth at true scale, predict a comet tail then ride the pass, and transfer Kepler’s law to a new probe.',
+  imaginationHelperStrategy: 'Invisible gravity becomes an arrow field that weakens with distance, orbital speed becomes visible velocity vectors and lap counters, and declared scale compression is confronted head-on by the true-scale lever.',
   practicalUseCase: 'Connects astronomy lessons to night-sky observation, seasons, space missions, satellites, and scientific modelling.',
   cueCardIds: ['cue-solar-sun-001', 'cue-solar-rocky-002', 'cue-solar-gas-giants-003', 'cue-solar-orbits-004'],
   revisionCardIds: ['rev-solar-planet-order-001'],
   assessmentHookIds: ['assess-solar-pre-001', 'assess-solar-post-001', 'assess-solar-misconception-001'],
   instructorScript: solarSystemMissionScript,
-  batchActivityPrompt: 'Build a planet-order strip, mark rocky planets and gas or ice giants, and write one unique feature for three planets.',
+  batchActivityPrompt: 'Write predictions for the hottest planet and the race winner on a planet-order strip, then record the headset students’ evidence and whether each prediction survived.',
   expectedDurationMinutes: 10,
   maxSessionDurationMinutes: 12,
-  comfortRiskLevel: 'low',
-  safetyNotes: ['Use cockpit comfort mode.', 'Keep transitions cinematic but stationary to reduce motion discomfort.'],
+  comfortRiskLevel: 'medium',
+  safetyNotes: [
+    'Space topic: brief students on the camera flythroughs before headsets go on.',
+    'Eased, learner-triggered transitions only; comfort stop is the Back action at any time.',
+    'The true-scale stretch and comet ride are the two motion-heavy beats — remind students they can simply look away or press Back.',
+  ],
   offlineContentPackId: 'pack-science-solar-system-v1',
   estimatedPackageSizeMb: 280,
   targetFrameRateFps: 72,

@@ -482,6 +482,156 @@
 .acid-base-action-tray > div { display: grid; gap: 6px; }
 .acid-base-action-tray button { justify-content: flex-start; width: 100%; min-height: 38px; text-align: left; }
 
+.solar-world-mount { width: 100%; height: 100%; }
+
+.solar-action-tray {
+  position: absolute;
+  z-index: 5;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  width: min(310px, calc(100vw - 32px));
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(125, 211, 252, .28);
+  border-radius: 16px;
+  background: rgba(6, 12, 28, .9);
+  box-shadow: 0 18px 60px rgba(1, 4, 14, .4);
+  backdrop-filter: blur(16px);
+}
+
+.solar-action-tray > span {
+  color: #7dd3fc;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.solar-action-tray > strong { font-size: .93rem; line-height: 1.35; }
+.solar-action-tray > small { color: #bcd3ea; font-size: .74rem; line-height: 1.45; }
+.solar-action-tray > div { display: grid; gap: 6px; }
+.solar-action-tray button { justify-content: flex-start; width: 100%; min-height: 38px; text-align: left; }
+
+.simulation-experience:has(.solar-observatory) .simulation-experience__mission-dock {
+  display: none;
+}
+
+.solar-observatory {
+  position: absolute;
+  z-index: 7;
+  top: 84px;
+  right: 16px;
+  display: grid;
+  width: min(400px, calc(100vw - 32px));
+  max-height: calc(100vh - 100px);
+  gap: 14px;
+  overflow: auto;
+  padding: 18px;
+  border: 1px solid rgba(125, 211, 252, .34);
+  border-radius: 20px;
+  color: #eef8ff;
+  background:
+    linear-gradient(160deg, rgba(7, 18, 36, .96), rgba(10, 12, 31, .93));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .48);
+  backdrop-filter: blur(18px);
+}
+
+.solar-observatory > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.solar-observatory header span,
+.solar-observatory legend {
+  color: #7dd3fc;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.solar-observatory h2 { margin: 4px 0 0; font-size: 1.35rem; }
+
+.solar-observatory__controls { display: grid; gap: 12px; }
+
+.solar-observatory fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid rgba(148, 197, 255, .18);
+  border-radius: 13px;
+}
+
+.solar-observatory legend { padding: 0 5px; }
+
+.solar-observatory button,
+.solar-observatory select {
+  min-height: 40px;
+}
+
+.solar-observatory button[aria-pressed='true'] {
+  border-color: #67e8f9;
+  color: #ecfeff;
+  background: rgba(14, 116, 144, .5);
+}
+
+.solar-observatory label {
+  display: grid;
+  gap: 6px;
+  color: #bcd3ea;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.solar-observatory select {
+  width: 100%;
+  padding: 0 12px;
+  border: 1px solid rgba(148, 197, 255, .28);
+  border-radius: 10px;
+  color: #f8fafc;
+  background: #0e1a30;
+}
+
+.solar-observatory button:focus-visible,
+.solar-observatory select:focus-visible {
+  outline: 3px solid #fde047;
+  outline-offset: 2px;
+}
+
+.solar-observatory table {
+  width: 100%;
+  overflow: hidden;
+  border-collapse: collapse;
+  border: 1px solid rgba(148, 197, 255, .18);
+  border-radius: 12px;
+  font-size: .72rem;
+}
+
+.solar-observatory caption {
+  margin-bottom: 7px;
+  color: #f8fafc;
+  font-size: .82rem;
+  font-weight: 900;
+  text-align: left;
+}
+
+.solar-observatory th,
+.solar-observatory td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(148, 197, 255, .12);
+  text-align: left;
+}
+
+.solar-observatory thead th { color: #7dd3fc; background: rgba(14, 116, 144, .12); }
+.solar-observatory tbody th { color: #bcd3ea; font-weight: 700; }
+.solar-observatory > small { color: #8fa9bf; line-height: 1.45; }
+
 .simulation-experience__stage-number {
   display: grid;
   width: 46px;
@@ -511,11 +661,18 @@
   .pollination-action-tray,
   .breathing-action-tray,
   .force-motion-action-tray,
-  .acid-base-action-tray {
+  .acid-base-action-tray,
+  .solar-action-tray {
     right: 12px;
     top: 82px;
     bottom: auto;
     width: min(230px, calc(100vw - 24px));
+  }
+  .solar-observatory {
+    top: 82px;
+    right: 12px;
+    width: min(360px, calc(100vw - 24px));
+    max-height: calc(100vh - 94px);
   }
 }
 
@@ -532,6 +689,12 @@
   }
   .simulation-experience__mission-actions button { flex: 1; }
   .simulation-experience__preferences { display: grid; grid-template-columns: 1fr 1fr; }
+  .solar-observatory {
+    left: 12px;
+    width: auto;
+    padding: 14px;
+  }
+  .solar-observatory > header { align-items: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -548,4 +711,5 @@
   .simulation-experience__mission-dock {
     backdrop-filter: none;
   }
+  .solar-observatory { backdrop-filter: none; }
 }

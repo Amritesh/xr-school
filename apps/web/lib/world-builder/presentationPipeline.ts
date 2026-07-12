@@ -52,17 +52,30 @@ export function createPresentationPipeline(
     disposeComposer();
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
+    // Scenes may opt out of individual enhanced passes via
+    // scene.userData.postProcessing. GTAO's depth/normal pre-pass renders
+    // every object opaquely, so a scene built around large transparent
+    // glows (e.g. open space with a sun corona) declares ambientOcclusion
+    // false rather than shipping dark occlusion quads around its sprites.
+    const hints = (scene.userData.postProcessing ?? {}) as {
+      ambientOcclusion?: boolean;
+      bloom?: boolean;
+    };
     if (profileId === 'browserEnhanced') {
-      const gtao = new GTAOPass(scene, camera, width, height);
-      gtao.output = GTAOPass.OUTPUT.Default;
-      composer.addPass(gtao);
-      const bloom = new UnrealBloomPass(
-        new THREE.Vector2(width, height),
-        0.18,
-        0.25,
-        0.92,
-      );
-      composer.addPass(bloom);
+      if (hints.ambientOcclusion !== false) {
+        const gtao = new GTAOPass(scene, camera, width, height);
+        gtao.output = GTAOPass.OUTPUT.Default;
+        composer.addPass(gtao);
+      }
+      if (hints.bloom !== false) {
+        const bloom = new UnrealBloomPass(
+          new THREE.Vector2(width, height),
+          0.18,
+          0.25,
+          0.92,
+        );
+        composer.addPass(bloom);
+      }
     }
     composer.addPass(new SMAAPass(width * pixelRatio, height * pixelRatio));
     composer.addPass(new OutputPass());

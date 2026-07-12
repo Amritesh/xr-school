@@ -3,6 +3,80 @@ import type { CurriculumSearchDocument } from '../../../packages/simulation-sche
 
 export const CURRICULUM_SEARCH_DOCUMENTS = [
   {
+    "id": "course:course-cbse-c1-mathematics",
+    "kind": "course",
+    "title": "CBSE Class 1 Mathematics",
+    "summary": "Early mathematics built around counting, comparison, money, and everyday number sense.",
+    "href": "/simulations#course-cbse-c1-mathematics",
+    "classLevels": [
+      1
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-money-values",
+      "concept-indian-coins-notes",
+      "concept-simple-shopping"
+    ],
+    "tokens": [
+      "cbse",
+      "class",
+      "1",
+      "mathematics",
+      "early",
+      "built",
+      "around",
+      "counting",
+      "comparison",
+      "money",
+      "and",
+      "everyday",
+      "number",
+      "sense",
+      "coins",
+      "notes",
+      "rupees"
+    ]
+  },
+  {
+    "id": "course:course-cbse-c2-english",
+    "kind": "course",
+    "title": "CBSE Class 2 English",
+    "summary": "Foundational English language practice through listening, speaking, grammar, and everyday sentences.",
+    "href": "/simulations#course-cbse-c2-english",
+    "classLevels": [
+      2
+    ],
+    "subjects": [
+      "english"
+    ],
+    "conceptIds": [
+      "concept-position-words",
+      "concept-spatial-sentences",
+      "concept-preposition-use"
+    ],
+    "tokens": [
+      "cbse",
+      "class",
+      "2",
+      "english",
+      "foundational",
+      "language",
+      "practice",
+      "through",
+      "listening",
+      "speaking",
+      "grammar",
+      "and",
+      "everyday",
+      "sentences",
+      "prepositions",
+      "position",
+      "words"
+    ]
+  },
+  {
     "id": "course:course-cbse-c5-environmental-science",
     "kind": "course",
     "title": "CBSE Class 5 Environmental Studies",
@@ -161,6 +235,47 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "course:course-cbse-c8-science",
+    "kind": "course",
+    "title": "CBSE Class 8 Science",
+    "summary": "Middle-school science connecting space, matter, force, living systems, and technology through observable models.",
+    "href": "/simulations#course-cbse-c8-science",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-solar-system",
+      "concept-planet-order",
+      "concept-orbits-gravity",
+      "concept-planet-features"
+    ],
+    "tokens": [
+      "cbse",
+      "class",
+      "8",
+      "science",
+      "middle",
+      "school",
+      "connecting",
+      "space",
+      "matter",
+      "force",
+      "living",
+      "systems",
+      "and",
+      "technology",
+      "through",
+      "observable",
+      "models",
+      "solar",
+      "system",
+      "planets"
+    ]
+  },
+  {
     "id": "course:course-cbse-c9-science",
     "kind": "course",
     "title": "CBSE Class 9 Science",
@@ -264,6 +379,66 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "scale",
       "and",
       "neutralisation"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c1-math-money",
+    "kind": "chapter",
+    "title": "Introduction to Money",
+    "summary": "CBSE Class 1 Mathematics · Chapter 1",
+    "href": "/simulations#chapter-cbse-c1-math-money",
+    "classLevels": [
+      1
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-money-values",
+      "concept-indian-coins-notes",
+      "concept-simple-shopping"
+    ],
+    "tokens": [
+      "introduction",
+      "to",
+      "money",
+      "cbse",
+      "class",
+      "1",
+      "mathematics",
+      "chapter",
+      "topic",
+      "values"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c2-english-prepositions",
+    "kind": "chapter",
+    "title": "Prepositions",
+    "summary": "CBSE Class 2 English · Chapter 1",
+    "href": "/simulations#chapter-cbse-c2-english-prepositions",
+    "classLevels": [
+      2
+    ],
+    "subjects": [
+      "english"
+    ],
+    "conceptIds": [
+      "concept-position-words",
+      "concept-spatial-sentences",
+      "concept-preposition-use"
+    ],
+    "tokens": [
+      "prepositions",
+      "cbse",
+      "class",
+      "2",
+      "english",
+      "chapter",
+      "1",
+      "topic",
+      "position",
+      "words"
     ]
   },
   {
@@ -460,6 +635,39 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "physics",
       "chapter",
       "10",
+      "topic"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c8-solar-system",
+    "kind": "chapter",
+    "title": "Stars and the Solar System",
+    "summary": "CBSE Class 8 Science · Chapter 17",
+    "href": "/simulations#chapter-cbse-c8-solar-system",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-solar-system",
+      "concept-planet-order",
+      "concept-orbits-gravity",
+      "concept-planet-features"
+    ],
+    "tokens": [
+      "stars",
+      "and",
+      "the",
+      "solar",
+      "system",
+      "cbse",
+      "class",
+      "8",
+      "science",
+      "chapter",
+      "17",
       "topic"
     ]
   },
@@ -1868,6 +2076,441 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "concept:concept-money-values",
+    "kind": "concept",
+    "title": "Money values",
+    "summary": "Understanding that coins and notes represent specific values that can be counted and compared.",
+    "href": "/simulations#concept-money-values",
+    "classLevels": [
+      1
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-money-values"
+    ],
+    "tokens": [
+      "money",
+      "values",
+      "understanding",
+      "that",
+      "coins",
+      "and",
+      "notes",
+      "represent",
+      "specific",
+      "can",
+      "be",
+      "counted",
+      "compared",
+      "supports",
+      "early",
+      "numeracy",
+      "in",
+      "shops",
+      "saving",
+      "everyday",
+      "transactions",
+      "currency",
+      "value",
+      "rupee",
+      "counting"
+    ]
+  },
+  {
+    "id": "concept:concept-indian-coins-notes",
+    "kind": "concept",
+    "title": "Indian coins and notes",
+    "summary": "Recognition of common Indian currency forms and their written values.",
+    "href": "/simulations#concept-indian-coins-notes",
+    "classLevels": [
+      1
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-indian-coins-notes"
+    ],
+    "tokens": [
+      "indian",
+      "coins",
+      "and",
+      "notes",
+      "recognition",
+      "of",
+      "common",
+      "currency",
+      "forms",
+      "their",
+      "written",
+      "values",
+      "helps",
+      "children",
+      "identify",
+      "money",
+      "used",
+      "at",
+      "home",
+      "school",
+      "events",
+      "shops",
+      "coin",
+      "note",
+      "rupee"
+    ]
+  },
+  {
+    "id": "concept:concept-simple-shopping",
+    "kind": "concept",
+    "title": "Simple shopping with money",
+    "summary": "Using money values to choose enough currency for simple priced items.",
+    "href": "/simulations#concept-simple-shopping",
+    "classLevels": [
+      1
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-simple-shopping"
+    ],
+    "tokens": [
+      "simple",
+      "shopping",
+      "with",
+      "money",
+      "using",
+      "values",
+      "to",
+      "choose",
+      "enough",
+      "currency",
+      "for",
+      "priced",
+      "items",
+      "connects",
+      "counting",
+      "and",
+      "comparison",
+      "safe",
+      "pretend",
+      "practice",
+      "buying",
+      "matching",
+      "price",
+      "shop",
+      "buy",
+      "pay"
+    ]
+  },
+  {
+    "id": "concept:concept-position-words",
+    "kind": "concept",
+    "title": "Position words",
+    "summary": "Words that describe where one object is in relation to another object.",
+    "href": "/simulations#concept-position-words",
+    "classLevels": [
+      2
+    ],
+    "subjects": [
+      "english"
+    ],
+    "conceptIds": [
+      "concept-position-words"
+    ],
+    "tokens": [
+      "position",
+      "words",
+      "that",
+      "describe",
+      "where",
+      "one",
+      "object",
+      "is",
+      "in",
+      "relation",
+      "to",
+      "another",
+      "supports",
+      "classroom",
+      "instructions",
+      "reading",
+      "speaking",
+      "and",
+      "writing",
+      "location",
+      "spatial",
+      "on",
+      "under",
+      "behind",
+      "between"
+    ]
+  },
+  {
+    "id": "concept:concept-spatial-sentences",
+    "kind": "concept",
+    "title": "Spatial sentences",
+    "summary": "Complete sentences that use position words to describe object location clearly.",
+    "href": "/simulations#concept-spatial-sentences",
+    "classLevels": [
+      2
+    ],
+    "subjects": [
+      "english"
+    ],
+    "conceptIds": [
+      "concept-spatial-sentences"
+    ],
+    "tokens": [
+      "spatial",
+      "sentences",
+      "complete",
+      "that",
+      "use",
+      "position",
+      "words",
+      "to",
+      "describe",
+      "object",
+      "location",
+      "clearly",
+      "helps",
+      "children",
+      "answer",
+      "where",
+      "questions",
+      "in",
+      "speech",
+      "and",
+      "writing",
+      "sentence",
+      "place"
+    ]
+  },
+  {
+    "id": "concept:concept-preposition-use",
+    "kind": "concept",
+    "title": "Preposition use",
+    "summary": "Use of prepositions to show relationships between nouns or pronouns and other words.",
+    "href": "/simulations#concept-preposition-use",
+    "classLevels": [
+      2
+    ],
+    "subjects": [
+      "english"
+    ],
+    "conceptIds": [
+      "concept-preposition-use"
+    ],
+    "tokens": [
+      "preposition",
+      "use",
+      "of",
+      "prepositions",
+      "to",
+      "show",
+      "relationships",
+      "between",
+      "nouns",
+      "or",
+      "pronouns",
+      "and",
+      "other",
+      "words",
+      "builds",
+      "accurate",
+      "speaking",
+      "reading",
+      "comprehension",
+      "writing",
+      "using",
+      "grammar",
+      "place",
+      "relationship"
+    ]
+  },
+  {
+    "id": "concept:concept-solar-system",
+    "kind": "concept",
+    "title": "Solar system",
+    "summary": "The Sun, planets, dwarf planets, moons, asteroids, and comets bound together by gravity.",
+    "href": "/simulations#concept-solar-system",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-solar-system"
+    ],
+    "tokens": [
+      "solar",
+      "system",
+      "the",
+      "sun",
+      "planets",
+      "dwarf",
+      "moons",
+      "asteroids",
+      "and",
+      "comets",
+      "bound",
+      "together",
+      "by",
+      "gravity",
+      "supports",
+      "astronomy",
+      "space",
+      "missions",
+      "satellites",
+      "seasons",
+      "night",
+      "sky",
+      "observation",
+      "planetary",
+      "planet",
+      "moon",
+      "asteroid",
+      "comet"
+    ]
+  },
+  {
+    "id": "concept:concept-planet-order",
+    "kind": "concept",
+    "title": "Planet order",
+    "summary": "The sequence of the eight planets from the Sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
+    "href": "/simulations#concept-planet-order",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-planet-order"
+    ],
+    "tokens": [
+      "planet",
+      "order",
+      "the",
+      "sequence",
+      "of",
+      "eight",
+      "planets",
+      "from",
+      "sun",
+      "mercury",
+      "venus",
+      "earth",
+      "mars",
+      "jupiter",
+      "saturn",
+      "uranus",
+      "and",
+      "neptune",
+      "creates",
+      "a",
+      "foundation",
+      "for",
+      "comparing",
+      "distance",
+      "temperature",
+      "orbital",
+      "periods",
+      "to"
+    ]
+  },
+  {
+    "id": "concept:concept-orbits-gravity",
+    "kind": "concept",
+    "title": "Orbits and gravity",
+    "summary": "Gravity keeps planets and other bodies moving along orbital paths around larger bodies.",
+    "href": "/simulations#concept-orbits-gravity",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-orbits-gravity"
+    ],
+    "tokens": [
+      "orbits",
+      "and",
+      "gravity",
+      "keeps",
+      "planets",
+      "other",
+      "bodies",
+      "moving",
+      "along",
+      "orbital",
+      "paths",
+      "around",
+      "larger",
+      "explains",
+      "satellites",
+      "moon",
+      "motion",
+      "planetary",
+      "years",
+      "spaceflight",
+      "planet",
+      "in",
+      "space",
+      "orbit",
+      "path",
+      "satellite"
+    ]
+  },
+  {
+    "id": "concept:concept-planet-features",
+    "kind": "concept",
+    "title": "Planet features",
+    "summary": "Observable and modelled differences between planets, including size, surface, atmosphere, rings, and moons.",
+    "href": "/simulations#concept-planet-features",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-planet-features"
+    ],
+    "tokens": [
+      "planet",
+      "features",
+      "observable",
+      "and",
+      "modelled",
+      "differences",
+      "between",
+      "planets",
+      "including",
+      "size",
+      "surface",
+      "atmosphere",
+      "rings",
+      "moons",
+      "supports",
+      "comparison",
+      "classification",
+      "evidence",
+      "based",
+      "space",
+      "learning",
+      "properties",
+      "rocky",
+      "gas",
+      "giant"
+    ]
+  },
+  {
     "id": "simulation:pollination",
     "kind": "simulation",
     "title": "Plant Pollination & Growth Cycle",
@@ -2537,6 +3180,231 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "scale",
       "neutral",
       "reaction"
+    ]
+  },
+  {
+    "id": "simulation:c1-math-ch01-introduction-to-money",
+    "kind": "simulation",
+    "title": "Introduction to Money",
+    "summary": "Explore Magic Money Town, identify Indian coins and notes, buy simple items, and earn a careful shopper badge.",
+    "href": "/simulations/c1-math-ch01-introduction-to-money",
+    "classLevels": [
+      1
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-money-values",
+      "concept-indian-coins-notes",
+      "concept-simple-shopping"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "introduction",
+      "to",
+      "money",
+      "explore",
+      "magic",
+      "town",
+      "identify",
+      "indian",
+      "coins",
+      "and",
+      "notes",
+      "buy",
+      "simple",
+      "items",
+      "earn",
+      "a",
+      "careful",
+      "shopper",
+      "badge",
+      "students",
+      "will",
+      "common",
+      "compare",
+      "their",
+      "values",
+      "choose",
+      "suitable",
+      "for",
+      "purchases",
+      "mathematics",
+      "currency",
+      "value",
+      "rupee",
+      "counting",
+      "coin",
+      "note",
+      "shopping",
+      "with",
+      "buying",
+      "matching",
+      "price",
+      "shop",
+      "pay"
+    ]
+  },
+  {
+    "id": "simulation:c2-english-ch01-prepositions",
+    "kind": "simulation",
+    "title": "Preposition Adventure",
+    "summary": "Move objects through a playful world and learn position words such as in, on, under, behind, near, and between.",
+    "href": "/simulations/c2-english-ch01-prepositions",
+    "classLevels": [
+      2
+    ],
+    "subjects": [
+      "english"
+    ],
+    "conceptIds": [
+      "concept-position-words",
+      "concept-spatial-sentences",
+      "concept-preposition-use"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "preposition",
+      "adventure",
+      "move",
+      "objects",
+      "through",
+      "a",
+      "playful",
+      "world",
+      "and",
+      "learn",
+      "position",
+      "words",
+      "such",
+      "as",
+      "in",
+      "on",
+      "under",
+      "behind",
+      "near",
+      "between",
+      "students",
+      "will",
+      "understand",
+      "common",
+      "prepositions",
+      "by",
+      "placing",
+      "correct",
+      "positions",
+      "speaking",
+      "simple",
+      "sentences",
+      "that",
+      "describe",
+      "location",
+      "english",
+      "spatial",
+      "sentence",
+      "where",
+      "object",
+      "place",
+      "use",
+      "using",
+      "grammar",
+      "relationship"
+    ]
+  },
+  {
+    "id": "simulation:c8-10-science-solar-system",
+    "kind": "simulation",
+    "title": "Solar System: Gravity’s Orchestra",
+    "summary": "Explore a live orbiting solar system: make the Sun’s gravity visible, race the planets, probe the hottest world, stretch space to true scale, and ride a comet.",
+    "href": "/simulations/c8-10-science-solar-system",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science",
+      "physics",
+      "geography"
+    ],
+    "conceptIds": [
+      "concept-solar-system",
+      "concept-planet-order",
+      "concept-orbits-gravity",
+      "concept-planet-features"
+    ],
+    "releaseMaturity": "internalQA",
+    "tokens": [
+      "solar",
+      "system",
+      "gravity",
+      "s",
+      "orchestra",
+      "explore",
+      "a",
+      "live",
+      "orbiting",
+      "make",
+      "the",
+      "sun",
+      "visible",
+      "race",
+      "planets",
+      "probe",
+      "hottest",
+      "world",
+      "stretch",
+      "space",
+      "to",
+      "true",
+      "scale",
+      "and",
+      "ride",
+      "comet",
+      "students",
+      "will",
+      "explain",
+      "how",
+      "sets",
+      "each",
+      "planet",
+      "speed",
+      "year",
+      "why",
+      "venus",
+      "outheats",
+      "mercury",
+      "empty",
+      "is",
+      "tail",
+      "points",
+      "away",
+      "from",
+      "science",
+      "physics",
+      "geography",
+      "planetary",
+      "moon",
+      "asteroid",
+      "order",
+      "of",
+      "neptune",
+      "earth",
+      "mars",
+      "jupiter",
+      "saturn",
+      "uranus",
+      "orbits",
+      "in",
+      "orbit",
+      "path",
+      "satellite",
+      "features",
+      "properties",
+      "rocky",
+      "gas",
+      "giant",
+      "rings",
+      "atmosphere"
     ]
   },
   {

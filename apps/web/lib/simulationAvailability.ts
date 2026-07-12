@@ -187,7 +187,7 @@ const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMatur
     subjectTags: ['science', 'physics', 'geography'],
     grade: 'Class 8-10',
     classLevels: [8, 9, 10],
-    title: 'Exploring Our Solar System',
+    title: 'Solar System: Gravity’s Orchestra',
     topic: 'Stars and the Solar System',
     archetype: 'immersive VR',
     minutes: 10,

@@ -11,66 +11,140 @@ describe('Classes 8-10 Solar System mission viewer', () => {
     expect(readFileSync(routePath, 'utf8')).toContain('SolarSystemMissionViewer');
   });
 
-  it('keeps spacecraft WebXR controls, narration, and mission UI affordances', () => {
+  it('is built on the shared world-builder stack, not a private runtime', () => {
     const source = readFileSync(viewerPath, 'utf8');
-
     for (const identifier of [
-      "renderer.xr.setReferenceSpaceType('local-floor')",
-      'renderer.xr.getController(0)',
-      'renderer.xr.getController(1)',
-      'optionalFeatures',
+      'createWebSimulationRuntime',
+      'createSolarSystemScene',
+      'createSolarSystemExperience',
+      'createGuidedCamera',
+      'createInteractionSystem',
+      'SimulationExperienceShell',
+    ]) {
+      expect(source).toContain(identifier);
+    }
+    // No viewer-owned render loop or renderer — the runtime owns both.
+    expect(source).not.toContain('setAnimationLoop');
+    expect(source).not.toContain('new THREE.WebGLRenderer');
+  });
+
+  it('uses the unified VR framework', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+    for (const identifier of [
+      'createVrPlayerRig',
+      'createVrLocomotion',
+      'createVrHudPanel',
+      'updateXrHover',
+      "requiredFeatures: ['local-floor']",
       'hand-tracking',
+    ]) {
+      expect(source).toContain(identifier);
+    }
+  });
+
+  it('teaches through prediction, observation, and transfer — not passive watching', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+    for (const identifier of [
+      'predict-race-winner',
+      'confirm-race-winner',
+      'predict-hottest',
+      'probe-venus',
+      'pull-scale-lever',
+      'find-earth',
+      'predict-comet-tail',
+      'ride-comet',
+      'answer-orbit-transfer',
+      'recordPrediction',
+      'verifySolarAstronomy',
+      'SCALE_DISCLOSURE',
+    ]) {
+      expect(source).toContain(identifier);
+    }
+  });
+
+  it('keeps narration, accessibility, and classroom affordances', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+    for (const identifier of [
       'playSimulationNarration',
       'stopSimulationNarration',
-      'aria-live="polite"',
-      'Voice on',
-      'Comfort',
-      'Restart',
-      'ultra-modern-spacecraft-panoramic-glass-cockpit-holographic-dashboard-ai-assistant',
-      'mission-control-dashboard-navigation-controls-oxygen-speed-distance-tracker',
+      'aria-live',
+      'focusGuide',
+      'completionHeadline',
     ]) {
       expect(source).toContain(identifier);
     }
   });
 
-  it('builds the requested cinematic solar system mission scenes', () => {
+  it('never suggests an answer target for prediction actions', () => {
     const source = readFileSync(viewerPath, 'utf8');
+    const suggestedBlock = source.slice(
+      source.indexOf('SUGGESTED_TARGET_BY_ACTION'),
+      source.indexOf('TRAY_CHOICES'),
+    );
+    for (const predictionAction of [
+      "'predict-race-winner'",
+      "'confirm-race-winner'",
+      "'predict-hottest'",
+      "'predict-comet-tail'",
+      "'answer-orbit-transfer'",
+    ]) {
+      expect(suggestedBlock).not.toContain(predictionAction);
+    }
+  });
 
+  it('loads attributed planet textures and exposes observatory scene controls', () => {
+    const viewerSource = readFileSync(viewerPath, 'utf8');
+    const sceneSource = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/solarSystemScene.ts'),
+      'utf8',
+    );
+    expect(sceneSource).toContain('SOLAR_TEXTURES');
+    expect(sceneSource).toContain('THREE.TextureLoader');
+    for (const control of [
+      'setPaused',
+      'setLayerVisibility',
+      'focusPlanet',
+      'setObservatoryMode',
+      'setTrueScale',
+    ]) {
+      expect(sceneSource).toContain(control);
+    }
+    expect(viewerSource).toContain('SolarSystemScene');
+  });
+
+  it('unlocks a keyboard-accessible observatory after the guided mission', () => {
+    const source = readFileSync(viewerPath, 'utf8');
     for (const identifier of [
-      'Exploring Our Solar System',
-      'millions-of-stars-milky-way-nebulae-deep-space-dust',
-      'sun-animated-plasma-surface-solar-granulation-flares-prominences-sunspots-corona-magnetic-loops-heat-distortion-volumetric-glow',
-      'international-space-station-and-artificial-satellites-orbit-earth',
-      'moon-high-detail-lunar-surface-craters-mountains-apollo-landing-site-flag-footprints-lunar-rover-low-gravity-dust',
-      'asteroid-belt-rotating-rocky-objects-ceres-safe-navigation',
-      'saturn-transparent-ring-system-multiple-ring-layers-dynamic-shadows-ice-particle-field',
-      'pluto-dwarf-planets-kuiper-belt-frozen-objects',
-      'comet-ice-dust-bright-tail-ion-tail-points-away-from-sun',
-      'solar-system-explorer-gold-mission-badge-certificate-space-explorer-medal-keep-looking-up',
-      'solar-system-vr-controller-navigation',
+      'createSolarSystemObservatory',
+      'Open observatory',
+      'Exit observatory',
+      'Simulation speed',
+      'Compare worlds',
+      'Orbit paths',
+      'Gravity vectors',
+      'True distance',
+      'aria-live',
     ]) {
       expect(source).toContain(identifier);
     }
   });
 
-  it('uses procedural PBR-style visuals instead of flat primitive planet colors', () => {
-    const source = readFileSync(viewerPath, 'utf8');
-
-    for (const identifier of [
-      'makeProceduralPlanetTexture',
-      'pbr-procedural-${planetId}-material-with-texture-normal-roughness-ambient-occlusion',
-      'transparent-holographic-planet-information-display',
-      'earth-atmospheric-scattering-blue-glow-aurora-cloud-layer-night-lights',
-      'earth-independent-rotating-clouds-dynamic-weather-ocean-reflections',
-      'venus-dense-yellow-clouds-atmospheric-scattering-animated-cloud-movement',
-      'sun-animated-plasma-surface-solar-granulation-flares-prominences-sunspots-corona-magnetic-loops-heat-distortion-volumetric-glow',
-      'ultra-hdr-space-skybox-nebula-gas-cloud-galaxy-background-parallax',
-      'saturn-transparent-ring-system-multiple-ring-layers-dynamic-shadows-ice-particle-field',
-      'saturn-individual-ice-rock-ring-particle',
-      'animated-spacecraft-control-panel-glowing-button-reflection',
-      'comet-ion-tail-dynamic-sunlight-interaction',
+  it('restores guided-scene defaults after leaving or restarting the observatory', () => {
+    const sceneSource = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/solarSystemScene.ts'),
+      'utf8',
+    );
+    const setStageBlock = sceneSource.slice(
+      sceneSource.indexOf('function setStage(stageIndex: number)'),
+      sceneSource.indexOf('function beginRace()'),
+    );
+    for (const reset of [
+      'paused = false',
+      "setLayerVisibility('orbits', true)",
+      "setLayerVisibility('labels', true)",
+      "setLayerVisibility('gravity', false)",
     ]) {
-      expect(source).toContain(identifier);
+      expect(setStageBlock).toContain(reset);
     }
   });
 });

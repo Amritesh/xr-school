@@ -201,11 +201,11 @@ export const DEMO_ACTIVITIES: ActivityOption[] = [
   },
   {
     id: 'c8-10-science-solar-system',
-    title: 'Exploring Our Solar System',
+    title: 'Solar System: Gravity’s Orchestra',
     type: 'vrActivity',
     estimatedMinutes: 10,
     totalSteps: 8,
-    description: 'Fly from the Sun past every planet and scan orbits, scale, and features.',
+    description: 'Make gravity visible, race the planets, probe the hottest world, stretch space to true scale, and ride a comet.',
     classIds: ['class-8', 'class-9', 'class-10'],
     subjectIds: ['science', 'physics'],
     chapterId: 'c8-10-science-solar-system',
