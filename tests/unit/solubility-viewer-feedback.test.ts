@@ -29,7 +29,7 @@ describe('Solubility Lab viewer headset regressions', () => {
     // by every migrated viewer, rather than a bespoke per-viewer raycaster.
     expect(sceneSource).toContain('`substance-button-${id}`');
     expect(sceneSource).toContain('`prediction-button-${id}`');
-    expect(sceneSource).toContain("makeButton('action-button-run'");
+    expect(sceneSource).toContain("scoop.name = 'action-button-run'");
     expect(sceneSource).toContain("makeButton('action-button-reset'");
     expect(source).toContain('host.renderer.xr.getController(0)');
     expect(source).toContain('createInteractionSystem');
@@ -51,6 +51,16 @@ describe('Solubility Lab viewer headset regressions', () => {
     expect(sceneSource).toContain('THREE.InstancedMesh');
     expect(sceneSource).toContain("profileId === 'questBaseline'");
     expect(sceneSource).toContain('instanceMatrix.needsUpdate = true');
+  });
+
+  it('provides visible water, physical ingredients, and a measured pour action', () => {
+    expect(sceneSource).toContain("'WATER · 200 mL'");
+    expect(sceneSource).toContain('meniscus');
+    expect(sceneSource).toContain('ingredientJars');
+    expect(sceneSource).toContain('ingredient-fill');
+    expect(sceneSource).toContain("scoop.name = 'action-button-run'");
+    expect(sceneSource).toContain('pourScoop');
+    expect(source).toContain('sceneApiRef.current?.pourScoop');
   });
 
   it('exposes measured evidence and discloses representational molecular scale', () => {

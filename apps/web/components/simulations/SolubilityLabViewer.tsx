@@ -132,6 +132,7 @@ export default function SolubilityLabViewer() {
     const next = modelRef.current.selectSubstance(id);
     mixtureRef.current = next;
     setMixture(next);
+    sceneApiRef.current?.setSelectedSubstance(id);
     sceneApiRef.current?.update(next, 0, molecularRef.current);
     void playSimulationNarration(
       `${SOLUBILITY_SUBSTANCES[id].label} selected. Predict using evidence, then add a measured scoop.`,
@@ -159,6 +160,7 @@ export default function SolubilityLabViewer() {
   const addScoop = useCallback(() => {
     try {
       const next = modelRef.current.addSolute(5);
+      sceneApiRef.current?.pourScoop(next.substanceId);
       mixtureRef.current = next;
       setMixture(next);
       completeCurrentStage('add-scoop', 'mass-accounted', 'Added 5.00 g; the mass balance accounts for all material.');

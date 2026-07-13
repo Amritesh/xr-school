@@ -100,6 +100,7 @@ export function createSolubilityScene(config: SolubilitySceneConfig) {
     glassMaterial(),
   );
   glass.castShadow = false;
+  glass.renderOrder = 3;
   const base = new THREE.Mesh(geometry(new THREE.CylinderGeometry(0.64, 0.64, 0.035, 48)), glass.material);
   base.position.y = -0.69;
   const rim = new THREE.Mesh(
@@ -111,19 +112,33 @@ export function createSolubilityScene(config: SolubilitySceneConfig) {
   beaker.add(glass, base, rim);
 
   const waterMaterial = standard({
-    color: '#36bde6', transparent: true, opacity: 0.5, roughness: 0.16,
-    metalness: 0, emissive: '#073c50', emissiveIntensity: 0.16,
+    color: '#0ea5e9', transparent: true, opacity: 0.76, roughness: 0.12,
+    metalness: 0, emissive: '#075985', emissiveIntensity: 0.38, depthWrite: false,
   });
   const water = new THREE.Mesh(geometry(new THREE.CylinderGeometry(0.625, 0.595, 0.98, 48)), waterMaterial);
   water.position.y = -0.17;
+  water.renderOrder = 1;
   beaker.add(water);
+  const surfaceMaterial = standard({
+    color: '#7ddfff', transparent: true, opacity: 0.92, roughness: 0.06,
+    metalness: 0.04, emissive: '#0ea5e9', emissiveIntensity: 0.34, depthWrite: false,
+  });
   const surface = new THREE.Mesh(
     geometry(new THREE.CircleGeometry(0.625, 48)),
-    standard({ color: '#79dcf4', transparent: true, opacity: 0.66, roughness: 0.08, metalness: 0.05 }),
+    surfaceMaterial,
   );
   surface.rotation.x = -Math.PI / 2;
   surface.position.y = 0.32;
+  surface.renderOrder = 2;
   beaker.add(surface);
+  const meniscus = new THREE.Mesh(
+    geometry(new THREE.TorusGeometry(0.615, 0.018, 10, 48)),
+    standard({ color: '#bff4ff', emissive: '#22d3ee', emissiveIntensity: 0.72, roughness: 0.12 }),
+  );
+  meniscus.name = 'water-meniscus';
+  meniscus.rotation.x = Math.PI / 2;
+  meniscus.position.y = 0.325;
+  beaker.add(meniscus);
 
   for (let index = 0; index < 5; index += 1) {
     const mark = new THREE.Mesh(
@@ -135,6 +150,14 @@ export function createSolubilityScene(config: SolubilitySceneConfig) {
     beaker.add(mark);
   }
   root.add(beaker);
+
+  const waterLabel = new THREE.Mesh(
+    geometry(new THREE.PlaneGeometry(1.25, 0.34)),
+    basic({ map: makeLabelTexture('WATER · 200 mL', '#22d3ee', textures), transparent: true, depthTest: false }),
+  );
+  waterLabel.name = 'water-volume-label';
+  waterLabel.position.set(BEAKER_CENTER.x, 1.9, 0.28);
+  root.add(waterLabel);
 
   const sedimentMaterial = standard({ color: '#f2e2c2', roughness: 0.9, transparent: true, opacity: 0 });
   const sediment = new THREE.Mesh(geometry(new THREE.CylinderGeometry(0.58, 0.58, 0.12, 40)), sedimentMaterial);
@@ -204,18 +227,124 @@ export function createSolubilityScene(config: SolubilitySceneConfig) {
     return button;
   }
 
-  const substances = (Object.keys(SOLUBILITY_SUBSTANCES) as SubstanceId[]).map((id, index) =>
-    makeButton(`substance-button-${id}`, SOLUBILITY_SUBSTANCES[id].label.replace('Table ', ''), new THREE.Vector3(-2.1 + index * 0.76, 0.65, 1.02), '#d7a93d', 0.68));
+  const jarPositions: Record<SubstanceId, THREE.Vector3> = {
+    salt: new THREE.Vector3(-2.25, 0.84, -0.74),
+    sugar: new THREE.Vector3(-1.55, 0.84, -0.74),
+    sand: new THREE.Vector3(-2.25, 0.84, 0),
+    chalk: new THREE.Vector3(-1.55, 0.84, 0),
+    oil: new THREE.Vector3(-2.25, 0.84, 0.74),
+  };
+  const ingredientJars = {} as Record<SubstanceId, THREE.Group>;
+  const selectionRings = {} as Record<SubstanceId, THREE.Mesh>;
+
+  function makeIngredientJar(id: SubstanceId) {
+    const item = SOLUBILITY_SUBSTANCES[id];
+    const jar = new THREE.Group();
+    jar.name = `substance-button-${id}`;
+    jar.position.copy(jarPositions[id]);
+    const isOil = id === 'oil';
+    const vessel = new THREE.Mesh(
+      geometry(new THREE.CylinderGeometry(isOil ? 0.2 : 0.27, isOil ? 0.25 : 0.29, isOil ? 0.72 : 0.58, 28, 1, true)),
+      glassMaterial(),
+    );
+    vessel.position.y = isOil ? 0.05 : 0;
+    vessel.renderOrder = 3;
+    const fill = new THREE.Mesh(
+      geometry(new THREE.CylinderGeometry(isOil ? 0.18 : 0.245, isOil ? 0.22 : 0.255, isOil ? 0.48 : 0.34, 24)),
+      standard({
+        color: item.color, roughness: isOil ? 0.3 : 0.82,
+        transparent: isOil, opacity: isOil ? 0.86 : 1,
+        emissive: item.color, emissiveIntensity: isOil ? 0.13 : 0.03,
+      }),
+    );
+    fill.name = 'ingredient-fill';
+    fill.position.y = isOil ? -0.02 : -0.09;
+    const lid = new THREE.Mesh(
+      geometry(new THREE.CylinderGeometry(isOil ? 0.13 : 0.28, isOil ? 0.13 : 0.28, 0.08, 24)),
+      standard({ color: isOil ? '#166534' : '#d8e3ea', roughness: 0.36, metalness: isOil ? 0.05 : 0.55 }),
+    );
+    lid.position.y = isOil ? 0.45 : 0.34;
+    const label = new THREE.Mesh(
+      geometry(new THREE.PlaneGeometry(0.48, 0.2)),
+      basic({ map: makeLabelTexture(item.label.replace('Table ', ''), item.color, textures), transparent: true, depthTest: false }),
+    );
+    label.position.set(0, 0.02, isOil ? 0.205 : 0.285);
+    const ring = new THREE.Mesh(
+      geometry(new THREE.TorusGeometry(isOil ? 0.29 : 0.34, 0.025, 8, 32)),
+      standard({ color: '#facc15', emissive: '#f59e0b', emissiveIntensity: 0.75, transparent: true, opacity: 0 }),
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = -0.32;
+    jar.add(vessel, fill, lid, label, ring);
+    root.add(jar);
+    interactives.push(jar);
+    ingredientJars[id] = jar;
+    selectionRings[id] = ring;
+    return jar;
+  }
+
+  const substances = (Object.keys(SOLUBILITY_SUBSTANCES) as SubstanceId[]).map(makeIngredientJar);
   const predictions = [
     ['dissolves', 'Solution'], ['settles', 'Sediment'], ['clouds', 'Suspension'], ['separates', 'Layer'],
   ].map(([id, label], index) =>
     makeButton(`prediction-button-${id}`, label, new THREE.Vector3(-1.82 + index * 0.84, 0.91, 1.22), '#188eb2', 0.76));
-  const runButton = makeButton('action-button-run', 'Add 5 g', new THREE.Vector3(0.65, 0.66, 1.02), '#2c9a64', 0.78);
+
+  const scoop = new THREE.Group();
+  scoop.name = 'action-button-run';
+  const scoopMetal = standard({ color: '#dcecf4', roughness: 0.24, metalness: 0.72 });
+  const scoopBowl = new THREE.Mesh(geometry(new THREE.CylinderGeometry(0.18, 0.12, 0.1, 24)), scoopMetal);
+  const scoopHandle = new THREE.Mesh(geometry(new THREE.BoxGeometry(0.08, 0.07, 0.72)), scoopMetal);
+  scoopHandle.position.z = 0.4;
+  const scoopFillMaterial = standard({ color: SOLUBILITY_SUBSTANCES.salt.color, roughness: 0.82 });
+  const scoopFill = new THREE.Mesh(geometry(new THREE.SphereGeometry(0.145, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2)), scoopFillMaterial);
+  scoopFill.name = 'measured-ingredient-scoop';
+  scoopFill.position.y = 0.05;
+  scoop.add(scoopBowl, scoopHandle, scoopFill);
+  scoop.position.set(0.52, 0.69, 0.92);
+  root.add(scoop);
+  interactives.push(scoop);
+  const scoopLabel = new THREE.Mesh(
+    geometry(new THREE.PlaneGeometry(0.72, 0.22)),
+    basic({ map: makeLabelTexture('5 g SCOOP', '#4ade80', textures), transparent: true, depthTest: false }),
+  );
+  scoopLabel.position.set(0.52, 0.94, 0.9);
+  root.add(scoopLabel);
+
+  const pourMaterial = standard({ color: SOLUBILITY_SUBSTANCES.salt.color, roughness: 0.72 });
+  const pourParticles = new THREE.InstancedMesh(
+    geometry(new THREE.IcosahedronGeometry(0.024, 0)), pourMaterial, 28,
+  );
+  pourParticles.count = 0;
+  pourParticles.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  root.add(pourParticles);
+  const runButton = scoop;
   const stirButton = makeButton('action-button-stir', 'Stir / stop', new THREE.Vector3(1.55, 0.66, 1.02), '#8b5cf6', 0.86);
   const lensButton = makeButton('action-button-lens', 'Molecular lens', new THREE.Vector3(1.27, 0.91, 1.22), '#db7c28', 1.02);
   const resetButton = makeButton('action-button-reset', 'Reset', new THREE.Vector3(2.18, 0.91, 1.22), '#596779', 0.68);
 
+  let selectedSubstance: SubstanceId = 'salt';
+  let lastElapsed = 0;
+  let pourStartedAt = Number.NEGATIVE_INFINITY;
+  const scoopRest = new THREE.Vector3(0.52, 0.69, 0.92);
+
+  function setSelectedSubstance(id: SubstanceId) {
+    selectedSubstance = id;
+    for (const key of Object.keys(selectionRings) as SubstanceId[]) {
+      (selectionRings[key].material as THREE.MeshStandardMaterial).opacity = key === id ? 0.95 : 0;
+    }
+    scoopFillMaterial.color.set(SOLUBILITY_SUBSTANCES[id].color);
+    pourMaterial.color.set(SOLUBILITY_SUBSTANCES[id].color);
+  }
+
+  function pourScoop(id: SubstanceId) {
+    setSelectedSubstance(id);
+    pourStartedAt = lastElapsed;
+  }
+
+  setSelectedSubstance('salt');
+
   function update(snapshot: MixtureSnapshot, elapsed: number, showMolecularLens: boolean) {
+    lastElapsed = elapsed;
     molecularLens = showMolecularLens;
     const item = SOLUBILITY_SUBSTANCES[snapshot.substanceId];
     particleMaterial.color.set(item.color);
@@ -276,6 +405,42 @@ export function createSolubilityScene(config: SolubilitySceneConfig) {
     surface.rotation.z = elapsed * (snapshot.stirring ? 0.35 : 0.02);
     rod.rotation.y = snapshot.stirring ? elapsed * 3.4 : 0;
     rod.position.x = BEAKER_CENTER.x + 0.19 + (snapshot.stirring ? Math.sin(elapsed * 3.4) * 0.13 : 0);
+
+    const pourAge = elapsed - pourStartedAt;
+    if (pourAge >= 0 && pourAge < 1.55) {
+      const progress = Math.min(1, pourAge / 1.1);
+      const start = jarPositions[selectedSubstance].clone().add(new THREE.Vector3(0, 0.65, 0.18));
+      const control = new THREE.Vector3(-0.9, 2.15, 0.55);
+      const end = BEAKER_CENTER.clone().add(new THREE.Vector3(0.05, 0.78, 0.25));
+      const inverse = 1 - progress;
+      scoop.position.set(
+        inverse * inverse * start.x + 2 * inverse * progress * control.x + progress * progress * end.x,
+        inverse * inverse * start.y + 2 * inverse * progress * control.y + progress * progress * end.y,
+        inverse * inverse * start.z + 2 * inverse * progress * control.z + progress * progress * end.z,
+      );
+      scoop.rotation.z = -Math.min(1, Math.max(0, (progress - 0.62) / 0.38)) * 1.2;
+      const streamActive = progress > 0.68;
+      pourParticles.count = streamActive ? 28 : 0;
+      if (streamActive) {
+        for (let index = 0; index < pourParticles.count; index += 1) {
+          const fall = (seeded(index, 20) + elapsed * 2.3) % 1;
+          dummy.position.set(
+            BEAKER_CENTER.x + 0.04 + (seeded(index, 21) - 0.5) * 0.12,
+            1.82 - fall * 0.72,
+            BEAKER_CENTER.z + 0.08 + (seeded(index, 22) - 0.5) * 0.12,
+          );
+          dummy.scale.setScalar(0.72 + seeded(index, 23) * 0.65);
+          dummy.rotation.set(0, seeded(index, 24) * Math.PI, 0);
+          dummy.updateMatrix();
+          pourParticles.setMatrixAt(index, dummy.matrix);
+        }
+        pourParticles.instanceMatrix.needsUpdate = true;
+      }
+    } else {
+      scoop.position.copy(scoopRest);
+      scoop.rotation.set(0, 0, 0);
+      pourParticles.count = 0;
+    }
   }
 
   function setQualityProfile(nextProfileId: QualityProfileId) {
@@ -292,8 +457,9 @@ export function createSolubilityScene(config: SolubilitySceneConfig) {
   }
 
   return {
-    root, beaker, instrumentPanel, substances, predictions, runButton, stirButton, lensButton, resetButton,
-    interactives, update, setQualityProfile, setMolecularLens(value: boolean) { molecularLens = value; }, dispose,
+    root, beaker, instrumentPanel, ingredientJars, substances, predictions, runButton, stirButton, lensButton, resetButton,
+    interactives, update, pourScoop, setSelectedSubstance, setQualityProfile,
+    setMolecularLens(value: boolean) { molecularLens = value; }, dispose,
   };
 }
 

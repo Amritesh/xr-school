@@ -1,96 +1,158 @@
-let simulationAudioContext: AudioContext | null = null;
-let currentNarrationAudio: HTMLAudioElement | null = null;
-
-function getSpeechSynthesis() {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
-  return window.speechSynthesis;
+interface ActiveCue {
+  oscillator: OscillatorNode;
+  gain: GainNode;
 }
 
-async function ensureSimulationAudio() {
-  if (typeof window === 'undefined') return null;
-  const AudioContextCtor =
-    window.AudioContext ||
-    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-  if (!AudioContextCtor) return null;
+/**
+ * One application-wide owner for narration, speech synthesis, and headset cues.
+ * Every play request atomically interrupts the previous request. A generation
+ * token prevents late async play failures from clearing or restarting newer audio.
+ */
+export class SimulationSoundManager {
+  private static readonly shared = new SimulationSoundManager();
+  private audioContext: AudioContext | null = null;
+  private currentAudio: HTMLAudioElement | null = null;
+  private currentCue: ActiveCue | null = null;
+  private generation = 0;
+  private voicesChangedListener: (() => void) | null = null;
 
-  simulationAudioContext ??= new AudioContextCtor();
-  if (simulationAudioContext.state === 'suspended') {
-    await simulationAudioContext.resume();
+  private constructor() {}
+
+  static instance() { return SimulationSoundManager.shared; }
+
+  private speechSynthesis() {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
+    return window.speechSynthesis;
   }
-  return simulationAudioContext;
-}
 
-async function playHeadsetCue(cueIndex: number) {
-  const ctx = await ensureSimulationAudio();
-  if (!ctx) return;
+  private async ensureAudioContext() {
+    if (typeof window === 'undefined') return null;
+    const AudioContextCtor = window.AudioContext
+      || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextCtor) return null;
+    this.audioContext ??= new AudioContextCtor();
+    if (this.audioContext.state === 'suspended') await this.audioContext.resume();
+    return this.audioContext;
+  }
 
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  const start = ctx.currentTime;
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(520 + (cueIndex % 8) * 38, start);
-  gain.gain.setValueAtTime(0.0001, start);
-  gain.gain.exponentialRampToValueAtTime(0.065, start + 0.03);
-  gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.22);
-  osc.connect(gain).connect(ctx.destination);
-  osc.start(start);
-  osc.stop(start + 0.24);
-}
+  private stopCue() {
+    if (!this.currentCue) return;
+    try { this.currentCue.gain.gain.cancelScheduledValues(0); } catch {}
+    try { this.currentCue.oscillator.stop(); } catch {}
+    try { this.currentCue.oscillator.disconnect(); } catch {}
+    try { this.currentCue.gain.disconnect(); } catch {}
+    this.currentCue = null;
+  }
 
-function speakText(text: string) {
-  const speechSynthesis = getSpeechSynthesis();
-  if (!speechSynthesis) return;
-
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.87;
-  utterance.pitch = 1.02;
-  utterance.volume = 1.0;
-
-  const trySpeak = () => {
-    const voices = speechSynthesis.getVoices();
-    if (voices.length) {
-      const voice =
-        voices.find(v => v.name === 'Samantha') ||
-        voices.find(v => v.name.includes('Google US English')) ||
-        voices.find(v => v.name.includes('Karen')) ||
-        voices.find(v => v.lang === 'en-US' && v.localService) ||
-        voices.find(v => v.lang.startsWith('en-US')) ||
-        voices.find(v => v.lang.startsWith('en'));
-      if (voice) utterance.voice = voice;
+  private interrupt() {
+    this.generation += 1;
+    this.stopCue();
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      if (Number.isFinite(this.currentAudio.currentTime)) this.currentAudio.currentTime = 0;
+      this.currentAudio = null;
     }
-    speechSynthesis.speak(utterance);
-  };
+    const speech = this.speechSynthesis();
+    speech?.cancel();
+    if (speech && this.voicesChangedListener) {
+      speech.removeEventListener('voiceschanged', this.voicesChangedListener);
+    }
+    this.voicesChangedListener = null;
+    return this.generation;
+  }
 
-  if (speechSynthesis.getVoices().length > 0) trySpeak();
-  else speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
+  private async playHeadsetCue(cueIndex: number, request: number) {
+    const context = await this.ensureAudioContext();
+    if (!context || request !== this.generation) return;
+    this.stopCue();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const start = context.currentTime;
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(520 + (cueIndex % 8) * 38, start);
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.045, start + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.14);
+    oscillator.connect(gain).connect(context.destination);
+    oscillator.start(start);
+    oscillator.stop(start + 0.16);
+    this.currentCue = { oscillator, gain };
+    oscillator.onended = () => {
+      if (this.currentCue?.oscillator === oscillator) this.currentCue = null;
+      try { oscillator.disconnect(); } catch {}
+      try { gain.disconnect(); } catch {}
+    };
+  }
+
+  private async playAudioFile(audioUrl: string, request: number) {
+    if (typeof window === 'undefined' || request !== this.generation) return false;
+    const audio = new Audio(audioUrl);
+    audio.preload = 'auto';
+    audio.setAttribute('playsinline', 'true');
+    audio.volume = 1;
+    this.currentAudio = audio;
+    try {
+      await audio.play();
+      if (request !== this.generation) {
+        audio.pause();
+        return false;
+      }
+      return true;
+    } catch {
+      if (this.currentAudio === audio) this.currentAudio = null;
+      return false;
+    }
+  }
+
+  private speakText(text: string, request: number) {
+    const speech = this.speechSynthesis();
+    if (!speech || request !== this.generation) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.87;
+    utterance.pitch = 1.02;
+    utterance.volume = 1;
+
+    const speak = () => {
+      if (request !== this.generation) return;
+      const voices = speech.getVoices();
+      const voice = voices.find(value => value.name === 'Samantha')
+        || voices.find(value => value.name.includes('Google US English'))
+        || voices.find(value => value.name.includes('Karen'))
+        || voices.find(value => value.lang === 'en-US' && value.localService)
+        || voices.find(value => value.lang.startsWith('en'));
+      if (voice) utterance.voice = voice;
+      speech.speak(utterance);
+    };
+
+    if (speech.getVoices().length > 0) speak();
+    else {
+      this.voicesChangedListener = speak;
+      speech.addEventListener('voiceschanged', speak, { once: true });
+    }
+  }
+
+  async playNarration(text: string, cueIndex = 0, audioUrl?: string) {
+    const request = this.interrupt();
+    void this.playHeadsetCue(cueIndex, request);
+    if (audioUrl) {
+      const played = await this.playAudioFile(audioUrl, request);
+      if (request !== this.generation) return;
+      if (played) return;
+    }
+    this.speakText(text, request);
+  }
+
+  stop() { this.interrupt(); }
 }
 
-async function playAudioFile(audioUrl: string) {
-  if (typeof window === 'undefined') return false;
-  currentNarrationAudio?.pause();
-  currentNarrationAudio = new Audio(audioUrl);
-  currentNarrationAudio.preload = 'auto';
-  currentNarrationAudio.setAttribute('playsinline', 'true');
-  currentNarrationAudio.volume = 1;
-
-  try {
-    await currentNarrationAudio.play();
-    return true;
-  } catch {
-    currentNarrationAudio = null;
-    return false;
-  }
+export function getSimulationSoundManager() {
+  return SimulationSoundManager.instance();
 }
 
 export async function playSimulationNarration(text: string, cueIndex = 0, audioUrl?: string) {
-  await playHeadsetCue(cueIndex);
-  if (audioUrl && await playAudioFile(audioUrl)) return;
-  speakText(text);
+  await getSimulationSoundManager().playNarration(text, cueIndex, audioUrl);
 }
 
 export function stopSimulationNarration() {
-  currentNarrationAudio?.pause();
-  currentNarrationAudio = null;
-  getSpeechSynthesis()?.cancel();
+  getSimulationSoundManager().stop();
 }
