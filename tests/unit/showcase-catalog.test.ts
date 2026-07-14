@@ -6,6 +6,7 @@ const componentPath = resolve(process.cwd(), 'apps/web/components/catalog/Simula
 const storyPath = resolve(process.cwd(), 'apps/web/components/catalog/SimulationCatalog.stories.tsx');
 const homePath = resolve(process.cwd(), 'apps/web/app/page.tsx');
 const stylesPath = resolve(process.cwd(), 'apps/web/app/globals.css');
+const homeStylesPath = resolve(process.cwd(), 'apps/web/app/home.css');
 
 describe('showcase catalog', () => {
   it('provides an interactive concept search with class, subject, and maturity filters', () => {
@@ -40,10 +41,14 @@ describe('showcase catalog', () => {
   it('uses a professional product entry page and responsive visual system', () => {
     const home = readFileSync(homePath, 'utf8');
     const styles = readFileSync(stylesPath, 'utf8');
+    const homeStyles = readFileSync(homeStylesPath, 'utf8');
 
-    expect(home).toContain('Curriculum intelligence for immersive science');
-    expect(home).toContain('Explore curriculum library');
-    expect(home).toContain('Release maturity, clearly shown');
+    expect(home).toContain('Step inside the lesson');
+    expect(home).toContain('Explore the curriculum');
+    expect(home).toContain('Clear about what is ready');
+    expect(homeStyles).toContain('.home-editorial');
+    expect(homeStyles).toContain('.home-class-grid');
+    expect(homeStyles).toContain('@media (max-width: 640px)');
     expect(styles).toContain('.showcase-shell');
     expect(styles).toContain('.catalog-grid');
     expect(styles).toContain('@media (max-width: 720px)');
