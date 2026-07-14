@@ -1,0 +1,29 @@
+{
+  "auditDate": "2026-07-14",
+  "portfolio": {
+    "launchableSimulations": 13,
+    "canonicalModules": 12,
+    "releaseMaturity": "internalQA",
+    "fullRepositoryTestsPassing": 612,
+    "packagedNarrationClips": 85,
+    "packagedNarrationTechnicalProfile": "MPEG Layer III, 56 kbps, 22.05 kHz, mono",
+    "simulationsWithPackagedNarration": 5,
+    "schoolOutcomeStudies": 0,
+    "signedQuestAcceptanceRuns": 0
+  },
+  "simulations": [
+    {"slug":"pollination","stages":8,"dedicatedTests":29,"audioClips":8,"assetEvidence":"19 live image resources plus mapped PBR procedural garden assets","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained a flat green clear state","modelEvidence":"treatment/control experiment, pollination sequence, scale disclosure and verified biology world"},
+    {"slug":"circuit","stages":4,"dedicatedTests":10,"audioClips":4,"assetEvidence":"16 live image resources and mapped PBR circuit components","liveEvidence":"HTTP 200 and canvas mounted; automated entry remained at mode-selection presentation","modelEvidence":"Ohm's law truth model, open/closed circuit states, resistance prediction and reference vectors"},
+    {"slug":"c9-ch01-a02-states-of-matter","stages":4,"dedicatedTests":8,"audioClips":4,"assetEvidence":"7 live image resources and instanced procedural particles","liveEvidence":"HTTP 200 and canvas mounted; automated entry remained at mode-selection presentation","modelEvidence":"authored solid/liquid/gas reference states, heat mapping and particle-force tests"},
+    {"slug":"c6-ch01-a01-sources-of-food","stages":4,"dedicatedTests":2,"audioClips":36,"assetEvidence":"procedural tabletop, food tokens and category platforms","liveEvidence":"HTTP 200, interactive sorting scene visible and zero runtime errors","modelEvidence":"plant/animal/fungal classification, misconception feedback and scored placements"},
+    {"slug":"c5-ch07-a03-soluble-and-insoluble-substances","stages":4,"dedicatedTests":16,"audioClips":33,"assetEvidence":"procedural PBR beaker, visible 200 mL water, five material vessels, scoop and instanced particles","liveEvidence":"HTTP 200, complete lab visible, zero runtime errors and singleton audio stress passed","modelEvidence":"mass conservation, saturation, temperature, agitation, suspension, settling and immiscible oil pools"},
+    {"slug":"c5-ch03-a02-introduction-of-digestive-system","stages":10,"dedicatedTests":21,"audioClips":0,"assetEvidence":"11 authored GLB model requests with procedural fallback","liveEvidence":"HTTP 200 and canvas mounted, but all 11 GLB requests returned 404","modelEvidence":"complete organ pathway, peristalsis, accessory-organ inspection, recap and healthy-habit assessment"},
+    {"slug":"c7-ch10-a02-the-breathing-process-in-human","stages":6,"dedicatedTests":4,"audioClips":0,"assetEvidence":"procedural airway, lungs, diaphragm and alveoli","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained blank","modelEvidence":"airway tracing, chest-volume mechanics, inhalation/exhalation and gas exchange"},
+    {"slug":"c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape","stages":6,"dedicatedTests":11,"audioClips":0,"assetEvidence":"procedural arena, ball, brake and deformable objects","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained blank","modelEvidence":"fixed-step inertia, braking, directional force, collision bounds and elastic/non-elastic deformation"},
+    {"slug":"c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test","stages":5,"dedicatedTests":6,"audioClips":0,"assetEvidence":"procedural experiment bench and indicator materials","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained blank","modelEvidence":"pH classification, litmus, universal indicator and neutralisation sequence"},
+    {"slug":"c1-art-a01-learning-of-colours","stages":5,"dedicatedTests":8,"audioClips":0,"assetEvidence":"bright procedural colour worlds, rainbow classroom and quiz garden","liveEvidence":"HTTP 200, child-facing scene visible and zero runtime errors; absent from canonical module registry","modelEvidence":"colour recognition, object finding, memory checks and gated stage completion"},
+    {"slug":"c1-math-ch01-introduction-to-money","stages":5,"dedicatedTests":8,"audioClips":0,"assetEvidence":"procedural Money Town, Indian coins, notes and shop environments","liveEvidence":"HTTP 200, child-facing scene visible and zero runtime errors","modelEvidence":"currency identification, value comparison, shopping and memory checks"},
+    {"slug":"c2-english-ch01-prepositions","stages":5,"dedicatedTests":8,"audioClips":0,"assetEvidence":"procedural English adventure rooms, object-placement scenes and garden","liveEvidence":"HTTP 200, child-facing scene visible and zero runtime errors","modelEvidence":"spatial placement, position-word practice, simple sentence prompts and memory checks"},
+    {"slug":"c8-10-science-solar-system","stages":8,"dedicatedTests":35,"audioClips":0,"assetEvidence":"local credited Sun and eight-planet texture set plus procedural orbit observatory","liveEvidence":"HTTP 200 but production enters Experience paused: roundRect is not a function; canvas never mounts and two resources return 403","modelEvidence":"Kepler-law verification, real orbital periods, Venus temperature misconception, scale blend, comet perihelion and tail direction"}
+  ]
+}
