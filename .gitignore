@@ -14,4 +14,5 @@ certificates/
 .DS_Store
 **/.DS_Store
 .superpowers/
+.worktrees/
 .vercel
