@@ -866,6 +866,242 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   .release-policy { gap: 2.5rem; margin-top: 3rem; padding-block: 4rem; }
 }
 
+/* XR School product design language
+   The homepage remains isolated in home.css; public product pages inherit its visual DNA here. */
+:root {
+  --paper: #f7f5ff;
+  --paper-raised: #ffffff;
+  --ink: #24143f;
+  --muted: rgba(36, 20, 63, 0.68);
+  --quiet: rgba(36, 20, 63, 0.5);
+  --canvas: #f7f5ff;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-raised: #ffffff;
+  --line: rgba(54, 25, 102, 0.14);
+  --line-strong: rgba(54, 25, 102, 0.24);
+  --purple: #6f35f2;
+  --purple-dark: #3c167f;
+  --cyan: #6f35f2;
+  --green: #348a69;
+  --amber: #a86700;
+  --blue: #315fbd;
+  --mint: #a9ead7;
+  --peach: #ffab9d;
+  --yellow: #ffd86f;
+  --display-font: Iowan Old Style, Baskerville, "Times New Roman", serif;
+}
+
+body { background: var(--paper); }
+
+:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+}
+
+.showcase-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 6% 4%, rgba(169, 216, 255, 0.26), transparent 24rem),
+    radial-gradient(circle at 96% 12%, rgba(255, 171, 157, 0.2), transparent 22rem),
+    var(--paper);
+}
+
+.showcase-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+  content: "";
+  pointer-events: none;
+}
+
+.product-header {
+  min-height: 5.5rem;
+}
+
+.brand-mark {
+  position: relative;
+  width: 2.2rem;
+  height: 2.2rem;
+  transform: rotate(-6deg);
+  border: 2px solid var(--purple);
+  border-radius: 48% 52% 44% 56%;
+  background: var(--mint);
+  color: var(--purple-dark);
+}
+
+.brand-mark::after {
+  position: absolute;
+  top: -0.28rem;
+  right: -0.18rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--peach);
+  content: "";
+}
+
+.brand-lockup strong { color: var(--ink); font-weight: 850; }
+.brand-lockup small { color: var(--quiet); }
+.status-dot { background: #4cab80; box-shadow: 0 0 0 4px rgba(76, 171, 128, 0.12); }
+
+.catalog-room-links a,
+.reset-button {
+  min-height: 2.65rem;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.catalog-room-links a:hover,
+.reset-button:hover {
+  border-color: rgba(111, 53, 242, 0.38);
+  color: var(--purple);
+}
+
+.catalog-hero {
+  gap: clamp(3rem, 8vw, 7rem);
+  padding-block: clamp(5rem, 9vw, 8rem) 3.5rem;
+}
+
+.catalog-hero h1,
+.section-heading h2,
+.release-policy h2,
+.catalog-state h1 {
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-weight: 500;
+}
+
+.catalog-hero h1 {
+  max-width: 880px;
+  font-size: clamp(3rem, 7vw, 6.6rem);
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+}
+
+.eyebrow { color: var(--purple); font-weight: 900; }
+
+.catalog-metrics {
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 24px 60px rgba(60, 22, 127, 0.07);
+}
+
+.catalog-metrics strong {
+  color: var(--purple);
+  font-family: var(--display-font);
+  font-size: 1.55rem;
+  font-weight: 600;
+}
+
+.search-workbench {
+  padding: 1rem;
+  border-color: rgba(111, 53, 242, 0.18);
+  border-radius: 1.4rem;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 24px 65px rgba(60, 22, 127, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.search-field {
+  border-radius: 99px;
+  background: var(--paper);
+  color: var(--purple);
+}
+
+.search-field:focus-within { border-color: rgba(111, 53, 242, 0.55); }
+.search-field input { color: var(--ink); }
+.search-field input::placeholder { color: var(--quiet); }
+
+.filter-row select {
+  border-radius: 99px;
+  background: #fff;
+  color: var(--muted);
+}
+
+.section-heading h2,
+.release-policy h2 {
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.simulation-card,
+.search-result-card,
+.course-card {
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 16px 45px rgba(60, 22, 127, 0.045);
+}
+
+.featured-grid .simulation-card:first-child {
+  background:
+    radial-gradient(circle at 92% 8%, rgba(169, 234, 215, 0.65), transparent 13rem),
+    linear-gradient(145deg, #fff, #f1edff);
+}
+
+.simulation-card:nth-child(3n + 2) {
+  background:
+    radial-gradient(circle at 100% 0, rgba(255, 216, 111, 0.25), transparent 10rem),
+    rgba(255, 255, 255, 0.65);
+}
+
+.simulation-card.launchable:hover,
+.search-result-card:hover {
+  transform: translateY(-4px) rotate(-0.25deg);
+  border-color: rgba(111, 53, 242, 0.32);
+  background: #fff;
+  box-shadow: 0 22px 55px rgba(60, 22, 127, 0.1);
+}
+
+.simulation-card.gated { background: rgba(255, 255, 255, 0.38); }
+
+.simulation-card h3,
+.search-result-card h3,
+.course-card h3 {
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.maturity-badge { background: rgba(255, 255, 255, 0.72); }
+.maturity-internalQA { color: #216c4c; border-color: rgba(52, 138, 105, 0.3); background: rgba(169, 234, 215, 0.35); }
+.maturity-inDevelopment { color: #825200; border-color: rgba(168, 103, 0, 0.26); background: rgba(255, 216, 111, 0.25); }
+.maturity-pilotReady { color: var(--blue); }
+.maturity-schoolValidated { color: var(--purple); border-color: rgba(111, 53, 242, 0.3); }
+
+.course-card { border-radius: 1rem; }
+.course-card-topline,
+.launchable .simulation-card-footer strong,
+.search-result-card > div > span:first-child { color: var(--purple); }
+
+.empty-state {
+  border-color: rgba(111, 53, 242, 0.25);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.release-policy li.current {
+  color: #216c4c;
+  background: rgba(169, 234, 215, 0.25);
+}
+.release-policy li.current span { color: #216c4c; }
+.state-progress span { background: var(--purple); }
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-shell *,
+  .showcase-shell *::before,
+  .showcase-shell *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
 @media (max-width: 720px) {
   .digestive-hud-header {
     align-items: stretch !important;
