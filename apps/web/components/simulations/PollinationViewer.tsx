@@ -2,6 +2,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { createQuestVrControls } from './questVrControls';
+import { playNarration, stopNarration, unlockNarration } from "./narrationAudio";
+import { applyRealisticEnvironment } from "./realisticEnvironment";
 
 const NARRATIONS = [
   "Welcome to the flower garden. Look all around you — you are standing inside a living garden. Flowers are structures designed for reproduction. Each flower has petals to attract pollinators, stamens that produce pollen, and a pistil that receives it.",
@@ -26,26 +29,7 @@ const STAGES = [
 ];
 
 function speakText(text: string) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.87; utterance.pitch = 1.02; utterance.volume = 1.0;
-  const trySpeak = () => {
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      const voice =
-        voices.find(v => v.name === 'Samantha') ||
-        voices.find(v => v.name.includes('Google US English')) ||
-        voices.find(v => v.name.includes('Karen')) ||
-        voices.find(v => v.lang === 'en-US' && v.localService) ||
-        voices.find(v => v.lang.startsWith('en-US')) ||
-        voices.find(v => v.lang.startsWith('en'));
-      if (voice) utterance.voice = voice;
-    }
-    window.speechSynthesis.speak(utterance);
-  };
-  if (window.speechSynthesis.getVoices().length > 0) trySpeak();
-  else window.speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
+  playNarration(text);
 }
 
 function buildFlower(petalHex: number, x: number, z: number, scale = 1): THREE.Group {
@@ -206,6 +190,7 @@ export default function PollinationViewer() {
     // ── Scene ─────────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0xc5e8f5, 0.022);
+    const realisticEnvironment = applyRealisticEnvironment(scene, renderer, "/environments/pollination-garden-360.png", { intensity: 0.44, exposure: 1.08 });
 
     // ── Sky sphere (gradient: horizon pale blue → zenith deep blue) ───────
     const skyGeo = new THREE.SphereGeometry(48, 32, 20);
@@ -407,7 +392,6 @@ export default function PollinationViewer() {
     const ctrl0 = renderer.xr.getController(0);
     const ctrl1 = renderer.xr.getController(1);
     ctrl0.add(buildControllerVisual()); ctrl1.add(buildControllerVisual());
-    scene.add(ctrl0, ctrl1);
 
     const ctrlRaycaster = new THREE.Raycaster();
     const advanceStage = () => {
@@ -438,6 +422,15 @@ export default function PollinationViewer() {
     };
     ctrl0.addEventListener('selectstart', onCtrlSelect as any);
     ctrl1.addEventListener('selectstart', onCtrlSelect as any);
+    const questVr = createQuestVrControls({
+      renderer,
+      scene,
+      camera,
+      controllers: [ctrl0, ctrl1],
+      onPrimary: advanceStage,
+      onBack: retreatStage,
+      onNarrate: () => speakText(NARRATIONS[stageRef.current]),
+    });
 
     // ── OrbitControls (browser mode) ──────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -451,6 +444,7 @@ export default function PollinationViewer() {
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
       const t = clock.getElapsedTime();
+      questVr.update();
       const s = stageRef.current;
 
       // Update 3D cue card when stage changes
@@ -531,10 +525,14 @@ export default function PollinationViewer() {
 
     return () => {
       renderer.setAnimationLoop(null);
+      ctrl0.removeEventListener('selectstart', onCtrlSelect as any);
+      ctrl1.removeEventListener('selectstart', onCtrlSelect as any);
+      questVr.dispose();
+      realisticEnvironment.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', onResize);
-      window.speechSynthesis?.cancel();
+      stopNarration();
     };
   }, []);
 
@@ -560,12 +558,14 @@ export default function PollinationViewer() {
   const enterVR = useCallback(async () => {
     if (!rendererRef.current) return;
     try {
+      unlockNarration();
       const session = await (navigator as any).xr.requestSession('immersive-vr', {
         requiredFeatures: ['local-floor'],
         optionalFeatures: ['bounded-floor', 'hand-tracking'],
       });
-      rendererRef.current.xr.setSession(session);
+      await rendererRef.current.xr.setSession(session);
       setStarted(true);
+      window.setTimeout(() => speakText(NARRATIONS[stageRef.current]), 900);
     } catch {
       setStarted(true);
     }

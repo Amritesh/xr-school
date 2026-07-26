@@ -5,6 +5,7 @@
   "description": "Offline-first K-12 XR simulation curriculum platform for Indian schools",
   "type": "module",
   "scripts": {
+    "build": "npm --workspace @xr-school/web run build",
     "contract:compile": "tsp compile contracts/typespec",
     "quality": "npm run contract:compile && npm run test",
     "test": "vitest run",

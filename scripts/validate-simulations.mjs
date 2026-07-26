@@ -58,6 +58,26 @@ for (const slug of slugs) {
 
 // ── 3. Each slug must have a viewer component ──────────────────────────
 const viewerNameMap = {
+  'up-you-go-rock-climbing': 'RockClimbingViewer',
+  'up-you-go-river-crossing-adventure': 'RiverCrossingAdventureViewer',
+  'treat-for-mosquitoes-mosquito-life-cycle': 'MosquitoLifeCycleViewer',
+  'treat-for-mosquitoes-malaria-diagnosis': 'MalariaDiagnosisViewer',
+  'experiments-with-water-soluble-insoluble': 'SolubleInsolubleViewer',
+  'experiments-with-water-dead-sea-salt-water': 'DeadSeaSaltWaterViewer',
+  'experiments-with-water-float-or-sink': 'FloatOrSinkViewer',
+  'every-drop-counts-rainwater-storage': 'RainwaterStorageViewer',
+  'every-drop-counts-stepwell-structure': 'StepwellStructureViewer',
+  'seeds-and-seeds-seed-dispersal': 'SeedDispersalViewer',
+  'mangoes-round-the-year-aam-papad': 'AamPapadViewer',
+  'mangoes-round-the-year-milk-spoilage': 'MilkSpoilageViewer',
+  'seeds-and-seeds-pitcher-plant': 'PitcherPlantViewer',
+  'mangoes-round-the-year-food-spoilage': 'FoodSpoilageViewer',
+  'sorting-materials-by-shape': 'ShapeSortingViewer',
+  'fibre-to-fabric-cotton-ginning': 'CottonGinningViewer',
+  'fibre-to-fabric-cotton-farming': 'CottonFarmingViewer',
+  'components-of-food-mineral-sources': 'MineralSourcesViewer',
+  'components-of-food-vitamins-deficiencies': 'VitaminDeficiencyViewer',
+  'components-of-food-lipid-test': 'LipidTestViewer',
   pollination: 'PollinationViewer',
   circuit: 'CircuitViewer',
 };

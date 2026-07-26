@@ -2,6 +2,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { createQuestVrControls } from './questVrControls';
+import { playNarration, stopNarration, unlockNarration } from "./narrationAudio";
+import { applyRealisticEnvironment } from "./realisticEnvironment";
 
 const VOLTAGE = 9;
 
@@ -53,28 +56,7 @@ const CIRCUIT_SCALE = 0.155;
 const BZ = -0.8;
 
 function speakText(text: string) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.87;
-  utterance.pitch = 1.02;
-  utterance.volume = 1.0;
-  const trySpeak = () => {
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      const voice =
-        voices.find(v => v.name === 'Samantha') ||
-        voices.find(v => v.name.includes('Google US English')) ||
-        voices.find(v => v.name.includes('Karen')) ||
-        voices.find(v => v.lang === 'en-US' && v.localService) ||
-        voices.find(v => v.lang.startsWith('en-US')) ||
-        voices.find(v => v.lang.startsWith('en'));
-      if (voice) utterance.voice = voice;
-    }
-    window.speechSynthesis.speak(utterance);
-  };
-  if (window.speechSynthesis.getVoices().length > 0) trySpeak();
-  else window.speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
+  playNarration(text);
 }
 
 function drawCueCard(canvas: HTMLCanvasElement, stage: typeof STAGES[0], num: number, total: number) {
@@ -193,6 +175,7 @@ export default function CircuitViewer() {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x150e09);
     scene.fog = new THREE.Fog(0x150e09, 6, 18);
+    const realisticEnvironment = applyRealisticEnvironment(scene, renderer, "/environments/electronics-lab-360.png");
 
     // ── Camera — user stands at Z=0, workbench is at Z=BZ (-0.8) ─────────
     const camera = new THREE.PerspectiveCamera(65, mount.clientWidth / mount.clientHeight, 0.05, 30);
@@ -210,12 +193,12 @@ export default function CircuitViewer() {
     scene.add(keyLight, keyLight.target);
 
     // ── Workshop room ─────────────────────────────────────────────────────
-    const wallMat = new THREE.MeshStandardMaterial({ color: 0x1a1510, roughness: 0.95 });
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0x1a1510, transparent: true, opacity: 0, depthWrite: false });
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.MeshStandardMaterial({ color: 0x1a1208, roughness: 0.95 }));
     floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
     const backWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 3.5), wallMat);
     backWall.position.set(0, 1.75, -3.0); scene.add(backWall);
-    const ceil = new THREE.Mesh(new THREE.PlaneGeometry(10, 8), new THREE.MeshStandardMaterial({ color: 0x120d08 }));
+    const ceil = new THREE.Mesh(new THREE.PlaneGeometry(10, 8), new THREE.MeshStandardMaterial({ transparent: true, opacity: 0, depthWrite: false }));
     ceil.rotation.x = Math.PI / 2; ceil.position.y = 3.2; scene.add(ceil);
     [-4.0, 4.0].forEach(x => {
       const sw = new THREE.Mesh(new THREE.PlaneGeometry(8, 3.5), wallMat);
@@ -399,7 +382,6 @@ export default function CircuitViewer() {
     const ctrl0 = renderer.xr.getController(0);
     const ctrl1 = renderer.xr.getController(1);
     ctrl0.add(buildControllerVisual()); ctrl1.add(buildControllerVisual());
-    scene.add(ctrl0, ctrl1);
 
     const ctrlRaycaster = new THREE.Raycaster();
     const onCtrlSelect = (event: Event) => {
@@ -427,6 +409,28 @@ export default function CircuitViewer() {
     };
     ctrl0.addEventListener('selectstart', onCtrlSelect as any);
     ctrl1.addEventListener('selectstart', onCtrlSelect as any);
+    const questVr = createQuestVrControls({
+      renderer,
+      scene,
+      camera,
+      controllers: [ctrl0, ctrl1],
+      onPrimary: () => {
+        setSwitchClosed(prev => {
+          const next = !prev;
+          switchClosedRef.current = next;
+          chalkNeedsUpdateRef.current = true;
+          return next;
+        });
+      },
+      onBack: () => {
+        const next = Math.max(stageRef.current - 1, 0);
+        stageRef.current = next;
+        cueNeedsUpdateRef.current = true;
+        setStage(next);
+        speakText(NARRATIONS[next]);
+      },
+      onNarrate: () => speakText(NARRATIONS[stageRef.current]),
+    });
 
     // ── Mouse click on switch ──────────────────────────────────────────────
     const mouseRaycaster = new THREE.Raycaster();
@@ -455,6 +459,7 @@ export default function CircuitViewer() {
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
       clock.getDelta();
+      questVr.update();
       const closed = switchClosedRef.current;
       const rIdx = resistorIdxRef.current;
       const R = RESISTORS[rIdx].ohms;
@@ -546,11 +551,15 @@ export default function CircuitViewer() {
 
     return () => {
       renderer.setAnimationLoop(null);
+      ctrl0.removeEventListener('selectstart', onCtrlSelect as any);
+      ctrl1.removeEventListener('selectstart', onCtrlSelect as any);
+      questVr.dispose();
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
+      realisticEnvironment.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       window.removeEventListener('resize', onResize);
-      window.speechSynthesis?.cancel();
+      stopNarration();
     };
   }, []);
 
@@ -568,12 +577,14 @@ export default function CircuitViewer() {
   const enterVR = useCallback(async () => {
     if (!rendererRef.current) return;
     try {
+      unlockNarration();
       const session = await (navigator as any).xr.requestSession('immersive-vr', {
         requiredFeatures: ['local-floor'],
         optionalFeatures: ['bounded-floor', 'hand-tracking'],
       });
-      rendererRef.current.xr.setSession(session);
+      await rendererRef.current.xr.setSession(session);
       setStarted(true);
+      window.setTimeout(() => speakText(NARRATIONS[stageRef.current]), 900);
     } catch { setStarted(true); }
   }, []);
 
@@ -673,7 +684,7 @@ export default function CircuitViewer() {
           </div>
 
           <div style={{ position: 'absolute', bottom: 16, left: 16, color: '#374151', fontSize: '0.74rem' }}>
-            Click switch · Drag to orbit · Scroll to zoom
+            Quest: trigger selects · A toggles · B/right grip exits VR • Y goes back · joysticks move and turn
           </div>
         </>
       )}

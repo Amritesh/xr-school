@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Indian Teacher Voice Previews</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #071a23;
+        color: #ecfeff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 15% 0%, rgba(14, 116, 144, 0.36), transparent 34rem),
+          linear-gradient(145deg, #071a23, #0c2835);
+      }
+      main {
+        width: min(900px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 48px 0 72px;
+      }
+      .eyebrow {
+        margin: 0 0 10px;
+        color: #67e8f9;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0;
+        max-width: 700px;
+        font-size: clamp(30px, 5vw, 48px);
+        line-height: 1.05;
+      }
+      .intro {
+        max-width: 700px;
+        margin: 18px 0 32px;
+        color: #b9d8e4;
+        font-size: 17px;
+        line-height: 1.65;
+      }
+      .voices {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+      article {
+        border: 1px solid rgba(125, 211, 252, 0.22);
+        border-radius: 18px;
+        background: rgba(8, 37, 49, 0.78);
+        padding: 20px;
+        box-shadow: 0 16px 38px rgba(0, 0, 0, 0.18);
+      }
+      .number {
+        display: inline-grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 50%;
+        background: #0e7490;
+        color: white;
+        font-weight: 800;
+      }
+      h2 {
+        margin: 16px 0 6px;
+        font-size: 20px;
+      }
+      article p {
+        min-height: 42px;
+        margin: 0 0 18px;
+        color: #a9cbd8;
+        line-height: 1.45;
+      }
+      audio { display: none; }
+      .player {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .play-button {
+        appearance: none;
+        border: 1px solid rgba(103, 232, 249, 0.42);
+        border-radius: 999px;
+        background: #0e7490;
+        color: white;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 750;
+        padding: 11px 17px;
+      }
+      .play-button:hover { background: #0891b2; }
+      .play-button:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 3px;
+      }
+      .audio-link {
+        color: #a5f3fc;
+        font-size: 14px;
+      }
+      .status {
+        width: 100%;
+        min-height: 20px;
+        color: #a9cbd8;
+        font-size: 13px;
+      }
+      .choice {
+        margin: 28px 0 0;
+        border-left: 3px solid #22d3ee;
+        padding: 4px 0 4px 16px;
+        color: #d7f7ff;
+        line-height: 1.55;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">XR School narration test</p>
+      <h1>Choose a more natural Indian teacher voice</h1>
+      <p class="intro">
+        These upgraded Indian-English neural voices use warmer pacing, natural
+        pauses, and classroom-style delivery. Listen to all five, then tell Codex
+        the number you prefer. The simulation narration will not change until you choose.
+      </p>
+      <section class="voices" aria-label="Five Indian teacher voice options">
+        <article>
+          <span class="number">1</span>
+          <h2>Neerja Expressive — Warm Teacher</h2>
+          <p>Warm Indian-English female teacher with an expressive, engaging delivery.</p>
+          <audio id="voice-1" preload="metadata" src="/voice-previews/1-neerja-expressive-teacher.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-1">▶ Play voice 1</button>
+            <a class="audio-link" href="/voice-previews/1-neerja-expressive-teacher.mp3">Open audio</a>
+            <span class="status" id="voice-1-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">2</span>
+          <h2>Neerja — Calm Classroom</h2>
+          <p>Clear Indian-English female teacher with a calm, steady teaching rhythm.</p>
+          <audio id="voice-2" preload="metadata" src="/voice-previews/2-neerja-calm-teacher.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-2">▶ Play voice 2</button>
+            <a class="audio-link" href="/voice-previews/2-neerja-calm-teacher.mp3">Open audio</a>
+            <span class="status" id="voice-2-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">3</span>
+          <h2>Prabhat — Classroom Teacher</h2>
+          <p>Natural Indian-English male teacher at a clear, balanced classroom pace.</p>
+          <audio id="voice-3" preload="metadata" src="/voice-previews/3-prabhat-classroom.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-3">▶ Play voice 3</button>
+            <a class="audio-link" href="/voice-previews/3-prabhat-classroom.mp3">Open audio</a>
+            <span class="status" id="voice-3-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">4</span>
+          <h2>Neerja Expressive — Storyteller</h2>
+          <p>A softer, slower female voice for friendly storytelling and younger learners.</p>
+          <audio id="voice-4" preload="metadata" src="/voice-previews/4-neerja-storyteller.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-4">▶ Play voice 4</button>
+            <a class="audio-link" href="/voice-previews/4-neerja-storyteller.mp3">Open audio</a>
+            <span class="status" id="voice-4-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">5</span>
+          <h2>Prabhat — Gentle Guide</h2>
+          <p>A slower, warmer male voice for guided observation and careful explanation.</p>
+          <audio id="voice-5" preload="metadata" src="/voice-previews/5-prabhat-gentle.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-5">▶ Play voice 5</button>
+            <a class="audio-link" href="/voice-previews/5-prabhat-gentle.mp3">Open audio</a>
+            <span class="status" id="voice-5-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+      </section>
+      <p class="choice">
+        Reply with: <strong>Choose voice 1, 2, 3, 4, or 5.</strong><br>
+        These are generated neural voices. For a genuinely human voice texture,
+        send me a teacher's voice recording and I can use that directly.
+      </p>
+    </main>
+    <script>
+      const players = [...document.querySelectorAll(".play-button")];
+      let activeAudio = null;
+      let activeButton = null;
+
+      function resetPlayer(audio, button) {
+        if (!audio || !button) return;
+        audio.pause();
+        audio.currentTime = 0;
+        button.textContent = `▶ Play voice ${audio.id.split("-")[1]}`;
+        const status = document.getElementById(`${audio.id}-status`);
+        if (status) status.textContent = "Ready to play";
+      }
+
+      for (const button of players) {
+        const audio = document.getElementById(button.dataset.audio);
+        const status = document.getElementById(`${button.dataset.audio}-status`);
+        if (!audio || !status) continue;
+
+        button.addEventListener("click", async () => {
+          if (activeAudio === audio && !audio.paused) {
+            audio.pause();
+            button.textContent = `▶ Play voice ${audio.id.split("-")[1]}`;
+            status.textContent = "Paused";
+            return;
+          }
+          if (activeAudio && activeAudio !== audio) resetPlayer(activeAudio, activeButton);
+          activeAudio = audio;
+          activeButton = button;
+          try {
+            await audio.play();
+            button.textContent = `❚❚ Pause voice ${audio.id.split("-")[1]}`;
+            status.textContent = "Playing now";
+          } catch {
+            status.textContent = "Playback was blocked. Select “Open audio” instead.";
+          }
+        });
+
+        audio.addEventListener("ended", () => {
+          resetPlayer(audio, button);
+          status.textContent = "Finished";
+        });
+        audio.addEventListener("error", () => {
+          status.textContent = "Audio could not load. Select “Open audio”.";
+        });
+      }
+    </script>
+  </body>
+</html>

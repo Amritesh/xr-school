@@ -14,6 +14,105 @@ export default function Home() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 48 }}>
           <SimCard
+            href="/simulations/up-you-go-rock-climbing"
+            emoji="🧗🏽‍♀️"
+            color="#fbbf24"
+            subject="Environmental Studies · Class 5"
+            title="Rock Climbing"
+            desc="Observe a supervised Tekla climbing route, inspect the safety system, recover from a slip, climb with balanced posture and rappel down."
+            tags={['NCERT', 'Chapter 9', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/mangoes-round-the-year-aam-papad"
+            emoji="🥭"
+            color="#facc15"
+            subject="Environmental Studies · Class 5"
+            title="The Making of Aam Papad"
+            desc="Make mamidi tandra by straining ripe mango pulp, mixing sugar and jaggery, then sun-drying repeated thin layers."
+            tags={['NCERT', 'Chapter 4', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/mangoes-round-the-year-milk-spoilage"
+            emoji="🥛"
+            color="#7dd3fc"
+            subject="Environmental Studies · Class 5"
+            title="Milk Spoilage"
+            desc="Compare milk over 24 hours and observe how room temperature, boiling, covering and refrigeration affect microbial spoilage."
+            tags={['NCERT', 'Chapter 4', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/seeds-and-seeds-pitcher-plant"
+            emoji="🌿"
+            color="#a3e635"
+            subject="Environmental Studies · Class 5"
+            title="Pitcher Plant — The Insect Hunter"
+            desc="Follow an insect into a modified pitcher leaf and see how the plant absorbs minerals while still making sugars by photosynthesis."
+            tags={['NCERT', 'Chapter 5', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/mangoes-round-the-year-food-spoilage"
+            emoji="🥭"
+            color="#fb923c"
+            subject="Environmental Studies · Class 5"
+            title="Mangoes Round the Year: Food Spoilage"
+            desc="Compare mango pieces over five days and observe how warmth, air, refrigeration, covering and salt affect spoilage."
+            tags={['NCERT', 'Chapter 4', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/sorting-materials-by-shape"
+            emoji="⚽"
+            color="#4ade80"
+            subject="Science · Class 6"
+            title="Sorting Materials According to Their Shape"
+            desc="Observe everyday objects and sort them into sphere, cylinder, cuboid, and cone groups using visible shape properties."
+            tags={['NCERT', 'Chapter 4', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/fibre-to-fabric-cotton-ginning"
+            emoji="⚙️"
+            color="#fbbf24"
+            subject="Science · Class 6"
+            title="The Process of Cotton Ginning"
+            desc="Inspect picked cotton, operate rollers, and separate fluffy cotton fibres from the larger seeds."
+            tags={['NCERT', 'Chapter 3', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/fibre-to-fabric-cotton-farming"
+            emoji="☁️"
+            color="#86efac"
+            subject="Science · Class 6"
+            title="Cotton Farming"
+            desc="Prepare black soil, sow and water cotton seeds, grow cotton bolls, then harvest the soft white fibre."
+            tags={['NCERT', 'Chapter 3', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/components-of-food-mineral-sources"
+            emoji="🧂"
+            color="#60a5fa"
+            subject="Science · Class 6"
+            title="The Sources of Minerals in Food"
+            desc="Match calcium, iodine and iron to representative food sources and discover the important jobs they perform in the body."
+            tags={['NCERT', 'Chapter 2', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/components-of-food-vitamins-deficiencies"
+            emoji="🥕"
+            color="#4ade80"
+            subject="Science · Class 6"
+            title="Sources of Vitamins and Their Deficiencies"
+            desc="Match vitamins A, B1, C and D to their food or natural sources, then identify the deficiency condition caused by a long-term lack."
+            tags={['NCERT', 'Chapter 2', 'VR Ready']}
+          />
+          <SimCard
+            href="/simulations/components-of-food-lipid-test"
+            emoji="🥜"
+            color="#22d3ee"
+            subject="Science · Class 6"
+            title="Test the Presence of Lipids"
+            desc="Crush food samples on paper, dry the sheets, inspect them against light, and use the translucent-spot test to identify lipids."
+            tags={['NCERT', 'Chapter 2', 'VR Ready']}
+          />
+          <SimCard
             href="/simulations/pollination"
             emoji="🌸"
             color="#34d399"
