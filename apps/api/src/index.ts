@@ -10,6 +10,24 @@ await app.register(cors, {
 // Simulation catalog — seed data matching TypeSpec SimulationModule model
 const SIMULATIONS = [
   {
+    id: 'sim-up-you-go-camp-in-snow-001',
+    slug: 'up-you-go-camp-in-snow',
+    title: 'Camp in the Snow',
+    summary: 'Build the NCERT snow camp through site selection, double-layer insulation, wind-resistant anchoring, drainage, supervised cooking, waste cleanup, feather sleeping bags and careful snowy walking.',
+    gradeBands: ['class3To5'],
+    subjects: ['environmentalScience'],
+    applicableBoards: ['cbse'],
+    simulationFormat: 'immersiveVr',
+    xrFitType: 'strongVrFit',
+    xrFitJustification: 'The immersive snow camp makes the tent layers, trapped-air insulation, guy-line tension, meltwater drainage and slippery morning conditions directly inspectable without exposing learners to real cold-weather hazards.',
+    learningObjective: 'Students will sequence the textbook snow-camp routine and explain how insulation, anchoring, drainage, responsible cooking, waste removal, warm sleeping equipment and teamwork support a safe mountain camp.',
+    evidenceConfidenceLevel: 'expertDesigned',
+    comfortRiskLevel: 'low',
+    expectedDurationMinutes: 10,
+    stages: 8,
+    status: 'released',
+  },
+  {
     id: 'sim-up-you-go-rock-climbing-001',
     slug: 'up-you-go-rock-climbing',
     title: 'Rock Climbing',

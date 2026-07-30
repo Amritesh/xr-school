@@ -17,6 +17,23 @@ const VALID_EVIDENCE_LEVELS = ['experimental', 'expertDesigned', 'internallyPilo
 // Simulation module definitions — must stay in sync with apps/api/src/index.ts
 const SIMULATIONS = [
   {
+    id: 'sim-up-you-go-camp-in-snow-001',
+    slug: 'up-you-go-camp-in-snow',
+    title: 'Camp in the Snow',
+    gradeBands: ['class3To5'],
+    subjects: ['environmentalScience'],
+    applicableBoards: ['cbse'],
+    simulationFormat: 'immersiveVr',
+    xrFitType: 'strongVrFit',
+    xrFitJustification: 'The immersive snow camp makes tent insulation, anchoring, drainage and slippery conditions directly inspectable.',
+    learningObjective: 'Students will sequence a responsible snow-camp routine and explain how insulation, drainage, warmth, cleanliness and teamwork support the group.',
+    evidenceConfidenceLevel: 'expertDesigned',
+    comfortRiskLevel: 'low',
+    expectedDurationMinutes: 10,
+    stages: 8,
+    status: 'released',
+  },
+  {
     id: 'sim-up-you-go-rock-climbing-001',
     slug: 'up-you-go-rock-climbing',
     title: 'Rock Climbing',

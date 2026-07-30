@@ -58,6 +58,7 @@ for (const slug of slugs) {
 
 // ── 3. Each slug must have a viewer component ──────────────────────────
 const viewerNameMap = {
+  'up-you-go-camp-in-snow': 'CampInSnowViewer',
   'up-you-go-rock-climbing': 'RockClimbingViewer',
   'up-you-go-river-crossing-adventure': 'RiverCrossingAdventureViewer',
   'treat-for-mosquitoes-mosquito-life-cycle': 'MosquitoLifeCycleViewer',
