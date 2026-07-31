@@ -6,7 +6,7 @@ import {
   VALID_SIMULATION_FORMATS,
   validateCatalog,
 } from '../../packages/simulation-schema/src/index';
-import { loadScienceCatalog } from '../../packages/simulation-content/src/index';
+import { loadScienceCatalog } from '@xr-school/simulation-content/node';
 
 describe('Class 5-10 science simulation catalog', () => {
   it('loads all 497 activity modules from the PDF catalog', () => {

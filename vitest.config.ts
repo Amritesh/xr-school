@@ -12,6 +12,9 @@ export default defineConfig({
       '@xr-school/evaluation-engine': fileURLToPath(
         new URL('./packages/evaluation-engine/src/index.ts', import.meta.url),
       ),
+      '@xr-school/simulation-content/node': fileURLToPath(
+        new URL('./packages/simulation-content/src/node.ts', import.meta.url),
+      ),
     },
   },
   test: {
