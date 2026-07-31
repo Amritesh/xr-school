@@ -166,6 +166,17 @@ function validAssessment(
         explanation: "The evidence rule transfers to the new case.",
         retryPolicy: "afterObservation",
       },
+      {
+        id: "prompt-transfer-observation",
+        kind: "observation",
+        stageId: "transfer",
+        question: "What changed in the transfer scene?",
+        acceptedEvidenceIds: ["transfer-scene-observed"],
+        hint: "Inspect the new-looking object.",
+        explanation:
+          "The transfer scene provides the observation required before retrying.",
+        retryPolicy: "immediateWithHint",
+      },
     ],
     masteryRule: {
       requiredEvidenceCount: 2,
@@ -626,6 +637,17 @@ describe("implemented simulation definition", () => {
     );
   });
 
+  it("requires after-observation retries to have a distinct same-stage observation prompt", () => {
+    const definition = validInteractiveDefinition();
+    definition.assessment.prompts = definition.assessment.prompts.filter(
+      (prompt) => prompt.id !== "prompt-transfer-observation",
+    );
+
+    expect(validateImplementedSimulationDefinition(definition)).toContain(
+      'implemented.assessment.prompts[1].retryPolicy: "afterObservation" requires a distinct observation prompt on stage "transfer"',
+    );
+  });
+
   it("requires complete prompt objects and non-empty evidence", () => {
     const definition = validInteractiveDefinition();
     const prompt = definition.assessment.prompts[0];
@@ -685,7 +707,7 @@ describe("implemented simulation definition", () => {
       "yes" as unknown as boolean;
 
     expect(validateImplementedSimulationDefinition(invalidCount)).toContain(
-      "implemented.assessment.masteryRule.requiredEvidenceCount: expected an integer between 1 and 2",
+      "implemented.assessment.masteryRule.requiredEvidenceCount: expected an integer between 1 and 3",
     );
     expect(validateImplementedSimulationDefinition(invalidKinds)).toEqual(
       expect.arrayContaining([

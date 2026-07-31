@@ -322,6 +322,28 @@ function validateAssessment(
           `${path}.retryPolicy: expected "immediateWithHint" or "afterObservation"`,
         );
       }
+      if (
+        prompt.retryPolicy === "afterObservation" &&
+        hasText(prompt.stageId)
+      ) {
+        const retryStageId = prompt.stageId;
+        const hasReachableObservation =
+          stageIds.has(retryStageId) &&
+          prompts.some(
+            (candidate, candidateIndex) =>
+              candidateIndex !== index &&
+              isRecord(candidate) &&
+              candidate.kind === "observation" &&
+              candidate.stageId === retryStageId &&
+              hasText(candidate.id) &&
+              candidate.id !== prompt.id,
+          );
+        if (!hasReachableObservation) {
+          errors.push(
+            `${path}.retryPolicy: "afterObservation" requires a distinct observation prompt on stage "${retryStageId}"`,
+          );
+        }
+      }
 
       const optionIds: { value: string; path: string }[] = [];
       let optionIdSet: Set<string> | undefined;

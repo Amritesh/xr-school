@@ -1,81 +1,99 @@
-import { describe, expect, it } from 'vitest';
-import type {
-  AssessmentSequence,
-} from '../../packages/simulation-schema/src/index';
-import {
-  createAssessmentSession,
-} from '../../packages/simulation-runtime/src/index';
+import { describe, expect, it } from "vitest";
+import type { AssessmentSequence } from "../../packages/simulation-schema/src/index";
+import { createAssessmentSession } from "../../packages/simulation-runtime/src/index";
 
 const TEST_SEQUENCE: AssessmentSequence = {
-  id: 'assessment-diagnostic',
-  objectiveId: 'objective-diagnostic',
+  id: "assessment-diagnostic",
+  objectiveId: "objective-diagnostic",
   prompts: [
     {
-      id: 'observe',
-      kind: 'observation',
-      stageId: 'stage-1',
-      question: 'Which object changed?',
-      acceptedEvidenceIds: ['sphere'],
-      hint: 'Watch the sphere.',
-      explanation: 'The sphere changed.',
-      retryPolicy: 'immediateWithHint',
+      id: "observe",
+      kind: "observation",
+      stageId: "stage-1",
+      question: "Which object changed?",
+      acceptedEvidenceIds: ["sphere"],
+      hint: "Watch the sphere.",
+      explanation: "The sphere changed.",
+      retryPolicy: "immediateWithHint",
     },
     {
-      id: 'misconception',
-      kind: 'misconception',
-      stageId: 'stage-1',
-      question: 'Did color change mass?',
-      acceptedEvidenceIds: ['no'],
-      hint: 'Only appearance changed.',
-      explanation: 'Color does not change mass.',
-      retryPolicy: 'immediateWithHint',
+      id: "misconception",
+      kind: "misconception",
+      stageId: "stage-1",
+      question: "Did color change mass?",
+      acceptedEvidenceIds: ["no"],
+      hint: "Only appearance changed.",
+      explanation: "Color does not change mass.",
+      retryPolicy: "immediateWithHint",
     },
     {
-      id: 'transfer',
-      kind: 'transfer',
-      stageId: 'stage-1',
-      question: 'Would another color change mass?',
-      acceptedEvidenceIds: ['no'],
-      hint: 'Apply the same rule.',
-      explanation: 'Material color does not set mass.',
-      retryPolicy: 'immediateWithHint',
+      id: "transfer",
+      kind: "transfer",
+      stageId: "stage-1",
+      question: "Would another color change mass?",
+      acceptedEvidenceIds: ["no"],
+      hint: "Apply the same rule.",
+      explanation: "Material color does not set mass.",
+      retryPolicy: "afterObservation",
     },
   ],
   masteryRule: {
     requiredEvidenceCount: 2,
-    requiredKinds: ['misconception', 'transfer'],
+    requiredKinds: ["misconception", "transfer"],
     allowHintedMastery: true,
   },
 };
 
-describe('assessment mastery engine', () => {
-  it('returns a hint after error and records evidence after retry', () => {
+describe("assessment mastery engine", () => {
+  it("returns a hint after error and records evidence after retry", () => {
     const session = createAssessmentSession(TEST_SEQUENCE);
 
-    expect(session.answer('misconception', 'yes')).toMatchObject({
+    expect(session.answer("misconception", "yes")).toMatchObject({
       correct: false,
-      hint: 'Only appearance changed.',
+      hint: "Only appearance changed.",
     });
-    expect(session.answer('misconception', 'no')).toMatchObject({
+    expect(session.answer("misconception", "no")).toMatchObject({
       correct: true,
     });
-    expect(session.evidence()).toContainEqual(expect.objectContaining({
-      promptId: 'misconception',
-      hinted: true,
-    }));
+    expect(session.evidence()).toContainEqual(
+      expect.objectContaining({
+        promptId: "misconception",
+        hinted: true,
+      }),
+    );
   });
 
-  it('requires independent misconception and transfer evidence for mastery', () => {
+  it("requires independent misconception and transfer evidence for mastery", () => {
     const session = createAssessmentSession(TEST_SEQUENCE);
 
-    session.answer('observe', 'sphere');
+    session.answer("observe", "sphere");
     expect(session.mastery().mastered).toBe(false);
-    session.answer('misconception', 'no');
-    session.answer('transfer', 'no');
+    session.answer("misconception", "no");
+    session.answer("transfer", "no");
 
     expect(session.mastery()).toMatchObject({
       mastered: true,
       evidenceCount: 3,
+    });
+  });
+
+  it("requires correct same-stage observation evidence before an after-observation retry", () => {
+    const session = createAssessmentSession(TEST_SEQUENCE);
+
+    expect(session.answer("transfer", "yes")).toMatchObject({
+      correct: false,
+      hint: "Apply the same rule.",
+    });
+    expect(() => session.answer("transfer", "no")).toThrow(
+      "transfer: retry requires observation evidence",
+    );
+
+    expect(session.answer("observe", "sphere")).toMatchObject({
+      correct: true,
+    });
+    expect(session.answer("transfer", "no")).toMatchObject({
+      correct: true,
+      attempts: 2,
     });
   });
 });
