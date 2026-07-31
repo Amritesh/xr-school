@@ -1,4 +1,4 @@
-import type { ActivityOption, ChapterOption, ClassOption, SubjectOption } from './types';
+import type { ActivityOption, ChapterOption, ClassOption, SubjectOption } from './types.js';
 
 /**
  * Fixed demo content for the Robotree VR Smart Classroom demo.

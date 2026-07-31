@@ -1,4 +1,4 @@
-import type { QualityProfileId } from '../../../simulation-schema/src/world';
+import type { QualityProfileId } from '@xr-school/simulation-schema';
 
 export interface DeviceQualityCapabilities {
   isImmersiveXr: boolean;

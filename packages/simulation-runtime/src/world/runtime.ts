@@ -1,8 +1,8 @@
-import { createFixedClock, type FixedClockConfig } from './fixedClock';
+import { createFixedClock, type FixedClockConfig } from './fixedClock.js';
 import {
   createResourceRegistry,
   type ResourceRegistry,
-} from './resourceRegistry';
+} from './resourceRegistry.js';
 
 export type WorldRuntimeState =
   | 'created'

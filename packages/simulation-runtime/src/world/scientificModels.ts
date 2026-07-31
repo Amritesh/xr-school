@@ -1,7 +1,7 @@
 import type {
   ScientificModelManifest,
   ScientificValue,
-} from '../../../simulation-schema/src/world';
+} from '@xr-school/simulation-schema';
 
 export type ScientificInput = Record<string, ScientificValue>;
 export type ScientificOutput = Record<string, ScientificValue>;

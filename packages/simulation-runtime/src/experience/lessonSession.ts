@@ -1,7 +1,7 @@
 import {
   validateExperienceDefinition,
   type ExperienceDefinition,
-} from '../../../simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export interface LessonSnapshot {
   experienceId: string;

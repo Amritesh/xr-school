@@ -9,9 +9,9 @@ import type {
   Vector3Tuple,
   WorldBundle,
   WorldEntityDefinition,
-} from './world';
-import { validateExperienceDefinition } from './experience';
-import { validateSpatialLayoutDefinition } from './spatial';
+} from './world.js';
+import { validateExperienceDefinition } from './experience.js';
+import { validateSpatialLayoutDefinition } from './spatial.js';
 
 function duplicates(values: readonly string[]) {
   const seen = new Set<string>();

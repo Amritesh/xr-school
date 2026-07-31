@@ -5,7 +5,8 @@
   "description": "Offline-first K-12 XR simulation curriculum platform for Indian schools",
   "type": "module",
   "scripts": {
-    "build": "npm --workspace apps/web run build",
+    "build": "npm run build:packages && npm --workspace apps/web run build",
+    "build:packages": "node scripts/build-packages.mjs",
     "env:check": "node scripts/dev-env-check.mjs",
     "contract:compile": "tsp compile contracts/typespec",
     "catalog:validate": "node scripts/validate-simulation-catalog.mjs",
@@ -13,6 +14,7 @@
     "quality": "npm run env:check && npm run contract:compile && npm run catalog:validate && npm run web-catalog:generate && npm run test",
     "verify": "npm run env:check && npm run contract:compile && npm run catalog:validate && npm run web-catalog:generate && npm run test && npm --workspace apps/web run type-check && npm --workspace apps/web run build",
     "test": "vitest run",
+    "type-check:packages": "node scripts/type-check-packages.mjs",
     "spec:drift": "node scripts/spec-drift-check.mjs",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md,yaml}\"",

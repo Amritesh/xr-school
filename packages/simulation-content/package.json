@@ -1,7 +1,26 @@
 {
   "name": "@xr-school/simulation-content",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "type": "module",
-  "main": "src/index.ts"
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@xr-school/simulation-schema": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.3"
+  }
 }

@@ -1,7 +1,7 @@
 import type {
   AssessmentPromptKind,
   AssessmentSequence,
-} from '../../../simulation-schema/src/world';
+} from '@xr-school/simulation-schema';
 
 export interface AssessmentEvidence {
   promptId: string;

@@ -6,7 +6,7 @@ import {
   completionRate,
   engagementScore,
   nextSyncState,
-} from '../../packages/evaluation-engine/src/scoring.js';
+} from '@xr-school/evaluation-engine';
 
 describe('isValidScore', () => {
   it('accepts 0 and 1', () => {

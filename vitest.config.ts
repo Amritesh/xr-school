@@ -1,6 +1,19 @@
+import { fileURLToPath } from 'node:url';
+
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      // Public package imports must work in tests before any dist files exist on a clean checkout.
+      '@xr-school/simulation-schema': fileURLToPath(
+        new URL('./packages/simulation-schema/src/index.ts', import.meta.url),
+      ),
+      '@xr-school/evaluation-engine': fileURLToPath(
+        new URL('./packages/evaluation-engine/src/index.ts', import.meta.url),
+      ),
+    },
+  },
   test: {
     include: ['packages/**/*.test.ts', 'tests/unit/**/*.test.ts'],
     environment: 'node',

@@ -1,4 +1,4 @@
-import type { SimulationModuleRecord } from '../../simulation-schema/src/index';
+import type { SimulationModuleRecord } from '@xr-school/simulation-schema';
 
 const pollinationScript = `SETUP
 Ask the class why flowers are brightly coloured and what might move pollen between plants. Non-headset students sketch a flower and predict where pollen travels.

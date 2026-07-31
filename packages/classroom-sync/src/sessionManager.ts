@@ -1,4 +1,4 @@
-import { findActivity } from './demoContent';
+import { findActivity } from './demoContent.js';
 import type {
   ClassroomSession,
   ClassroomStateSnapshot,
@@ -9,7 +9,7 @@ import type {
   ProgressSummary,
   StudentProgress,
   TeacherCommand,
-} from './types';
+} from './types.js';
 
 /**
  * In-memory classroom session manager for the Robotree demo.

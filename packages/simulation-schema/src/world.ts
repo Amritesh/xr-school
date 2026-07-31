@@ -243,6 +243,6 @@ export interface WorldBundle {
   acceptanceProfiles: AcceptanceProfile[];
   lessonSequenceIds: string[];
   systemIds: string[];
-  experienceDefinitions?: import('./experience').ExperienceDefinition[];
-  spatialLayouts?: import('./spatial').SpatialLayoutDefinition[];
+  experienceDefinitions?: import('./experience.js').ExperienceDefinition[];
+  spatialLayouts?: import('./spatial.js').SpatialLayoutDefinition[];
 }

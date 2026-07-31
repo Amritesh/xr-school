@@ -1,3 +1,3 @@
-export * from './types';
-export * from './demoContent';
-export { ClassroomSessionManager } from './sessionManager';
+export * from './types.js';
+export * from './demoContent.js';
+export { ClassroomSessionManager } from './sessionManager.js';

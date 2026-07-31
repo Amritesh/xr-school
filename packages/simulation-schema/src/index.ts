@@ -343,8 +343,8 @@ export function validateCurriculumGraph(input: {
   return errors;
 }
 
-export * from './world';
-export * from './worldValidation';
-export * from './experience';
-export * from './interaction';
-export * from './spatial';
+export * from './world.js';
+export * from './worldValidation.js';
+export * from './experience.js';
+export * from './interaction.js';
+export * from './spatial.js';

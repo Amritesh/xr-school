@@ -1,6 +1,6 @@
-export { createStageMachine } from './core/stageMachine';
-export type { StageMachine } from './core/stageMachine';
-export { createSortingBoard } from './core/sortingBoard';
+export { createStageMachine } from './core/stageMachine.js';
+export type { StageMachine } from './core/stageMachine.js';
+export { createSortingBoard } from './core/sortingBoard.js';
 export type {
   SortingAssignments,
   SortingBoard,
@@ -9,15 +9,15 @@ export type {
   SortingItem,
   SortingMisplacement,
   SortingScore,
-} from './core/sortingBoard';
-export { createExperimentBench } from './core/experimentBench';
+} from './core/sortingBoard.js';
+export { createExperimentBench } from './core/experimentBench.js';
 export type {
   ExperimentBench,
   ExperimentBenchConfig,
   ExperimentObservation,
   ExperimentTrial,
-} from './core/experimentBench';
-export { createParticleCloud, createPhysicsWorld } from './core/physics';
+} from './core/experimentBench.js';
+export { createParticleCloud, createPhysicsWorld } from './core/physics.js';
 export type {
   ParticleCloudConfig,
   PhysicsBody,
@@ -25,19 +25,19 @@ export type {
   PhysicsWorld,
   PhysicsWorldConfig,
   Vector3,
-} from './core/physics';
-export { createFixedClock } from './world/fixedClock';
+} from './core/physics.js';
+export { createFixedClock } from './world/fixedClock.js';
 export type {
   FixedClock,
   FixedClockAdvance,
   FixedClockConfig,
-} from './world/fixedClock';
-export { createResourceRegistry } from './world/resourceRegistry';
+} from './world/fixedClock.js';
+export { createResourceRegistry } from './world/resourceRegistry.js';
 export type {
   ResourceDisposer,
   ResourceRegistry,
-} from './world/resourceRegistry';
-export { createWorldRuntime } from './world/runtime';
+} from './world/resourceRegistry.js';
+export { createWorldRuntime } from './world/runtime.js';
 export type {
   FixedUpdateContext,
   RenderUpdateContext,
@@ -46,13 +46,13 @@ export type {
   WorldRuntimeConfig,
   WorldRuntimeState,
   WorldSystem,
-} from './world/runtime';
+} from './world/runtime.js';
 export {
   chooseQualityProfile,
   nextLowerQualityProfile,
-} from './world/quality';
-export type { DeviceQualityCapabilities } from './world/quality';
-export { createRapierWorld } from './physics/rapierWorld';
+} from './world/quality.js';
+export type { DeviceQualityCapabilities } from './world/quality.js';
+export { createRapierWorld } from './physics/rapierWorld.js';
 export type {
   RapierBodySnapshot,
   RapierCuboidDefinition,
@@ -60,46 +60,46 @@ export type {
   RapierVector3,
   RapierWorld,
   RapierWorldConfig,
-} from './physics/rapierWorld';
-export { createScientificModelRegistry } from './world/scientificModels';
+} from './physics/rapierWorld.js';
+export { createScientificModelRegistry } from './world/scientificModels.js';
 export type {
   ScientificInput,
   ScientificModelDefinition,
   ScientificModelRegistry,
   ScientificOutput,
-} from './world/scientificModels';
-export { createAssessmentSession } from './world/assessment';
+} from './world/scientificModels.js';
+export { createAssessmentSession } from './world/assessment.js';
 export type {
   AssessmentAnswerResult,
   AssessmentEvidence,
   AssessmentSession,
-} from './world/assessment';
+} from './world/assessment.js';
 export {
   createPollinationModel,
   pollinationSnapshotForStage,
-} from './models/pollinationModel';
+} from './models/pollinationModel.js';
 export type {
   PollinationEvent,
   PollinationModel,
   PollinationSnapshot,
-} from './models/pollinationModel';
-export { evaluateCircuit } from './models/circuitModel';
+} from './models/pollinationModel.js';
+export { evaluateCircuit } from './models/circuitModel.js';
 export type {
   CircuitInput,
   CircuitOutput,
-} from './models/circuitModel';
-export { evaluateMatterState } from './models/matterStateModel';
+} from './models/circuitModel.js';
+export { evaluateMatterState } from './models/matterStateModel.js';
 export type {
   MatterPhase,
   MatterStateOutput,
-} from './models/matterStateModel';
-export { createLessonSession } from './experience/lessonSession';
+} from './models/matterStateModel.js';
+export { createLessonSession } from './experience/lessonSession.js';
 export type {
   LessonSession,
   LessonSnapshot,
-} from './experience/lessonSession';
-export { createActionRouter } from './input/actionRouter';
+} from './experience/lessonSession.js';
+export { createActionRouter } from './input/actionRouter.js';
 export type {
   ActionHandler,
   ActionRouter,
-} from './input/actionRouter';
+} from './input/actionRouter.js';

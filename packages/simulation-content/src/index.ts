@@ -1,9 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import type { ScienceCatalogRow, SimulationArchetype } from '../../simulation-schema/src/index';
+import type { ScienceCatalogRow, SimulationArchetype } from '@xr-school/simulation-schema';
 
-export { COURSES, CURRICULUM_CHAPTERS, LEARNING_CONCEPTS } from './curriculum';
+export { COURSES, CURRICULUM_CHAPTERS, LEARNING_CONCEPTS } from './curriculum.js';
+export { SIMULATION_MODULES } from './modules.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const SCIENCE_CATALOG_CSV_PATH = resolve(here, '../../../docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv');

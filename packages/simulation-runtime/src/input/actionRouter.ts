@@ -1,7 +1,7 @@
 import {
   validateNormalizedAction,
   type NormalizedAction,
-} from '../../../simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export type ActionHandler = (action: NormalizedAction) => void;
 

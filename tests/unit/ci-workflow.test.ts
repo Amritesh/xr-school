@@ -53,7 +53,9 @@ describe('web build workflows', () => {
   });
 
   it('exposes a root build script for the Vercel monorepo project', () => {
-    expect(rootPackage.scripts?.build).toBe('npm --workspace apps/web run build');
+    expect(rootPackage.scripts?.build).toBe(
+      'npm run build:packages && npm --workspace apps/web run build',
+    );
   });
 
   it('points Vercel at the web workspace build output', () => {

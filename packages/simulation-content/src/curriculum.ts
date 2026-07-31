@@ -2,7 +2,7 @@ import type {
   CourseRecord,
   CurriculumChapterRecord,
   LearningConceptRecord,
-} from '../../simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export const LEARNING_CONCEPTS: LearningConceptRecord[] = [
   {

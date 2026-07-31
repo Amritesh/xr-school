@@ -1,4 +1,4 @@
-import type { Vector3Tuple } from './world';
+import type { Vector3Tuple } from './world.js';
 
 export type ScaleRepresentation = 'literal' | 'compressed' | 'enlarged' | 'illustrative';
 

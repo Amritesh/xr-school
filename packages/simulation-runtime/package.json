@@ -1,7 +1,26 @@
 {
   "name": "@xr-school/simulation-runtime",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "type": "module",
-  "main": "src/index.ts"
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "0.19.3",
+    "@xr-school/simulation-schema": "0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
 }
