@@ -15,6 +15,8 @@ const VALID_COMFORT_RISKS = ['low', 'medium', 'high'];
 const VALID_FORMATS = ['immersiveVr', 'threeSixtyVr', 'interactive3d', 'guidedVisualization', 'practicalLabSimulation', 'virtualFieldVisit', 'revisionMode'];
 const VALID_EVIDENCE_LEVELS = ['experimental', 'expertDesigned', 'internallyPiloted', 'schoolValidated', 'researchBacked'];
 const VALID_RELEASE_MATURITIES = ['catalogued', 'inDevelopment', 'internalQA', 'pilotReady', 'schoolValidated'];
+const VALID_PUBLICATION_STATUSES = ['released', 'preview', 'retired'];
+const VALID_EVIDENCE_MATURITIES = ['internalQA', 'deviceVerified', 'classroomVerified'];
 
 const SIMULATIONS = SIMULATION_MODULES;
 
@@ -65,6 +67,14 @@ describe('Simulation module contracts', () => {
 
       it('has a valid releaseMaturity', () => {
         expect(VALID_RELEASE_MATURITIES).toContain(sim.releaseMaturity);
+      });
+
+      it('separates public release from evidence maturity', () => {
+        expect(sim.viewerKey).toMatch(/^[a-z0-9-]+$/);
+        expect(VALID_PUBLICATION_STATUSES).toContain(sim.publicationStatus);
+        expect(VALID_EVIDENCE_MATURITIES).toContain(sim.evidenceMaturity);
+        expect(sim.publicationStatus).toBe('released');
+        expect(sim.evidenceMaturity).toBe('internalQA');
       });
 
       it('has a valid comfortRiskLevel', () => {
@@ -119,6 +129,17 @@ describe('Simulation module contracts', () => {
     const ids = SIMULATIONS.map(s => s.id);
     const unique = new Set(ids);
     expect(unique.size).toBe(ids.length);
+  });
+
+  it('uses unique viewer keys and non-canonical legacy aliases', () => {
+    const viewerKeys = SIMULATIONS.map(simulation => simulation.viewerKey);
+    const aliases = SIMULATIONS.flatMap(simulation => simulation.legacyAliases ?? []);
+
+    expect(new Set(viewerKeys).size).toBe(viewerKeys.length);
+    expect(new Set(aliases).size).toBe(aliases.length);
+    for (const simulation of SIMULATIONS) {
+      expect(simulation.legacyAliases ?? []).not.toContain(simulation.slug);
+    }
   });
 
   it('does not use invalid legacy grade bands', () => {

@@ -111,6 +111,8 @@ export interface SimulationModuleRecord {
   id: string;
   title: string;
   slug: string;
+  viewerKey: string;
+  legacyAliases?: string[];
   summary: string;
   gradeBands: GradeBand[];
   subjects: Subject[];
@@ -121,6 +123,10 @@ export interface SimulationModuleRecord {
   simulationFormat: SimulationFormat;
   evidenceConfidenceLevel: EvidenceConfidenceLevel;
   releaseMaturity: ReleaseMaturity;
+  publicationStatus: import('./implemented.js').PublicationStatus;
+  evidenceMaturity: import('./implemented.js').EvidenceMaturity;
+  deviceAcceptanceEvidenceId?: string;
+  classroomAcceptanceEvidenceId?: string;
   xrFitType: XrFitType;
   xrFitJustification: string;
   learningObjective: string;
@@ -348,3 +354,5 @@ export * from './worldValidation.js';
 export * from './experience.js';
 export * from './interaction.js';
 export * from './spatial.js';
+export * from './guided.js';
+export * from './implemented.js';

@@ -214,6 +214,8 @@ export interface AssetDefinition {
   height: number;
   channels: string[];
   compression: string;
+  sha256?: string;
+  byteSize?: number;
   fallbackAssetId?: string;
 }
 
