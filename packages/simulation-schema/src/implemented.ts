@@ -68,6 +68,12 @@ const EVIDENCE_MATURITIES: readonly EvidenceMaturity[] = [
   "classroomVerified",
 ];
 const ASSESSMENT_PROMPT_KINDS = [
+  "prediction",
+  "observation",
+  "misconception",
+  "transfer",
+] as const;
+const MASTERY_REQUIRED_KINDS = [
   "observation",
   "misconception",
   "transfer",
@@ -294,7 +300,7 @@ function validateAssessment(
         )
       ) {
         errors.push(
-          `${path}.kind: expected "observation", "misconception", or "transfer"`,
+          `${path}.kind: expected "prediction", "observation", "misconception", or "transfer"`,
         );
       } else {
         promptKinds.add(prompt.kind as string);
@@ -405,8 +411,8 @@ function validateAssessment(
     mastery.requiredKinds.forEach((kind, index) => {
       const path = `implemented.assessment.masteryRule.requiredKinds[${index}]`;
       if (
-        !ASSESSMENT_PROMPT_KINDS.includes(
-          kind as (typeof ASSESSMENT_PROMPT_KINDS)[number],
+        !MASTERY_REQUIRED_KINDS.includes(
+          kind as (typeof MASTERY_REQUIRED_KINDS)[number],
         )
       ) {
         errors.push(

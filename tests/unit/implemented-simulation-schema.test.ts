@@ -570,12 +570,40 @@ describe("implemented simulation definition", () => {
 
     expect(validateImplementedSimulationDefinition(definition)).toEqual(
       expect.arrayContaining([
-        'implemented.assessment.prompts[0].kind: expected "observation", "misconception", or "transfer"',
+        'implemented.assessment.prompts[0].kind: expected "prediction", "observation", "misconception", or "transfer"',
         "implemented.assessment.prompts[0].question: required",
         "implemented.assessment.prompts[0].hint: required",
         "implemented.assessment.prompts[0].explanation: required",
         'implemented.assessment.prompts[0].retryPolicy: expected "immediateWithHint" or "afterObservation"',
       ]),
+    );
+  });
+
+  it("accepts prediction prompts without allowing prediction mastery kinds", () => {
+    const withPrediction = validInteractiveDefinition();
+    withPrediction.assessment.prompts.push({
+      id: "prompt-prediction",
+      kind: "prediction",
+      stageId: "observe",
+      question: "What will the next observation show?",
+      options: [
+        { id: "same-rule", label: "The evidence rule still applies" },
+        { id: "appearance-rule", label: "Appearance decides the result" },
+      ],
+      acceptedEvidenceIds: ["same-rule"],
+      hint: "Predict from the evidence rule.",
+      explanation: "The established evidence rule predicts the new result.",
+      retryPolicy: "immediateWithHint",
+    });
+
+    expect(validateImplementedSimulationDefinition(withPrediction)).toEqual([]);
+
+    const invalidMastery = validInteractiveDefinition();
+    invalidMastery.assessment.masteryRule.requiredKinds = [
+      "prediction" as unknown as AssessmentSequence["masteryRule"]["requiredKinds"][number],
+    ];
+    expect(validateImplementedSimulationDefinition(invalidMastery)).toContain(
+      'implemented.assessment.masteryRule.requiredKinds[0]: expected "observation", "misconception", or "transfer"',
     );
   });
 
