@@ -10,6 +10,24 @@ await app.register(cors, {
 // Simulation catalog — seed data matching TypeSpec SimulationModule model
 const SIMULATIONS = [
   {
+    id: 'sim-up-you-go-snow-mountain-climbing-001',
+    slug: 'up-you-go-snow-mountain-climbing',
+    title: 'Snow Mountain Climbing',
+    summary: 'Follow the NCERT group from its 2,134-metre camp toward the 2,700-metre snowfield through route reading, equipment checks, group movement, walking-stick technique, protected rope practice, slip recovery and a controlled return.',
+    gradeBands: ['class3To5'],
+    subjects: ['environmentalScience'],
+    applicableBoards: ['cbse'],
+    simulationFormat: 'immersiveVr',
+    xrFitType: 'strongVrFit',
+    xrFitJustification: 'The immersive snow route makes visibility, marker spacing, short-step balance, walking-stick placement, fixed-rope protection and group movement directly inspectable without exposing learners to real cold, altitude or fall hazards.',
+    learningObjective: 'Students will sequence a supervised snow-mountain journey and explain how route assessment, suitable equipment, short balanced steps, protected rope practice, teamwork and a timely return support responsible participation.',
+    evidenceConfidenceLevel: 'expertDesigned',
+    comfortRiskLevel: 'low',
+    expectedDurationMinutes: 10,
+    stages: 8,
+    status: 'released',
+  },
+  {
     id: 'sim-up-you-go-camp-in-snow-001',
     slug: 'up-you-go-camp-in-snow',
     title: 'Camp in the Snow',

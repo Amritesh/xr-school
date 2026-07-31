@@ -2,6 +2,17 @@ import Link from 'next/link';
 
 const SIMS = [
   {
+    slug: 'up-you-go-snow-mountain-climbing',
+    emoji: '🏔️',
+    color: '#a7f3d0',
+    subject: 'Environmental Studies',
+    grade: 'Class 5',
+    title: 'Snow Mountain Climbing',
+    xrFit: 'Strong VR Fit',
+    stages: 8,
+    minutes: 10,
+  },
+  {
     slug: 'up-you-go-camp-in-snow',
     emoji: '🏕️',
     color: '#7dd3fc',
