@@ -13,6 +13,14 @@ const libraryPackages = [
   'evaluation-engine',
 ] as const;
 
+const expectedPackageOrder = [
+  'simulation-schema',
+  'simulation-runtime',
+  'evaluation-engine',
+  'simulation-content',
+  'classroom-sync',
+] as const;
+
 interface PackageManifest {
   name?: string;
   private?: boolean;
@@ -48,6 +56,25 @@ function sourceFiles(directory: string): string[] {
     return ['.ts', '.tsx'].includes(extname(entry.name)) ? [path] : [];
   });
 }
+
+function hasSiblingPackageSourceImport(source: string): boolean {
+  const packageNamePattern = libraryPackages.join('|');
+  const siblingSourceImport = new RegExp(
+    String.raw`(?:(?:\.\./)+(?:${packageNamePattern})|@xr-school/(?:${packageNamePattern}))/src(?:/[^'"\s]*)?`,
+  );
+  return siblingSourceImport.test(source);
+}
+
+const prohibitedSiblingImportCases = libraryPackages.flatMap((packageName) => [
+  {
+    label: `relative ${packageName}`,
+    source: `import '${`../`.repeat(3)}${packageName}/src/index.js';`,
+  },
+  {
+    label: `scoped ${packageName}`,
+    source: `export * from '@xr-school/${packageName}/src/index.js';`,
+  },
+]);
 
 describe('workspace package boundaries', () => {
   it.each(libraryPackages)(
@@ -99,16 +126,45 @@ describe('workspace package boundaries', () => {
     const packageSources = libraryPackages.flatMap((packageName) =>
       sourceFiles(join(repositoryRoot, 'packages', packageName, 'src')),
     );
-    const siblingSourceImport =
-      /(?:\.\.\/)+simulation-[^/'"\s]+\/src(?:\/[^'"\s]*)?/;
     const violations = packageSources.flatMap((filePath) => {
       const source = readFileSync(filePath, 'utf8');
-      return siblingSourceImport.test(source)
+      return hasSiblingPackageSourceImport(source)
         ? [filePath.slice(repositoryRoot.length + 1)]
         : [];
     });
 
     expect(violations).toEqual([]);
+  });
+
+  it.each(prohibitedSiblingImportCases)(
+    'rejects $label source imports',
+    ({ source }) => {
+      expect(hasSiblingPackageSourceImport(source)).toBe(true);
+    },
+  );
+
+  it.each(['build', 'type-check'] as const)(
+    'orders the %s runner by package dependencies',
+    (scriptName) => {
+      const runner = readFileSync(
+        join(repositoryRoot, 'scripts', `${scriptName}-packages.mjs`),
+        'utf8',
+      );
+      const configuredOrder = [...runner.matchAll(/'@xr-school\/([^']+)'/g)].map(
+        ([, packageName]) => packageName,
+      );
+
+      expect(configuredOrder).toEqual(expectedPackageOrder);
+    },
+  );
+
+  it('leaves the simulation registry out of the content public entry', () => {
+    const publicEntry = readFileSync(
+      join(repositoryRoot, 'packages/simulation-content/src/index.ts'),
+      'utf8',
+    );
+
+    expect(publicEntry).not.toContain('SIMULATION_MODULES');
   });
 
   it('defines deterministic root package build and type-check entry points', () => {

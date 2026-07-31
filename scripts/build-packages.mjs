@@ -3,9 +3,9 @@ import { spawnSync } from 'node:child_process';
 const packageNames = [
   '@xr-school/simulation-schema',
   '@xr-school/simulation-runtime',
+  '@xr-school/evaluation-engine',
   '@xr-school/simulation-content',
   '@xr-school/classroom-sync',
-  '@xr-school/evaluation-engine',
 ];
 
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
