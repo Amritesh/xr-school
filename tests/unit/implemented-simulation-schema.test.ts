@@ -65,7 +65,7 @@ function validModule(
     estimatedPackageSizeMb: 32,
     targetFrameRateFps: 72,
     minQuestStorageGb: 1,
-    stages: 2,
+    stages: 3,
     status: "released",
     ...overrides,
   };
@@ -95,17 +95,29 @@ function validGuidance(): GuidedSimulationDefinition {
         scaleNote: "The object is shown at twice life size.",
       },
       {
-        id: "answer",
-        title: "Explain and transfer",
-        cue: "Answer both evidence questions.",
-        detail: "Reject the misconception, then apply the model to a new case.",
-        actionLabel: "Submit answers",
-        requiredActionIds: ["assessment.answer"],
-        completionEvidenceIds: ["answers-complete"],
-        narrationId: "narration-answer",
-        sceneCueId: "scene-cue-answer",
+        id: "misconception",
+        title: "Explain the evidence",
+        cue: "Reject the misconception using the observation.",
+        detail: "Use the recorded evidence to replace the incorrect idea.",
+        actionLabel: "Submit explanation",
+        requiredActionIds: ["assessment.misconception"],
+        completionEvidenceIds: ["misconception-complete"],
+        narrationId: "narration-misconception",
+        sceneCueId: "scene-cue-misconception",
         evidenceMode: "answer",
         misconceptionId: "prompt-misconception",
+      },
+      {
+        id: "transfer",
+        title: "Transfer the explanation",
+        cue: "Apply the evidence rule to a new case.",
+        detail: "Use the same evidence rule when the appearance changes.",
+        actionLabel: "Submit transfer",
+        requiredActionIds: ["assessment.transfer"],
+        completionEvidenceIds: ["transfer-complete"],
+        narrationId: "narration-transfer",
+        sceneCueId: "scene-cue-transfer",
+        evidenceMode: "answer",
         transferPromptId: "prompt-transfer",
       },
     ],
@@ -128,7 +140,7 @@ function validAssessment(
       {
         id: "prompt-misconception",
         kind: "misconception",
-        stageId: "answer",
+        stageId: "misconception",
         question: "Does appearance alone prove the result?",
         options: [
           { id: "appearance-only", label: "Yes" },
@@ -143,7 +155,7 @@ function validAssessment(
       {
         id: "prompt-transfer",
         kind: "transfer",
-        stageId: "answer",
+        stageId: "transfer",
         question: "Would the same evidence rule apply to a new-looking object?",
         options: [
           { id: "rule-transfers", label: "Yes" },
@@ -174,11 +186,18 @@ function validNarration(): SimulationNarrationManifest {
         caption: "Inspect the scene before deciding.",
       },
       {
-        id: "narration-answer",
-        stageId: "answer",
-        text: "Use the evidence in both answers.",
-        caption: "Use the evidence in both answers.",
-        audioUrl: "/audio/guided-class/answer.mp3",
+        id: "narration-misconception",
+        stageId: "misconception",
+        text: "Use the observation to reject the misconception.",
+        caption: "Use the observation to reject the misconception.",
+        audioUrl: "/audio/guided-class/misconception.mp3",
+      },
+      {
+        id: "narration-transfer",
+        stageId: "transfer",
+        text: "Apply the evidence rule to the new case.",
+        caption: "Apply the evidence rule to the new case.",
+        audioUrl: "/audio/guided-class/transfer.mp3",
       },
     ],
     fallback: "browserTts",
@@ -273,18 +292,28 @@ describe("guided simulation definition", () => {
     expect(guidance).toEqual(before);
   });
 
-  it("rejects unsupported evidence modes and incomplete answer metadata", () => {
+  it("rejects unsupported evidence modes", () => {
     const guidance = validGuidance();
     guidance.stages[0].evidenceMode = "automatic" as "scene";
-    guidance.stages[1].misconceptionId = undefined;
-    guidance.stages[1].transferPromptId = undefined;
 
-    expect(validateGuidedSimulationDefinition(guidance)).toEqual(
-      expect.arrayContaining([
-        'guidance.stages[0].evidenceMode: expected "scene" or "answer"',
-        "guidance.stages[1].misconceptionId: required for answer evidence",
-        "guidance.stages[1].transferPromptId: required for answer evidence",
-      ]),
+    expect(validateGuidedSimulationDefinition(guidance)).toContain(
+      'guidance.stages[0].evidenceMode: expected "scene" or "answer"',
+    );
+  });
+
+  it("requires answer stages to reference exactly one assessment prompt", () => {
+    const missingReference = validGuidance();
+    missingReference.stages[1].misconceptionId = undefined;
+    const duplicateReference = validGuidance();
+    duplicateReference.stages[1].transferPromptId = "prompt-transfer";
+
+    const expected =
+      "guidance.stages[1]: answer evidence requires exactly one of misconceptionId or transferPromptId";
+    expect(validateGuidedSimulationDefinition(missingReference)).toContain(
+      expected,
+    );
+    expect(validateGuidedSimulationDefinition(duplicateReference)).toContain(
+      expected,
     );
   });
 
@@ -321,6 +350,45 @@ describe("guided simulation definition", () => {
       ]),
     );
   });
+
+  it("returns stable errors for missing guided objects and arrays", () => {
+    expect(
+      validateGuidedSimulationDefinition(
+        undefined as unknown as GuidedSimulationDefinition,
+      ),
+    ).toEqual(["guidance: required"]);
+
+    const guidance = validGuidance();
+    guidance.stages =
+      undefined as unknown as GuidedSimulationDefinition["stages"];
+    guidance.completion =
+      undefined as unknown as GuidedSimulationDefinition["completion"];
+
+    expect(() => validateGuidedSimulationDefinition(guidance)).not.toThrow();
+    expect(validateGuidedSimulationDefinition(guidance)).toEqual(
+      expect.arrayContaining([
+        "guidance.stages: required",
+        "guidance.completion: required",
+      ]),
+    );
+  });
+
+  it("returns stable errors for malformed guided stage entries", () => {
+    const guidance = validGuidance();
+    guidance.stages[0] =
+      undefined as unknown as GuidedSimulationDefinition["stages"][number];
+    guidance.stages[1].requiredActionIds = undefined as unknown as string[];
+    guidance.stages[1].completionEvidenceIds = undefined as unknown as string[];
+
+    expect(() => validateGuidedSimulationDefinition(guidance)).not.toThrow();
+    expect(validateGuidedSimulationDefinition(guidance)).toEqual(
+      expect.arrayContaining([
+        "guidance.stages[0]: required",
+        "guidance.stages[1].requiredActionIds: required",
+        "guidance.stages[1].completionEvidenceIds: required",
+      ]),
+    );
+  });
 });
 
 describe("simulation narration manifest", () => {
@@ -340,6 +408,30 @@ describe("simulation narration manifest", () => {
         'narration.cues[1].id: duplicate "narration-observe"',
         'narration.fallback: expected "browserTts" or "none"',
       ]),
+    );
+  });
+
+  it("returns stable errors for missing narration objects and cue arrays", () => {
+    expect(
+      validateNarrationManifest(
+        undefined as unknown as SimulationNarrationManifest,
+      ),
+    ).toEqual(["narration: required"]);
+
+    const missingCues = validNarration();
+    missingCues.cues =
+      undefined as unknown as SimulationNarrationManifest["cues"];
+    expect(() => validateNarrationManifest(missingCues)).not.toThrow();
+    expect(validateNarrationManifest(missingCues)).toContain(
+      "narration.cues: required",
+    );
+
+    const malformedCue = validNarration();
+    malformedCue.cues[0] =
+      undefined as unknown as SimulationNarrationManifest["cues"][number];
+    expect(() => validateNarrationManifest(malformedCue)).not.toThrow();
+    expect(validateNarrationManifest(malformedCue)).toContain(
+      "narration.cues[0]: required",
     );
   });
 });
@@ -378,25 +470,25 @@ describe("implemented simulation definition", () => {
     const input = validGuidedInput();
     input.guidance.moduleId = "sim-somewhere-else";
     input.guidance.viewerKey = "somewhere-else";
-    input.module.stages = 3;
+    input.module.stages = 4;
 
     expect(() => defineGuidedImplementedSimulation(input)).toThrow(
       [
         'guided.module.id: expected guidance.moduleId "sim-somewhere-else", received "sim-guided-class"',
         'guided.module.viewerKey: expected guidance.viewerKey "somewhere-else", received "guided-reference"',
-        "guided.module.stages: expected 2, received 3",
+        "guided.module.stages: expected 3, received 4",
       ].join("\n"),
     );
   });
 
   it("rejects generic experience stage-count and assessment objective mismatches", () => {
     const definition = validInteractiveDefinition();
-    definition.module.stages = 3;
+    definition.module.stages = 4;
     definition.assessment.objectiveId = "another-experience";
 
     expect(validateImplementedSimulationDefinition(definition)).toEqual(
       expect.arrayContaining([
-        "implemented.module.stages: expected 2, received 3",
+        "implemented.module.stages: expected 3, received 4",
         'implemented.assessment.objectiveId: expected "experience-guided-class", received "another-experience"',
       ]),
     );
@@ -419,7 +511,7 @@ describe("implemented simulation definition", () => {
     const input = validGuidedInput();
     input.guidance.stages[0].narrationId = "missing-narration";
     input.guidance.stages[1].misconceptionId = "missing-misconception";
-    input.guidance.stages[1].transferPromptId = "missing-transfer";
+    input.guidance.stages[2].transferPromptId = "missing-transfer";
 
     expect(() => defineGuidedImplementedSimulation(input)).toThrow(
       /guidance\.stages\[0\]\.narrationId: unknown narration cue "missing-narration"/,
@@ -428,16 +520,262 @@ describe("implemented simulation definition", () => {
       /guidance\.stages\[1\]\.misconceptionId: unknown misconception prompt "missing-misconception"/,
     );
     expect(() => defineGuidedImplementedSimulation(input)).toThrow(
-      /guidance\.stages\[1\]\.transferPromptId: unknown transfer prompt "missing-transfer"/,
+      /guidance\.stages\[2\]\.transferPromptId: unknown transfer prompt "missing-transfer"/,
     );
   });
 
   it("rejects narration cues assigned to the wrong guided stage", () => {
     const input = validGuidedInput();
-    input.narration.cues[0].stageId = "answer";
+    input.narration.cues[0].stageId = "misconception";
 
     expect(() => defineGuidedImplementedSimulation(input)).toThrow(
-      'guidance.stages[0].narrationId: cue "narration-observe" belongs to stage "answer"',
+      'guidance.stages[0].narrationId: cue "narration-observe" belongs to stage "misconception"',
+    );
+  });
+
+  it("rejects guided prompt references with the wrong assessment kind", () => {
+    const input = validGuidedInput();
+    input.guidance.stages[1].misconceptionId = "prompt-transfer";
+    input.guidance.stages[2].transferPromptId = "prompt-misconception";
+
+    expect(() => defineGuidedImplementedSimulation(input)).toThrow(
+      [
+        'guidance.stages[1].misconceptionId: prompt "prompt-transfer" has kind "transfer", expected "misconception"',
+        'guidance.stages[2].transferPromptId: prompt "prompt-misconception" has kind "misconception", expected "transfer"',
+      ].join("\n"),
+    );
+  });
+
+  it("rejects guided prompt references assigned to another valid stage", () => {
+    const input = validGuidedInput();
+    input.assessment.prompts[0].stageId = "transfer";
+    input.assessment.prompts[1].stageId = "misconception";
+
+    expect(() => defineGuidedImplementedSimulation(input)).toThrow(
+      [
+        'guidance.stages[1].misconceptionId: prompt "prompt-misconception" belongs to stage "transfer"',
+        'guidance.stages[2].transferPromptId: prompt "prompt-transfer" belongs to stage "misconception"',
+      ].join("\n"),
+    );
+  });
+
+  it("validates all required assessment prompt fields and enums", () => {
+    const definition = validInteractiveDefinition();
+    const prompt = definition.assessment.prompts[0];
+    prompt.question = " ";
+    prompt.kind = "recall" as typeof prompt.kind;
+    prompt.retryPolicy = "never" as typeof prompt.retryPolicy;
+    prompt.hint = undefined as unknown as string;
+    prompt.explanation = undefined as unknown as string;
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        'implemented.assessment.prompts[0].kind: expected "observation", "misconception", or "transfer"',
+        "implemented.assessment.prompts[0].question: required",
+        "implemented.assessment.prompts[0].hint: required",
+        "implemented.assessment.prompts[0].explanation: required",
+        'implemented.assessment.prompts[0].retryPolicy: expected "immediateWithHint" or "afterObservation"',
+      ]),
+    );
+  });
+
+  it("validates assessment option and accepted-evidence uniqueness and alignment", () => {
+    const definition = validInteractiveDefinition();
+    const prompt = definition.assessment.prompts[0];
+    prompt.options = [
+      { id: "duplicate-option", label: "First" },
+      { id: "duplicate-option", label: "Second" },
+    ];
+    prompt.acceptedEvidenceIds = ["missing-option", "missing-option"];
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        'implemented.assessment.prompts[0].options[1].id: duplicate "duplicate-option"',
+        'implemented.assessment.prompts[0].acceptedEvidenceIds[1]: duplicate "missing-option"',
+        'implemented.assessment.prompts[0].acceptedEvidenceIds[0]: unknown option "missing-option"',
+        'implemented.assessment.prompts[0].acceptedEvidenceIds[1]: unknown option "missing-option"',
+      ]),
+    );
+  });
+
+  it("requires complete prompt objects and non-empty evidence", () => {
+    const definition = validInteractiveDefinition();
+    const prompt = definition.assessment.prompts[0];
+    prompt.options = [
+      {
+        id: " ",
+        label: undefined as unknown as string,
+      },
+    ];
+    prompt.acceptedEvidenceIds = [];
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        "implemented.assessment.prompts[0].options[0].id: required",
+        "implemented.assessment.prompts[0].options[0].label: required",
+        "implemented.assessment.prompts[0].acceptedEvidenceIds: at least one evidence ID is required",
+      ]),
+    );
+  });
+
+  it("requires released assessments to cover misconception and transfer", () => {
+    const definition = validInteractiveDefinition();
+    definition.assessment.prompts = [];
+    definition.assessment.masteryRule.requiredEvidenceCount = 1;
+    definition.assessment.masteryRule.requiredKinds = [];
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        "implemented.assessment.prompts: at least one prompt is required",
+        "implemented.assessment.prompts: released simulations require a misconception prompt",
+        "implemented.assessment.prompts: released simulations require a transfer prompt",
+      ]),
+    );
+  });
+
+  it("does not impose released prompt coverage on preview assessments", () => {
+    const definition = validInteractiveDefinition();
+    definition.module.publicationStatus = "preview";
+    definition.module.status = "approved";
+    definition.assessment.prompts = [definition.assessment.prompts[0]];
+    definition.assessment.masteryRule.requiredEvidenceCount = 1;
+    definition.assessment.masteryRule.requiredKinds = ["misconception"];
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual([]);
+  });
+
+  it("fully validates assessment mastery rules", () => {
+    const invalidCount = validInteractiveDefinition();
+    invalidCount.assessment.masteryRule.requiredEvidenceCount = 1.5;
+    const invalidKinds = validInteractiveDefinition();
+    invalidKinds.assessment.masteryRule.requiredKinds = [
+      "misconception",
+      "misconception",
+      "recall" as "transfer",
+    ];
+    invalidKinds.assessment.masteryRule.allowHintedMastery =
+      "yes" as unknown as boolean;
+
+    expect(validateImplementedSimulationDefinition(invalidCount)).toContain(
+      "implemented.assessment.masteryRule.requiredEvidenceCount: expected an integer between 1 and 2",
+    );
+    expect(validateImplementedSimulationDefinition(invalidKinds)).toEqual(
+      expect.arrayContaining([
+        'implemented.assessment.masteryRule.requiredKinds[1]: duplicate "misconception"',
+        'implemented.assessment.masteryRule.requiredKinds[2]: expected "observation", "misconception", or "transfer"',
+        "implemented.assessment.masteryRule.allowHintedMastery: expected boolean",
+      ]),
+    );
+  });
+
+  it("rejects mastery kinds absent from the prompt sequence", () => {
+    const definition = validInteractiveDefinition();
+    definition.module.publicationStatus = "preview";
+    definition.module.status = "approved";
+    definition.assessment.prompts = [definition.assessment.prompts[0]];
+    definition.assessment.masteryRule.requiredEvidenceCount = 1;
+    definition.assessment.masteryRule.requiredKinds = ["transfer"];
+
+    expect(validateImplementedSimulationDefinition(definition)).toContain(
+      'implemented.assessment.masteryRule.requiredKinds[0]: no "transfer" prompt is available',
+    );
+  });
+
+  it("returns stable errors for missing implemented objects and arrays", () => {
+    const missingObjects = validInteractiveDefinition();
+    missingObjects.experience =
+      undefined as unknown as ImplementedSimulationDefinition["experience"];
+    missingObjects.assessment =
+      undefined as unknown as ImplementedSimulationDefinition["assessment"];
+    missingObjects.narration =
+      undefined as unknown as ImplementedSimulationDefinition["narration"];
+    missingObjects.assets =
+      undefined as unknown as ImplementedSimulationDefinition["assets"];
+    missingObjects.legacyPaths = undefined as unknown as string[];
+    missingObjects.contribution =
+      undefined as unknown as ImplementedSimulationDefinition["contribution"];
+
+    expect(() =>
+      validateImplementedSimulationDefinition(missingObjects),
+    ).not.toThrow();
+    expect(validateImplementedSimulationDefinition(missingObjects)).toEqual(
+      expect.arrayContaining([
+        "implemented.experience: required",
+        "implemented.assessment: required",
+        "implemented.narration: required",
+        "implemented.assets: required",
+        "implemented.legacyPaths: required",
+        "implemented.contribution: required",
+      ]),
+    );
+
+    expect(
+      validateImplementedSimulationDefinition(
+        undefined as unknown as ImplementedSimulationDefinition,
+      ),
+    ).toEqual(["implemented: required"]);
+  });
+
+  it("returns stable errors for malformed implemented array entries", () => {
+    const definition = validInteractiveDefinition();
+    definition.experience.stages[0] =
+      undefined as unknown as ImplementedSimulationDefinition["experience"]["stages"][number];
+    definition.assessment.prompts[0] =
+      undefined as unknown as AssessmentSequence["prompts"][number];
+    definition.narration.cues[0] =
+      undefined as unknown as SimulationNarrationManifest["cues"][number];
+    definition.assets.assets[0] =
+      undefined as unknown as AssetManifest["assets"][number];
+
+    expect(() =>
+      validateImplementedSimulationDefinition(definition),
+    ).not.toThrow();
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        "implemented.experience.stages[0]: required",
+        "implemented.assessment.prompts[0]: required",
+        "implemented.narration.cues[0]: required",
+        "implemented.assets.assets[0]: required",
+      ]),
+    );
+  });
+
+  it("returns stable errors when assessment and mastery arrays are missing", () => {
+    const definition = validInteractiveDefinition();
+    definition.assessment.prompts =
+      undefined as unknown as AssessmentSequence["prompts"];
+    definition.assessment.masteryRule =
+      undefined as unknown as AssessmentSequence["masteryRule"];
+
+    expect(() =>
+      validateImplementedSimulationDefinition(definition),
+    ).not.toThrow();
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        "implemented.assessment.prompts: required",
+        "implemented.assessment.masteryRule: required",
+      ]),
+    );
+  });
+
+  it("builders join malformed nested-object errors instead of throwing TypeError", () => {
+    const definition = validInteractiveDefinition();
+    definition.module =
+      undefined as unknown as ImplementedSimulationDefinition["module"];
+    definition.narration =
+      undefined as unknown as ImplementedSimulationDefinition["narration"];
+
+    expect(() => defineImplementedSimulation(definition)).toThrow(
+      ["implemented.module: required", "implemented.narration: required"].join(
+        "\n",
+      ),
+    );
+
+    const input = validGuidedInput();
+    input.module = undefined as unknown as SimulationModuleRecord;
+    input.guidance = undefined as unknown as GuidedSimulationDefinition;
+    expect(() => defineGuidedImplementedSimulation(input)).toThrow(
+      ["guidance: required", "guided.module: required"].join("\n"),
     );
   });
 
