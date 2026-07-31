@@ -2,6 +2,17 @@ import Link from 'next/link';
 
 const SIMS = [
   {
+    slug: 'walls-tell-stories-ancient-fort-visit',
+    emoji: '🏰',
+    color: '#f5c16c',
+    subject: 'Environmental Studies',
+    grade: 'Class 5',
+    title: 'A Visit to an Ancient Fort',
+    xrFit: 'Strong VR Fit',
+    stages: 8,
+    minutes: 10,
+  },
+  {
     slug: 'up-you-go-snow-mountain-climbing',
     emoji: '🏔️',
     color: '#a7f3d0',

@@ -20,6 +20,7 @@ const NEERJA_STORYTELLER = {
 // the narration rollout rather than only receiving an implicit fallback.
 const narrationProfiles = Object.fromEntries([
   "AamPapadViewer.tsx",
+  "AncientFortVisitViewer.tsx",
   "CampInSnowViewer.tsx",
   "CircuitViewer.tsx",
   "CottonFarmingViewer.tsx",

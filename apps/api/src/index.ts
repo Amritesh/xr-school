@@ -10,6 +10,24 @@ await app.register(cors, {
 // Simulation catalog — seed data matching TypeSpec SimulationModule model
 const SIMULATIONS = [
   {
+    id: 'sim-walls-tell-stories-ancient-fort-visit-001',
+    slug: 'walls-tell-stories-ancient-fort-visit',
+    title: 'A Visit to an Ancient Fort',
+    summary: 'Explore Golconda Fort through its great gate, iron spikes, thick walls, rounded bastions, town map, palace ruins, water engineering, acoustics, historical evidence and responsible monument care.',
+    gradeBands: ['class3To5'],
+    subjects: ['environmentalScience'],
+    applicableBoards: ['cbse'],
+    simulationFormat: 'virtualFieldVisit',
+    xrFitType: 'strongVrFit',
+    xrFitJustification: 'The immersive fort visit lets learners inspect defensive architecture, spatial maps, water mechanisms, acoustic paths and heritage evidence at life scale without touching or damaging a real monument.',
+    learningObjective: 'Students will identify evidence in an ancient fort, explain how selected architectural and engineering features served the settlement, distinguish evidence from imagination and describe responsible visitor behaviour.',
+    evidenceConfidenceLevel: 'expertDesigned',
+    comfortRiskLevel: 'low',
+    expectedDurationMinutes: 10,
+    stages: 8,
+    status: 'released',
+  },
+  {
     id: 'sim-up-you-go-snow-mountain-climbing-001',
     slug: 'up-you-go-snow-mountain-climbing',
     title: 'Snow Mountain Climbing',

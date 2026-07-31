@@ -17,6 +17,23 @@ const VALID_EVIDENCE_LEVELS = ['experimental', 'expertDesigned', 'internallyPilo
 // Simulation module definitions — must stay in sync with apps/api/src/index.ts
 const SIMULATIONS = [
   {
+    id: 'sim-walls-tell-stories-ancient-fort-visit-001',
+    slug: 'walls-tell-stories-ancient-fort-visit',
+    title: 'A Visit to an Ancient Fort',
+    gradeBands: ['class3To5'],
+    subjects: ['environmentalScience'],
+    applicableBoards: ['cbse'],
+    simulationFormat: 'virtualFieldVisit',
+    xrFitType: 'strongVrFit',
+    xrFitJustification: 'The immersive fort visit makes defensive architecture, maps, water mechanisms, acoustic paths and heritage evidence directly inspectable.',
+    learningObjective: 'Students will identify evidence in an ancient fort, explain selected architectural and engineering features, distinguish evidence from imagination and describe responsible visitor behaviour.',
+    evidenceConfidenceLevel: 'expertDesigned',
+    comfortRiskLevel: 'low',
+    expectedDurationMinutes: 10,
+    stages: 8,
+    status: 'released',
+  },
+  {
     id: 'sim-up-you-go-snow-mountain-climbing-001',
     slug: 'up-you-go-snow-mountain-climbing',
     title: 'Snow Mountain Climbing',
