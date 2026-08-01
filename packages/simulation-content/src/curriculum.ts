@@ -366,6 +366,34 @@ export const LEARNING_CONCEPTS: LearningConceptRecord[] = [
     searchKeywords: ['neutralise', 'salt', 'water', 'ph 7'],
   },
   {
+    id: 'concept-colour-names',
+    canonicalName: 'Common colour names',
+    aliases: ['colour recognition', 'naming colours'],
+    subject: 'art',
+    description:
+      'Recognition and naming of red, blue, yellow, green, orange, purple, pink, brown, black, and white.',
+    prerequisiteConceptIds: [],
+    relatedConceptIds: ['concept-colour-object-matching'],
+    commonMisconceptions: ['A colour name can describe only one particular object.'],
+    practicalRelevance:
+      'Helps children describe surroundings, choose art materials, sort objects, and follow colour-based instructions.',
+    searchKeywords: ['red', 'blue', 'yellow', 'green', 'colour names'],
+  },
+  {
+    id: 'concept-colour-object-matching',
+    canonicalName: 'Matching colours to objects',
+    aliases: ['colour matching', 'sorting by colour'],
+    subject: 'art',
+    description:
+      'Matching a spoken or written colour name to the visible colour shared by familiar objects.',
+    prerequisiteConceptIds: ['concept-colour-names'],
+    relatedConceptIds: ['concept-colour-names'],
+    commonMisconceptions: ['Objects of the same kind must always have the same colour.'],
+    practicalRelevance:
+      'Supports visual comparison, sorting, drawing, painting, and precise everyday descriptions.',
+    searchKeywords: ['match', 'sort', 'object colour', 'visual comparison'],
+  },
+  {
     id: 'concept-money-values',
     canonicalName: 'Money values',
     aliases: ['currency value', 'rupee values'],
@@ -489,6 +517,15 @@ export const LEARNING_CONCEPTS: LearningConceptRecord[] = [
 
 export const CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
   {
+    id: 'chapter-cbse-c1-art-colours',
+    courseId: 'course-cbse-c1-art',
+    chapterNumber: 1,
+    title: 'Learning of Colours',
+    topicIds: ['topic-colour-recognition'],
+    conceptIds: ['concept-colour-names', 'concept-colour-object-matching'],
+    simulationIds: ['sim-c1-art-a01-learning-of-colours'],
+  },
+  {
     id: 'chapter-cbse-c1-math-money',
     courseId: 'course-cbse-c1-mathematics',
     chapterNumber: 1,
@@ -604,6 +641,20 @@ export const CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
 ];
 
 export const COURSES: CourseRecord[] = [
+  {
+    id: 'course-cbse-c1-art',
+    title: 'CBSE Class 1 Art',
+    board: 'cbse',
+    classLevel: 1,
+    gradeBand: 'class1To2',
+    subject: 'art',
+    description:
+      'Foundational visual-art learning through recognising, naming, matching, and using common colours.',
+    chapterIds: ['chapter-cbse-c1-art-colours'],
+    conceptIds: ['concept-colour-names', 'concept-colour-object-matching'],
+    simulationIds: ['sim-c1-art-a01-learning-of-colours'],
+    searchKeywords: ['class 1', 'art', 'colours', 'colour recognition', 'colour matching'],
+  },
   {
     id: 'course-cbse-c1-mathematics',
     title: 'CBSE Class 1 Mathematics',

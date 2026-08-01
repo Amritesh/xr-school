@@ -15,6 +15,9 @@ export default defineConfig({
       '@xr-school/simulation-content/node': fileURLToPath(
         new URL('./packages/simulation-content/src/node.ts', import.meta.url),
       ),
+      '@xr-school/simulation-content': fileURLToPath(
+        new URL('./packages/simulation-content/src/index.ts', import.meta.url),
+      ),
     },
   },
   test: {

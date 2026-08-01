@@ -59,4 +59,33 @@ describe('lesson session', () => {
     snapshot.performedActionIds.push('second-action');
     expect(session.snapshot().performedActionIds).toEqual(['first-action']);
   });
+
+  it('marks an explicit automatic final stage complete without invented evidence', () => {
+    const session = createLessonSession({
+      ...definition,
+      stages: [
+        definition.stages[0],
+        {
+          id: 'celebration',
+          title: 'Celebration',
+          cue: 'View the earned badge.',
+          completionMode: 'automatic',
+          requiredActionIds: [],
+          completionEvidenceIds: [],
+        },
+      ],
+    });
+
+    session.performAction('first-action');
+    session.recordEvidence('first-observed');
+    const terminal = session.next();
+
+    expect(terminal).toMatchObject({
+      stageId: 'celebration',
+      stageComplete: true,
+      lessonComplete: true,
+      performedActionIds: ['first-action'],
+      recordedEvidenceIds: ['first-observed'],
+    });
+  });
 });

@@ -9,8 +9,8 @@ import { validateCurriculumGraph } from '../../packages/simulation-schema/src/in
 
 describe('canonical curriculum content', () => {
   it('defines typed courses, chapters, and concepts for every working simulation', () => {
-    expect(COURSES).toHaveLength(10);
-    expect(CURRICULUM_CHAPTERS).toHaveLength(12);
+    expect(COURSES).toHaveLength(11);
+    expect(CURRICULUM_CHAPTERS).toHaveLength(13);
     expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(40);
 
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
@@ -51,6 +51,7 @@ describe('canonical curriculum content', () => {
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
 
     for (const simulationId of [
+      'sim-c1-art-a01-learning-of-colours',
       'sim-c1-math-ch01-introduction-to-money',
       'sim-c2-english-ch01-prepositions',
       'sim-c8-10-science-solar-system',
@@ -58,6 +59,9 @@ describe('canonical curriculum content', () => {
       expect(linkedSimulationIds.has(simulationId)).toBe(true);
     }
 
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c1-art-colours',
+    )?.simulationIds).toEqual(['sim-c1-art-a01-learning-of-colours']);
     expect(CURRICULUM_CHAPTERS.find(
       item => item.id === 'chapter-cbse-c1-math-money',
     )?.simulationIds).toEqual(['sim-c1-math-ch01-introduction-to-money']);
@@ -67,5 +71,33 @@ describe('canonical curriculum content', () => {
     expect(CURRICULUM_CHAPTERS.find(
       item => item.id === 'chapter-cbse-c8-solar-system',
     )?.simulationIds).toEqual(['sim-c8-10-science-solar-system']);
+  });
+
+  it('links Colour Adventure through honest Class 1 Art concepts', () => {
+    const course = COURSES.find(item => item.id === 'course-cbse-c1-art');
+    const chapter = CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c1-art-colours',
+    );
+
+    expect(course).toMatchObject({
+      classLevel: 1,
+      gradeBand: 'class1To2',
+      subject: 'art',
+      chapterIds: ['chapter-cbse-c1-art-colours'],
+      simulationIds: ['sim-c1-art-a01-learning-of-colours'],
+    });
+    expect(chapter).toMatchObject({
+      courseId: 'course-cbse-c1-art',
+      chapterNumber: 1,
+      title: 'Learning of Colours',
+      conceptIds: [
+        'concept-colour-names',
+        'concept-colour-object-matching',
+      ],
+    });
+    expect(
+      LEARNING_CONCEPTS.filter(concept => chapter?.conceptIds.includes(concept.id))
+        .map(concept => concept.subject),
+    ).toEqual(['art', 'art']);
   });
 });

@@ -32,6 +32,7 @@ export interface GuidedSimulationDefinition {
 }
 
 const GRADE_TONES: readonly GradeToneProfile[] = [
+  "class1To2",
   "class3To5",
   "class6To8",
   "class9To10",
@@ -126,7 +127,10 @@ export function validateGuidedSimulationDefinition(
       if (!Array.isArray(stage.requiredActionIds)) {
         errors.push(`${path}.requiredActionIds: required`);
       } else {
-        if (stage.requiredActionIds.length === 0) {
+        if (
+          stage.requiredActionIds.length === 0
+          && stage.completionMode !== "automatic"
+        ) {
           errors.push(
             `${path}.requiredActionIds: at least one action is required`,
           );
@@ -141,7 +145,10 @@ export function validateGuidedSimulationDefinition(
       if (!Array.isArray(stage.completionEvidenceIds)) {
         errors.push(`${path}.completionEvidenceIds: required`);
       } else {
-        if (stage.completionEvidenceIds.length === 0) {
+        if (
+          stage.completionEvidenceIds.length === 0
+          && stage.completionMode !== "automatic"
+        ) {
           errors.push(
             `${path}.completionEvidenceIds: at least one evidence ID is required`,
           );
@@ -151,6 +158,31 @@ export function validateGuidedSimulationDefinition(
           requireText(value, valuePath, errors);
           if (hasText(value)) evidenceIds.push({ value, path: valuePath });
         });
+      }
+
+      if (
+        stage.completionMode !== undefined
+        && stage.completionMode !== "requirements"
+        && stage.completionMode !== "automatic"
+      ) {
+        errors.push(`${path}.completionMode: invalid`);
+      }
+      if (
+        stage.completionMode === "automatic"
+        && Array.isArray(stage.requiredActionIds)
+        && Array.isArray(stage.completionEvidenceIds)
+        && (
+          stage.requiredActionIds.length > 0
+          || stage.completionEvidenceIds.length > 0
+        )
+      ) {
+        errors.push(`${path}.completionMode: automatic stages cannot declare requirements`);
+      }
+      if (
+        stage.completionMode === "automatic"
+        && stageIndex !== definition.stages.length - 1
+      ) {
+        errors.push(`${path}.completionMode: automatic completion is allowed only for the final stage`);
       }
 
       if (stage.evidenceMode !== "scene" && stage.evidenceMode !== "answer") {
@@ -233,6 +265,9 @@ export function toExperienceDefinition(
       cue: stage.cue,
       requiredActionIds: [...stage.requiredActionIds],
       completionEvidenceIds: [...stage.completionEvidenceIds],
+      ...(stage.completionMode
+        ? { completionMode: stage.completionMode }
+        : {}),
     })),
   };
 }

@@ -53,6 +53,7 @@ export interface GuidedImplementedSimulationInput {
 }
 
 const GRADE_TONES: readonly GradeToneProfile[] = [
+  "class1To2",
   "class3To5",
   "class6To8",
   "class9To10",
@@ -180,12 +181,13 @@ function validateExperience(experience: unknown, errors: string[]) {
   if (!Array.isArray(experience.stages)) {
     errors.push("implemented.experience.stages: required");
   } else {
-    if (experience.stages.length === 0) {
+    const stages = experience.stages;
+    if (stages.length === 0) {
       errors.push(
         "implemented.experience.stages: at least one stage is required",
       );
     }
-    experience.stages.forEach((stage, stageIndex) => {
+    stages.forEach((stage, stageIndex) => {
       const path = `implemented.experience.stages[${stageIndex}]`;
       if (!isRecord(stage)) {
         errors.push(`${path}: required`);
@@ -201,7 +203,10 @@ function validateExperience(experience: unknown, errors: string[]) {
       if (!Array.isArray(stage.requiredActionIds)) {
         errors.push(`${path}.requiredActionIds: required`);
       } else {
-        if (stage.requiredActionIds.length === 0) {
+        if (
+          stage.requiredActionIds.length === 0
+          && stage.completionMode !== "automatic"
+        ) {
           errors.push(
             `${path}.requiredActionIds: at least one action is required`,
           );
@@ -216,7 +221,10 @@ function validateExperience(experience: unknown, errors: string[]) {
       if (!Array.isArray(stage.completionEvidenceIds)) {
         errors.push(`${path}.completionEvidenceIds: required`);
       } else {
-        if (stage.completionEvidenceIds.length === 0) {
+        if (
+          stage.completionEvidenceIds.length === 0
+          && stage.completionMode !== "automatic"
+        ) {
           errors.push(
             `${path}.completionEvidenceIds: at least one evidence ID is required`,
           );
@@ -226,6 +234,35 @@ function validateExperience(experience: unknown, errors: string[]) {
           requireText(value, valuePath, errors);
           if (hasText(value)) evidenceIds.push({ value, path: valuePath });
         });
+      }
+
+      if (
+        stage.completionMode !== undefined
+        && stage.completionMode !== "requirements"
+        && stage.completionMode !== "automatic"
+      ) {
+        errors.push(`${path}.completionMode: invalid`);
+      }
+      if (
+        stage.completionMode === "automatic"
+        && Array.isArray(stage.requiredActionIds)
+        && Array.isArray(stage.completionEvidenceIds)
+        && (
+          stage.requiredActionIds.length > 0
+          || stage.completionEvidenceIds.length > 0
+        )
+      ) {
+        errors.push(
+          `${path}.completionMode: automatic stages cannot declare requirements`,
+        );
+      }
+      if (
+        stage.completionMode === "automatic"
+        && stageIndex !== stages.length - 1
+      ) {
+        errors.push(
+          `${path}.completionMode: automatic completion is allowed only for the final stage`,
+        );
       }
     });
   }

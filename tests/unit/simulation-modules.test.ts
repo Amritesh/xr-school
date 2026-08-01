@@ -9,7 +9,7 @@ import { SIMULATION_MODULES } from '../../packages/simulation-content/src/module
 const VALID_XR_FIT_TYPES = ['strongVrFit', 'arTabletFit'];
 const VALID_BOARDS = ['cbse', 'icse', 'stateBoard'];
 const VALID_GRADE_BANDS = ['kindergarten', 'class1To2', 'class3To5', 'class6To8', 'class9To10', 'class11To12'];
-const VALID_SUBJECTS = ['science', 'physics', 'chemistry', 'biology', 'mathematics', 'english', 'geography', 'history', 'environmentalScience', 'computerScience', 'vocationalSkills', 'careerExposure'];
+const VALID_SUBJECTS = ['science', 'physics', 'chemistry', 'biology', 'mathematics', 'art', 'english', 'geography', 'history', 'environmentalScience', 'computerScience', 'vocationalSkills', 'careerExposure'];
 const VALID_STATUSES = ['draft', 'approved', 'released', 'deprecated', 'archived'];
 const VALID_COMFORT_RISKS = ['low', 'medium', 'high'];
 const VALID_FORMATS = ['immersiveVr', 'threeSixtyVr', 'interactive3d', 'guidedVisualization', 'practicalLabSimulation', 'virtualFieldVisit', 'revisionMode'];
@@ -174,7 +174,26 @@ describe('Simulation module contracts', () => {
     expect(module?.curriculumMapIds).toContain('cm-cbse-c5-ch07-water-experiments');
     expect(module?.conceptIds).toContain('concept-solubility');
     expect(module?.simulationFormat).toBe('practicalLabSimulation');
-    expect(module?.stages).toBe(4);
+    expect(module?.stages).toBe(5);
+  });
+
+  it('includes Colour Adventure as a fourteen-stage Class 1 Art lesson', () => {
+    const module = SIMULATIONS.find(
+      s => s.slug === 'c1-art-a01-learning-of-colours',
+    );
+
+    expect(module).toMatchObject({
+      id: 'sim-c1-art-a01-learning-of-colours',
+      viewerKey: 'colour-adventure',
+      gradeBands: ['class1To2'],
+      subjects: ['art'],
+      curriculumMapIds: ['cm-cbse-c1-art-colours'],
+      conceptIds: [
+        'concept-colour-names',
+        'concept-colour-object-matching',
+      ],
+      stages: 14,
+    });
   });
 
   it('includes the Class 5 digestive system journey as a ten-stage WebXR lesson', () => {

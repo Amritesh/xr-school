@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { SCIENCE_SIMULATION_CATALOG } from '../../apps/web/lib/scienceCatalog.generated';
+import { IMPLEMENTED_SIMULATIONS } from '../../packages/simulation-content/src/index';
 import {
   IMPLEMENTED_SIMULATION_SLUGS,
+  SIMULATION_PRESENTATION_OVERLAYS,
+  assertSimulationPresentationOverlayIntegrity,
   isImplementedSimulationSlug,
   getSimulationCatalogSections,
   matchesCatalogFilters,
@@ -14,6 +17,79 @@ describe('simulation availability routing', () => {
     expect(sections.launchable.map(item => item.slug)).toEqual([...IMPLEMENTED_SIMULATION_SLUGS]);
     expect(sections.launchable).toHaveLength(IMPLEMENTED_SIMULATION_SLUGS.length);
     expect(sections.launchable.every(item => item.releaseMaturity === 'internalQA')).toBe(true);
+    expect(sections.launchable.map(item => item.slug)).toEqual(
+      IMPLEMENTED_SIMULATIONS.map(({ module }) => module.slug),
+    );
+  });
+
+  it('derives launchable identity and release fields from the canonical registry', () => {
+    const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
+
+    for (const definition of IMPLEMENTED_SIMULATIONS) {
+      const card = sections.launchable.find(
+        item => item.slug === definition.module.slug,
+      );
+      expect(card).toMatchObject({
+        slug: definition.module.slug,
+        title: definition.module.title,
+        subjectTags: definition.module.subjects,
+        minutes: definition.module.expectedDurationMinutes,
+        releaseMaturity: definition.module.releaseMaturity,
+        href: `/simulations/${definition.module.slug}`,
+      });
+    }
+  });
+
+  it('keeps one recognized presentation overlay per released module ID', () => {
+    const releasedIds = IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id).sort();
+
+    expect(Object.keys(SIMULATION_PRESENTATION_OVERLAYS).sort()).toEqual(
+      releasedIds,
+    );
+    expect(() =>
+      assertSimulationPresentationOverlayIntegrity(
+        SIMULATION_PRESENTATION_OVERLAYS,
+      ),
+    ).not.toThrow();
+
+    const firstId = releasedIds[0];
+    const { [firstId]: _missing, ...missingOverlay } =
+      SIMULATION_PRESENTATION_OVERLAYS;
+    expect(() =>
+      assertSimulationPresentationOverlayIntegrity(missingOverlay),
+    ).toThrow(/missing overlay/i);
+
+    expect(() =>
+      assertSimulationPresentationOverlayIntegrity({
+        ...SIMULATION_PRESENTATION_OVERLAYS,
+        'sim-not-implemented': {
+          color: '#000000',
+          topic: 'Unknown',
+          archetype: 'unknown',
+          classLevels: [1],
+        },
+      }),
+    ).toThrow(/unrecognized overlay/i);
+
+    expect(() =>
+      assertSimulationPresentationOverlayIntegrity({
+        ...SIMULATION_PRESENTATION_OVERLAYS,
+        [firstId]: {
+          ...SIMULATION_PRESENTATION_OVERLAYS[firstId],
+          classLevels: [],
+        },
+      }),
+    ).toThrow(/class levels/i);
+
+    expect(Object.isFrozen(SIMULATION_PRESENTATION_OVERLAYS)).toBe(true);
+    expect(
+      Object.values(SIMULATION_PRESENTATION_OVERLAYS).every(
+        overlay => Object.isFrozen(overlay) && Object.isFrozen(overlay.classLevels),
+      ),
+    ).toBe(true);
+    expect(() => {
+      (SIMULATION_PRESENTATION_OVERLAYS[firstId].classLevels as number[]).push(99);
+    }).toThrow(TypeError);
   });
 
   it('exposes a route guard for exactly the implemented demos', () => {

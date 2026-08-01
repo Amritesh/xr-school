@@ -1,20 +1,17 @@
+import {
+  IMPLEMENTED_SIMULATIONS,
+  routeForSimulation,
+} from '@xr-school/simulation-content';
+import type { ImplementedSimulationDefinition } from '@xr-school/simulation-schema';
 import type { ScienceSimulationCatalogItem } from './scienceCatalog.generated';
 
-export const IMPLEMENTED_SIMULATION_SLUGS = [
-  'pollination',
-  'circuit',
-  'c9-ch01-a02-states-of-matter',
-  'c6-ch01-a01-sources-of-food',
-  'c5-ch07-a03-soluble-and-insoluble-substances',
-  'c5-ch03-a02-introduction-of-digestive-system',
-  'c7-ch10-a02-the-breathing-process-in-human',
-  'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
-  'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
-  'c1-art-a01-learning-of-colours',
-  'c1-math-ch01-introduction-to-money',
-  'c2-english-ch01-prepositions',
-  'c8-10-science-solar-system',
-] as const;
+const RELEASED_SIMULATIONS = IMPLEMENTED_SIMULATIONS.filter(
+  definition => definition.module.publicationStatus === 'released',
+);
+
+export const IMPLEMENTED_SIMULATION_SLUGS = Object.freeze(
+  RELEASED_SIMULATIONS.map(({ module }) => module.slug),
+);
 
 type ImplementedSlug = (typeof IMPLEMENTED_SIMULATION_SLUGS)[number];
 
@@ -35,164 +32,134 @@ export type CatalogCard = {
   href?: string;
 };
 
-const EXTRA_IMPLEMENTED: Record<ImplementedSlug, Omit<CatalogCard, 'releaseMaturity' | 'href'>> = {
-  pollination: {
-    slug: 'pollination',
+export interface SimulationPresentationOverlay {
+  readonly color: string;
+  readonly topic: string;
+  readonly archetype: string;
+  readonly classLevels: readonly number[];
+}
+
+function deepFreeze<T>(value: T): T {
+  if (value !== null && typeof value === 'object' && !Object.isFrozen(value)) {
+    for (const child of Object.values(value)) deepFreeze(child);
+    Object.freeze(value);
+  }
+  return value;
+}
+
+export const SIMULATION_PRESENTATION_OVERLAYS: Readonly<Record<
+  string,
+  Readonly<SimulationPresentationOverlay>
+>> = deepFreeze({
+  'sim-pollination-001': {
     color: '#34d399',
-    subject: 'biology, environmental science',
-    subjectTags: ['biology', 'environmentalScience'],
-    grade: 'Class 6-10',
     classLevels: [6, 7, 8, 9, 10],
-    title: 'Plant Pollination & Growth Cycle',
     topic: 'Plant reproduction',
     archetype: 'immersive VR',
-    minutes: 10,
   },
-  circuit: {
-    slug: 'circuit',
+  'sim-circuit-001': {
     color: '#fbbf24',
-    subject: 'physics',
-    subjectTags: ['physics'],
-    grade: 'Class 6-10',
     classLevels: [6, 7, 8, 9, 10],
-    title: "Electric Circuits & Resistance (Ohm's Law)",
     topic: 'Electricity',
     archetype: 'interactive 3D',
-    minutes: 8,
   },
-  'c9-ch01-a02-states-of-matter': {
-    slug: 'c9-ch01-a02-states-of-matter',
+  'sim-c09-ch01-a02-states-of-matter': {
     color: '#38bdf8',
-    subject: 'chemistry, physics',
-    subjectTags: ['chemistry', 'physics'],
-    grade: 'Class 9',
     classLevels: [9],
-    title: 'States of Matter Particle Lab',
     topic: 'Matter in Our Surroundings',
     archetype: 'interactive3d',
-    minutes: 10,
   },
-  'c6-ch01-a01-sources-of-food': {
-    slug: 'c6-ch01-a01-sources-of-food',
+  'sim-c06-ch01-a01-sources-of-food': {
     color: '#4ade80',
-    subject: 'science, biology',
-    subjectTags: ['science', 'biology'],
-    grade: 'Class 6',
     classLevels: [6],
-    title: 'Sources of Food Sorting Lab',
     topic: 'Food: Where does It come from?',
     archetype: 'sortingBoard',
-    minutes: 9,
   },
-  'c5-ch07-a03-soluble-and-insoluble-substances': {
-    slug: 'c5-ch07-a03-soluble-and-insoluble-substances',
+  'sim-c05-ch07-a03-soluble-and-insoluble-substances': {
     color: '#67e8f9',
-    subject: 'environmentalScience, science',
-    subjectTags: ['environmentalScience', 'science'],
-    grade: 'Class 5',
     classLevels: [5],
-    title: 'Soluble and Insoluble Substances Lab',
     topic: 'Experiments with Water',
     archetype: 'experimentBench',
-    minutes: 8,
   },
-  'c5-ch03-a02-introduction-of-digestive-system': {
-    slug: 'c5-ch03-a02-introduction-of-digestive-system',
+  'sim-c05-ch03-a02-introduction-of-digestive-system': {
     color: '#fb7185',
-    subject: 'environmentalScience, biology',
-    subjectTags: ['environmentalScience', 'biology'],
-    grade: 'Class 5',
     classLevels: [5],
-    title: 'Introduction to the Digestive System',
     topic: 'From Tasting to Digesting',
     archetype: 'immersive VR',
-    minutes: 10,
   },
-  'c7-ch10-a02-the-breathing-process-in-human': {
-    slug: 'c7-ch10-a02-the-breathing-process-in-human',
+  'sim-c07-ch10-a02-the-breathing-process-in-human': {
     color: '#38bdf8',
-    subject: 'biology',
-    subjectTags: ['biology'],
-    grade: 'Class 7',
     classLevels: [7],
-    title: 'The Breathing Process in Human',
     topic: 'Respiration in Organisms',
     archetype: 'interactive 3D',
-    minutes: 10,
   },
-  'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape': {
-    slug: 'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
+  'sim-c08-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape': {
     color: '#4ade80',
-    subject: 'physics',
-    subjectTags: ['physics'],
-    grade: 'Class 8',
     classLevels: [8],
-    title: "The Effects of Force on an Object's Motion and Shape",
     topic: 'Force and Pressure',
     archetype: 'interactive 3D',
-    minutes: 10,
   },
-  'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test': {
-    slug: 'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
+  'sim-c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test': {
     color: '#22c55e',
-    subject: 'chemistry',
-    subjectTags: ['chemistry'],
-    grade: 'Class 10',
     classLevels: [10],
-    title: 'Acids, Bases & Neutralisation',
     topic: 'Acids, Bases and Salts',
     archetype: 'experiment bench',
-    minutes: 10,
   },
-  'c1-art-a01-learning-of-colours': {
-    slug: 'c1-art-a01-learning-of-colours',
+  'sim-c1-art-a01-learning-of-colours': {
     color: '#f472b6',
-    subject: 'art',
-    subjectTags: ['art'],
-    grade: 'Class 1',
     classLevels: [1],
-    title: 'Colour Adventure',
     topic: 'Learning of colours',
     archetype: 'immersive VR',
-    minutes: 9,
   },
-  'c1-math-ch01-introduction-to-money': {
-    slug: 'c1-math-ch01-introduction-to-money',
+  'sim-c1-math-ch01-introduction-to-money': {
     color: '#f59e0b',
-    subject: 'mathematics',
-    subjectTags: ['mathematics'],
-    grade: 'Class 1',
     classLevels: [1],
-    title: 'Introduction to Money',
     topic: 'Money values and shopping',
     archetype: 'interactive 3D',
-    minutes: 9,
   },
-  'c2-english-ch01-prepositions': {
-    slug: 'c2-english-ch01-prepositions',
+  'sim-c2-english-ch01-prepositions': {
     color: '#22c55e',
-    subject: 'english',
-    subjectTags: ['english'],
-    grade: 'Class 2',
     classLevels: [2],
-    title: 'Preposition Adventure',
     topic: 'Position words',
     archetype: 'immersive VR',
-    minutes: 9,
   },
-  'c8-10-science-solar-system': {
-    slug: 'c8-10-science-solar-system',
+  'sim-c8-10-science-solar-system': {
     color: '#60a5fa',
-    subject: 'science, physics, geography',
-    subjectTags: ['science', 'physics', 'geography'],
-    grade: 'Class 8-10',
     classLevels: [8, 9, 10],
-    title: 'Solar System: Gravity’s Orchestra',
     topic: 'Stars and the Solar System',
     archetype: 'immersive VR',
-    minutes: 10,
   },
-};
+});
+
+export function assertSimulationPresentationOverlayIntegrity(
+  overlays: Readonly<Record<string, SimulationPresentationOverlay>>,
+  definitions: readonly ImplementedSimulationDefinition[] = RELEASED_SIMULATIONS,
+): void {
+  const releasedIds = new Set(definitions.map(({ module }) => module.id));
+  for (const id of releasedIds) {
+    if (!overlays[id]) throw new Error(`Missing overlay for released simulation "${id}"`);
+  }
+  for (const [id, overlay] of Object.entries(overlays)) {
+    if (!releasedIds.has(id)) throw new Error(`Unrecognized overlay for simulation "${id}"`);
+    if (
+      !overlay.color.trim()
+      || !overlay.topic.trim()
+      || !overlay.archetype.trim()
+    ) {
+      throw new Error(`Overlay "${id}" requires color, topic, and archetype`);
+    }
+    if (
+      overlay.classLevels.length === 0
+      || overlay.classLevels.some(
+        classLevel => !Number.isInteger(classLevel) || classLevel < 1 || classLevel > 12,
+      )
+    ) {
+      throw new Error(`Overlay "${id}" requires valid class levels`);
+    }
+  }
+}
+
+assertSimulationPresentationOverlayIntegrity(SIMULATION_PRESENTATION_OVERLAYS);
 
 const COLORS: Record<string, string> = {
   modelInspection: '#38bdf8',
@@ -227,12 +194,35 @@ function toCataloguedCard(item: ScienceSimulationCatalogItem): CatalogCard {
   };
 }
 
+function gradeLabel(classLevels: readonly number[]): string {
+  const ordered = [...classLevels].sort((a, b) => a - b);
+  if (ordered.length === 1) return `Class ${ordered[0]}`;
+  return `Class ${ordered[0]}-${ordered[ordered.length - 1]}`;
+}
+
+function toImplementedCard(
+  definition: ImplementedSimulationDefinition,
+): CatalogCard {
+  const { module } = definition;
+  const overlay = SIMULATION_PRESENTATION_OVERLAYS[module.id];
+  return {
+    slug: module.slug,
+    title: module.title,
+    topic: overlay.topic,
+    subject: module.subjects.join(', '),
+    subjectTags: [...module.subjects],
+    grade: gradeLabel(overlay.classLevels),
+    classLevels: [...overlay.classLevels],
+    archetype: overlay.archetype,
+    minutes: module.expectedDurationMinutes,
+    color: overlay.color,
+    releaseMaturity: module.releaseMaturity,
+    href: routeForSimulation(definition),
+  };
+}
+
 export function getSimulationCatalogSections(catalog: readonly ScienceSimulationCatalogItem[]) {
-  const launchable = IMPLEMENTED_SIMULATION_SLUGS.map(slug => ({
-    ...EXTRA_IMPLEMENTED[slug],
-    releaseMaturity: 'internalQA' as const,
-    href: `/simulations/${slug}`,
-  }));
+  const launchable = RELEASED_SIMULATIONS.map(toImplementedCard);
   const catalogued = catalog
     .filter(item => !implementedSet.has(item.slug))
     .map(toCataloguedCard);

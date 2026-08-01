@@ -67,6 +67,36 @@ describe('immersive experience schema', () => {
     expect(errors.join('\n')).toMatch(/completion evidence/i);
   });
 
+  it('accepts only explicitly automatic completion stages without requirements', () => {
+    const automatic = {
+      ...experience,
+      gradeTone: 'class1To2' as const,
+      stages: [{
+        ...experience.stages[0],
+        completionMode: 'automatic' as const,
+        requiredActionIds: [],
+        completionEvidenceIds: [],
+      }],
+    };
+
+    expect(validateExperienceDefinition(automatic)).toEqual([]);
+    expect(validateExperienceDefinition({
+      ...automatic,
+      stages: [{
+        ...automatic.stages[0],
+        requiredActionIds: ['invented-action'],
+      }],
+    }).join('\n')).toMatch(/automatic.*requirements/i);
+
+    expect(validateExperienceDefinition({
+      ...automatic,
+      stages: [
+        automatic.stages[0],
+        { ...experience.stages[0], id: 'stage-finish' },
+      ],
+    }).join('\n')).toMatch(/automatic.*final stage/i);
+  });
+
   it('rejects unreachable or view-blocking spatial definitions', () => {
     const errors = validateSpatialLayoutDefinition({
       ...spatial,

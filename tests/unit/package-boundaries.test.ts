@@ -208,4 +208,15 @@ describe('workspace package boundaries', () => {
       );
     }
   });
+
+  it('declares every workspace package imported by the web application', () => {
+    const webManifest = JSON.parse(
+      readFileSync(join(repositoryRoot, 'apps/web/package.json'), 'utf8'),
+    ) as PackageManifest;
+
+    expect(webManifest.dependencies).toMatchObject({
+      '@xr-school/simulation-content': '0.1.0',
+      '@xr-school/simulation-schema': '0.1.0',
+    });
+  });
 });

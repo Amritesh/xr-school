@@ -342,7 +342,7 @@ export const SOLUBLE_INSOLUBLE_MODULE: SimulationModuleRecord = {
   estimatedPackageSizeMb: 135,
   targetFrameRateFps: 72,
   minQuestStorageGb: 1,
-  stages: 4,
+  stages: 5,
   status: 'released',
 };
 
@@ -550,6 +550,18 @@ Ask students to state the litmus rule (blue reddens in acid, red blues in base) 
 REVISION TRIGGER
 One week later, show three unlabelled indicator colours and ask students to give the approximate pH and whether each is an acid, a base, or neutral.`;
 
+const colourAdventureScript = `SETUP
+Ask students to point to one red, blue, yellow, and green object in the classroom. Non-headset students prepare a ten-colour picture hunt.
+
+DURING HEADSET BATCH
+Guide students into the magical colour classroom, then introduce one colour world at a time. Ask them to touch each colour balloon, name the colour aloud, find matching objects, and complete the memory game.
+
+DEBRIEF
+Review red, blue, yellow, green, orange, purple, pink, brown, black, and white. Ask students to name one familiar object for each colour and explain that an object's colour can help us describe and identify it.
+
+REVISION TRIGGER
+One week later, show a mixed set of classroom objects and ask students to sort or name them by colour without using the headset.`;
+
 export const ACID_BASE_MODULE: SimulationModuleRecord = {
   id: 'sim-c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
   slug: 'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
@@ -610,6 +622,53 @@ export const ACID_BASE_MODULE: SimulationModuleRecord = {
   status: 'released',
 };
 
+export const COLOUR_ADVENTURE_MODULE: SimulationModuleRecord = {
+  id: 'sim-c1-art-a01-learning-of-colours',
+  slug: 'c1-art-a01-learning-of-colours',
+  viewerKey: 'colour-adventure',
+  legacyAliases: [],
+  title: 'Colour Adventure',
+  summary: 'Visit ten magical colour worlds, find matching objects, and complete a friendly colour-memory game.',
+  gradeBands: ['class1To2'],
+  subjects: ['art'],
+  applicableBoards: ['cbse', 'icse', 'stateBoard'],
+  curriculumMapIds: ['cm-cbse-c1-art-colours'],
+  conceptIds: ['concept-colour-names', 'concept-colour-object-matching'],
+  simulationFormat: 'immersiveVr',
+  evidenceConfidenceLevel: 'expertDesigned',
+  releaseMaturity: 'internalQA',
+  publicationStatus: 'released',
+  evidenceMaturity: 'internalQA',
+  xrFitType: 'strongVrFit',
+  xrFitJustification: 'Young learners benefit from naming colours while directly touching large, high-contrast objects in playful worlds that provide immediate visual and spoken feedback.',
+  learningObjective: 'Students will identify, name, and match ten common colours to familiar objects in their surroundings.',
+  scientificConceptExplanation: 'Colour words describe a visible property of objects. Matching a colour name to repeated visual examples helps young learners recognise, compare, sort, and communicate what they see.',
+  misconceptionsAddressed: [
+    'A colour name belongs to only one object.',
+    'Black and white are not useful colour descriptions.',
+    'Similar-looking colours do not need different names.',
+  ],
+  visualizationStrategy: 'Use one high-contrast colour world at a time with oversized familiar objects, matching balloons, rainbow transitions, and calm celebratory feedback.',
+  interactionStrategy: 'Students touch colour balloons, find ten requested colours, answer object-colour memory questions, and collect a final Colour Explorer star.',
+  imaginationHelperStrategy: 'Each colour transforms the whole classroom so the word, balloon, and several familiar objects share one clear visual property.',
+  practicalUseCase: 'Supports describing classroom objects, sorting art materials, following instructions, and noticing colours in daily surroundings.',
+  cueCardIds: ['cue-colour-primary-001', 'cue-colour-nature-002', 'cue-colour-objects-003'],
+  revisionCardIds: ['rev-colour-object-hunt-001'],
+  assessmentHookIds: ['assess-colour-match-001', 'assess-colour-transfer-001'],
+  instructorScript: colourAdventureScript,
+  batchActivityPrompt: 'Find or draw one object for each of the ten colours, then name the colours aloud with a partner.',
+  expectedDurationMinutes: 9,
+  maxSessionDurationMinutes: 10,
+  comfortRiskLevel: 'low',
+  safetyNotes: ['Use stationary classroom mode.', 'Keep every target large, slow, and within comfortable reach for Class 1 learners.'],
+  offlineContentPackId: 'pack-art-colours-class1-v1',
+  estimatedPackageSizeMb: 150,
+  targetFrameRateFps: 72,
+  minQuestStorageGb: 1,
+  stages: 14,
+  status: 'released',
+};
+
 export const MONEY_TOWN_MODULE: SimulationModuleRecord = {
   id: 'sim-c1-math-ch01-introduction-to-money',
   slug: 'c1-math-ch01-introduction-to-money',
@@ -653,7 +712,7 @@ export const MONEY_TOWN_MODULE: SimulationModuleRecord = {
   estimatedPackageSizeMb: 150,
   targetFrameRateFps: 72,
   minQuestStorageGb: 1,
-  stages: 5,
+  stages: 8,
   status: 'released',
 };
 
@@ -766,6 +825,7 @@ export const SIMULATION_MODULES = [
   BREATHING_PROCESS_MODULE,
   FORCE_MOTION_MODULE,
   ACID_BASE_MODULE,
+  COLOUR_ADVENTURE_MODULE,
   MONEY_TOWN_MODULE,
   PREPOSITION_ADVENTURE_MODULE,
   SOLAR_SYSTEM_MISSION_MODULE,

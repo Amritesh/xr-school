@@ -4,3 +4,14 @@ export {
   LEARNING_CONCEPTS,
 } from './curriculum.js';
 export { parseScienceCatalogCsv } from './catalog.js';
+export {
+  IMPLEMENTED_SIMULATIONS,
+  createImplementedSimulationRegistry,
+  findImplementedSimulation,
+  resolveSimulationPath,
+  routeForSimulation,
+} from './implemented/registry.js';
+export type {
+  ImplementedSimulationPathResolution,
+  ImplementedSimulationRegistry,
+} from './implemented/registry.js';

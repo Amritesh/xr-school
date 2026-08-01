@@ -38,6 +38,8 @@ describe('catalog runtime simulations', () => {
 
     const availabilitySource = readFileSync(availabilityPath, 'utf8');
     expect(availabilitySource).toContain('toCataloguedCard');
-    expect(availabilitySource).toContain("releaseMaturity: 'internalQA'");
+    expect(availabilitySource).toContain("from '@xr-school/simulation-content'");
+    expect(availabilitySource).toContain('releaseMaturity: module.releaseMaturity');
+    expect(availabilitySource).not.toContain("releaseMaturity: 'internalQA'");
   });
 });
