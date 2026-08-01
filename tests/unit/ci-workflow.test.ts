@@ -23,6 +23,13 @@ const vercelConfig = (existsSync(vercelConfigPath)
   buildCommand?: string;
   outputDirectory?: string;
 };
+const webVercelConfig = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'apps/web/vercel.json'), 'utf8'),
+) as {
+  buildCommand?: string;
+  installCommand?: string;
+  outputDirectory?: string;
+};
 
 describe('web build workflows', () => {
   it.each([
@@ -63,6 +70,14 @@ describe('web build workflows', () => {
       framework: 'nextjs',
       buildCommand: 'npm run build',
       outputDirectory: 'apps/web/.next',
+    });
+  });
+
+  it('builds the Vercel web-root project through the monorepo workspace', () => {
+    expect(webVercelConfig).toMatchObject({
+      installCommand: 'cd ../.. && npm install',
+      buildCommand: 'cd ../.. && npm run build',
+      outputDirectory: '.next',
     });
   });
 
