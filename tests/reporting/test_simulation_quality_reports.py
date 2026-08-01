@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -236,9 +237,12 @@ def write_fixture_data(directory: Path) -> tuple[Path, Path, Path, list[dict], l
 
 
 def run_generator(script: str, arguments: list[str]) -> subprocess.CompletedProcess[str]:
+    clean_environment = os.environ.copy()
+    clean_environment.pop("PYTHONPATH", None)
     return subprocess.run(
         [sys.executable, str(SCRIPTS / script), *arguments],
         cwd=ROOT,
+        env=clean_environment,
         check=False,
         capture_output=True,
         text=True,

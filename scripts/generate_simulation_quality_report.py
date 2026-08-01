@@ -5,13 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from scripts.lib.deterministic_report_pdf import render_markdown_pdf
 from scripts.lib.simulation_quality_reports import build_portfolio_markdown
-
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
