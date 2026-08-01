@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { createParticleCloud, createPhysicsWorld, type RuntimePhysicsWorld } from '@/lib/runtimePhysics';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
@@ -589,7 +590,11 @@ export default function StatesOfMatterViewer() {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', background: '#08111f' }}>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <SimulationCanvasHost
+        ref={mountRef}
+        style={{ width: '100%', height: '100%' }}
+        ariaLabel="States of matter particle world"
+      />
       <ClassroomSync
         stageIndex={stageIndex}
         stageCount={STAGES.length}

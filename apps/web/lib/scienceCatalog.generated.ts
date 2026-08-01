@@ -10355,15 +10355,6 @@ export const RELEASED_SIMULATION_CATALOG = [
     "evidenceMaturity": "internalQA"
   },
   {
-    "id": "sim-c05-ch07-a03-soluble-and-insoluble-substances",
-    "slug": "c5-ch07-a03-soluble-and-insoluble-substances",
-    "title": "Soluble and Insoluble Substances Lab",
-    "href": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
-    "releaseMaturity": "internalQA",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA"
-  },
-  {
     "id": "sim-c05-ch03-a02-introduction-of-digestive-system",
     "slug": "c5-ch03-a02-introduction-of-digestive-system",
     "title": "Introduction to the Digestive System",
@@ -10431,6 +10422,213 @@ export const RELEASED_SIMULATION_CATALOG = [
     "slug": "c8-10-science-solar-system",
     "title": "Solar System: Gravity’s Orchestra",
     "href": "/simulations/c8-10-science-solar-system",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch04-a01-food-spoilage",
+    "slug": "c5-ch04-a01-food-spoilage",
+    "title": "Food Spoilage",
+    "href": "/simulations/c5-ch04-a01-food-spoilage",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch04-a02-milk-spoilage",
+    "slug": "c5-ch04-a02-milk-spoilage",
+    "title": "Milk Spoilage",
+    "href": "/simulations/c5-ch04-a02-milk-spoilage",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch04-a03-the-making-of-aam-papad",
+    "slug": "c5-ch04-a03-the-making-of-aam-papad",
+    "title": "The Making of Aam Papad",
+    "href": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch05-a01-pitcher-plant-the-insect-hunter",
+    "slug": "c5-ch05-a01-pitcher-plant-the-insect-hunter",
+    "title": "Pitcher Plant — The Insect Hunter",
+    "href": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch05-a02-seed-dispersal",
+    "slug": "c5-ch05-a02-seed-dispersal",
+    "title": "Seed Dispersal",
+    "href": "/simulations/c5-ch05-a02-seed-dispersal",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch06-a01-the-storage-of-rainwater",
+    "slug": "c5-ch06-a01-the-storage-of-rainwater",
+    "title": "The Storage of Rainwater",
+    "href": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch06-a02-a-step-well-structure",
+    "slug": "c5-ch06-a02-a-step-well-structure",
+    "title": "A Step Well Structure",
+    "href": "/simulations/c5-ch06-a02-a-step-well-structure",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "slug": "c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "title": "Dead Sea: Salt Water and Its Effects",
+    "href": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch08-a01-diagnosis-of-malaria",
+    "slug": "c5-ch08-a01-diagnosis-of-malaria",
+    "title": "Diagnosis of Malaria",
+    "href": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch08-a02-life-cycle-of-the-mosquito",
+    "slug": "c5-ch08-a02-life-cycle-of-the-mosquito",
+    "title": "Life Cycle of the Mosquito",
+    "href": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch09-a01-river-crossing-adventure",
+    "slug": "c5-ch09-a01-river-crossing-adventure",
+    "title": "River Crossing Adventure",
+    "href": "/simulations/c5-ch09-a01-river-crossing-adventure",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch09-a02-rock-climbing",
+    "slug": "c5-ch09-a02-rock-climbing",
+    "title": "Rock Climbing",
+    "href": "/simulations/c5-ch09-a02-rock-climbing",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch09-a03-camp-in-the-snow",
+    "slug": "c5-ch09-a03-camp-in-the-snow",
+    "title": "Camp in the Snow",
+    "href": "/simulations/c5-ch09-a03-camp-in-the-snow",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch09-a04-snow-mountain-climbing",
+    "slug": "c5-ch09-a04-snow-mountain-climbing",
+    "title": "Snow Mountain Climbing",
+    "href": "/simulations/c5-ch09-a04-snow-mountain-climbing",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch10-a01-a-visit-of-ancient-fort",
+    "slug": "c5-ch10-a01-a-visit-of-ancient-fort",
+    "title": "A Visit of an Ancient Fort",
+    "href": "/simulations/c5-ch10-a01-a-visit-of-ancient-fort",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch03-a01-cotton-farming",
+    "slug": "c6-ch03-a01-cotton-farming",
+    "title": "Cotton Farming",
+    "href": "/simulations/c6-ch03-a01-cotton-farming",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch03-a02-the-process-of-cotton-ginning",
+    "slug": "c6-ch03-a02-the-process-of-cotton-ginning",
+    "title": "The Process of Cotton Ginning",
+    "href": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "slug": "c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "title": "What Floats, What Sinks?",
+    "href": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch07-a03-soluble-and-insoluble-substances",
+    "slug": "c5-ch07-a03-soluble-and-insoluble-substances",
+    "title": "Soluble and Insoluble Substances Lab",
+    "href": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch02-a03-test-the-presence-of-lipids",
+    "slug": "c6-ch02-a03-test-the-presence-of-lipids",
+    "title": "Test the Presence of Lipids",
+    "href": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "slug": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "title": "Sources of Vitamins and Their Deficiencies",
+    "href": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch02-a05-the-sources-of-minerals-in-food",
+    "slug": "c6-ch02-a05-the-sources-of-minerals-in-food",
+    "title": "The Sources of Minerals in Food",
+    "href": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch04-a01-sorting-materials-according-to-their-shape",
+    "slug": "c6-ch04-a01-sorting-materials-according-to-their-shape",
+    "title": "Sorting Materials According to Their Shape",
+    "href": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
     "releaseMaturity": "internalQA",
     "publicationStatus": "released",
     "evidenceMaturity": "internalQA"

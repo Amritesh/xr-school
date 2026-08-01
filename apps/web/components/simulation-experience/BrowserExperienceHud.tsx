@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type {
   LessonSnapshot,
 } from '@xr-school/simulation-runtime';
+import { ACCEPTANCE_HOOKS } from './acceptanceHooks';
 
 interface BrowserExperienceHudProps {
   title: string;
@@ -29,6 +30,7 @@ interface BrowserExperienceHudProps {
     onAnswer(optionId: string): void;
   };
   caption?: string;
+  feedback?: string;
   onReplayNarration?: () => void;
   onRestart?: () => void;
   helpText?: string;
@@ -50,6 +52,7 @@ export default function BrowserExperienceHud({
   primaryAction,
   assessment,
   caption,
+  feedback,
   onReplayNarration,
   onRestart,
   helpText,
@@ -79,7 +82,7 @@ export default function BrowserExperienceHud({
             <button
               type="button"
               className="secondary"
-              data-testid="narration-replay"
+              data-testid={ACCEPTANCE_HOOKS.narrationReplay}
               onClick={onReplayNarration}
             >
               Replay narration
@@ -89,7 +92,7 @@ export default function BrowserExperienceHud({
             <button
               type="button"
               className="secondary"
-              data-testid="restart"
+              data-testid={ACCEPTANCE_HOOKS.restart}
               onClick={onRestart}
             >
               Restart
@@ -122,10 +125,20 @@ export default function BrowserExperienceHud({
         </p>
       )}
 
+      {feedback && !assessment?.feedback && (
+        <p
+          className="simulation-experience__caption"
+          data-testid={ACCEPTANCE_HOOKS.feedback}
+          role="status"
+        >
+          {feedback}
+        </p>
+      )}
+
       {completed && (
         <section
           className="simulation-experience__complete-panel"
-          data-testid="completion"
+          data-testid={ACCEPTANCE_HOOKS.completion}
           aria-labelledby="experience-complete"
         >
           <span>{completionEyebrow}</span>
@@ -144,10 +157,10 @@ export default function BrowserExperienceHud({
           </div>
           <div className="simulation-experience__stage-copy">
             <span>{snapshot.stageComplete ? 'Evidence captured' : 'Discover'}</span>
-            <h2 id="experience-mission" data-testid="stage-title">
+            <h2 id="experience-mission" data-testid={ACCEPTANCE_HOOKS.stageTitle}>
               {snapshot.stageTitle}
             </h2>
-            <p data-testid="stage-cue">{snapshot.cue}</p>
+            <p data-testid={ACCEPTANCE_HOOKS.stageCue}>{snapshot.cue}</p>
             {helpText && <small>{helpText}</small>}
           </div>
           {(primaryAction || snapshot.stageIndex > 0 || snapshot.stageComplete) && (
@@ -155,7 +168,7 @@ export default function BrowserExperienceHud({
               {primaryAction && (
                 <button
                   type="button"
-                  data-testid="primary-action"
+                  data-testid={ACCEPTANCE_HOOKS.primaryAction}
                   disabled={primaryAction.disabled}
                   onClick={primaryAction.onActivate}
                 >
@@ -195,7 +208,7 @@ export default function BrowserExperienceHud({
               {assessment.feedback && (
                 <p
                   id={`${assessment.promptId}-feedback`}
-                  data-testid="feedback"
+                  data-testid={ACCEPTANCE_HOOKS.feedback}
                   role="status"
                 >
                   {assessment.feedback}

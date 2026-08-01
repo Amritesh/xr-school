@@ -1,0 +1,5 @@
+export {
+  PITCHER_PLANT_GUIDANCE,
+  PITCHER_PLANT_SCENE_METADATA,
+  PITCHER_PLANT_SIMULATION,
+} from './definitions.generated.js';

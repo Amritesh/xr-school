@@ -79,6 +79,58 @@ describe('web build workflows', () => {
     expect(deployWorkflow).toContain('needs: verify');
   });
 
+  it('gates report data, PDFs, APIs, packages, narration, and browser acceptance', () => {
+    const gatedScripts = [
+      'reports:validate',
+      'reports:test',
+      'reports:check',
+      'test:e2e',
+      'narration:validate:manifests',
+      'type-check:packages',
+      'build:packages',
+      'api:test',
+      'api:build',
+    ];
+    expect(rootPackage.scripts?.['reports:generate']).toBeTruthy();
+    for (const script of gatedScripts) {
+      expect(rootPackage.scripts?.[script], `missing root script ${script}`).toBeTruthy();
+      expect(rootPackage.scripts?.verify).toContain(`npm run ${script}`);
+    }
+    expect(rootPackage.scripts?.verify).toContain('npm --workspace apps/web run build');
+    expect(rootPackage.scripts?.verify).not.toContain('narration:author');
+  });
+
+  it.each([
+    ['quality', qualityWorkflow],
+    ['deploy verify', deployWorkflow.split('  deploy:')[0]],
+  ])('%s installs the report and browser verification runtime', (_name, workflow) => {
+    expect(workflow).toContain('actions/setup-python@v5');
+    expect(workflow).toContain('python-version: "3.12"');
+    expect(workflow).toContain('python -m pip install -r requirements-report.txt');
+    expect(workflow).toContain('sudo apt-get install -y poppler-utils');
+    expect(workflow).toContain('npx playwright install --with-deps chromium');
+    expect(workflow).toContain('run: npm run verify');
+    expect(workflow).not.toMatch(/edge_tts|requirements-narration\.txt|pip install --user|narration:author/);
+  });
+
+  it('checks every generated simulation report and audited dataset for drift', () => {
+    for (const path of [
+      'reports/data/implemented-simulation-quality-cards.json',
+      'reports/data/implemented-simulation-quality-evidence.json',
+      'reports/data/new-simulation-before-after-scorecard.json',
+      'reports/data/simulation-quality-pdf-visual-qa.json',
+      'output/pdf/xr-school-implemented-simulations-quality-report.md',
+      'output/pdf/xr-school-implemented-simulations-quality-report.pdf',
+      'output/pdf/xr-school-new-simulations-top-10-mistakes.md',
+      'output/pdf/xr-school-new-simulations-top-10-mistakes.pdf',
+      'output/pdf/aditya-contribution-improvement-report.md',
+      'output/pdf/aditya-contribution-improvement-report.pdf',
+    ]) {
+      expect(qualityWorkflow).toContain(path);
+      expect(deployWorkflow).toContain(path);
+    }
+  });
+
   it('keeps pull-request drift checking dependency-free', () => {
     const driftJob = qualityWorkflow.split('drift-check:')[1];
     expect(driftJob).toBeDefined();

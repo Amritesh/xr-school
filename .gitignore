@@ -10,6 +10,7 @@ packages/*/package-lock.json
 coverage/
 playwright-report/
 test-results/
+tmp/
 certificates/
 .DS_Store
 **/.DS_Store

@@ -141,7 +141,25 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "concept-digestive-health",
       "concept-solubility",
       "concept-solution",
-      "concept-mixture-observation"
+      "concept-mixture-observation",
+      "concept-buoyancy",
+      "concept-density",
+      "concept-displacement",
+      "concept-food-spoilage",
+      "concept-milk-spoilage",
+      "concept-sun-drying-preservation",
+      "concept-carnivorous-plant-nutrition",
+      "concept-seed-dispersal",
+      "concept-rainwater-harvesting",
+      "concept-stepwell-water-storage",
+      "concept-density-and-buoyancy",
+      "concept-malaria-diagnosis",
+      "concept-mosquito-life-cycle",
+      "concept-protected-river-crossing",
+      "concept-protected-rock-climbing",
+      "concept-cold-weather-camping",
+      "concept-snow-mountain-safety",
+      "concept-historical-evidence"
     ],
     "tokens": [
       "cbse",
@@ -164,7 +182,12 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "evs",
       "digestive",
       "system",
-      "experiments"
+      "experiments",
+      "food",
+      "preservation",
+      "plants",
+      "malaria",
+      "heritage"
     ]
   },
   {
@@ -183,7 +206,20 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "concept-food-sources",
       "concept-plant-products",
       "concept-animal-products",
-      "concept-edible-fungi"
+      "concept-edible-fungi",
+      "concept-lipids",
+      "concept-food-tests",
+      "concept-fair-comparison",
+      "concept-vitamins",
+      "concept-deficiency-diseases",
+      "concept-balanced-diet",
+      "concept-minerals",
+      "concept-haemoglobin",
+      "concept-material-properties",
+      "concept-three-dimensional-shapes",
+      "concept-classification",
+      "concept-cotton-farming",
+      "concept-cotton-ginning"
     ],
     "tokens": [
       "cbse",
@@ -198,7 +234,10 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "and",
       "daily",
       "observation",
-      "ingredients"
+      "ingredients",
+      "cotton",
+      "ginning",
+      "fibre"
     ]
   },
   {
@@ -568,7 +607,11 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     "conceptIds": [
       "concept-solubility",
       "concept-solution",
-      "concept-mixture-observation"
+      "concept-mixture-observation",
+      "concept-density-and-buoyancy",
+      "concept-buoyancy",
+      "concept-density",
+      "concept-displacement"
     ],
     "tokens": [
       "experiments",
@@ -839,6 +882,296 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "chemistry",
       "chapter",
       "2",
+      "topic"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-mangoes-round-year",
+    "kind": "chapter",
+    "title": "Mangoes Round the Year",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 4",
+    "href": "/simulations#chapter-cbse-c5-mangoes-round-year",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-food-spoilage",
+      "concept-milk-spoilage",
+      "concept-sun-drying-preservation"
+    ],
+    "tokens": [
+      "mangoes",
+      "round",
+      "the",
+      "year",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "4",
+      "topic",
+      "food",
+      "preservation"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-seeds-and-seeds",
+    "kind": "chapter",
+    "title": "Seeds and Seeds",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 5",
+    "href": "/simulations#chapter-cbse-c5-seeds-and-seeds",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-carnivorous-plant-nutrition",
+      "concept-seed-dispersal"
+    ],
+    "tokens": [
+      "seeds",
+      "and",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "topic",
+      "plant",
+      "adaptations"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-every-drop-counts",
+    "kind": "chapter",
+    "title": "Every Drop Counts",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 6",
+    "href": "/simulations#chapter-cbse-c5-every-drop-counts",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-rainwater-harvesting",
+      "concept-stepwell-water-storage"
+    ],
+    "tokens": [
+      "every",
+      "drop",
+      "counts",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "6",
+      "topic",
+      "water",
+      "storage"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-treat-for-mosquitoes",
+    "kind": "chapter",
+    "title": "A Treat for Mosquitoes",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 8",
+    "href": "/simulations#chapter-cbse-c5-treat-for-mosquitoes",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-malaria-diagnosis",
+      "concept-mosquito-life-cycle"
+    ],
+    "tokens": [
+      "a",
+      "treat",
+      "for",
+      "mosquitoes",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "8",
+      "topic",
+      "malaria",
+      "and"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-up-you-go",
+    "kind": "chapter",
+    "title": "Up You Go!",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 9",
+    "href": "/simulations#chapter-cbse-c5-up-you-go",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-protected-river-crossing",
+      "concept-protected-rock-climbing",
+      "concept-cold-weather-camping",
+      "concept-snow-mountain-safety"
+    ],
+    "tokens": [
+      "up",
+      "you",
+      "go",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "9",
+      "topic",
+      "supervised",
+      "adventure"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c5-walls-tell-stories",
+    "kind": "chapter",
+    "title": "Walls Tell Stories",
+    "summary": "CBSE Class 5 Environmental Studies · Chapter 10",
+    "href": "/simulations#chapter-cbse-c5-walls-tell-stories",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-historical-evidence"
+    ],
+    "tokens": [
+      "walls",
+      "tell",
+      "stories",
+      "cbse",
+      "class",
+      "5",
+      "environmental",
+      "studies",
+      "chapter",
+      "10",
+      "topic",
+      "historical",
+      "evidence"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c6-fibre-to-fabric",
+    "kind": "chapter",
+    "title": "Fibre to Fabric",
+    "summary": "CBSE Class 6 Science · Chapter 3",
+    "href": "/simulations#chapter-cbse-c6-fibre-to-fabric",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-cotton-farming",
+      "concept-cotton-ginning"
+    ],
+    "tokens": [
+      "fibre",
+      "to",
+      "fabric",
+      "cbse",
+      "class",
+      "6",
+      "science",
+      "chapter",
+      "3",
+      "topic",
+      "cotton"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c6-components-of-food",
+    "kind": "chapter",
+    "title": "Components of Food",
+    "summary": "CBSE Class 6 Science · Chapter 2",
+    "href": "/simulations#chapter-cbse-c6-components-of-food",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-lipids",
+      "concept-food-tests",
+      "concept-fair-comparison",
+      "concept-vitamins",
+      "concept-deficiency-diseases",
+      "concept-balanced-diet",
+      "concept-minerals",
+      "concept-haemoglobin"
+    ],
+    "tokens": [
+      "components",
+      "of",
+      "food",
+      "cbse",
+      "class",
+      "6",
+      "science",
+      "chapter",
+      "2",
+      "topic"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c6-sorting-materials-groups",
+    "kind": "chapter",
+    "title": "Sorting Materials into Groups",
+    "summary": "CBSE Class 6 Science · Chapter 4",
+    "href": "/simulations#chapter-cbse-c6-sorting-materials-groups",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-material-properties",
+      "concept-three-dimensional-shapes",
+      "concept-classification"
+    ],
+    "tokens": [
+      "sorting",
+      "materials",
+      "into",
+      "groups",
+      "cbse",
+      "class",
+      "6",
+      "science",
+      "chapter",
+      "4",
       "topic"
     ]
   },
@@ -2681,6 +3014,1522 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "concept:concept-food-spoilage",
+    "kind": "concept",
+    "title": "Food spoilage and preservation",
+    "summary": "Microorganisms, warmth, air, and moisture change food over time, while cold, covering, and salt can slow those changes.",
+    "href": "/simulations#concept-food-spoilage",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-food-spoilage"
+    ],
+    "tokens": [
+      "food",
+      "spoilage",
+      "and",
+      "preservation",
+      "microorganisms",
+      "warmth",
+      "air",
+      "moisture",
+      "change",
+      "over",
+      "time",
+      "while",
+      "cold",
+      "covering",
+      "salt",
+      "can",
+      "slow",
+      "those",
+      "changes",
+      "supports",
+      "safe",
+      "storage",
+      "of",
+      "cut",
+      "fruit",
+      "recognition",
+      "that",
+      "must",
+      "be",
+      "discarded",
+      "mango",
+      "slowing",
+      "mould",
+      "refrigeration",
+      "safety"
+    ]
+  },
+  {
+    "id": "concept:concept-milk-spoilage",
+    "kind": "concept",
+    "title": "Milk spoilage and safe storage",
+    "summary": "Microbial activity can sour milk, form curds and whey, and produce gas at rates affected by heat, exposure, boiling, and refrigeration.",
+    "href": "/simulations#concept-milk-spoilage",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-milk-spoilage"
+    ],
+    "tokens": [
+      "milk",
+      "spoilage",
+      "and",
+      "safe",
+      "storage",
+      "microbial",
+      "activity",
+      "can",
+      "sour",
+      "form",
+      "curds",
+      "whey",
+      "produce",
+      "gas",
+      "at",
+      "rates",
+      "affected",
+      "by",
+      "heat",
+      "exposure",
+      "boiling",
+      "refrigeration",
+      "distinguishes",
+      "accidental",
+      "from",
+      "hygienic",
+      "curd",
+      "making",
+      "supports",
+      "handling",
+      "souring",
+      "microorganisms"
+    ]
+  },
+  {
+    "id": "concept:concept-sun-drying-preservation",
+    "kind": "concept",
+    "title": "Sun drying for preservation",
+    "summary": "Thin protected layers lose moisture more evenly, and sufficiently dried food can then be stored in a clean dry container.",
+    "href": "/simulations#concept-sun-drying-preservation",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-sun-drying-preservation"
+    ],
+    "tokens": [
+      "sun",
+      "drying",
+      "for",
+      "preservation",
+      "thin",
+      "protected",
+      "layers",
+      "lose",
+      "moisture",
+      "more",
+      "evenly",
+      "and",
+      "sufficiently",
+      "dried",
+      "food",
+      "can",
+      "then",
+      "be",
+      "stored",
+      "in",
+      "a",
+      "clean",
+      "dry",
+      "container",
+      "connects",
+      "hygienic",
+      "preparation",
+      "surface",
+      "area",
+      "time",
+      "safe",
+      "storage",
+      "of",
+      "preserved",
+      "foods",
+      "aam",
+      "papad",
+      "removal",
+      "layer"
+    ]
+  },
+  {
+    "id": "concept:concept-carnivorous-plant-nutrition",
+    "kind": "concept",
+    "title": "Carnivorous plant nutrition",
+    "summary": "A pitcher is a modified leaf that traps insects to obtain mineral nutrients while green tissue continues photosynthesis.",
+    "href": "/simulations#concept-carnivorous-plant-nutrition",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-carnivorous-plant-nutrition"
+    ],
+    "tokens": [
+      "carnivorous",
+      "plant",
+      "nutrition",
+      "a",
+      "pitcher",
+      "is",
+      "modified",
+      "leaf",
+      "that",
+      "traps",
+      "insects",
+      "to",
+      "obtain",
+      "mineral",
+      "nutrients",
+      "while",
+      "green",
+      "tissue",
+      "continues",
+      "photosynthesis",
+      "explains",
+      "how",
+      "plants",
+      "adapt",
+      "poor",
+      "habitats",
+      "without",
+      "becoming",
+      "animals",
+      "insect",
+      "eating",
+      "nitrogen",
+      "nectar"
+    ]
+  },
+  {
+    "id": "concept:concept-seed-dispersal",
+    "kind": "concept",
+    "title": "Seed dispersal adaptations",
+    "summary": "Seed structures suit movement by wind, water, animals, or explosive pods and help offspring avoid crowding.",
+    "href": "/simulations#concept-seed-dispersal",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-seed-dispersal"
+    ],
+    "tokens": [
+      "seed",
+      "dispersal",
+      "adaptations",
+      "structures",
+      "suit",
+      "movement",
+      "by",
+      "wind",
+      "water",
+      "animals",
+      "or",
+      "explosive",
+      "pods",
+      "and",
+      "help",
+      "offspring",
+      "avoid",
+      "crowding",
+      "supports",
+      "identification",
+      "of",
+      "in",
+      "local",
+      "plants",
+      "crops",
+      "travel",
+      "animal",
+      "burr",
+      "fruit",
+      "pod"
+    ]
+  },
+  {
+    "id": "concept:concept-rainwater-harvesting",
+    "kind": "concept",
+    "title": "Rainwater harvesting system",
+    "summary": "A safe collection sequence uses catchment, gutter, first flush, filter, covered storage, and reuse appropriate to water quality.",
+    "href": "/simulations#concept-rainwater-harvesting",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-rainwater-harvesting"
+    ],
+    "tokens": [
+      "rainwater",
+      "harvesting",
+      "system",
+      "a",
+      "safe",
+      "collection",
+      "sequence",
+      "uses",
+      "catchment",
+      "gutter",
+      "first",
+      "flush",
+      "filter",
+      "covered",
+      "storage",
+      "and",
+      "reuse",
+      "appropriate",
+      "to",
+      "water",
+      "quality",
+      "helps",
+      "learners",
+      "inspect",
+      "household",
+      "school",
+      "saving",
+      "systems",
+      "without",
+      "overstating",
+      "potability",
+      "roof",
+      "tank"
+    ]
+  },
+  {
+    "id": "concept:concept-stepwell-water-storage",
+    "kind": "concept",
+    "title": "Stepwell water storage",
+    "summary": "Steps, landings, shade, catchment, groundwater, and a deep reservoir preserve access as stored-water level changes.",
+    "href": "/simulations#concept-stepwell-water-storage",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-stepwell-water-storage"
+    ],
+    "tokens": [
+      "stepwell",
+      "water",
+      "storage",
+      "steps",
+      "landings",
+      "shade",
+      "catchment",
+      "groundwater",
+      "and",
+      "a",
+      "deep",
+      "reservoir",
+      "preserve",
+      "access",
+      "as",
+      "stored",
+      "level",
+      "changes",
+      "connects",
+      "historic",
+      "architecture",
+      "with",
+      "conservation",
+      "community",
+      "responsibility",
+      "baoli",
+      "structure",
+      "step",
+      "well"
+    ]
+  },
+  {
+    "id": "concept:concept-density-and-buoyancy",
+    "kind": "concept",
+    "title": "Density and buoyant support",
+    "summary": "Dissolved salt raises water density, increasing buoyant support for the same displaced volume without changing object weight.",
+    "href": "/simulations#concept-density-and-buoyancy",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-density-and-buoyancy"
+    ],
+    "tokens": [
+      "density",
+      "and",
+      "buoyant",
+      "support",
+      "dissolved",
+      "salt",
+      "raises",
+      "water",
+      "increasing",
+      "for",
+      "the",
+      "same",
+      "displaced",
+      "volume",
+      "without",
+      "changing",
+      "object",
+      "weight",
+      "explains",
+      "why",
+      "an",
+      "egg",
+      "or",
+      "swimmer",
+      "floats",
+      "higher",
+      "in",
+      "denser",
+      "liquid",
+      "while",
+      "gravity",
+      "still",
+      "acts",
+      "floating",
+      "dead",
+      "sea",
+      "buoyancy"
+    ]
+  },
+  {
+    "id": "concept:concept-malaria-diagnosis",
+    "kind": "concept",
+    "title": "Evidence-based malaria diagnosis",
+    "summary": "Symptoms and exposure are clues; trained health workers confirm malaria with microscopy or a valid rapid diagnostic test.",
+    "href": "/simulations#concept-malaria-diagnosis",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-malaria-diagnosis"
+    ],
+    "tokens": [
+      "evidence",
+      "based",
+      "malaria",
+      "diagnosis",
+      "symptoms",
+      "and",
+      "exposure",
+      "are",
+      "clues",
+      "trained",
+      "health",
+      "workers",
+      "confirm",
+      "with",
+      "microscopy",
+      "or",
+      "a",
+      "valid",
+      "rapid",
+      "diagnostic",
+      "test",
+      "promotes",
+      "professional",
+      "testing",
+      "care",
+      "rather",
+      "than",
+      "self",
+      "medication",
+      "blood",
+      "film",
+      "rdt"
+    ]
+  },
+  {
+    "id": "concept:concept-mosquito-life-cycle",
+    "kind": "concept",
+    "title": "Anopheles mosquito life cycle",
+    "summary": "Anopheles mosquitoes develop through egg, larva, pupa, and adult stages, with safe prevention focused on breeding water and barriers.",
+    "href": "/simulations#concept-mosquito-life-cycle",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-mosquito-life-cycle"
+    ],
+    "tokens": [
+      "anopheles",
+      "mosquito",
+      "life",
+      "cycle",
+      "mosquitoes",
+      "develop",
+      "through",
+      "egg",
+      "larva",
+      "pupa",
+      "and",
+      "adult",
+      "stages",
+      "with",
+      "safe",
+      "prevention",
+      "focused",
+      "on",
+      "breeding",
+      "water",
+      "barriers",
+      "supports",
+      "household",
+      "container",
+      "care",
+      "covered",
+      "nets",
+      "screens",
+      "community",
+      "action",
+      "malaria"
+    ]
+  },
+  {
+    "id": "concept:concept-protected-river-crossing",
+    "kind": "concept",
+    "title": "Protected river-crossing systems",
+    "summary": "Checked anchors, harness, sling, rope technique, calm movement, recovery, and teamwork form one supervised protection system.",
+    "href": "/simulations#concept-protected-river-crossing",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-protected-river-crossing"
+    ],
+    "tokens": [
+      "protected",
+      "river",
+      "crossing",
+      "systems",
+      "checked",
+      "anchors",
+      "harness",
+      "sling",
+      "rope",
+      "technique",
+      "calm",
+      "movement",
+      "recovery",
+      "and",
+      "teamwork",
+      "form",
+      "one",
+      "supervised",
+      "protection",
+      "system",
+      "shows",
+      "why",
+      "real",
+      "crossings",
+      "require",
+      "qualified",
+      "experts",
+      "approved",
+      "equipment",
+      "site",
+      "assessment",
+      "safety",
+      "model",
+      "anchor",
+      "supervision"
+    ]
+  },
+  {
+    "id": "concept:concept-protected-rock-climbing",
+    "kind": "concept",
+    "title": "Protected rock-climbing systems",
+    "summary": "Route observation, checked equipment, three-point movement, slip protection, posture, and controlled rappelling work as a supervised system.",
+    "href": "/simulations#concept-protected-rock-climbing",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-protected-rock-climbing"
+    ],
+    "tokens": [
+      "protected",
+      "rock",
+      "climbing",
+      "systems",
+      "route",
+      "observation",
+      "checked",
+      "equipment",
+      "three",
+      "point",
+      "movement",
+      "slip",
+      "protection",
+      "posture",
+      "and",
+      "controlled",
+      "rappelling",
+      "work",
+      "as",
+      "a",
+      "supervised",
+      "system",
+      "distinguishes",
+      "stationary",
+      "learning",
+      "model",
+      "from",
+      "real",
+      "instruction",
+      "safety",
+      "top",
+      "rope",
+      "belay",
+      "harness",
+      "points",
+      "rappel"
+    ]
+  },
+  {
+    "id": "concept:concept-cold-weather-camping",
+    "kind": "concept",
+    "title": "Cold-weather camping decisions",
+    "summary": "Tent layers, still air, anchoring, drainage, supervised cooking, waste removal, and sleeping bags reduce cold-camp risk.",
+    "href": "/simulations#concept-cold-weather-camping",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-cold-weather-camping"
+    ],
+    "tokens": [
+      "cold",
+      "weather",
+      "camping",
+      "decisions",
+      "tent",
+      "layers",
+      "still",
+      "air",
+      "anchoring",
+      "drainage",
+      "supervised",
+      "cooking",
+      "waste",
+      "removal",
+      "and",
+      "sleeping",
+      "bags",
+      "reduce",
+      "camp",
+      "risk",
+      "connects",
+      "insulation",
+      "leave",
+      "no",
+      "trace",
+      "principles",
+      "with",
+      "expert",
+      "site",
+      "snow",
+      "bag"
+    ]
+  },
+  {
+    "id": "concept:concept-snow-mountain-safety",
+    "kind": "concept",
+    "title": "Snow-mountain turnaround decisions",
+    "summary": "Route, equipment, group pacing, balanced steps, supervised rope practice, recovery, and early turnaround are linked safety decisions.",
+    "href": "/simulations#concept-snow-mountain-safety",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-snow-mountain-safety"
+    ],
+    "tokens": [
+      "snow",
+      "mountain",
+      "turnaround",
+      "decisions",
+      "route",
+      "equipment",
+      "group",
+      "pacing",
+      "balanced",
+      "steps",
+      "supervised",
+      "rope",
+      "practice",
+      "recovery",
+      "and",
+      "early",
+      "are",
+      "linked",
+      "safety",
+      "explains",
+      "why",
+      "groups",
+      "turn",
+      "back",
+      "before",
+      "weather",
+      "visibility",
+      "time",
+      "or",
+      "energy",
+      "become",
+      "unsafe",
+      "fixed",
+      "pace"
+    ]
+  },
+  {
+    "id": "concept:concept-historical-evidence",
+    "kind": "concept",
+    "title": "Historical evidence and monument care",
+    "summary": "Buildings, maps, objects, paintings, records, water systems, and acoustics provide partial evidence that historians compare.",
+    "href": "/simulations#concept-historical-evidence",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-historical-evidence"
+    ],
+    "tokens": [
+      "historical",
+      "evidence",
+      "and",
+      "monument",
+      "care",
+      "buildings",
+      "maps",
+      "objects",
+      "paintings",
+      "records",
+      "water",
+      "systems",
+      "acoustics",
+      "provide",
+      "partial",
+      "that",
+      "historians",
+      "compare",
+      "supports",
+      "careful",
+      "interpretation",
+      "responsible",
+      "behaviour",
+      "at",
+      "heritage",
+      "sites",
+      "fort",
+      "interpreting",
+      "artefacts",
+      "artefact",
+      "historian",
+      "architecture"
+    ]
+  },
+  {
+    "id": "concept:concept-cotton-farming",
+    "kind": "concept",
+    "title": "Cotton farming sequence",
+    "summary": "Cotton grows from spaced seed in prepared soil through seedling, flower, green boll, open boll, and careful harvest stages.",
+    "href": "/simulations#concept-cotton-farming",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-cotton-farming"
+    ],
+    "tokens": [
+      "cotton",
+      "farming",
+      "sequence",
+      "grows",
+      "from",
+      "spaced",
+      "seed",
+      "in",
+      "prepared",
+      "soil",
+      "through",
+      "seedling",
+      "flower",
+      "green",
+      "boll",
+      "open",
+      "and",
+      "careful",
+      "harvest",
+      "stages",
+      "connects",
+      "plant",
+      "growth",
+      "farm",
+      "work",
+      "to",
+      "the",
+      "fibre",
+      "that",
+      "later",
+      "reaches",
+      "a",
+      "gin",
+      "crop",
+      "development",
+      "black"
+    ]
+  },
+  {
+    "id": "concept:concept-cotton-ginning",
+    "kind": "concept",
+    "title": "Cotton ginning",
+    "summary": "A guarded narrow roller gap lets soft cotton fibre pass while holding back larger seeds, producing two useful outputs.",
+    "href": "/simulations#concept-cotton-ginning",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-cotton-ginning"
+    ],
+    "tokens": [
+      "cotton",
+      "ginning",
+      "a",
+      "guarded",
+      "narrow",
+      "roller",
+      "gap",
+      "lets",
+      "soft",
+      "fibre",
+      "pass",
+      "while",
+      "holding",
+      "back",
+      "larger",
+      "seeds",
+      "producing",
+      "two",
+      "useful",
+      "outputs",
+      "links",
+      "harvested",
+      "to",
+      "clean",
+      "ready",
+      "for",
+      "spinning",
+      "and",
+      "separated",
+      "seed",
+      "separating",
+      "gin",
+      "rollers"
+    ]
+  },
+  {
+    "id": "concept:concept-buoyancy",
+    "kind": "concept",
+    "title": "Buoyant support",
+    "summary": "Water exerts an upward force related to the volume an object displaces.",
+    "href": "/simulations#concept-buoyancy",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-buoyancy"
+    ],
+    "tokens": [
+      "buoyant",
+      "support",
+      "water",
+      "exerts",
+      "an",
+      "upward",
+      "force",
+      "related",
+      "to",
+      "the",
+      "volume",
+      "object",
+      "displaces",
+      "explains",
+      "boats",
+      "life",
+      "jackets",
+      "floating",
+      "containers",
+      "and",
+      "submerged",
+      "objects",
+      "upthrust",
+      "buoyancy",
+      "float"
+    ]
+  },
+  {
+    "id": "concept:concept-density",
+    "kind": "concept",
+    "title": "Average density",
+    "summary": "Average density compares mass with total occupied volume, including enclosed air.",
+    "href": "/simulations#concept-density",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-density"
+    ],
+    "tokens": [
+      "average",
+      "density",
+      "compares",
+      "mass",
+      "with",
+      "total",
+      "occupied",
+      "volume",
+      "including",
+      "enclosed",
+      "air",
+      "supports",
+      "comparison",
+      "of",
+      "solid",
+      "objects",
+      "hollow",
+      "containers",
+      "and",
+      "material",
+      "choices",
+      "per",
+      "compactness",
+      "matter",
+      "trapped"
+    ]
+  },
+  {
+    "id": "concept:concept-displacement",
+    "kind": "concept",
+    "title": "Water displacement",
+    "summary": "An immersed object moves aside a volume of water, which determines possible buoyant support.",
+    "href": "/simulations#concept-displacement",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "physics"
+    ],
+    "conceptIds": [
+      "concept-displacement"
+    ],
+    "tokens": [
+      "water",
+      "displacement",
+      "an",
+      "immersed",
+      "object",
+      "moves",
+      "aside",
+      "a",
+      "volume",
+      "of",
+      "which",
+      "determines",
+      "possible",
+      "buoyant",
+      "support",
+      "connects",
+      "foil",
+      "boats",
+      "hull",
+      "shapes",
+      "measuring",
+      "cans",
+      "and",
+      "experiments",
+      "displaced",
+      "occupied",
+      "waterline",
+      "boat",
+      "shape"
+    ]
+  },
+  {
+    "id": "concept:concept-lipids",
+    "kind": "concept",
+    "title": "Lipids in food",
+    "summary": "Lipids are food components that can leave a persistent translucent patch in a comparative paper test.",
+    "href": "/simulations#concept-lipids",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-lipids"
+    ],
+    "tokens": [
+      "lipids",
+      "in",
+      "food",
+      "are",
+      "components",
+      "that",
+      "can",
+      "leave",
+      "a",
+      "persistent",
+      "translucent",
+      "patch",
+      "comparative",
+      "paper",
+      "test",
+      "supports",
+      "evidence",
+      "based",
+      "comparison",
+      "and",
+      "balanced",
+      "diet",
+      "discussions",
+      "fats",
+      "oils",
+      "lipid",
+      "fat",
+      "oil"
+    ]
+  },
+  {
+    "id": "concept:concept-food-tests",
+    "kind": "concept",
+    "title": "Qualitative food tests",
+    "summary": "A qualitative food test uses a controlled procedure and visible evidence to support a component conclusion.",
+    "href": "/simulations#concept-food-tests",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-food-tests"
+    ],
+    "tokens": [
+      "qualitative",
+      "food",
+      "tests",
+      "a",
+      "test",
+      "uses",
+      "controlled",
+      "procedure",
+      "and",
+      "visible",
+      "evidence",
+      "to",
+      "support",
+      "component",
+      "conclusion",
+      "builds",
+      "practical",
+      "lab",
+      "habits",
+      "around",
+      "controls",
+      "observations",
+      "cautious",
+      "conclusions",
+      "paper",
+      "lipid",
+      "drying",
+      "observation"
+    ]
+  },
+  {
+    "id": "concept:concept-fair-comparison",
+    "kind": "concept",
+    "title": "Fair comparison",
+    "summary": "A fair comparison changes the intended factor while keeping relevant conditions equivalent.",
+    "href": "/simulations#concept-fair-comparison",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-fair-comparison"
+    ],
+    "tokens": [
+      "fair",
+      "comparison",
+      "a",
+      "changes",
+      "the",
+      "intended",
+      "factor",
+      "while",
+      "keeping",
+      "relevant",
+      "conditions",
+      "equivalent",
+      "applies",
+      "across",
+      "school",
+      "investigations",
+      "product",
+      "comparisons",
+      "and",
+      "everyday",
+      "evidence",
+      "claims",
+      "test",
+      "controlled",
+      "control",
+      "same",
+      "amount",
+      "procedure"
+    ]
+  },
+  {
+    "id": "concept:concept-vitamins",
+    "kind": "concept",
+    "title": "Vitamins and representative sources",
+    "summary": "Different vitamins have distinct body roles and multiple representative food sources or exposures.",
+    "href": "/simulations#concept-vitamins",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-vitamins"
+    ],
+    "tokens": [
+      "vitamins",
+      "and",
+      "representative",
+      "sources",
+      "different",
+      "have",
+      "distinct",
+      "body",
+      "roles",
+      "multiple",
+      "food",
+      "or",
+      "exposures",
+      "supports",
+      "varied",
+      "meal",
+      "planning",
+      "without",
+      "turning",
+      "a",
+      "lesson",
+      "into",
+      "medical",
+      "advice",
+      "vitamin",
+      "micronutrients",
+      "source",
+      "role",
+      "micronutrient"
+    ]
+  },
+  {
+    "id": "concept:concept-deficiency-diseases",
+    "kind": "concept",
+    "title": "Long-term nutrient deficiency",
+    "summary": "Characteristic deficiency conditions are associated with sustained inadequate intake or availability, not one missed serving.",
+    "href": "/simulations#concept-deficiency-diseases",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-deficiency-diseases"
+    ],
+    "tokens": [
+      "long",
+      "term",
+      "nutrient",
+      "deficiency",
+      "characteristic",
+      "conditions",
+      "are",
+      "associated",
+      "with",
+      "sustained",
+      "inadequate",
+      "intake",
+      "or",
+      "availability",
+      "not",
+      "one",
+      "missed",
+      "serving",
+      "helps",
+      "learners",
+      "interpret",
+      "textbook",
+      "examples",
+      "responsibly",
+      "and",
+      "seek",
+      "qualified",
+      "care",
+      "for",
+      "health",
+      "concerns",
+      "lack",
+      "scurvy",
+      "rickets",
+      "beriberi"
+    ]
+  },
+  {
+    "id": "concept:concept-balanced-diet",
+    "kind": "concept",
+    "title": "Balanced and varied diet",
+    "summary": "A varied diet combines food groups and nutrient sources rather than relying on a single food.",
+    "href": "/simulations#concept-balanced-diet",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-balanced-diet"
+    ],
+    "tokens": [
+      "balanced",
+      "and",
+      "varied",
+      "diet",
+      "a",
+      "combines",
+      "food",
+      "groups",
+      "nutrient",
+      "sources",
+      "rather",
+      "than",
+      "relying",
+      "on",
+      "single",
+      "supports",
+      "age",
+      "appropriate",
+      "meal",
+      "comparison",
+      "source",
+      "reasoning",
+      "variety",
+      "meals",
+      "group"
+    ]
+  },
+  {
+    "id": "concept:concept-minerals",
+    "kind": "concept",
+    "title": "Minerals in food",
+    "summary": "Calcium, iodine, iron, and other minerals have distinct roles and multiple dietary sources.",
+    "href": "/simulations#concept-minerals",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-minerals"
+    ],
+    "tokens": [
+      "minerals",
+      "in",
+      "food",
+      "calcium",
+      "iodine",
+      "iron",
+      "and",
+      "other",
+      "have",
+      "distinct",
+      "roles",
+      "multiple",
+      "dietary",
+      "sources",
+      "connects",
+      "diverse",
+      "foods",
+      "to",
+      "growth",
+      "thyroid",
+      "function",
+      "blood",
+      "bones",
+      "teeth",
+      "mineral",
+      "source"
+    ]
+  },
+  {
+    "id": "concept:concept-haemoglobin",
+    "kind": "concept",
+    "title": "Iron and haemoglobin",
+    "summary": "Iron is required to make haemoglobin, which helps red blood cells carry oxygen.",
+    "href": "/simulations#concept-haemoglobin",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-haemoglobin"
+    ],
+    "tokens": [
+      "iron",
+      "and",
+      "haemoglobin",
+      "is",
+      "required",
+      "to",
+      "make",
+      "which",
+      "helps",
+      "red",
+      "blood",
+      "cells",
+      "carry",
+      "oxygen",
+      "explains",
+      "why",
+      "representative",
+      "sources",
+      "belong",
+      "in",
+      "a",
+      "varied",
+      "diet",
+      "body",
+      "role",
+      "cell"
+    ]
+  },
+  {
+    "id": "concept:concept-material-properties",
+    "kind": "concept",
+    "title": "Observable material properties",
+    "summary": "Objects can be compared using distinct observable properties such as material, shape, texture, and hardness.",
+    "href": "/simulations#concept-material-properties",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-material-properties"
+    ],
+    "tokens": [
+      "observable",
+      "material",
+      "properties",
+      "objects",
+      "can",
+      "be",
+      "compared",
+      "using",
+      "distinct",
+      "such",
+      "as",
+      "shape",
+      "texture",
+      "and",
+      "hardness",
+      "supports",
+      "systematic",
+      "classification",
+      "of",
+      "classroom",
+      "household",
+      "property"
+    ]
+  },
+  {
+    "id": "concept:concept-three-dimensional-shapes",
+    "kind": "concept",
+    "title": "Three-dimensional shapes",
+    "summary": "Spheres, cylinders, cuboids, and cones can be distinguished by faces, curved surfaces, edges, and points.",
+    "href": "/simulations#concept-three-dimensional-shapes",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "mathematics"
+    ],
+    "conceptIds": [
+      "concept-three-dimensional-shapes"
+    ],
+    "tokens": [
+      "three",
+      "dimensional",
+      "shapes",
+      "spheres",
+      "cylinders",
+      "cuboids",
+      "and",
+      "cones",
+      "can",
+      "be",
+      "distinguished",
+      "by",
+      "faces",
+      "curved",
+      "surfaces",
+      "edges",
+      "points",
+      "connects",
+      "geometric",
+      "vocabulary",
+      "to",
+      "packages",
+      "tools",
+      "toys",
+      "buildings",
+      "solid",
+      "3d",
+      "forms",
+      "sphere",
+      "cylinder",
+      "cuboid",
+      "cone",
+      "shape"
+    ]
+  },
+  {
+    "id": "concept:concept-classification",
+    "kind": "concept",
+    "title": "Evidence-based classification",
+    "summary": "Classification groups items by a stated observable rule and supports each placement with evidence.",
+    "href": "/simulations#concept-classification",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-classification"
+    ],
+    "tokens": [
+      "evidence",
+      "based",
+      "classification",
+      "groups",
+      "items",
+      "by",
+      "a",
+      "stated",
+      "observable",
+      "rule",
+      "and",
+      "supports",
+      "each",
+      "placement",
+      "with",
+      "builds",
+      "reusable",
+      "reasoning",
+      "for",
+      "science",
+      "collections",
+      "geometry",
+      "data",
+      "organization",
+      "sorting",
+      "properties",
+      "grouping",
+      "objects",
+      "classify",
+      "sort",
+      "group"
+    ]
+  },
+  {
     "id": "simulation:pollination",
     "kind": "simulation",
     "title": "Plant Pollination & Growth Cycle",
@@ -2999,80 +4848,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "fungus",
       "mushroom",
       "decomposer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch07-a03-soluble-and-insoluble-substances",
-    "kind": "simulation",
-    "title": "Soluble and Insoluble Substances Lab",
-    "summary": "Run safe virtual water-mixing trials and observe which everyday substances dissolve, settle, cloud, or separate.",
-    "href": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience",
-      "science"
-    ],
-    "conceptIds": [
-      "concept-solubility",
-      "concept-solution",
-      "concept-mixture-observation"
-    ],
-    "releaseMaturity": "internalQA",
-    "moduleId": "sim-c05-ch07-a03-soluble-and-insoluble-substances",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "tokens": [
-      "soluble",
-      "and",
-      "insoluble",
-      "substances",
-      "lab",
-      "run",
-      "safe",
-      "virtual",
-      "water",
-      "mixing",
-      "trials",
-      "observe",
-      "which",
-      "everyday",
-      "dissolve",
-      "settle",
-      "cloud",
-      "or",
-      "separate",
-      "students",
-      "will",
-      "distinguish",
-      "in",
-      "using",
-      "prediction",
-      "observation",
-      "evidence",
-      "from",
-      "repeated",
-      "environmentalscience",
-      "science",
-      "solubility",
-      "dissolving",
-      "solution",
-      "solute",
-      "solvent",
-      "uniform",
-      "mixture",
-      "clear",
-      "observing",
-      "mixtures",
-      "settling",
-      "floating",
-      "separating",
-      "sediment",
-      "layer",
-      "cloudy",
-      "fair",
-      "test"
     ]
   },
   {
@@ -3680,6 +5455,1202 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
     ]
   },
   {
+    "id": "simulation:c5-ch04-a01-food-spoilage",
+    "kind": "simulation",
+    "title": "Food Spoilage",
+    "summary": "Compare equal mango samples under four storage conditions and explain observed spoilage rates.",
+    "href": "/simulations/c5-ch04-a01-food-spoilage",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-food-spoilage"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch04-a01-food-spoilage",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "food",
+      "spoilage",
+      "compare",
+      "equal",
+      "mango",
+      "samples",
+      "under",
+      "four",
+      "storage",
+      "conditions",
+      "and",
+      "explain",
+      "observed",
+      "rates",
+      "environmentalscience",
+      "preservation",
+      "slowing",
+      "mould",
+      "refrigeration",
+      "salt",
+      "safety"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch04-a02-milk-spoilage",
+    "kind": "simulation",
+    "title": "Milk Spoilage",
+    "summary": "Compare equal milk samples over 24 hours and connect souring, curds, whey, and gas to microbial activity and storage.",
+    "href": "/simulations/c5-ch04-a02-milk-spoilage",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-milk-spoilage"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch04-a02-milk-spoilage",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "milk",
+      "spoilage",
+      "compare",
+      "equal",
+      "samples",
+      "over",
+      "24",
+      "hours",
+      "and",
+      "connect",
+      "souring",
+      "curds",
+      "whey",
+      "gas",
+      "to",
+      "microbial",
+      "activity",
+      "storage",
+      "environmentalscience",
+      "safe",
+      "microorganisms",
+      "refrigeration"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch04-a03-the-making-of-aam-papad",
+    "kind": "simulation",
+    "title": "The Making of Aam Papad",
+    "summary": "Sequence hygienic mango preparation, thin-layer spreading, repeated drying, and dry storage, explaining moisture removal.",
+    "href": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-sun-drying-preservation"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch04-a03-the-making-of-aam-papad",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "the",
+      "making",
+      "of",
+      "aam",
+      "papad",
+      "sequence",
+      "hygienic",
+      "mango",
+      "preparation",
+      "thin",
+      "layer",
+      "spreading",
+      "repeated",
+      "drying",
+      "and",
+      "dry",
+      "storage",
+      "explaining",
+      "moisture",
+      "removal",
+      "environmentalscience",
+      "sun",
+      "for",
+      "preservation"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch05-a01-pitcher-plant-the-insect-hunter",
+    "kind": "simulation",
+    "title": "Pitcher Plant — The Insect Hunter",
+    "summary": "Explain the pitcher as a modified leaf that supplies minerals while green tissue still makes sugar by photosynthesis.",
+    "href": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-carnivorous-plant-nutrition"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch05-a01-pitcher-plant-the-insect-hunter",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "pitcher",
+      "plant",
+      "the",
+      "insect",
+      "hunter",
+      "explain",
+      "as",
+      "a",
+      "modified",
+      "leaf",
+      "that",
+      "supplies",
+      "minerals",
+      "while",
+      "green",
+      "tissue",
+      "still",
+      "makes",
+      "sugar",
+      "by",
+      "photosynthesis",
+      "environmentalscience",
+      "carnivorous",
+      "nutrition",
+      "eating",
+      "plants",
+      "nitrogen",
+      "nectar"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch05-a02-seed-dispersal",
+    "kind": "simulation",
+    "title": "Seed Dispersal",
+    "summary": "Match wind, water, animal, and explosive dispersal to observable seed adaptations and reduced competition.",
+    "href": "/simulations/c5-ch05-a02-seed-dispersal",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-seed-dispersal"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch05-a02-seed-dispersal",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "seed",
+      "dispersal",
+      "match",
+      "wind",
+      "water",
+      "animal",
+      "and",
+      "explosive",
+      "to",
+      "observable",
+      "adaptations",
+      "reduced",
+      "competition",
+      "environmentalscience",
+      "travel",
+      "burr",
+      "fruit",
+      "pod"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch06-a01-the-storage-of-rainwater",
+    "kind": "simulation",
+    "title": "The Storage of Rainwater",
+    "summary": "Trace rain through catchment, gutter, first flush, filter, covered storage, and careful reuse.",
+    "href": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-rainwater-harvesting"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch06-a01-the-storage-of-rainwater",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "the",
+      "storage",
+      "of",
+      "rainwater",
+      "trace",
+      "rain",
+      "through",
+      "catchment",
+      "gutter",
+      "first",
+      "flush",
+      "filter",
+      "covered",
+      "and",
+      "careful",
+      "reuse",
+      "environmentalscience",
+      "harvesting",
+      "system",
+      "roof",
+      "water",
+      "collection",
+      "tank"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch06-a02-a-step-well-structure",
+    "kind": "simulation",
+    "title": "A Step Well Structure",
+    "summary": "Explain how steps, landings, shade, catchment, groundwater, and reservoir maintain access at changing water levels.",
+    "href": "/simulations/c5-ch06-a02-a-step-well-structure",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-stepwell-water-storage"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch06-a02-a-step-well-structure",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "a",
+      "step",
+      "well",
+      "structure",
+      "explain",
+      "how",
+      "steps",
+      "landings",
+      "shade",
+      "catchment",
+      "groundwater",
+      "and",
+      "reservoir",
+      "maintain",
+      "access",
+      "at",
+      "changing",
+      "water",
+      "levels",
+      "environmentalscience",
+      "stepwell",
+      "storage",
+      "baoli"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "kind": "simulation",
+    "title": "Dead Sea: Salt Water and Its Effects",
+    "summary": "Use fresh and salt-water egg evidence to explain how dissolved salt raises density and buoyant support without making the object lighter.",
+    "href": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-density-and-buoyancy"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "dead",
+      "sea",
+      "salt",
+      "water",
+      "and",
+      "its",
+      "effects",
+      "use",
+      "fresh",
+      "egg",
+      "evidence",
+      "to",
+      "explain",
+      "how",
+      "dissolved",
+      "raises",
+      "density",
+      "buoyant",
+      "support",
+      "without",
+      "making",
+      "the",
+      "object",
+      "lighter",
+      "environmentalscience",
+      "floating",
+      "buoyancy"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch08-a01-diagnosis-of-malaria",
+    "kind": "simulation",
+    "title": "Diagnosis of Malaria",
+    "summary": "Distinguish symptoms and exposure clues from confirmation by microscopy or a valid rapid diagnostic test and route results to professional care.",
+    "href": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-malaria-diagnosis"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch08-a01-diagnosis-of-malaria",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "diagnosis",
+      "of",
+      "malaria",
+      "distinguish",
+      "symptoms",
+      "and",
+      "exposure",
+      "clues",
+      "from",
+      "confirmation",
+      "by",
+      "microscopy",
+      "or",
+      "a",
+      "valid",
+      "rapid",
+      "diagnostic",
+      "test",
+      "route",
+      "results",
+      "to",
+      "professional",
+      "care",
+      "environmentalscience",
+      "evidence",
+      "based",
+      "testing",
+      "blood",
+      "film",
+      "rdt"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch08-a02-life-cycle-of-the-mosquito",
+    "kind": "simulation",
+    "title": "Life Cycle of the Mosquito",
+    "summary": "Sequence Anopheles egg, larva, pupa, and adult stages and choose safe household prevention.",
+    "href": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-mosquito-life-cycle"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch08-a02-life-cycle-of-the-mosquito",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "life",
+      "cycle",
+      "of",
+      "the",
+      "mosquito",
+      "sequence",
+      "anopheles",
+      "egg",
+      "larva",
+      "pupa",
+      "and",
+      "adult",
+      "stages",
+      "choose",
+      "safe",
+      "household",
+      "prevention",
+      "environmentalscience",
+      "malaria"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch09-a01-river-crossing-adventure",
+    "kind": "simulation",
+    "title": "River Crossing Adventure",
+    "summary": "Connect checked anchors, harness, sling, rope technique, calm slip recovery, and teamwork in a supervised model.",
+    "href": "/simulations/c5-ch09-a01-river-crossing-adventure",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-protected-river-crossing"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch09-a01-river-crossing-adventure",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "river",
+      "crossing",
+      "adventure",
+      "connect",
+      "checked",
+      "anchors",
+      "harness",
+      "sling",
+      "rope",
+      "technique",
+      "calm",
+      "slip",
+      "recovery",
+      "and",
+      "teamwork",
+      "in",
+      "a",
+      "supervised",
+      "model",
+      "environmentalscience",
+      "protected",
+      "systems",
+      "safety",
+      "anchor",
+      "supervision"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch09-a02-rock-climbing",
+    "kind": "simulation",
+    "title": "Rock Climbing",
+    "summary": "Connect route observation, checked equipment, three-point movement, slip protection, posture, and rappelling.",
+    "href": "/simulations/c5-ch09-a02-rock-climbing",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-protected-rock-climbing"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch09-a02-rock-climbing",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "rock",
+      "climbing",
+      "connect",
+      "route",
+      "observation",
+      "checked",
+      "equipment",
+      "three",
+      "point",
+      "movement",
+      "slip",
+      "protection",
+      "posture",
+      "and",
+      "rappelling",
+      "environmentalscience",
+      "protected",
+      "systems",
+      "safety",
+      "model",
+      "top",
+      "rope",
+      "belay",
+      "harness",
+      "points",
+      "rappel"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch09-a03-camp-in-the-snow",
+    "kind": "simulation",
+    "title": "Camp in the Snow",
+    "summary": "Explain tent and sleeping-bag insulation, anchoring, drainage, supervised cooking, waste removal, and careful snow travel.",
+    "href": "/simulations/c5-ch09-a03-camp-in-the-snow",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-cold-weather-camping"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch09-a03-camp-in-the-snow",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "camp",
+      "in",
+      "the",
+      "snow",
+      "explain",
+      "tent",
+      "and",
+      "sleeping",
+      "bag",
+      "insulation",
+      "anchoring",
+      "drainage",
+      "supervised",
+      "cooking",
+      "waste",
+      "removal",
+      "careful",
+      "travel",
+      "environmentalscience",
+      "cold",
+      "weather",
+      "camping",
+      "decisions"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch09-a04-snow-mountain-climbing",
+    "kind": "simulation",
+    "title": "Snow Mountain Climbing",
+    "summary": "Explain route, equipment, group pacing, stick-step balance, supervised rope practice, recovery, and turnaround decisions.",
+    "href": "/simulations/c5-ch09-a04-snow-mountain-climbing",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-snow-mountain-safety"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch09-a04-snow-mountain-climbing",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "snow",
+      "mountain",
+      "climbing",
+      "explain",
+      "route",
+      "equipment",
+      "group",
+      "pacing",
+      "stick",
+      "step",
+      "balance",
+      "supervised",
+      "rope",
+      "practice",
+      "recovery",
+      "and",
+      "turnaround",
+      "decisions",
+      "environmentalscience",
+      "safety",
+      "fixed",
+      "pace",
+      "weather"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch10-a01-a-visit-of-ancient-fort",
+    "kind": "simulation",
+    "title": "A Visit of an Ancient Fort",
+    "summary": "Use Golconda architecture, water, acoustics, maps, and artefacts as limited historical evidence, then apply monument care.",
+    "href": "/simulations/c5-ch10-a01-a-visit-of-ancient-fort",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-historical-evidence"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch10-a01-a-visit-of-ancient-fort",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "a",
+      "visit",
+      "of",
+      "an",
+      "ancient",
+      "fort",
+      "use",
+      "golconda",
+      "architecture",
+      "water",
+      "acoustics",
+      "maps",
+      "and",
+      "artefacts",
+      "as",
+      "limited",
+      "historical",
+      "evidence",
+      "then",
+      "apply",
+      "monument",
+      "care",
+      "environmentalscience",
+      "interpreting",
+      "artefact",
+      "historian"
+    ]
+  },
+  {
+    "id": "simulation:c6-ch03-a01-cotton-farming",
+    "kind": "simulation",
+    "title": "Cotton Farming",
+    "summary": "Sequence black-soil preparation, sowing, watering, flowering, boll maturation, and harvest, identifying cotton as plant fibre.",
+    "href": "/simulations/c6-ch03-a01-cotton-farming",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "environmentalScience"
+    ],
+    "conceptIds": [
+      "concept-cotton-farming"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c06-ch03-a01-cotton-farming",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "cotton",
+      "farming",
+      "sequence",
+      "black",
+      "soil",
+      "preparation",
+      "sowing",
+      "watering",
+      "flowering",
+      "boll",
+      "maturation",
+      "and",
+      "harvest",
+      "identifying",
+      "as",
+      "plant",
+      "fibre",
+      "environmentalscience",
+      "crop",
+      "development",
+      "seedling",
+      "flower"
+    ]
+  },
+  {
+    "id": "simulation:c6-ch03-a02-the-process-of-cotton-ginning",
+    "kind": "simulation",
+    "title": "The Process of Cotton Ginning",
+    "summary": "Explain how a narrow roller gap separates soft fibre from larger cotton seeds and prepares fibre for spinning.",
+    "href": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-cotton-ginning"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c06-ch03-a02-the-process-of-cotton-ginning",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "the",
+      "process",
+      "of",
+      "cotton",
+      "ginning",
+      "explain",
+      "how",
+      "a",
+      "narrow",
+      "roller",
+      "gap",
+      "separates",
+      "soft",
+      "fibre",
+      "from",
+      "larger",
+      "seeds",
+      "and",
+      "prepares",
+      "for",
+      "spinning",
+      "science",
+      "separating",
+      "gin",
+      "rollers",
+      "seed"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "kind": "simulation",
+    "title": "What Floats, What Sinks?",
+    "summary": "Predict and test six familiar objects, then explain floating through weight, displaced water, shape, material, and trapped air.",
+    "href": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience",
+      "science"
+    ],
+    "conceptIds": [
+      "concept-buoyancy",
+      "concept-density",
+      "concept-displacement"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "what",
+      "floats",
+      "sinks",
+      "predict",
+      "and",
+      "test",
+      "six",
+      "familiar",
+      "objects",
+      "then",
+      "explain",
+      "floating",
+      "through",
+      "weight",
+      "displaced",
+      "water",
+      "shape",
+      "material",
+      "trapped",
+      "air",
+      "using",
+      "environmentalscience",
+      "science",
+      "buoyant",
+      "support",
+      "upthrust",
+      "buoyancy",
+      "float",
+      "average",
+      "density",
+      "mass",
+      "per",
+      "volume",
+      "compactness",
+      "of",
+      "matter",
+      "displacement",
+      "occupied",
+      "waterline",
+      "boat"
+    ]
+  },
+  {
+    "id": "simulation:c5-ch07-a03-soluble-and-insoluble-substances",
+    "kind": "simulation",
+    "title": "Soluble and Insoluble Substances Lab",
+    "summary": "Run equal water-mixing trials and observe dissolving, suspension, settling, floating particles, and separated oil.",
+    "href": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+    "classLevels": [
+      5
+    ],
+    "subjects": [
+      "environmentalScience",
+      "science"
+    ],
+    "conceptIds": [
+      "concept-solubility",
+      "concept-solution",
+      "concept-mixture-observation"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c05-ch07-a03-soluble-and-insoluble-substances",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "soluble",
+      "and",
+      "insoluble",
+      "substances",
+      "lab",
+      "run",
+      "equal",
+      "water",
+      "mixing",
+      "trials",
+      "observe",
+      "dissolving",
+      "suspension",
+      "settling",
+      "floating",
+      "particles",
+      "separated",
+      "oil",
+      "use",
+      "a",
+      "fair",
+      "test",
+      "measured",
+      "evidence",
+      "to",
+      "distinguish",
+      "solutions",
+      "suspensions",
+      "sediments",
+      "solids",
+      "immiscible",
+      "layers",
+      "environmentalscience",
+      "science",
+      "solubility",
+      "in",
+      "dissolve",
+      "solution",
+      "solute",
+      "solvent",
+      "uniform",
+      "mixture",
+      "clear",
+      "observing",
+      "mixtures",
+      "separating",
+      "sediment",
+      "layer",
+      "cloudy"
+    ]
+  },
+  {
+    "id": "simulation:c6-ch02-a03-test-the-presence-of-lipids",
+    "kind": "simulation",
+    "title": "Test the Presence of Lipids",
+    "summary": "Crush peanut, dry coconut, and rice on clean paper, dry each sheet, and compare persistent translucent patches.",
+    "href": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science",
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-lipids",
+      "concept-food-tests",
+      "concept-fair-comparison"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c06-ch02-a03-test-the-presence-of-lipids",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "test",
+      "the",
+      "presence",
+      "of",
+      "lipids",
+      "crush",
+      "peanut",
+      "dry",
+      "coconut",
+      "and",
+      "rice",
+      "on",
+      "clean",
+      "paper",
+      "each",
+      "sheet",
+      "compare",
+      "persistent",
+      "translucent",
+      "patches",
+      "perform",
+      "a",
+      "fair",
+      "use",
+      "patch",
+      "as",
+      "evidence",
+      "for",
+      "science",
+      "biology",
+      "in",
+      "food",
+      "fats",
+      "oils",
+      "lipid",
+      "fat",
+      "oil",
+      "qualitative",
+      "tests",
+      "component",
+      "drying",
+      "observation",
+      "comparison",
+      "controlled",
+      "control",
+      "same",
+      "amount",
+      "procedure"
+    ]
+  },
+  {
+    "id": "simulation:c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "kind": "simulation",
+    "title": "Sources of Vitamins and Their Deficiencies",
+    "summary": "Match vitamins A, B1, C, and D to sources and characteristic deficiency evidence.",
+    "href": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science",
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-vitamins",
+      "concept-deficiency-diseases",
+      "concept-balanced-diet"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c06-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "sources",
+      "of",
+      "vitamins",
+      "and",
+      "their",
+      "deficiencies",
+      "match",
+      "a",
+      "b1",
+      "c",
+      "d",
+      "to",
+      "characteristic",
+      "deficiency",
+      "evidence",
+      "representative",
+      "body",
+      "roles",
+      "long",
+      "term",
+      "conditions",
+      "science",
+      "biology",
+      "vitamin",
+      "micronutrients",
+      "source",
+      "food",
+      "role",
+      "micronutrient",
+      "nutrient",
+      "sustained",
+      "lack",
+      "scurvy",
+      "rickets",
+      "beriberi",
+      "balanced",
+      "varied",
+      "diet",
+      "variety",
+      "meals",
+      "meal",
+      "group"
+    ]
+  },
+  {
+    "id": "simulation:c6-ch02-a05-the-sources-of-minerals-in-food",
+    "kind": "simulation",
+    "title": "The Sources of Minerals in Food",
+    "summary": "Link calcium, iodine, and iron to representative sources and distinct body functions.",
+    "href": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science",
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-minerals",
+      "concept-balanced-diet",
+      "concept-haemoglobin"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c06-ch02-a05-the-sources-of-minerals-in-food",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "the",
+      "sources",
+      "of",
+      "minerals",
+      "in",
+      "food",
+      "link",
+      "calcium",
+      "iodine",
+      "and",
+      "iron",
+      "to",
+      "representative",
+      "distinct",
+      "body",
+      "functions",
+      "match",
+      "evidence",
+      "based",
+      "science",
+      "biology",
+      "dietary",
+      "mineral",
+      "source",
+      "balanced",
+      "varied",
+      "diet",
+      "variety",
+      "meals",
+      "meal",
+      "nutrient",
+      "group",
+      "haemoglobin",
+      "role",
+      "red",
+      "blood",
+      "cells",
+      "oxygen",
+      "cell"
+    ]
+  },
+  {
+    "id": "simulation:c6-ch04-a01-sorting-materials-according-to-their-shape",
+    "kind": "simulation",
+    "title": "Sorting Materials According to Their Shape",
+    "summary": "Inspect and sort eight familiar objects as spheres, cylinders, cuboids, or cones.",
+    "href": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
+    "classLevels": [
+      6
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-material-properties",
+      "concept-three-dimensional-shapes",
+      "concept-classification"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c06-ch04-a01-sorting-materials-according-to-their-shape",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "sorting",
+      "materials",
+      "according",
+      "to",
+      "their",
+      "shape",
+      "inspect",
+      "and",
+      "sort",
+      "eight",
+      "familiar",
+      "objects",
+      "as",
+      "spheres",
+      "cylinders",
+      "cuboids",
+      "or",
+      "cones",
+      "classify",
+      "everyday",
+      "by",
+      "observable",
+      "three",
+      "dimensional",
+      "explain",
+      "why",
+      "material",
+      "does",
+      "not",
+      "determine",
+      "group",
+      "science",
+      "properties",
+      "of",
+      "property",
+      "texture",
+      "classification",
+      "shapes",
+      "solid",
+      "3d",
+      "forms",
+      "sphere",
+      "cylinder",
+      "cuboid",
+      "cone",
+      "evidence",
+      "based",
+      "grouping",
+      "rule"
+    ]
+  },
+  {
     "id": "simulation:c5-ch01-a01-supersense-of-smell",
     "kind": "simulation",
     "title": "Supersense of smell",
@@ -3903,626 +6874,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "and",
       "vocabulary",
       "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch04-a01-food-spoilage",
-    "kind": "simulation",
-    "title": "Food spoilage",
-    "summary": "Mangoes Round the Year · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch04-a01-food-spoilage",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "food",
-      "spoilage",
-      "mangoes",
-      "round",
-      "the",
-      "year",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch04-a02-milk-spoilage",
-    "kind": "simulation",
-    "title": "Milk spoilage",
-    "summary": "Mangoes Round the Year · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch04-a02-milk-spoilage",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "milk",
-      "spoilage",
-      "mangoes",
-      "round",
-      "the",
-      "year",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch04-a03-the-making-of-aam-papad",
-    "kind": "simulation",
-    "title": "The making of Aam papad",
-    "summary": "Mangoes Round the Year · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch04-a03-the-making-of-aam-papad",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "making",
-      "of",
-      "aam",
-      "papad",
-      "mangoes",
-      "round",
-      "year",
-      "environmentalscience",
-      "modelinspection",
-      "processtimeline",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch05-a01-pitcher-plant-the-insect-hunter",
-    "kind": "simulation",
-    "title": "Pitcher plant- The insect hunter",
-    "summary": "Seeds and Seeds · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch05-a01-pitcher-plant-the-insect-hunter",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "pitcher",
-      "plant",
-      "the",
-      "insect",
-      "hunter",
-      "seeds",
-      "and",
-      "environmentalscience",
-      "guidedtour",
-      "use",
-      "bounded",
-      "teleport",
-      "or",
-      "seated",
-      "360",
-      "scene",
-      "with",
-      "hotspots",
-      "instructor",
-      "pauses",
-      "companion",
-      "observation",
-      "sheet"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch05-a02-seed-dispersal",
-    "kind": "simulation",
-    "title": "Seed dispersal",
-    "summary": "Seeds and Seeds · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch05-a02-seed-dispersal",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "seed",
-      "dispersal",
-      "seeds",
-      "and",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch06-a01-the-storage-of-rainwater",
-    "kind": "simulation",
-    "title": "The storage of rainwater",
-    "summary": "Every Drop Counts · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch06-a01-the-storage-of-rainwater",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "storage",
-      "of",
-      "rainwater",
-      "every",
-      "drop",
-      "counts",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch06-a02-a-step-well-structure",
-    "kind": "simulation",
-    "title": "A step well structure",
-    "summary": "Every Drop Counts · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch06-a02-a-step-well-structure",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "a",
-      "step",
-      "well",
-      "structure",
-      "every",
-      "drop",
-      "counts",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch07-a01-a-concept-about-what-floats-what-sinks",
-    "kind": "simulation",
-    "title": "A concept about- What floats, what sinks?",
-    "summary": "Experiments with Water · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch07-a01-a-concept-about-what-floats-what-sinks",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "a",
-      "concept",
-      "about",
-      "what",
-      "floats",
-      "sinks",
-      "experiments",
-      "with",
-      "water",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch07-a02-dead-sea-salt-water-and-its-effects",
-    "kind": "simulation",
-    "title": "Dead sea : Salt water and its effects",
-    "summary": "Experiments with Water · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch07-a02-dead-sea-salt-water-and-its-effects",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "dead",
-      "sea",
-      "salt",
-      "water",
-      "and",
-      "its",
-      "effects",
-      "experiments",
-      "with",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch08-a01-diagnosis-of-malaria",
-    "kind": "simulation",
-    "title": "Diagnosis of malaria",
-    "summary": "A Treat for Mosquitoes · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch08-a01-diagnosis-of-malaria",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "diagnosis",
-      "of",
-      "malaria",
-      "a",
-      "treat",
-      "for",
-      "mosquitoes",
-      "environmentalscience",
-      "scenario",
-      "use",
-      "decision",
-      "with",
-      "safe",
-      "choices",
-      "consequence",
-      "preview",
-      "and",
-      "debrief",
-      "focused",
-      "on",
-      "reasoning",
-      "rather",
-      "than",
-      "score"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch08-a02-life-cycle-of-the-mosquito",
-    "kind": "simulation",
-    "title": "Life cycle of the mosquito",
-    "summary": "A Treat for Mosquitoes · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch08-a02-life-cycle-of-the-mosquito",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "life",
-      "cycle",
-      "of",
-      "the",
-      "mosquito",
-      "a",
-      "treat",
-      "for",
-      "mosquitoes",
-      "environmentalscience",
-      "processtimeline",
-      "use",
-      "staged",
-      "timeline",
-      "with",
-      "progressive",
-      "reveal",
-      "scrubber",
-      "cue",
-      "card",
-      "checkpoints",
-      "and",
-      "final",
-      "sequence",
-      "recap"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch09-a01-river-crossing-adventure",
-    "kind": "simulation",
-    "title": "River crossing Adventure",
-    "summary": "Up You Go ! · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch09-a01-river-crossing-adventure",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "river",
-      "crossing",
-      "adventure",
-      "up",
-      "you",
-      "go",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch09-a02-rock-climbing",
-    "kind": "simulation",
-    "title": "Rock Climbing",
-    "summary": "Up You Go ! · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch09-a02-rock-climbing",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "rock",
-      "climbing",
-      "up",
-      "you",
-      "go",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch09-a03-camp-in-the-snow",
-    "kind": "simulation",
-    "title": "Camp in the snow",
-    "summary": "Up You Go ! · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch09-a03-camp-in-the-snow",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "camp",
-      "in",
-      "the",
-      "snow",
-      "up",
-      "you",
-      "go",
-      "environmentalscience",
-      "guidedtour",
-      "use",
-      "bounded",
-      "teleport",
-      "or",
-      "seated",
-      "360",
-      "scene",
-      "with",
-      "hotspots",
-      "instructor",
-      "pauses",
-      "and",
-      "companion",
-      "observation",
-      "sheet"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch09-a04-snow-mountain-climbing",
-    "kind": "simulation",
-    "title": "Snow mountain climbing",
-    "summary": "Up You Go ! · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch09-a04-snow-mountain-climbing",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "snow",
-      "mountain",
-      "climbing",
-      "up",
-      "you",
-      "go",
-      "environmentalscience",
-      "guidedtour",
-      "use",
-      "bounded",
-      "teleport",
-      "or",
-      "seated",
-      "360",
-      "scene",
-      "with",
-      "hotspots",
-      "instructor",
-      "pauses",
-      "and",
-      "companion",
-      "observation",
-      "sheet"
-    ]
-  },
-  {
-    "id": "simulation:c5-ch10-a01-a-visit-of-ancient-fort",
-    "kind": "simulation",
-    "title": "A Visit of Ancient Fort",
-    "summary": "Walls Tell Stories · Class 5 environmentalScience",
-    "href": "/simulations#c5-ch10-a01-a-visit-of-ancient-fort",
-    "classLevels": [
-      5
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "a",
-      "visit",
-      "of",
-      "ancient",
-      "fort",
-      "walls",
-      "tell",
-      "stories",
-      "environmentalscience",
-      "guidedtour",
-      "use",
-      "bounded",
-      "teleport",
-      "or",
-      "seated",
-      "360",
-      "scene",
-      "with",
-      "hotspots",
-      "instructor",
-      "pauses",
-      "and",
-      "companion",
-      "observation",
-      "sheet"
     ]
   },
   {
@@ -5430,248 +7781,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "particles",
       "where",
       "useful"
-    ]
-  },
-  {
-    "id": "simulation:c6-ch02-a03-test-the-presence-of-lipids",
-    "kind": "simulation",
-    "title": "Test the Presence of Lipids",
-    "summary": "Components of Food · Class 6 science",
-    "href": "/simulations#c6-ch02-a03-test-the-presence-of-lipids",
-    "classLevels": [
-      6
-    ],
-    "subjects": [
-      "science"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "test",
-      "the",
-      "presence",
-      "of",
-      "lipids",
-      "components",
-      "food",
-      "science",
-      "experimentbench",
-      "modelinspection",
-      "use",
-      "variable",
-      "controls",
-      "predict",
-      "observe",
-      "explain",
-      "prompts",
-      "resettable",
-      "safe",
-      "lab",
-      "state",
-      "and",
-      "visible",
-      "invisible",
-      "forces",
-      "or",
-      "particles",
-      "where",
-      "useful"
-    ]
-  },
-  {
-    "id": "simulation:c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
-    "kind": "simulation",
-    "title": "The sources of vitamins and their deficiencies",
-    "summary": "Components of Food · Class 6 science",
-    "href": "/simulations#c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
-    "classLevels": [
-      6
-    ],
-    "subjects": [
-      "science"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "sources",
-      "of",
-      "vitamins",
-      "and",
-      "their",
-      "deficiencies",
-      "components",
-      "food",
-      "science",
-      "modelinspection",
-      "sortingboard",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c6-ch02-a05-the-sources-of-minerals-in-food",
-    "kind": "simulation",
-    "title": "The sources of minerals in Food",
-    "summary": "Components of Food · Class 6 science",
-    "href": "/simulations#c6-ch02-a05-the-sources-of-minerals-in-food",
-    "classLevels": [
-      6
-    ],
-    "subjects": [
-      "science"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "sources",
-      "of",
-      "minerals",
-      "in",
-      "food",
-      "components",
-      "science",
-      "modelinspection",
-      "sortingboard",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c6-ch03-a01-cotton-farming",
-    "kind": "simulation",
-    "title": "Cotton Farming",
-    "summary": "Fiber to Fabric · Class 6 environmentalScience",
-    "href": "/simulations#c6-ch03-a01-cotton-farming",
-    "classLevels": [
-      6
-    ],
-    "subjects": [
-      "environmentalScience"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "cotton",
-      "farming",
-      "fiber",
-      "to",
-      "fabric",
-      "environmentalscience",
-      "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "and",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c6-ch03-a02-the-process-of-cotton-ginning",
-    "kind": "simulation",
-    "title": "The process of Cotton Ginning",
-    "summary": "Fiber to Fabric · Class 6 science",
-    "href": "/simulations#c6-ch03-a02-the-process-of-cotton-ginning",
-    "classLevels": [
-      6
-    ],
-    "subjects": [
-      "science"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "the",
-      "process",
-      "of",
-      "cotton",
-      "ginning",
-      "fiber",
-      "to",
-      "fabric",
-      "science",
-      "processtimeline",
-      "use",
-      "staged",
-      "timeline",
-      "with",
-      "progressive",
-      "reveal",
-      "scrubber",
-      "cue",
-      "card",
-      "checkpoints",
-      "and",
-      "final",
-      "sequence",
-      "recap"
-    ]
-  },
-  {
-    "id": "simulation:c6-ch04-a01-sorting-materials-according-to-their-shape",
-    "kind": "simulation",
-    "title": "Sorting materials according to their shape",
-    "summary": "Sorting Materials into Groups · Class 6 science",
-    "href": "/simulations#c6-ch04-a01-sorting-materials-according-to-their-shape",
-    "classLevels": [
-      6
-    ],
-    "subjects": [
-      "science"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "sorting",
-      "materials",
-      "according",
-      "to",
-      "their",
-      "shape",
-      "into",
-      "groups",
-      "science",
-      "sortingboard",
-      "use",
-      "drag",
-      "sort",
-      "classification",
-      "with",
-      "immediate",
-      "feedback",
-      "misconception",
-      "traps",
-      "and",
-      "instructor",
-      "review",
-      "mode"
     ]
   },
   {

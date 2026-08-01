@@ -1,5 +1,7 @@
 'use client';
 
+import { ACCEPTANCE_HOOKS } from './acceptanceHooks';
+
 export interface ExperiencePreferences {
   audio: boolean;
   subtitles: boolean;
@@ -50,7 +52,7 @@ export default function LaunchPortal({
           <button
             type="button"
             className="secondary"
-            data-testid="simulation-launch"
+            data-testid={ACCEPTANCE_HOOKS.launch}
             onClick={onStartBrowser}
           >
             Explore in browser

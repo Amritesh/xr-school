@@ -1,8 +1,12 @@
 import {
+  classLevelsForSimulation,
   IMPLEMENTED_SIMULATIONS,
   routeForSimulation,
 } from '@xr-school/simulation-content';
-import type { ImplementedSimulationDefinition } from '@xr-school/simulation-schema';
+import type {
+  ImplementedSimulationDefinition,
+  SimulationFormat,
+} from '@xr-school/simulation-schema';
 import type { ScienceSimulationCatalogItem } from './scienceCatalog.generated';
 
 const RELEASED_SIMULATIONS = IMPLEMENTED_SIMULATIONS.filter(
@@ -47,10 +51,10 @@ function deepFreeze<T>(value: T): T {
   return value;
 }
 
-export const SIMULATION_PRESENTATION_OVERLAYS: Readonly<Record<
+const AUTHORED_SIMULATION_PRESENTATION_OVERRIDES: Readonly<Record<
   string,
   Readonly<SimulationPresentationOverlay>
->> = deepFreeze({
+>> = {
   'sim-pollination-001': {
     color: '#34d399',
     classLevels: [6, 7, 8, 9, 10],
@@ -129,7 +133,50 @@ export const SIMULATION_PRESENTATION_OVERLAYS: Readonly<Record<
     topic: 'Stars and the Solar System',
     archetype: 'immersive VR',
   },
+};
+
+const DEFAULT_PRESENTATION_BY_FORMAT: Readonly<Record<
+  SimulationFormat,
+  Readonly<Pick<SimulationPresentationOverlay, 'color' | 'archetype'>>
+>> = deepFreeze({
+  immersiveVr: { color: '#a78bfa', archetype: 'immersive VR' },
+  threeSixtyVr: { color: '#818cf8', archetype: '360-degree VR' },
+  interactive3d: { color: '#38bdf8', archetype: 'interactive 3D' },
+  guidedVisualization: { color: '#2dd4bf', archetype: 'guided visualization' },
+  practicalLabSimulation: { color: '#67e8f9', archetype: 'practical lab simulation' },
+  virtualFieldVisit: { color: '#34d399', archetype: 'virtual field visit' },
+  revisionMode: { color: '#fbbf24', archetype: 'revision mode' },
 });
+
+/**
+ * Supplies a complete, deterministic presentation layer for every canonical
+ * simulation definition. Product-specific overrides remain possible, while a
+ * newly released class no longer requires a second hand-maintained allowlist
+ * before it can appear in the catalogue.
+ */
+export function deriveSimulationPresentationOverlay(
+  definition: ImplementedSimulationDefinition,
+): SimulationPresentationOverlay {
+  const { module } = definition;
+  const formatPresentation = DEFAULT_PRESENTATION_BY_FORMAT[module.simulationFormat];
+  return {
+    color: formatPresentation.color,
+    topic: module.title,
+    archetype: formatPresentation.archetype,
+    classLevels: classLevelsForSimulation(module),
+  };
+}
+
+export const SIMULATION_PRESENTATION_OVERLAYS: Readonly<Record<
+  string,
+  Readonly<SimulationPresentationOverlay>
+>> = deepFreeze(Object.fromEntries(
+  RELEASED_SIMULATIONS.map(definition => [
+    definition.module.id,
+    AUTHORED_SIMULATION_PRESENTATION_OVERRIDES[definition.module.id]
+      ?? deriveSimulationPresentationOverlay(definition),
+  ]),
+));
 
 export function assertSimulationPresentationOverlayIntegrity(
   overlays: Readonly<Record<string, SimulationPresentationOverlay>>,

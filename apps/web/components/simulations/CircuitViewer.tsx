@@ -14,6 +14,7 @@ import {
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import ExperienceFocusGuide from '@/components/simulation-experience/ExperienceFocusGuide';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import '@/components/simulation-experience/simulation-experience.css';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';
@@ -701,7 +702,11 @@ export default function CircuitViewer() {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', background: '#dce8ef', overflow: 'hidden' }}>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <SimulationCanvasHost
+        ref={mountRef}
+        style={{ width: '100%', height: '100%' }}
+        ariaLabel="Electric circuits investigation world"
+      />
       <ClassroomSync
         stageIndex={stage}
         stageCount={STAGES.length}

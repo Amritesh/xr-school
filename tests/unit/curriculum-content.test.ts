@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SIMULATION_MODULES } from '../../packages/simulation-content/src/modules';
+import { IMPLEMENTED_SIMULATIONS } from '../../packages/simulation-content/src/implemented/registry';
 import {
   COURSES,
   CURRICULUM_CHAPTERS,
@@ -10,12 +10,12 @@ import { validateCurriculumGraph } from '../../packages/simulation-schema/src/in
 describe('canonical curriculum content', () => {
   it('defines typed courses, chapters, and concepts for every working simulation', () => {
     expect(COURSES).toHaveLength(11);
-    expect(CURRICULUM_CHAPTERS).toHaveLength(13);
-    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(40);
+    expect(CURRICULUM_CHAPTERS).toHaveLength(22);
+    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(71);
 
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
-    for (const simulation of SIMULATION_MODULES) {
-      expect(linkedSimulationIds.has(simulation.id)).toBe(true);
+    for (const { module } of IMPLEMENTED_SIMULATIONS) {
+      expect(linkedSimulationIds.has(module.id)).toBe(true);
     }
   });
 
@@ -24,8 +24,36 @@ describe('canonical curriculum content', () => {
       courses: COURSES,
       chapters: CURRICULUM_CHAPTERS,
       concepts: LEARNING_CONCEPTS,
-      simulationIds: SIMULATION_MODULES.map(module => module.id),
+      simulationIds: IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id),
     })).toEqual([]);
+  });
+
+  it('links every guided class through its exact CBSE chapter and concept', () => {
+    const class5 = COURSES.find(
+      item => item.id === 'course-cbse-c5-environmental-science',
+    );
+    const class6 = COURSES.find(item => item.id === 'course-cbse-c6-science');
+
+    expect(class5?.chapterIds).toEqual(expect.arrayContaining([
+      'chapter-cbse-c5-mangoes-round-year',
+      'chapter-cbse-c5-seeds-and-seeds',
+      'chapter-cbse-c5-every-drop-counts',
+      'chapter-cbse-c5-treat-for-mosquitoes',
+      'chapter-cbse-c5-up-you-go',
+      'chapter-cbse-c5-walls-tell-stories',
+    ]));
+    expect(class5?.simulationIds).toHaveLength(18);
+    expect(class6?.simulationIds).toEqual(expect.arrayContaining([
+      'sim-c06-ch03-a01-cotton-farming',
+      'sim-c06-ch03-a02-the-process-of-cotton-ginning',
+    ]));
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c5-water-experiments',
+    )?.simulationIds).toEqual([
+      'sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks',
+      'sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects',
+      'sim-c05-ch07-a03-soluble-and-insoluble-substances',
+    ]);
   });
 
   it('links the digestive journey through Class 5 Chapter 3 and its course', () => {

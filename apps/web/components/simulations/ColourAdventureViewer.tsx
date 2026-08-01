@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
@@ -661,7 +662,11 @@ export default function ColourAdventureViewer() {
       background: '#1e1b4b',
       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
     }}>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <SimulationCanvasHost
+        ref={mountRef}
+        style={{ width: '100%', height: '100%' }}
+        ariaLabel="Colour Adventure world"
+      />
       <ClassroomSync
         stageIndex={stageIndex}
         stageCount={COLOUR_ADVENTURE_STAGES.length}

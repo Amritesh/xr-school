@@ -17,7 +17,6 @@ import {
   POLLINATION_MODULE,
   PREPOSITION_ADVENTURE_MODULE,
   SOLAR_SYSTEM_MISSION_MODULE,
-  SOLUBLE_INSOLUBLE_MODULE,
   SOURCES_OF_FOOD_MODULE,
   STATES_OF_MATTER_MODULE,
 } from '../modules.js';
@@ -446,14 +445,6 @@ const foodStages = [
   stage('stage-review', 'Review', 'Fix any misplaced tokens and explain one tricky source.', ['review-food-sources'], undefined, undefined, '/audio/food-sources/stage-04.mp3'),
 ];
 
-const solubilityStages = [
-  stage('predict', 'Predict before mixing', 'Choose a material and predict what the beaker evidence will show.', ['record-prediction'], ['prediction-recorded'], undefined, '/audio/solubility/stage-01.mp3'),
-  stage('mix', 'Make a measured mixture', 'Add a 5 g scoop, then observe where that mass goes.', ['add-scoop'], ['mass-accounted'], undefined, '/audio/solubility/stage-02.mp3'),
-  stage('investigate', 'Change one variable', 'Stir or change temperature. Watch rate, turbidity, sediment, and saturation separately.', ['investigate-rate'], ['rate-compared'], undefined, '/audio/solubility/stage-03.mp3'),
-  stage('explain', 'Explain with the molecular lens', 'Open the representational molecular lens and connect invisible particles to visible evidence.', ['open-molecular-lens'], ['misconception-resolved'], undefined, '/audio/solubility/stage-04.mp3'),
-  stage('transfer', 'Classify an unknown', 'Use only the evidence pattern to classify the mystery mixture.', ['classify-unknown'], ['unknown-classified']),
-];
-
 const digestiveStages = [
   stage('welcome', 'Welcome to the Human Body', 'Look around the classroom, find the glowing body model, and start the journey.', ['start-journey'], undefined, 'Hello students! Today we are going on an exciting journey inside the human body to discover how food gives us energy.'),
   stage('mouth', 'The Mouth', 'Pick the food, place it on the tongue, and watch the teeth and saliva work together.', ['place-food'], undefined, 'Our journey starts in the mouth. Incisors cut food, canines tear it, and molars grind it into smaller pieces. Saliva mixes with the food so it becomes a soft ball called a bolus.'),
@@ -616,17 +607,6 @@ export const EXISTING_IMPLEMENTED_SIMULATIONS: ImplementedSimulationDefinition[]
     experienceId: 'experience-sources-of-food',
     gradeTone: 'class6To8',
     stages: foodStages,
-  }),
-  createExistingDefinition(SOLUBLE_INSOLUBLE_MODULE, {
-    experienceId: 'experience-solubility-physics-lab',
-    gradeTone: 'class3To5',
-    stages: solubilityStages,
-    legacyPaths: ['/simulations/experiments-with-water-soluble-insoluble'],
-    contribution: {
-      source: 'pr-8',
-      contributor: 'Aditya K. R. Pandey',
-      sourcePath: 'apps/web/components/simulations/SolubilityLabViewer.tsx',
-    },
   }),
   createExistingDefinition(DIGESTIVE_SYSTEM_MODULE, {
     experienceId: 'experience-digestive-system',

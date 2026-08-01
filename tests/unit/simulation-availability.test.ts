@@ -5,6 +5,7 @@ import {
   IMPLEMENTED_SIMULATION_SLUGS,
   SIMULATION_PRESENTATION_OVERLAYS,
   assertSimulationPresentationOverlayIntegrity,
+  deriveSimulationPresentationOverlay,
   isImplementedSimulationSlug,
   getSimulationCatalogSections,
   matchesCatalogFilters,
@@ -90,6 +91,22 @@ describe('simulation availability routing', () => {
     expect(() => {
       (SIMULATION_PRESENTATION_OVERLAYS[firstId].classLevels as number[]).push(99);
     }).toThrow(TypeError);
+  });
+
+  it('derives complete presentation metadata for a newly released class', () => {
+    const foodSpoilage = IMPLEMENTED_SIMULATIONS.find(
+      ({ module }) => module.id === 'sim-c05-ch04-a01-food-spoilage',
+    );
+    expect(foodSpoilage).toBeDefined();
+
+    const overlay = deriveSimulationPresentationOverlay(foodSpoilage!);
+    expect(overlay).toEqual({
+      color: '#38bdf8',
+      topic: foodSpoilage!.module.title,
+      archetype: 'interactive 3D',
+      classLevels: [5],
+    });
+    expect(SIMULATION_PRESENTATION_OVERLAYS[foodSpoilage!.module.id]).toEqual(overlay);
   });
 
   it('exposes a route guard for exactly the implemented demos', () => {

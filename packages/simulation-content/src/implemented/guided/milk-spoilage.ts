@@ -1,0 +1,5 @@
+export {
+  MILK_SPOILAGE_GUIDANCE,
+  MILK_SPOILAGE_SCENE_METADATA,
+  MILK_SPOILAGE_SIMULATION,
+} from './definitions.generated.js';

@@ -39,6 +39,7 @@ describe('simulation validation CLI helpers', () => {
       root,
       exists: candidate => files.has(candidate),
       readFile: candidate => files.get(candidate) ?? '',
+      definitions: [{ module: { slug: 'pollination', xrFitType: 'normalClassroomBetter' } }],
     });
 
     expect(result.errors).toContain(
@@ -95,6 +96,7 @@ describe('simulation validation CLI helpers', () => {
       root,
       exists: candidate => files.has(candidate),
       readFile: candidate => files.get(candidate) ?? '',
+      definitions: [{ module: { slug: 'pollination', xrFitType: 'strongVrFit' } }],
     });
 
     expect(result.errors).toEqual([]);

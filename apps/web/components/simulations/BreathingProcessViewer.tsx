@@ -11,6 +11,7 @@ import type {
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
@@ -607,7 +608,11 @@ export default function BreathingProcessViewer() {
       }}
       error={runtimeError || undefined}
     >
-      <div ref={mountRef} className="breathing-world-mount" />
+      <SimulationCanvasHost
+        ref={mountRef}
+        className="breathing-world-mount"
+        ariaLabel="Human breathing investigation world"
+      />
       {started && remainingActions.length > 0 && (
         <section className="breathing-action-tray" aria-label="Respiratory system actions">
           <span>Model action</span>

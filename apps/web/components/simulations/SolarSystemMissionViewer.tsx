@@ -11,6 +11,7 @@ import type {
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
@@ -924,7 +925,11 @@ export default function SolarSystemMissionViewer() {
       }}
       error={runtimeError || undefined}
     >
-      <div ref={mountRef} className="solar-world-mount" />
+      <SimulationCanvasHost
+        ref={mountRef}
+        className="solar-world-mount"
+        ariaLabel="Solar system observatory world"
+      />
       {started && !completed && (
         <section className="solar-action-tray" aria-label="Solar system mission actions">
           <span>Mission action</span>

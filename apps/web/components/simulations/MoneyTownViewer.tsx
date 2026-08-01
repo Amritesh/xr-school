@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import {
@@ -748,7 +749,11 @@ export default function MoneyTownViewer() {
       background: '#0f172a',
       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
     }}>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <SimulationCanvasHost
+        ref={mountRef}
+        style={{ width: '100%', height: '100%' }}
+        ariaLabel="Money Town world"
+      />
       <ClassroomSync
         stageIndex={stageIndex}
         stageCount={MONEY_TOWN_STAGES.length}

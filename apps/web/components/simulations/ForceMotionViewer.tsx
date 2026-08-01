@@ -11,6 +11,7 @@ import type {
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
@@ -593,7 +594,11 @@ export default function ForceMotionViewer() {
       }}
       error={runtimeError || undefined}
     >
-      <div ref={mountRef} className="force-motion-world-mount" />
+      <SimulationCanvasHost
+        ref={mountRef}
+        className="force-motion-world-mount"
+        ariaLabel="Force, motion, and shape investigation world"
+      />
       {started && remainingActions.length > 0 && (
         <section className="force-motion-action-tray" aria-label="Force and motion actions">
           <span>Model action</span>

@@ -81,6 +81,14 @@ export const ErrorState = {
   },
 };
 
+export const FeedbackState = {
+  args: {
+    ...Default.args,
+    snapshot: IN_PROGRESS_SNAPSHOT,
+    feedback: 'Good observation. Now compare the visible evidence before continuing.',
+  },
+};
+
 // The completion panel's copy is per-simulation (completionEyebrow/
 // Headline/Body/ActionLabel) rather than hardcoded, so a second simulation
 // (here, the Class 7 Breathing Process lab) can show its own summary

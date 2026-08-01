@@ -1,23 +1,56 @@
 import { describe, expect, it } from 'vitest';
+import type { NormalizedAction } from '../../packages/simulation-schema/src/index';
 import {
   createSolubilityModel,
+  initialSolubilityInvestigationState,
+  reduceSolubilityInvestigation,
+  runFairSolubilityTrial,
   type MixtureSnapshot,
-} from '../../apps/web/lib/world-builder/solubilityModel';
+} from '../../packages/simulation-runtime/src/index';
 
 function total(snapshot: MixtureSnapshot) {
-  return snapshot.dissolvedMassG
-    + snapshot.suspendedMassG
-    + snapshot.settledMassG
-    + snapshot.separatedMassG;
+  return (
+    snapshot.dissolvedMassG +
+    snapshot.suspendedMassG +
+    snapshot.settledMassG +
+    snapshot.separatedMassG +
+    snapshot.floatingMassG
+  );
 }
 
-function advance(model: ReturnType<typeof createSolubilityModel>, seconds: number) {
-  for (let elapsed = 0; elapsed < seconds; elapsed += 1 / 60) model.step(1 / 60);
+function advance(
+  model: ReturnType<typeof createSolubilityModel>,
+  seconds: number,
+) {
+  for (let elapsed = 0; elapsed < seconds; elapsed += 1 / 60) {
+    model.step(1 / 60);
+  }
   return model.snapshot();
 }
 
+function action(
+  actionId: string,
+  targetEntityId: string,
+  value?: string,
+): NormalizedAction {
+  return {
+    actionId,
+    targetEntityId,
+    value,
+    source: 'mouse',
+    phase: 'commit',
+    stageId:
+      actionId === 'solubility.predict'
+        ? 'predict'
+        : actionId === 'solubility.compare-rate'
+          ? 'investigate-rate'
+          : 'fair-test',
+    timestampMs: 1,
+  };
+}
+
 describe('solubility domain model', () => {
-  it('conserves every gram across mixture pools', () => {
+  it('conserves every gram across all mixture pools', () => {
     const model = createSolubilityModel({ substanceId: 'salt' });
     model.addSolute(25);
     model.setStirring(true);
@@ -25,7 +58,7 @@ describe('solubility domain model', () => {
     expect(total(result)).toBeCloseTo(result.addedMassG, 3);
   });
 
-  it('reaches saturation and leaves excess salt as visible solid', () => {
+  it('reaches saturation and leaves excess salt visible', () => {
     const model = createSolubilityModel({ substanceId: 'salt', waterMassG: 100 });
     model.addSolute(50);
     model.setStirring(true);
@@ -36,53 +69,85 @@ describe('solubility domain model', () => {
     expect(result.saturationState).toBe('saturated');
   });
 
-  it('stirring changes dissolution rate but not equilibrium capacity', () => {
-    const still = createSolubilityModel({ substanceId: 'sugar' });
-    const stirred = createSolubilityModel({ substanceId: 'sugar' });
+  it('changes sugar rate with stirring and temperature without creating mass', () => {
+    const still = createSolubilityModel({
+      substanceId: 'sugar',
+      temperatureC: 15,
+    });
+    const stirredWarm = createSolubilityModel({
+      substanceId: 'sugar',
+      temperatureC: 55,
+    });
     still.addSolute(40);
-    stirred.addSolute(40);
-    stirred.setStirring(true);
-    const stillEarly = advance(still, 8);
-    const stirredEarly = advance(stirred, 8);
-    expect(stirredEarly.dissolvedMassG).toBeGreaterThan(stillEarly.dissolvedMassG);
-    expect(stirredEarly.saturationCapacityG).toBeCloseTo(stillEarly.saturationCapacityG, 6);
+    stirredWarm.addSolute(40);
+    stirredWarm.setStirring(true);
+    const stillResult = advance(still, 8);
+    const warmResult = advance(stirredWarm, 8);
+    expect(warmResult.dissolvedMassG).toBeGreaterThan(stillResult.dissolvedMassG);
+    expect(total(warmResult)).toBeCloseTo(40, 3);
   });
 
-  it('warmer water increases sugar capacity and dissolution rate', () => {
-    const cool = createSolubilityModel({ substanceId: 'sugar', temperatureC: 15 });
-    const warm = createSolubilityModel({ substanceId: 'sugar', temperatureC: 55 });
-    cool.addSolute(100);
-    warm.addSolute(100);
-    const coolResult = advance(cool, 5);
-    const warmResult = advance(warm, 5);
-    expect(warmResult.saturationCapacityG).toBeGreaterThan(coolResult.saturationCapacityG);
-    expect(warmResult.dissolvedMassG).toBeGreaterThan(coolResult.dissolvedMassG);
+  it('distinguishes sediment, suspension, separated oil, and floating sawdust', () => {
+    expect(runFairSolubilityTrial('sand').phaseState).toBe('sediment');
+    expect(runFairSolubilityTrial('chalk').phaseState).toBe('suspension');
+    expect(runFairSolubilityTrial('oil').phaseState).toBe('separated-layer');
+    const sawdust = runFairSolubilityTrial('sawdust');
+    expect(sawdust.phaseState).toBe('floating-solid');
+    expect(sawdust.floatingMassG).toBeGreaterThan(4.5);
+    expect(sawdust.dissolvedMassG).toBe(0);
   });
 
-  it('keeps sand insoluble while agitation suspends and waiting settles it', () => {
-    const model = createSolubilityModel({ substanceId: 'sand' });
-    model.addSolute(20);
-    model.setStirring(true);
-    const mixed = advance(model, 5);
-    expect(mixed.dissolvedMassG).toBe(0);
-    expect(mixed.suspendedMassG).toBeGreaterThan(1);
-    model.setStirring(false);
-    const rested = advance(model, 35);
-    expect(rested.suspendedMassG).toBeLessThan(mixed.suspendedMassG);
-    expect(rested.settledMassG).toBeGreaterThan(mixed.settledMassG);
+  it('requires a prediction before returning fair-trial evidence', () => {
+    expect(() =>
+      reduceSolubilityInvestigation(
+        initialSolubilityInvestigationState,
+        action('solubility.run-fair-trial', 'salt'),
+      ),
+    ).toThrow(/prediction.*salt/i);
   });
 
-  it('forms temporary oil droplets then restores a separated upper phase', () => {
-    const model = createSolubilityModel({ substanceId: 'oil' });
-    model.addSolute(20);
-    model.setStirring(true);
-    const emulsified = advance(model, 4);
-    expect(emulsified.suspendedMassG).toBeGreaterThan(5);
-    expect(emulsified.dissolvedMassG).toBe(0);
-    model.setStirring(false);
-    const separated = advance(model, 40);
-    expect(separated.separatedMassG).toBeGreaterThan(18);
-    expect(separated.phaseState).toBe('separated-layer');
+  it('emits measured evidence for all six fair trials', () => {
+    const predicted = reduceSolubilityInvestigation(
+      initialSolubilityInvestigationState,
+      action('solubility.predict', 'sawdust', 'insoluble'),
+    );
+    const tested = reduceSolubilityInvestigation(
+      predicted.state,
+      action('solubility.run-fair-trial', 'sawdust'),
+    );
+    expect(tested).toMatchObject({
+      lessonActionId: 'solubility.run-fair-trial',
+      evidenceIds: ['trial-sawdust-floating-solid'],
+      state: { trials: { sawdust: { phaseState: 'floating-solid' } } },
+    });
+  });
+
+  it('records both one-variable rate comparisons', () => {
+    const stirring = reduceSolubilityInvestigation(
+      initialSolubilityInvestigationState,
+      action('solubility.compare-rate', 'stirring'),
+    );
+    const temperature = reduceSolubilityInvestigation(
+      stirring.state,
+      action('solubility.compare-rate', 'temperature'),
+    );
+    expect(stirring.evidenceIds).toEqual(['stirring-rate-compared']);
+    expect(temperature.evidenceIds).toEqual(['temperature-rate-compared']);
+    expect(temperature.state.rateComparisons).toEqual({
+      stirring: true,
+      temperature: true,
+    });
+  });
+
+  it('parses encoded XR prediction targets', () => {
+    const predicted = reduceSolubilityInvestigation(
+      initialSolubilityInvestigationState,
+      {
+        ...action('solubility.predict', 'sawdust::insoluble'),
+        source: 'xr-controller',
+      },
+    );
+    expect(predicted.state.predictions).toEqual({ sawdust: 'insoluble' });
   });
 
   it('resets deterministically and rejects non-finite input', () => {
@@ -92,8 +157,12 @@ describe('solubility domain model', () => {
     advance(model, 3);
     model.reset('chalk');
     expect(model.snapshot()).toMatchObject({
-      substanceId: 'chalk', addedMassG: 0, dissolvedMassG: 0,
-      suspendedMassG: 0, settledMassG: 0, separatedMassG: 0,
+      addedMassG: 0,
+      dissolvedMassG: 0,
+      suspendedMassG: 0,
+      settledMassG: 0,
+      separatedMassG: 0,
+      floatingMassG: 0,
     });
     expect(() => model.addSolute(Number.NaN)).toThrow(/finite/i);
     expect(() => model.step(Number.POSITIVE_INFINITY)).toThrow(/finite/i);

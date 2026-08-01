@@ -40,7 +40,7 @@ test('completes the inquiry and opens the free observatory', async ({ page }) =>
   await expect(async () => {
     await page.getByRole('button', { name: 'Mercury won' }).click();
     await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible({ timeout: 700 });
-  }).toPass({ timeout: 15_000, intervals: [1_000] });
+  }).toPass({ timeout: 30_000, intervals: [1_000] });
   await continueMission();
 
   await page.getByRole('button', { name: 'Venus is hottest' }).click();

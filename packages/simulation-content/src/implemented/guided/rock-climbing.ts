@@ -1,0 +1,5 @@
+export {
+  ROCK_CLIMBING_GUIDANCE,
+  ROCK_CLIMBING_SCENE_METADATA,
+  ROCK_CLIMBING_SIMULATION,
+} from './definitions.generated.js';

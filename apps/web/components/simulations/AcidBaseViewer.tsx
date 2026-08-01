@@ -11,6 +11,7 @@ import type {
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import {
   isQuestBackPressed,
@@ -442,7 +443,11 @@ export default function AcidBaseViewer() {
       }}
       error={runtimeError || undefined}
     >
-      <div ref={mountRef} className="acid-base-world-mount" />
+      <SimulationCanvasHost
+        ref={mountRef}
+        className="acid-base-world-mount"
+        ariaLabel="Acids and bases laboratory world"
+      />
       {started && remainingActions.length > 0 && (
         <section className="acid-base-action-tray" aria-label="Acid-base lab actions">
           <span>Lab action</span>

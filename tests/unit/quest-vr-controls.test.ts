@@ -10,19 +10,6 @@ const controls = readFileSync(
   "utf8",
 );
 
-const viewers = [
-  "LipidTestViewer.tsx",
-  "VitaminDeficiencyViewer.tsx",
-  "MineralSourcesViewer.tsx",
-  "CottonFarmingViewer.tsx",
-  "CottonGinningViewer.tsx",
-  "ShapeSortingViewer.tsx",
-  "FoodSpoilageViewer.tsx",
-  "PitcherPlantViewer.tsx",
-  "MilkSpoilageViewer.tsx",
-  "AamPapadViewer.tsx",
-];
-
 describe("Shared Quest VR controls", () => {
   it("starts the headset outside the scene centre", () => {
     expect(controls).toContain("new THREE.Vector3(0, 0, 2.6)");
@@ -58,18 +45,14 @@ describe("Shared Quest VR controls", () => {
     expect(controls).toContain('activeSession?.addEventListener("squeezestart"');
   });
 
-  it("is installed in every listed contributed simulation viewer", () => {
-    for (const viewer of viewers) {
-      const source = readFileSync(
-        resolve(process.cwd(), "apps/web/components/simulations", viewer),
-        "utf8",
-      );
-      expect(source).toContain("createQuestVrControls");
-      expect(source).toContain("questVr.update()");
-      expect(source).toContain("questVr.dispose()");
-      expect(source).toContain("unlockNarration");
-      expect(source).toContain("unlockNarration()");
-      expect(source).toContain("900");
-    }
+  it("routes contributed guided classes through the shared XR host", () => {
+    const source = readFileSync(
+      resolve(process.cwd(), "apps/web/components/simulations/shared/GuidedSimulationViewer.tsx"),
+      "utf8",
+    );
+    expect(source).toContain("createSimulationHost");
+    expect(source).toContain("host.enterVr()");
+    expect(source).toContain("host.dispatch");
+    expect(source).toContain("void controller.dispose()");
   });
 });

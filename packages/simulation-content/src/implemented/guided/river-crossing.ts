@@ -1,0 +1,5 @@
+export {
+  RIVER_CROSSING_GUIDANCE,
+  RIVER_CROSSING_SCENE_METADATA,
+  RIVER_CROSSING_SIMULATION,
+} from './definitions.generated.js';

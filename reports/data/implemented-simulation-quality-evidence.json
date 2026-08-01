@@ -1,29 +1,3880 @@
 {
-  "auditDate": "2026-07-14",
+  "auditDate": "2026-08-01",
   "portfolio": {
-    "launchableSimulations": 13,
-    "canonicalModules": 12,
-    "releaseMaturity": "internalQA",
-    "fullRepositoryTestsPassing": 612,
-    "packagedNarrationClips": 85,
-    "packagedNarrationTechnicalProfile": "MPEG Layer III, 56 kbps, 22.05 kHz, mono",
-    "simulationsWithPackagedNarration": 5,
-    "schoolOutcomeStudies": 0,
-    "signedQuestAcceptanceRuns": 0
+    "publiclyLaunchableSimulations": 35,
+    "evidenceMaturityDistribution": {
+      "internalQA": 35,
+      "deviceVerified": 0,
+      "classroomVerified": 0
+    },
+    "narrationCues": 233,
+    "packagedNarrationClips": 36,
+    "missingNarrationFiles": 0,
+    "assets": 102,
+    "signedQuestAcceptanceRuns": 0,
+    "classroomStudies": 0
   },
   "simulations": [
-    {"slug":"pollination","stages":8,"dedicatedTests":29,"audioClips":8,"assetEvidence":"19 live image resources plus mapped PBR procedural garden assets","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained a flat green clear state","modelEvidence":"treatment/control experiment, pollination sequence, scale disclosure and verified biology world"},
-    {"slug":"circuit","stages":4,"dedicatedTests":10,"audioClips":4,"assetEvidence":"16 live image resources and mapped PBR circuit components","liveEvidence":"HTTP 200 and canvas mounted; automated entry remained at mode-selection presentation","modelEvidence":"Ohm's law truth model, open/closed circuit states, resistance prediction and reference vectors"},
-    {"slug":"c9-ch01-a02-states-of-matter","stages":4,"dedicatedTests":8,"audioClips":4,"assetEvidence":"7 live image resources and instanced procedural particles","liveEvidence":"HTTP 200 and canvas mounted; automated entry remained at mode-selection presentation","modelEvidence":"authored solid/liquid/gas reference states, heat mapping and particle-force tests"},
-    {"slug":"c6-ch01-a01-sources-of-food","stages":4,"dedicatedTests":2,"audioClips":36,"assetEvidence":"procedural tabletop, food tokens and category platforms","liveEvidence":"HTTP 200, interactive sorting scene visible and zero runtime errors","modelEvidence":"plant/animal/fungal classification, misconception feedback and scored placements"},
-    {"slug":"c5-ch07-a03-soluble-and-insoluble-substances","stages":4,"dedicatedTests":16,"audioClips":33,"assetEvidence":"procedural PBR beaker, visible 200 mL water, five material vessels, scoop and instanced particles","liveEvidence":"HTTP 200, complete lab visible, zero runtime errors and singleton audio stress passed","modelEvidence":"mass conservation, saturation, temperature, agitation, suspension, settling and immiscible oil pools"},
-    {"slug":"c5-ch03-a02-introduction-of-digestive-system","stages":10,"dedicatedTests":21,"audioClips":0,"assetEvidence":"11 authored GLB model requests with procedural fallback","liveEvidence":"HTTP 200 and canvas mounted, but all 11 GLB requests returned 404","modelEvidence":"complete organ pathway, peristalsis, accessory-organ inspection, recap and healthy-habit assessment"},
-    {"slug":"c7-ch10-a02-the-breathing-process-in-human","stages":6,"dedicatedTests":4,"audioClips":0,"assetEvidence":"procedural airway, lungs, diaphragm and alveoli","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained blank","modelEvidence":"airway tracing, chest-volume mechanics, inhalation/exhalation and gas exchange"},
-    {"slug":"c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape","stages":6,"dedicatedTests":11,"audioClips":0,"assetEvidence":"procedural arena, ball, brake and deformable objects","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained blank","modelEvidence":"fixed-step inertia, braking, directional force, collision bounds and elastic/non-elastic deformation"},
-    {"slug":"c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test","stages":5,"dedicatedTests":6,"audioClips":0,"assetEvidence":"procedural experiment bench and indicator materials","liveEvidence":"HTTP 200 and canvas mounted; post-entry headless frame remained blank","modelEvidence":"pH classification, litmus, universal indicator and neutralisation sequence"},
-    {"slug":"c1-art-a01-learning-of-colours","stages":5,"dedicatedTests":8,"audioClips":0,"assetEvidence":"bright procedural colour worlds, rainbow classroom and quiz garden","liveEvidence":"HTTP 200, child-facing scene visible and zero runtime errors; absent from canonical module registry","modelEvidence":"colour recognition, object finding, memory checks and gated stage completion"},
-    {"slug":"c1-math-ch01-introduction-to-money","stages":5,"dedicatedTests":8,"audioClips":0,"assetEvidence":"procedural Money Town, Indian coins, notes and shop environments","liveEvidence":"HTTP 200, child-facing scene visible and zero runtime errors","modelEvidence":"currency identification, value comparison, shopping and memory checks"},
-    {"slug":"c2-english-ch01-prepositions","stages":5,"dedicatedTests":8,"audioClips":0,"assetEvidence":"procedural English adventure rooms, object-placement scenes and garden","liveEvidence":"HTTP 200, child-facing scene visible and zero runtime errors","modelEvidence":"spatial placement, position-word practice, simple sentence prompts and memory checks"},
-    {"slug":"c8-10-science-solar-system","stages":8,"dedicatedTests":35,"audioClips":0,"assetEvidence":"local credited Sun and eight-planet texture set plus procedural orbit observatory","liveEvidence":"HTTP 200 but production enters Experience paused: roundRect is not a function; canvas never mounts and two resources return 403","modelEvidence":"Kepler-law verification, real orbital periods, Venus temperature misconception, scale blend, comet perihelion and tail direction"}
+    {
+      "slug": "pollination",
+      "title": "Plant Pollination & Growth Cycle",
+      "route": "/simulations/pollination",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 8,
+        "actions": 12,
+        "evidence": 8,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 8,
+        "missingFiles": 0,
+        "hashValidated": 8,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 19,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "pollination:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "pollination:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "8 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "pollination:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "pollination:assets",
+          "kind": "asset",
+          "ref": "pollination-assets",
+          "finding": "19 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "pollination:narration",
+          "kind": "narration",
+          "ref": "pollination-narration",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "pollination:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/pollination",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "pollination:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "circuit",
+      "title": "Electric Circuits & Resistance (Ohm's Law)",
+      "route": "/simulations/circuit",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 4,
+        "actions": 6,
+        "evidence": 4,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 4,
+        "missingFiles": 0,
+        "hashValidated": 4,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 16,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "circuit:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "circuit:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "4 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "circuit:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "circuit:assets",
+          "kind": "asset",
+          "ref": "circuit-assets",
+          "finding": "16 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "circuit:narration",
+          "kind": "narration",
+          "ref": "circuit-narration",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "circuit:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/circuit",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "circuit:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c9-ch01-a02-states-of-matter",
+      "title": "States of Matter Particle Lab",
+      "route": "/simulations/c9-ch01-a02-states-of-matter",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 4,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 4,
+        "missingFiles": 0,
+        "hashValidated": 4,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 7,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c9-ch01-a02-states-of-matter:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c9-ch01-a02-states-of-matter:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "4 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c9-ch01-a02-states-of-matter:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c9-ch01-a02-states-of-matter:assets",
+          "kind": "asset",
+          "ref": "states-of-matter-assets",
+          "finding": "7 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c9-ch01-a02-states-of-matter:narration",
+          "kind": "narration",
+          "ref": "states-of-matter-narration",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c9-ch01-a02-states-of-matter:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c9-ch01-a02-states-of-matter",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c9-ch01-a02-states-of-matter:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch01-a01-sources-of-food",
+      "title": "Sources of Food Sorting Lab",
+      "route": "/simulations/c6-ch01-a01-sources-of-food",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 4,
+        "actions": 10,
+        "evidence": 4,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 4,
+        "missingFiles": 0,
+        "hashValidated": 4,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch01-a01-sources-of-food:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch01-a01-sources-of-food:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "4 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch01-a01-sources-of-food:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch01-a01-sources-of-food:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch01-a01-sources-of-food:narration",
+          "kind": "narration",
+          "ref": "sources-of-food-narration",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch01-a01-sources-of-food:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch01-a01-sources-of-food",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch01-a01-sources-of-food:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch03-a02-introduction-of-digestive-system",
+      "title": "Introduction to the Digestive System",
+      "route": "/simulations/c5-ch03-a02-introduction-of-digestive-system",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 10,
+        "actions": 27,
+        "evidence": 10,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 10,
+        "captions": 10,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch03-a02-introduction-of-digestive-system:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch03-a02-introduction-of-digestive-system:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "10 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch03-a02-introduction-of-digestive-system:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch03-a02-introduction-of-digestive-system:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch03-a02-introduction-of-digestive-system:narration",
+          "kind": "narration",
+          "ref": "digestive-system-narration",
+          "finding": "10 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch03-a02-introduction-of-digestive-system:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch03-a02-introduction-of-digestive-system",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch03-a02-introduction-of-digestive-system:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c7-ch10-a02-the-breathing-process-in-human",
+      "title": "The Breathing Process in Human",
+      "route": "/simulations/c7-ch10-a02-the-breathing-process-in-human",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 6,
+        "actions": 7,
+        "evidence": 6,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 6,
+        "captions": 6,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c7-ch10-a02-the-breathing-process-in-human:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c7-ch10-a02-the-breathing-process-in-human:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "6 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c7-ch10-a02-the-breathing-process-in-human:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c7-ch10-a02-the-breathing-process-in-human:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c7-ch10-a02-the-breathing-process-in-human:narration",
+          "kind": "narration",
+          "ref": "breathing-process-narration",
+          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c7-ch10-a02-the-breathing-process-in-human:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c7-ch10-a02-the-breathing-process-in-human",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c7-ch10-a02-the-breathing-process-in-human:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+      "title": "The Effects of Force on an Object's Motion and Shape",
+      "route": "/simulations/c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 6,
+        "actions": 7,
+        "evidence": 6,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 6,
+        "captions": 6,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "6 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:narration",
+          "kind": "narration",
+          "ref": "force-motion-narration",
+          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+      "title": "Acids, Bases & Neutralisation",
+      "route": "/simulations/c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 5,
+        "actions": 5,
+        "evidence": 5,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 5,
+        "captions": 5,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "5 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:narration",
+          "kind": "narration",
+          "ref": "acid-base-narration",
+          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c1-art-a01-learning-of-colours",
+      "title": "Colour Adventure",
+      "route": "/simulations/c1-art-a01-learning-of-colours",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 14,
+        "actions": 22,
+        "evidence": 13,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 14,
+        "captions": 14,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c1-art-a01-learning-of-colours:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c1-art-a01-learning-of-colours:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "14 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c1-art-a01-learning-of-colours:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c1-art-a01-learning-of-colours:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c1-art-a01-learning-of-colours:narration",
+          "kind": "narration",
+          "ref": "colour-adventure-narration",
+          "finding": "14 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c1-art-a01-learning-of-colours:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c1-art-a01-learning-of-colours",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c1-art-a01-learning-of-colours:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c1-math-ch01-introduction-to-money",
+      "title": "Introduction to Money",
+      "route": "/simulations/c1-math-ch01-introduction-to-money",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 8,
+        "actions": 22,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c1-math-ch01-introduction-to-money:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c1-math-ch01-introduction-to-money:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c1-math-ch01-introduction-to-money:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c1-math-ch01-introduction-to-money:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c1-math-ch01-introduction-to-money:narration",
+          "kind": "narration",
+          "ref": "money-town-narration",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c1-math-ch01-introduction-to-money:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c1-math-ch01-introduction-to-money",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c1-math-ch01-introduction-to-money:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c2-english-ch01-prepositions",
+      "title": "Preposition Adventure",
+      "route": "/simulations/c2-english-ch01-prepositions",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 5,
+        "actions": 23,
+        "evidence": 4,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 5,
+        "captions": 5,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c2-english-ch01-prepositions:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c2-english-ch01-prepositions:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "5 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c2-english-ch01-prepositions:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c2-english-ch01-prepositions:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c2-english-ch01-prepositions:narration",
+          "kind": "narration",
+          "ref": "preposition-adventure-narration",
+          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c2-english-ch01-prepositions:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c2-english-ch01-prepositions",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c2-english-ch01-prepositions:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c8-10-science-solar-system",
+      "title": "Solar System: Gravity’s Orchestra",
+      "route": "/simulations/c8-10-science-solar-system",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "existing",
+      "counts": {
+        "stages": 8,
+        "actions": 17,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 9,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c8-10-science-solar-system:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c8-10-science-solar-system:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/existing.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c8-10-science-solar-system:behavior",
+          "kind": "test",
+          "ref": "tests/unit/implemented-simulation-registry.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-10-science-solar-system:assets",
+          "kind": "asset",
+          "ref": "solar-system-mission-assets",
+          "finding": "9 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-10-science-solar-system:narration",
+          "kind": "narration",
+          "ref": "solar-system-mission-narration",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c8-10-science-solar-system:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c8-10-science-solar-system",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-10-science-solar-system:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch04-a01-food-spoilage",
+      "title": "Food Spoilage",
+      "route": "/simulations/c5-ch04-a01-food-spoilage",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/mangoes-round-the-year-food-spoilage"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 6,
+        "actions": 6,
+        "evidence": 6,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 6,
+        "captions": 6,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch04-a01-food-spoilage:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch04-a01-food-spoilage:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "6 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch04-a01-food-spoilage:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a01-food-spoilage:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch04-a01-food-spoilage",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a01-food-spoilage:narration",
+          "kind": "narration",
+          "ref": "narration:guided-food-spoilage",
+          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a01-food-spoilage:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch04-a01-food-spoilage",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a01-food-spoilage:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch04-a02-milk-spoilage",
+      "title": "Milk Spoilage",
+      "route": "/simulations/c5-ch04-a02-milk-spoilage",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/mangoes-round-the-year-milk-spoilage"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 6,
+        "actions": 6,
+        "evidence": 6,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 6,
+        "captions": 6,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch04-a02-milk-spoilage:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch04-a02-milk-spoilage:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "6 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch04-a02-milk-spoilage:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a02-milk-spoilage:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch04-a02-milk-spoilage",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a02-milk-spoilage:narration",
+          "kind": "narration",
+          "ref": "narration:guided-milk-spoilage",
+          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a02-milk-spoilage:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch04-a02-milk-spoilage",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a02-milk-spoilage:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch04-a03-the-making-of-aam-papad",
+      "title": "The Making of Aam Papad",
+      "route": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/mangoes-round-the-year-aam-papad"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch04-a03-the-making-of-aam-papad:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch04-a03-the-making-of-aam-papad:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "7 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch04-a03-the-making-of-aam-papad:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a03-the-making-of-aam-papad:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch04-a03-the-making-of-aam-papad",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a03-the-making-of-aam-papad:narration",
+          "kind": "narration",
+          "ref": "narration:guided-aam-papad",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a03-the-making-of-aam-papad:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch04-a03-the-making-of-aam-papad:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch05-a01-pitcher-plant-the-insect-hunter",
+      "title": "Pitcher Plant — The Insect Hunter",
+      "route": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/seeds-and-seeds-pitcher-plant"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "7 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch05-a01-pitcher-plant-the-insect-hunter",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:narration",
+          "kind": "narration",
+          "ref": "narration:guided-pitcher-plant",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch05-a02-seed-dispersal",
+      "title": "Seed Dispersal",
+      "route": "/simulations/c5-ch05-a02-seed-dispersal",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/seeds-and-seeds-seed-dispersal"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch05-a02-seed-dispersal:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch05-a02-seed-dispersal:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "7 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch05-a02-seed-dispersal:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a02-seed-dispersal:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch05-a02-seed-dispersal",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a02-seed-dispersal:narration",
+          "kind": "narration",
+          "ref": "narration:guided-seed-dispersal",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a02-seed-dispersal:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch05-a02-seed-dispersal",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch05-a02-seed-dispersal:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch06-a01-the-storage-of-rainwater",
+      "title": "The Storage of Rainwater",
+      "route": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/every-drop-counts-rainwater-storage"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch06-a01-the-storage-of-rainwater:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch06-a01-the-storage-of-rainwater:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "7 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch06-a01-the-storage-of-rainwater:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a01-the-storage-of-rainwater:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch06-a01-the-storage-of-rainwater",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a01-the-storage-of-rainwater:narration",
+          "kind": "narration",
+          "ref": "narration:guided-rainwater-storage",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a01-the-storage-of-rainwater:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a01-the-storage-of-rainwater:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch06-a02-a-step-well-structure",
+      "title": "A Step Well Structure",
+      "route": "/simulations/c5-ch06-a02-a-step-well-structure",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/every-drop-counts-stepwell-structure"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch06-a02-a-step-well-structure:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch06-a02-a-step-well-structure:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "7 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch06-a02-a-step-well-structure:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a02-a-step-well-structure:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch06-a02-a-step-well-structure",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a02-a-step-well-structure:narration",
+          "kind": "narration",
+          "ref": "narration:guided-stepwell-structure",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a02-a-step-well-structure:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch06-a02-a-step-well-structure",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch06-a02-a-step-well-structure:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+      "title": "Dead Sea: Salt Water and Its Effects",
+      "route": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/experiments-with-water-dead-sea-salt-water"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:narration",
+          "kind": "narration",
+          "ref": "narration:guided-dead-sea-salt-water",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch08-a01-diagnosis-of-malaria",
+      "title": "Diagnosis of Malaria",
+      "route": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/treat-for-mosquitoes-malaria-diagnosis"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch08-a01-diagnosis-of-malaria:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch08-a01-diagnosis-of-malaria:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch08-a01-diagnosis-of-malaria:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a01-diagnosis-of-malaria:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch08-a01-diagnosis-of-malaria",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a01-diagnosis-of-malaria:narration",
+          "kind": "narration",
+          "ref": "narration:guided-malaria-diagnosis",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a01-diagnosis-of-malaria:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a01-diagnosis-of-malaria:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch08-a02-life-cycle-of-the-mosquito",
+      "title": "Life Cycle of the Mosquito",
+      "route": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/treat-for-mosquitoes-mosquito-life-cycle"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch08-a02-life-cycle-of-the-mosquito:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a02-life-cycle-of-the-mosquito:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch08-a02-life-cycle-of-the-mosquito",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a02-life-cycle-of-the-mosquito:narration",
+          "kind": "narration",
+          "ref": "narration:guided-mosquito-life-cycle",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a02-life-cycle-of-the-mosquito:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch08-a02-life-cycle-of-the-mosquito:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch09-a01-river-crossing-adventure",
+      "title": "River Crossing Adventure",
+      "route": "/simulations/c5-ch09-a01-river-crossing-adventure",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/up-you-go-river-crossing-adventure"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch09-a01-river-crossing-adventure:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch09-a01-river-crossing-adventure:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch09-a01-river-crossing-adventure:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a01-river-crossing-adventure:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch09-a01-river-crossing-adventure",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a01-river-crossing-adventure:narration",
+          "kind": "narration",
+          "ref": "narration:guided-river-crossing",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a01-river-crossing-adventure:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch09-a01-river-crossing-adventure",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a01-river-crossing-adventure:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch09-a02-rock-climbing",
+      "title": "Rock Climbing",
+      "route": "/simulations/c5-ch09-a02-rock-climbing",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/up-you-go-rock-climbing"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 8,
+        "missingFiles": 0,
+        "hashValidated": 8,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 9,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch09-a02-rock-climbing:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch09-a02-rock-climbing:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch09-a02-rock-climbing:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a02-rock-climbing:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch09-a02-rock-climbing",
+          "finding": "9 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a02-rock-climbing:narration",
+          "kind": "narration",
+          "ref": "narration:guided-rock-climbing",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a02-rock-climbing:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch09-a02-rock-climbing",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a02-rock-climbing:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch09-a03-camp-in-the-snow",
+      "title": "Camp in the Snow",
+      "route": "/simulations/c5-ch09-a03-camp-in-the-snow",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/up-you-go-camp-in-snow"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch09-a03-camp-in-the-snow:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch09-a03-camp-in-the-snow:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch09-a03-camp-in-the-snow:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a03-camp-in-the-snow:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch09-a03-camp-in-the-snow",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a03-camp-in-the-snow:narration",
+          "kind": "narration",
+          "ref": "narration:guided-camp-in-snow",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a03-camp-in-the-snow:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch09-a03-camp-in-the-snow",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a03-camp-in-the-snow:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch09-a04-snow-mountain-climbing",
+      "title": "Snow Mountain Climbing",
+      "route": "/simulations/c5-ch09-a04-snow-mountain-climbing",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/up-you-go-snow-mountain-climbing"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch09-a04-snow-mountain-climbing:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch09-a04-snow-mountain-climbing:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch09-a04-snow-mountain-climbing:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a04-snow-mountain-climbing:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch09-a04-snow-mountain-climbing",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a04-snow-mountain-climbing:narration",
+          "kind": "narration",
+          "ref": "narration:guided-snow-mountain-climbing",
+          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a04-snow-mountain-climbing:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch09-a04-snow-mountain-climbing",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch09-a04-snow-mountain-climbing:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch10-a01-a-visit-of-ancient-fort",
+      "title": "A Visit of an Ancient Fort",
+      "route": "/simulations/c5-ch10-a01-a-visit-of-ancient-fort",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/walls-tell-stories-ancient-fort-visit"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 8,
+        "actions": 8,
+        "evidence": 8,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 8,
+        "captions": 8,
+        "packagedAudio": 8,
+        "missingFiles": 0,
+        "hashValidated": 8,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 9,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch10-a01-a-visit-of-ancient-fort:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch10-a01-a-visit-of-ancient-fort:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "8 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch10-a01-a-visit-of-ancient-fort:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch10-a01-a-visit-of-ancient-fort:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch10-a01-a-visit-of-ancient-fort",
+          "finding": "9 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch10-a01-a-visit-of-ancient-fort:narration",
+          "kind": "narration",
+          "ref": "narration:guided-ancient-fort",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch10-a01-a-visit-of-ancient-fort:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch10-a01-a-visit-of-ancient-fort",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch10-a01-a-visit-of-ancient-fort:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch03-a01-cotton-farming",
+      "title": "Cotton Farming",
+      "route": "/simulations/c6-ch03-a01-cotton-farming",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/fibre-to-fabric-cotton-farming"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch03-a01-cotton-farming:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch03-a01-cotton-farming:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "7 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch03-a01-cotton-farming:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a01-cotton-farming:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c06-ch03-a01-cotton-farming",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a01-cotton-farming:narration",
+          "kind": "narration",
+          "ref": "narration:guided-cotton-farming",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a01-cotton-farming:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch03-a01-cotton-farming",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a01-cotton-farming:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch03-a02-the-process-of-cotton-ginning",
+      "title": "The Process of Cotton Ginning",
+      "route": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/fibre-to-fabric-cotton-ginning"
+      ],
+      "kind": "guided",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 6,
+        "actions": 6,
+        "evidence": 6,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 6,
+        "captions": 6,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "provenanceComplete": false,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch03-a02-the-process-of-cotton-ginning:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+          "finding": "6 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
+          "kind": "test",
+          "ref": "tests/unit/guided-simulation-controller.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a02-the-process-of-cotton-ginning:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c06-ch03-a02-the-process-of-cotton-ginning",
+          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a02-the-process-of-cotton-ginning:narration",
+          "kind": "narration",
+          "ref": "narration:guided-cotton-ginning",
+          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a02-the-process-of-cotton-ginning:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch03-a02-the-process-of-cotton-ginning:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+      "title": "What Floats, What Sinks?",
+      "route": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/experiments-with-water-float-or-sink"
+      ],
+      "kind": "interactive",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 5,
+        "actions": 5,
+        "evidence": 15,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 5,
+        "captions": 5,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 3,
+        "provenanceComplete": false,
+        "fallback": "manifest-declared fallback asset",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/interactive/floatOrSink.ts",
+          "finding": "5 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
+          "kind": "test",
+          "ref": "tests/unit/interactive-investigation-session.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:assets",
+          "kind": "asset",
+          "ref": "assets-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:narration",
+          "kind": "narration",
+          "ref": "narration-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch07-a03-soluble-and-insoluble-substances",
+      "title": "Soluble and Insoluble Substances Lab",
+      "route": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/experiments-with-water-soluble-insoluble"
+      ],
+      "kind": "interactive",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 5,
+        "actions": 6,
+        "evidence": 17,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 5,
+        "captions": 5,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 3,
+        "provenanceComplete": false,
+        "fallback": "manifest-declared fallback asset",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch07-a03-soluble-and-insoluble-substances:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/interactive/solubility.ts",
+          "finding": "5 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
+          "kind": "test",
+          "ref": "tests/unit/interactive-investigation-session.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a03-soluble-and-insoluble-substances:assets",
+          "kind": "asset",
+          "ref": "assets-c5-ch07-a03-soluble-and-insoluble-substances",
+          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a03-soluble-and-insoluble-substances:narration",
+          "kind": "narration",
+          "ref": "narration-c5-ch07-a03-soluble-and-insoluble-substances",
+          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a03-soluble-and-insoluble-substances:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch07-a03-soluble-and-insoluble-substances:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch02-a03-test-the-presence-of-lipids",
+      "title": "Test the Presence of Lipids",
+      "route": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/components-of-food-lipid-test"
+      ],
+      "kind": "interactive",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 5,
+        "actions": 5,
+        "evidence": 9,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 5,
+        "captions": 5,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 3,
+        "provenanceComplete": false,
+        "fallback": "manifest-declared fallback asset",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch02-a03-test-the-presence-of-lipids:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/interactive/lipidTest.ts",
+          "finding": "5 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch02-a03-test-the-presence-of-lipids:behavior",
+          "kind": "test",
+          "ref": "tests/unit/interactive-investigation-session.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a03-test-the-presence-of-lipids:assets",
+          "kind": "asset",
+          "ref": "assets-c6-ch02-a03-test-the-presence-of-lipids",
+          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a03-test-the-presence-of-lipids:narration",
+          "kind": "narration",
+          "ref": "narration-c6-ch02-a03-test-the-presence-of-lipids",
+          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a03-test-the-presence-of-lipids:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a03-test-the-presence-of-lipids:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+      "title": "Sources of Vitamins and Their Deficiencies",
+      "route": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/components-of-food-vitamins-deficiencies"
+      ],
+      "kind": "interactive",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 7,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 3,
+        "provenanceComplete": false,
+        "fallback": "manifest-declared fallback asset",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/interactive/vitaminDeficiencies.ts",
+          "finding": "4 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
+          "kind": "test",
+          "ref": "tests/unit/interactive-investigation-session.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:assets",
+          "kind": "asset",
+          "ref": "assets-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:narration",
+          "kind": "narration",
+          "ref": "narration-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+          "finding": "4 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch02-a05-the-sources-of-minerals-in-food",
+      "title": "The Sources of Minerals in Food",
+      "route": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/components-of-food-mineral-sources"
+      ],
+      "kind": "interactive",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 6,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 3,
+        "provenanceComplete": false,
+        "fallback": "manifest-declared fallback asset",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch02-a05-the-sources-of-minerals-in-food:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/interactive/mineralSources.ts",
+          "finding": "4 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
+          "kind": "test",
+          "ref": "tests/unit/interactive-investigation-session.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a05-the-sources-of-minerals-in-food:assets",
+          "kind": "asset",
+          "ref": "assets-c6-ch02-a05-the-sources-of-minerals-in-food",
+          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a05-the-sources-of-minerals-in-food:narration",
+          "kind": "narration",
+          "ref": "narration-c6-ch02-a05-the-sources-of-minerals-in-food",
+          "finding": "4 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a05-the-sources-of-minerals-in-food:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch02-a05-the-sources-of-minerals-in-food:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c6-ch04-a01-sorting-materials-according-to-their-shape",
+      "title": "Sorting Materials According to Their Shape",
+      "route": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [
+        "/simulations/sorting-materials-by-shape"
+      ],
+      "kind": "interactive",
+      "contribution": "pr-8",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 11,
+        "assessmentPrompts": 3
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 3,
+        "provenanceComplete": false,
+        "fallback": "manifest-declared fallback asset",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/interactive/shapeSorting.ts",
+          "finding": "4 canonical stages, 3 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
+          "kind": "test",
+          "ref": "tests/unit/interactive-investigation-session.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:assets",
+          "kind": "asset",
+          "ref": "assets-c6-ch04-a01-sorting-materials-according-to-their-shape",
+          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:narration",
+          "kind": "narration",
+          "ref": "narration-c6-ch04-a01-sorting-materials-according-to-their-shape",
+          "finding": "4 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    }
   ]
 }

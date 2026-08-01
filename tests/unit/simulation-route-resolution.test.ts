@@ -100,9 +100,13 @@ describe("registry-driven simulation route resolution", () => {
       }
     }
 
-    expect([...checkedPaths]).toEqual([
+    expect(checkedPaths.size).toBe(23);
+    expect(checkedPaths).toContain(
       "/simulations/experiments-with-water-soluble-insoluble",
-    ]);
+    );
+    expect(checkedPaths).toContain(
+      "/simulations/mangoes-round-the-year-food-spoilage",
+    );
   });
 
   it("returns a controlled Next not-found for unknown or legacy slugs", () => {

@@ -1,6 +1,15 @@
+import { isValidElement } from "react";
 import { describe, expect, it } from "vitest";
 
-import { IMPLEMENTED_SIMULATIONS } from "@xr-school/simulation-content";
+import {
+  GUIDED_SIMULATION_DEFINITIONS,
+  IMPLEMENTED_SIMULATIONS,
+} from "@xr-school/simulation-content";
+import GuidedSimulationViewer from "../../apps/web/components/simulations/shared/GuidedSimulationViewer";
+import InteractiveInvestigationViewer from "../../apps/web/components/simulations/shared/InteractiveInvestigationViewer";
+import {
+  INTERACTIVE_VIEWER_REGISTRATIONS,
+} from "../../apps/web/lib/simulations/interactive/registrations";
 import {
   SIMULATION_VIEWER_KEYS,
   assertSimulationViewerCoverage,
@@ -49,10 +58,6 @@ const EXPECTED_VIEWERS = {
     fileName: "SolarSystemMissionViewer.tsx",
     load: () => import("../../apps/web/components/simulations/SolarSystemMissionViewer"),
   },
-  solubility: {
-    fileName: "SolubilityLabViewer.tsx",
-    load: () => import("../../apps/web/components/simulations/SolubilityLabViewer"),
-  },
   "sources-of-food": {
     fileName: "FoodSourcesSortingViewer.tsx",
     load: () => import("../../apps/web/components/simulations/FoodSourcesSortingViewer"),
@@ -74,11 +79,13 @@ describe("released simulation viewer registry", () => {
     );
     const releasedKeys = released.map(({ module }) => module.viewerKey).sort();
 
-    expect(released).toHaveLength(13);
+    expect(released).toHaveLength(35);
     expect([...SIMULATION_VIEWER_KEYS].sort()).toEqual(releasedKeys);
-    expect([...SIMULATION_VIEWER_KEYS].sort()).toEqual(
-      Object.keys(EXPECTED_VIEWERS).sort(),
-    );
+    expect(SIMULATION_VIEWER_KEYS).toHaveLength(35);
+    expect(SIMULATION_VIEWER_KEYS).toEqual(expect.arrayContaining([
+      ...Object.keys(EXPECTED_VIEWERS),
+      ...GUIDED_SIMULATION_DEFINITIONS.map(definition => definition.viewerKey),
+    ]));
 
     for (const definition of released) {
       const registration = getSimulationViewer(definition.module.viewerKey);
@@ -93,14 +100,36 @@ describe("released simulation viewer registry", () => {
       if (definition.module.publicationStatus !== "released") continue;
       const viewerKey = definition.module.viewerKey;
       const expected = expectedViewer(viewerKey);
-      expect(expected, viewerKey).toBeDefined();
+      const registeredModule = await getSimulationViewer(viewerKey).load();
+      if (expected) {
+        const expectedModule = await expected.load();
+        expect(registeredModule.default, viewerKey).toBe(expectedModule.default);
+        continue;
+      }
 
-      const [registeredModule, expectedModule] = await Promise.all([
-        getSimulationViewer(viewerKey).load(),
-        expected.load(),
-      ]);
-
-      expect(registeredModule.default, viewerKey).toBe(expectedModule.default);
+      const guidedDefinition = GUIDED_SIMULATION_DEFINITIONS.find(
+        definition => definition.viewerKey === viewerKey,
+      );
+      const interactiveRegistration = INTERACTIVE_VIEWER_REGISTRATIONS[
+        viewerKey as keyof typeof INTERACTIVE_VIEWER_REGISTRATIONS
+      ];
+      if (interactiveRegistration) {
+        const element = (registeredModule.default as () => unknown)();
+        expect(isValidElement(element), viewerKey).toBe(true);
+        if (!isValidElement(element)) continue;
+        expect(element.type, viewerKey).toBe(InteractiveInvestigationViewer);
+        expect(element.props).toMatchObject({
+          registration: interactiveRegistration,
+        });
+        continue;
+      }
+      expect(guidedDefinition, viewerKey).toBeDefined();
+      const element = (registeredModule.default as () => unknown)();
+      expect(isValidElement(element), viewerKey).toBe(true);
+      if (!isValidElement(element)) continue;
+      expect(element.type, viewerKey).toBe(GuidedSimulationViewer);
+      expect(element.props).toMatchObject({ definition: guidedDefinition });
+      expect(element.props.sceneAdapter.id).toBe(`guided:${definition.module.id}`);
     }
   });
 
@@ -110,6 +139,32 @@ describe("released simulation viewer registry", () => {
       expect(registration.sourcePath).toBe(
         `apps/web/components/simulations/${expected.fileName}`,
       );
+    }
+    for (const definition of GUIDED_SIMULATION_DEFINITIONS) {
+      const registration = getSimulationViewer(definition.viewerKey);
+      expect(registration.sourcePath).toMatch(
+        /^apps\/web\/lib\/simulations\/guided\/.+\.scene\.ts$/,
+      );
+    }
+    for (const [viewerKey] of Object.entries(INTERACTIVE_VIEWER_REGISTRATIONS)) {
+      const registration = getSimulationViewer(viewerKey);
+      expect(registration.sourcePath).toMatch(
+        /^apps\/web\/lib\/simulations\/interactive\/.+\.scene\.ts$/,
+      );
+    }
+  });
+
+  it("binds exactly 17 guided viewer keys without exposing legacy slugs as keys", () => {
+    const guidedKeys = GUIDED_SIMULATION_DEFINITIONS.map(item => item.viewerKey);
+    expect(guidedKeys).toHaveLength(17);
+    expect(new Set(guidedKeys).size).toBe(17);
+    for (const definition of IMPLEMENTED_SIMULATIONS.filter(
+      item => item.kind === "guided",
+    )) {
+      expect(SIMULATION_VIEWER_KEYS).toContain(definition.module.viewerKey);
+      for (const alias of definition.module.legacyAliases ?? []) {
+        expect(SIMULATION_VIEWER_KEYS).not.toContain(alias);
+      }
     }
   });
 

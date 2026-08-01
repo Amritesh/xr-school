@@ -46,6 +46,7 @@ interface SimulationExperienceShellProps {
     onAnswer(optionId: string): void;
   };
   caption?: string;
+  feedback?: string;
   onReplayNarration?: () => void;
   onRestart?: () => void;
   helpText?: string;
@@ -78,6 +79,7 @@ export default function SimulationExperienceShell({
   primaryAction,
   assessment,
   caption,
+  feedback,
   onReplayNarration,
   onRestart,
   helpText,
@@ -129,6 +131,7 @@ export default function SimulationExperienceShell({
           primaryAction={primaryAction}
           assessment={assessment}
           caption={caption}
+          feedback={feedback}
           onReplayNarration={onReplayNarration}
           onRestart={onRestart}
           helpText={helpText}

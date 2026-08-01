@@ -5,6 +5,23 @@ import type {
   LearningConceptRecord,
   SimulationModuleRecord,
 } from '@xr-school/simulation-schema';
+import {
+  GUIDED_CLASS5_CHAPTER_IDS,
+  GUIDED_CLASS5_CONCEPT_IDS,
+  GUIDED_CLASS5_SIMULATION_IDS,
+  GUIDED_CLASS6_CHAPTER_IDS,
+  GUIDED_CLASS6_CONCEPT_IDS,
+  GUIDED_CLASS6_SIMULATION_IDS,
+  GUIDED_CURRICULUM_CHAPTERS,
+  GUIDED_LEARNING_CONCEPTS,
+} from './implemented/guided/curriculum.js';
+import {
+  INTERACTIVE_CLASS6_CHAPTER_IDS,
+  INTERACTIVE_CLASS6_CONCEPT_IDS,
+  INTERACTIVE_CLASS6_SIMULATION_IDS,
+  INTERACTIVE_CURRICULUM_CHAPTERS,
+  INTERACTIVE_LEARNING_CONCEPTS,
+} from './implemented/interactive/curriculum.js';
 
 export const LEARNING_CONCEPTS: LearningConceptRecord[] = [
   {
@@ -515,6 +532,8 @@ export const LEARNING_CONCEPTS: LearningConceptRecord[] = [
     practicalRelevance: 'Supports comparison, classification, and evidence-based space learning.',
     searchKeywords: ['rocky planet', 'gas giant', 'rings', 'atmosphere'],
   },
+  ...GUIDED_LEARNING_CONCEPTS,
+  ...INTERACTIVE_LEARNING_CONCEPTS,
 ];
 
 export const CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
@@ -565,8 +584,20 @@ export const CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
     chapterNumber: 7,
     title: 'Experiments with Water',
     topicIds: ['topic-soluble-insoluble'],
-    conceptIds: ['concept-solubility', 'concept-solution', 'concept-mixture-observation'],
-    simulationIds: ['sim-c05-ch07-a03-soluble-and-insoluble-substances'],
+    conceptIds: [
+      'concept-solubility',
+      'concept-solution',
+      'concept-mixture-observation',
+      'concept-density-and-buoyancy',
+      'concept-buoyancy',
+      'concept-density',
+      'concept-displacement',
+    ],
+    simulationIds: [
+      'sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks',
+      'sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects',
+      'sim-c05-ch07-a03-soluble-and-insoluble-substances',
+    ],
   },
   {
     id: 'chapter-cbse-c6-food-sources',
@@ -640,6 +671,8 @@ export const CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
     conceptIds: ['concept-acids-bases', 'concept-ph-indicators', 'concept-neutralisation'],
     simulationIds: ['sim-c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test'],
   },
+  ...GUIDED_CURRICULUM_CHAPTERS,
+  ...INTERACTIVE_CURRICULUM_CHAPTERS,
 ];
 
 export const COURSES: CourseRecord[] = [
@@ -694,6 +727,7 @@ export const COURSES: CourseRecord[] = [
     chapterIds: [
       'chapter-cbse-c5-from-tasting-to-digesting',
       'chapter-cbse-c5-water-experiments',
+      ...GUIDED_CLASS5_CHAPTER_IDS,
     ],
     conceptIds: [
       'concept-digestive-system',
@@ -703,12 +737,28 @@ export const COURSES: CourseRecord[] = [
       'concept-solubility',
       'concept-solution',
       'concept-mixture-observation',
+      'concept-buoyancy',
+      'concept-density',
+      'concept-displacement',
+      ...GUIDED_CLASS5_CONCEPT_IDS,
     ],
     simulationIds: [
       'sim-c05-ch03-a02-introduction-of-digestive-system',
+      'sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks',
       'sim-c05-ch07-a03-soluble-and-insoluble-substances',
+      'sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects',
+      ...GUIDED_CLASS5_SIMULATION_IDS,
     ],
-    searchKeywords: ['class 5', 'EVS', 'digestive system', 'water experiments'],
+    searchKeywords: [
+      'class 5',
+      'EVS',
+      'digestive system',
+      'water experiments',
+      'food preservation',
+      'plants',
+      'malaria',
+      'heritage',
+    ],
   },
   {
     id: 'course-cbse-c6-science',
@@ -718,10 +768,25 @@ export const COURSES: CourseRecord[] = [
     gradeBand: 'class6To8',
     subject: 'science',
     description: 'Foundational science connecting food, living sources, and daily observation.',
-    chapterIds: ['chapter-cbse-c6-food-sources'],
-    conceptIds: ['concept-food-sources', 'concept-plant-products', 'concept-animal-products', 'concept-edible-fungi'],
-    simulationIds: ['sim-c06-ch01-a01-sources-of-food'],
-    searchKeywords: ['class 6', 'food sources', 'ingredients'],
+    chapterIds: [
+      'chapter-cbse-c6-food-sources',
+      ...INTERACTIVE_CLASS6_CHAPTER_IDS,
+      ...GUIDED_CLASS6_CHAPTER_IDS,
+    ],
+    conceptIds: [
+      'concept-food-sources',
+      'concept-plant-products',
+      'concept-animal-products',
+      'concept-edible-fungi',
+      ...INTERACTIVE_CLASS6_CONCEPT_IDS,
+      ...GUIDED_CLASS6_CONCEPT_IDS,
+    ],
+    simulationIds: [
+      'sim-c06-ch01-a01-sources-of-food',
+      ...INTERACTIVE_CLASS6_SIMULATION_IDS,
+      ...GUIDED_CLASS6_SIMULATION_IDS,
+    ],
+    searchKeywords: ['class 6', 'food sources', 'ingredients', 'cotton', 'ginning', 'fibre'],
   },
   {
     id: 'course-cbse-c7-biology',

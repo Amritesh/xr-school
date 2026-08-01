@@ -162,11 +162,11 @@ describe('released simulation registry consumers', () => {
       );
     }
     expect(position('npm run type-check:packages')).toBeGreaterThan(position('npm run test'));
-    expect(position('npm --workspace apps/api run build')).toBeGreaterThan(
+    expect(position('npm run api:build')).toBeGreaterThan(
       position('npm run type-check:packages'),
     );
     expect(position('npm --workspace apps/web run type-check')).toBeGreaterThan(
-      position('npm --workspace apps/api run build'),
+      position('npm run api:build'),
     );
     expect(position('npm --workspace apps/web run build')).toBeGreaterThan(
       position('npm --workspace apps/web run type-check'),

@@ -17,6 +17,7 @@ import type {
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
@@ -869,7 +870,11 @@ export default function PollinationViewer() {
       }}
       error={runtimeError || undefined}
     >
-      <div ref={mountRef} className="pollination-world-mount" />
+      <SimulationCanvasHost
+        ref={mountRef}
+        className="pollination-world-mount"
+        ariaLabel="Pollination investigation world"
+      />
       {started && remainingActions.length > 0 && (
         <section
           className="pollination-action-tray"

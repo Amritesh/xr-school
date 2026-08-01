@@ -14,6 +14,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { IMPLEMENTED_SIMULATIONS } from '@xr-school/simulation-content';
 
 const RED = '\x1b[31m';
 const GREEN = '\x1b[32m';
@@ -71,22 +72,18 @@ export function validateSimulationWorkspace({
   root = process.cwd(),
   exists = existsSync,
   readFile = readFileSync,
+  definitions = IMPLEMENTED_SIMULATIONS,
 } = {}) {
   const { result, fail, pass } = createResult();
   const fromRoot = path => resolve(root, path);
-  const modulesPath = fromRoot('packages/simulation-content/src/modules.ts');
-
-  if (!exists(modulesPath)) {
-    fail('packages/simulation-content/src/modules.ts not found');
-    return result;
-  }
-
-  const modulesCode = readFile(modulesPath, 'utf8');
-  const slugs = extractSimulationSlugs(modulesCode);
+  const slugs = definitions.map(definition => definition.module.slug);
 
   if (slugs.length === 0) {
-    fail('No simulation slugs found in packages/simulation-content/src/modules.ts');
+    fail('No canonical simulations found in IMPLEMENTED_SIMULATIONS');
     return result;
+  }
+  if (new Set(slugs).size !== slugs.length) {
+    fail('IMPLEMENTED_SIMULATIONS contains duplicate canonical slugs');
   }
 
   pass(`Found ${slugs.length} simulation slug(s): ${slugs.join(', ')}`);
@@ -149,7 +146,7 @@ export function validateSimulationWorkspace({
     }
   }
 
-  for (const fitType of extractXrFitTypes(modulesCode)) {
+  for (const fitType of definitions.map(definition => definition.module.xrFitType)) {
     if (FORBIDDEN_XR_FIT_TYPES.includes(fitType)) {
       fail(`Simulation uses forbidden xrFitType "${fitType}". Only strongVrFit or arTabletFit may be built.`);
     } else {

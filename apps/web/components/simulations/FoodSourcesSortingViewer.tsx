@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import * as THREE from 'three';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 
@@ -394,7 +395,11 @@ export default function FoodSourcesSortingViewer() {
 
   return (
     <>
-      <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />
+      <SimulationCanvasHost
+        ref={mountRef}
+        style={{ width: '100vw', height: '100vh' }}
+        ariaLabel="Sources of food sorting world"
+      />
       <ClassroomSync
         stageIndex={stageIndex}
         stageCount={STAGES.length}

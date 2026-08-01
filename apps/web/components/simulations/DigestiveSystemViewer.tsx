@@ -9,6 +9,7 @@ import {
 } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import { createPresentationPipeline } from '@/lib/world-builder/presentationPipeline';
+import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import {
   DIGESTIVE_CLASSROOM_FEATURES,
   DIGESTIVE_EDUCATIONAL_OBJECTIVES,
@@ -1662,7 +1663,11 @@ export default function DigestiveSystemViewer() {
       background: '#071426',
       fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
     }}>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+      <SimulationCanvasHost
+        ref={mountRef}
+        style={{ width: '100%', height: '100%' }}
+        ariaLabel="Digestive system investigation world"
+      />
       <ClassroomSync
         stageIndex={stageIndex}
         stageCount={DIGESTIVE_STAGES.length}

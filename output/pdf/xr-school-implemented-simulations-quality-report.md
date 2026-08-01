@@ -1,81 +1,90 @@
 # XR School Implemented Simulation Quality Report
 
-**Audit date:** 14 July 2026
+**Audit date:** 2026-08-01
 
-**Scope:** 13 launchable simulations
+**Scope:** 35 released simulations
 
-**Release position:** All experiences are Internal QA; none is school-validated.
+**Portfolio average:** 76.5/100
+
+**Evidence maturity:** 35 internal QA; 0 device verified; 0 classroom verified
+
+**Audit position:** Released means publicly launchable. Released does not mean school-validated, Quest-verified, classroom-verified, or proven to improve learning outcomes.
 
 ## Executive summary
 
-The portfolio average is **75.7/100**. One simulation is a controlled-pilot candidate, eleven are promising Internal QA experiences, and one requires focused improvement before release.
+The released portfolio contains 35 canonical simulations. Its evidence-backed product-indicator average is **76.5/100**: 0 pilot candidates, 35 promising internal-QA classes, 0 needing focused improvement, and 0 requiring rebuild before pilot.
 
-The strongest layer is educational architecture: most lessons require action and evidence rather than passive viewing. The largest risks are the broken Solar System production route, 11 missing Digestive System GLBs, inconsistent narration coverage, unverified blank post-entry frames in automated rendering, and the mismatch between 13 public launch entries and 12 canonical modules.
+Repository evidence records 233 narration cues, 36 packaged narration clips, 0 missing narration files, and 102 declared assets. These are implementation indicators, not learner-outcome measurements.
+
+Quest and classroom evidence are absent: no signed physical-device acceptance runs or controlled classroom studies are represented in this audit. Every class therefore remains at internal QA evidence maturity.
 
 ## Ranked portfolio
 
-| Rank | Simulation | Score | Band |
-|---:|---|---:|---|
-| 1 | Soluble and Insoluble Substances Lab | 92 | Pilot candidate |
-| 2 | Plant Pollination & Growth Cycle | 82 | Promising Internal QA |
-| 3 | States of Matter Particle Lab | 81 | Promising Internal QA |
-| 4 | Electric Circuits & Resistance (Ohm's Law) | 79 | Promising Internal QA |
-| 5 | Introduction to Money | 76 | Promising Internal QA |
-| 6 | Preposition Adventure | 76 | Promising Internal QA |
-| 7 | Effects of Force on Motion and Shape | 74 | Promising Internal QA |
-| 8 | Sources of Food Sorting Lab | 74 | Promising Internal QA |
-| 9 | Acids, Bases & Neutralisation | 73 | Promising Internal QA |
-| 10 | Colour Adventure | 71 | Promising Internal QA |
-| 11 | The Breathing Process in Human | 70 | Promising Internal QA |
-| 12 | Introduction to the Digestive System | 70 | Promising Internal QA |
-| 13 | Solar System: Gravity's Orchestra | 66 | Needs focused improvement |
+| Rank | Simulation | Canonical slug | Score | Band | Evidence maturity |
+|---:|---|---|---:|---|---|
+| 1 | Plant Pollination & Growth Cycle | `pollination` | 83 | Promising internal QA | internalQA |
+| 2 | Solar System: Gravity's Orchestra | `c8-10-science-solar-system` | 81 | Promising internal QA | internalQA |
+| 3 | Soluble and Insoluble Substances Lab | `c5-ch07-a03-soluble-and-insoluble-substances` | 81 | Promising internal QA | internalQA |
+| 4 | States of Matter Particle Lab | `c9-ch01-a02-states-of-matter` | 81 | Promising internal QA | internalQA |
+| 5 | Electric Circuits & Resistance (Ohm's Law) | `circuit` | 80 | Promising internal QA | internalQA |
+| 6 | A Visit of an Ancient Fort | `c5-ch10-a01-a-visit-of-ancient-fort` | 79 | Promising internal QA | internalQA |
+| 7 | Rock Climbing | `c5-ch09-a02-rock-climbing` | 79 | Promising internal QA | internalQA |
+| 8 | Sorting Materials According to Their Shape | `c6-ch04-a01-sorting-materials-according-to-their-shape` | 78 | Promising internal QA | internalQA |
+| 9 | Sources of Vitamins and Their Deficiencies | `c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies` | 78 | Promising internal QA | internalQA |
+| 10 | Test the Presence of Lipids | `c6-ch02-a03-test-the-presence-of-lipids` | 78 | Promising internal QA | internalQA |
+| 11 | The Sources of Minerals in Food | `c6-ch02-a05-the-sources-of-minerals-in-food` | 78 | Promising internal QA | internalQA |
+| 12 | What Floats, What Sinks? | `c5-ch07-a01-a-concept-about-what-floats-what-sinks` | 78 | Promising internal QA | internalQA |
+| 13 | Preposition Adventure | `c2-english-ch01-prepositions` | 76 | Promising internal QA | internalQA |
+| 14 | Sources of Food Sorting Lab | `c6-ch01-a01-sources-of-food` | 76 | Promising internal QA | internalQA |
+| 15 | A Step Well Structure | `c5-ch06-a02-a-step-well-structure` | 75 | Promising internal QA | internalQA |
+| 16 | Acids, Bases & Neutralisation | `c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test` | 75 | Promising internal QA | internalQA |
+| 17 | Camp in the Snow | `c5-ch09-a03-camp-in-the-snow` | 75 | Promising internal QA | internalQA |
+| 18 | Cotton Farming | `c6-ch03-a01-cotton-farming` | 75 | Promising internal QA | internalQA |
+| 19 | Dead Sea: Salt Water and Its Effects | `c5-ch07-a02-dead-sea-salt-water-and-its-effects` | 75 | Promising internal QA | internalQA |
+| 20 | Diagnosis of Malaria | `c5-ch08-a01-diagnosis-of-malaria` | 75 | Promising internal QA | internalQA |
+| 21 | Food Spoilage | `c5-ch04-a01-food-spoilage` | 75 | Promising internal QA | internalQA |
+| 22 | Introduction to Money | `c1-math-ch01-introduction-to-money` | 75 | Promising internal QA | internalQA |
+| 23 | Introduction to the Digestive System | `c5-ch03-a02-introduction-of-digestive-system` | 75 | Promising internal QA | internalQA |
+| 24 | Life Cycle of the Mosquito | `c5-ch08-a02-life-cycle-of-the-mosquito` | 75 | Promising internal QA | internalQA |
+| 25 | Milk Spoilage | `c5-ch04-a02-milk-spoilage` | 75 | Promising internal QA | internalQA |
+| 26 | Pitcher Plant - The Insect Hunter | `c5-ch05-a01-pitcher-plant-the-insect-hunter` | 75 | Promising internal QA | internalQA |
+| 27 | River Crossing Adventure | `c5-ch09-a01-river-crossing-adventure` | 75 | Promising internal QA | internalQA |
+| 28 | Seed Dispersal | `c5-ch05-a02-seed-dispersal` | 75 | Promising internal QA | internalQA |
+| 29 | Snow Mountain Climbing | `c5-ch09-a04-snow-mountain-climbing` | 75 | Promising internal QA | internalQA |
+| 30 | The Effects of Force on an Object's Motion and Shape | `c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape` | 75 | Promising internal QA | internalQA |
+| 31 | The Making of Aam Papad | `c5-ch04-a03-the-making-of-aam-papad` | 75 | Promising internal QA | internalQA |
+| 32 | The Process of Cotton Ginning | `c6-ch03-a02-the-process-of-cotton-ginning` | 75 | Promising internal QA | internalQA |
+| 33 | The Storage of Rainwater | `c5-ch06-a01-the-storage-of-rainwater` | 75 | Promising internal QA | internalQA |
+| 34 | Colour Adventure | `c1-art-a01-learning-of-colours` | 74 | Promising internal QA | internalQA |
+| 35 | The Breathing Process in Human | `c7-ch10-a02-the-breathing-process-in-human` | 73 | Promising internal QA | internalQA |
+
+## Portfolio priorities
+
+Priorities are derived from the three lowest average rubric attainment ratios across the complete 35-card dataset.
+
+1. **Narration and sound:** portfolio mean 4.6/10. Address the card-level evidence gaps and next actions before raising evidence maturity.
+2. **Deployment readiness:** portfolio mean 3.0/5. Address the card-level evidence gaps and next actions before raising evidence maturity.
+3. **Visual and asset quality:** portfolio mean 9.3/15. Address the card-level evidence gaps and next actions before raising evidence maturity.
+4. **Physical-device acceptance:** run the documented Quest comfort, controller, narration, cleanup, and performance checks; current signed run count is 0.
+5. **Classroom evidence:** collect teacher workflow and learner-comprehension evidence without converting internal QA scores into outcome claims; current study count is 0.
 
 ## Quality cards
 
-### Soluble and Insoluble Substances Lab - 92/100
+### Plant Pollination & Growth Cycle - 83/100
 
-**Band:** Pilot candidate
+**Canonical slug:** `pollination`
 
-**Audience:** Class 5 - Science
+**Route:** `/simulations/pollination`
 
-**Evidence confidence:** High internal evidence
+**Publication status:** released
 
-The strongest current portfolio example: a visible, quantitative experiment in which students predict, measure, stir, observe, and reconcile every gram of material.
+**Evidence maturity:** internalQA
 
-| Dimension | Score | Maximum |
-|---|---:|---:|
-| Educational effectiveness | 19 | 20 |
-| Content / scientific integrity | 15 | 15 |
-| Learner interactivity | 15 | 15 |
-| Visual and asset quality | 13 | 15 |
-| Narration and sound | 9 | 10 |
-| Usability, accessibility, comfort | 9 | 10 |
-| Performance and stability | 9 | 10 |
-| Deployment readiness | 3 | 5 |
+**Band:** Promising internal QA
 
-**Strengths**
+**Audience:** Classes 6-10 - Biology, Environmental Science
 
-- Real mass balance, saturation, temperature, settling, suspension and oil-separation behaviour
-- Physical beaker, 200 mL water, five materials, measured scoop and molecular evidence view
-- 33 packaged narration clips plus singleton sound control prevent overlapping instructions
-
-**Gaps and risks**
-
-- Most apparatus is procedural rather than authored high-detail laboratory assets
-- No signed Quest headset acceptance or classroom outcome study
-- Internal QA maturity means teacher workflow and multi-student robustness remain unproven
-
-**Management action:** Prioritise for the first controlled school pilot after Quest performance and teacher-facilitation acceptance.
-
-### Plant Pollination & Growth Cycle - 82/100
-
-**Band:** Promising Internal QA
-
-**Audience:** Classes 6-10 - Biology
-
-**Evidence confidence:** High internal evidence
-
-A well-structured investigation rather than a passive plant tour, with treatment/control reasoning and the complete journey from flower parts to germination.
+A treatment-and-control investigation that links flower structure, pollination, fertilisation, seed formation, and germination through evidence-gated stages.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -85,32 +94,120 @@ A well-structured investigation rather than a passive plant tour, with treatment
 | Visual and asset quality | 11 | 15 |
 | Narration and sound | 8 | 10 |
 | Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Solar System: Gravity's Orchestra - 81/100
+
+**Canonical slug:** `c8-10-science-solar-system`
+
+**Route:** `/simulations/c8-10-science-solar-system`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Classes 8-10 - Science, Physics, Geography
+
+A concept-rich mission addressing orbit, temperature, scale, comet behavior, and common astronomy misconceptions.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 19 | 20 |
+| Content / scientific integrity | 15 | 15 |
+| Learner interactivity | 15 | 15 |
+| Visual and asset quality | 10 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
 | Performance and stability | 7 | 10 |
 | Deployment readiness | 3 | 5 |
 
 **Strengths**
 
-- Eight evidence-gated stages distinguish pollination, fertilisation, seed formation and germination
-- Treatment/control experiment and misconception feedback support causal reasoning
-- Mapped materials, garden tools, scale disclosure, eight narration clips and 29 focused tests
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
 
 **Gaps and risks**
 
-- Live automated entry cleared to a flat green frame, so cross-device visual reliability needs acceptance testing
-- Asset richness is primarily procedural and does not yet match premium botanical simulations
-- No classroom learning-gain or teacher-usage evidence
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Run a Quest/browser rendering acceptance pass, then pilot as the second flagship science experience.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Soluble and Insoluble Substances Lab - 81/100
+
+**Canonical slug:** `c5-ch07-a03-soluble-and-insoluble-substances`
+
+**Route:** `/simulations/c5-ch07-a03-soluble-and-insoluble-substances`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science, Science
+
+Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 19 | 20 |
+| Content / scientific integrity | 15 | 15 |
+| Learner interactivity | 15 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 5 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
 ### States of Matter Particle Lab - 81/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `c9-ch01-a02-states-of-matter`
 
-**Audience:** Class 9 - Chemistry and Physics
+**Route:** `/simulations/c9-ch01-a02-states-of-matter`
 
-**Evidence confidence:** Medium-high internal evidence
+**Publication status:** released
 
-A compact, conceptually strong particle laboratory that makes invisible spacing and motion observable while linking heat changes to phase behaviour.
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 9 - Chemistry, Physics
+
+A particle-model laboratory that makes spacing, motion, attraction, heating, and phase changes observable without presenting the model as molecular footage.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -125,31 +222,37 @@ A compact, conceptually strong particle laboratory that makes invisible spacing 
 
 **Strengths**
 
-- Authored solid, liquid and gas reference states with tested heat mapping
-- Instanced particles efficiently show spacing, cohesion and motion
-- Prediction/observation flow, representation disclosure and four packaged stage narrations
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 committed narration clips are owned by the manifest with exact captions.
 
 **Gaps and risks**
 
-- Only four stages limit repeated investigation and transfer
-- Real-time audit remained at the mode-selection presentation after automated entry
-- Particle representation is instructional, not molecularly literal, and needs explicit teacher framing
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Add a comparison/transfer challenge and complete browser plus Quest entry-flow acceptance before pilot.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
-### Electric Circuits & Resistance (Ohm's Law) - 79/100
+### Electric Circuits & Resistance (Ohm's Law) - 80/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `circuit`
+
+**Route:** `/simulations/circuit`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
 
 **Audience:** Classes 6-10 - Physics
 
-**Evidence confidence:** Medium-high internal evidence
-
-A defensible interactive circuit model that connects physical components, current flow, resistance changes and prediction through Ohm's law.
+A tested circuit investigation connecting component manipulation, current flow, resistance, and prediction through Ohm's law.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
-| Educational effectiveness | 16 | 20 |
+| Educational effectiveness | 17 | 20 |
 | Content / scientific integrity | 14 | 15 |
 | Learner interactivity | 13 | 15 |
 | Visual and asset quality | 10 | 15 |
@@ -160,97 +263,443 @@ A defensible interactive circuit model that connects physical components, curren
 
 **Strengths**
 
-- Verified electrical truth model for open/closed circuits and V=IR
-- Learners manipulate physical battery, switch, bulb and resistor objects
-- Mapped PBR presentation, four packaged stage narrations and browser/VR controls
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 committed narration clips are owned by the manifest with exact captions.
 
 **Gaps and risks**
 
-- Only four stages and limited component variety constrain experimentation depth
-- Automated live entry remained on the browser/VR choice presentation
-- No measurement uncertainty, multimeter workflow or classroom validation
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Extend with meter reading and fault-finding tasks, then run end-to-end controller acceptance.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
-### Introduction to Money - 76/100
+### A Visit of an Ancient Fort - 79/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `c5-ch10-a01-a-visit-of-ancient-fort`
 
-**Audience:** Class 1 - Mathematics
+**Route:** `/simulations/c5-ch10-a01-a-visit-of-ancient-fort`
 
-**Evidence confidence:** Medium internal evidence
+**Publication status:** released
 
-A colourful, age-appropriate Money Town journey that moves from identifying Indian currency to comparing values and making simple purchases.
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+A Visit of an Ancient Fort is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
 | Educational effectiveness | 17 | 20 |
-| Content / scientific integrity | 11 | 15 |
+| Content / scientific integrity | 13 | 15 |
 | Learner interactivity | 13 | 15 |
-| Visual and asset quality | 11 | 15 |
-| Narration and sound | 4 | 10 |
-| Usability, accessibility, comfort | 9 | 10 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 8 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
 | Performance and stability | 8 | 10 |
 | Deployment readiness | 3 | 5 |
 
 **Strengths**
 
-- Five-stage progression covers coins, notes, value comparison, shopping and memory
-- Large targets, simple prompts, comfort mode and browser/VR navigation suit young learners
-- Live child-facing scene rendered cleanly and dedicated lesson tests protect scoring logic
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 committed narration clips are owned by the manifest with exact captions.
 
 **Gaps and risks**
 
-- Narration depends on browser speech rather than consistent packaged voice assets
-- Procedural assets look playful but not premium or culturally detailed
-- Currency authenticity and classroom usability have not been externally reviewed
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Record a child-friendly voice pack and complete teacher review of currency wording and purchase tasks.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Rock Climbing - 79/100
+
+**Canonical slug:** `c5-ch09-a02-rock-climbing`
+
+**Route:** `/simulations/c5-ch09-a02-rock-climbing`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Rock Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 8 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Sorting Materials According to Their Shape - 78/100
+
+**Canonical slug:** `c6-ch04-a01-sorting-materials-according-to-their-shape`
+
+**Route:** `/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Science
+
+Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Sources of Vitamins and Their Deficiencies - 78/100
+
+**Canonical slug:** `c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies`
+
+**Route:** `/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Science, Biology
+
+Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Test the Presence of Lipids - 78/100
+
+**Canonical slug:** `c6-ch02-a03-test-the-presence-of-lipids`
+
+**Route:** `/simulations/c6-ch02-a03-test-the-presence-of-lipids`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Science, Biology
+
+Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 5 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### The Sources of Minerals in Food - 78/100
+
+**Canonical slug:** `c6-ch02-a05-the-sources-of-minerals-in-food`
+
+**Route:** `/simulations/c6-ch02-a05-the-sources-of-minerals-in-food`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Science, Biology
+
+The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### What Floats, What Sinks? - 78/100
+
+**Canonical slug:** `c5-ch07-a01-a-concept-about-what-floats-what-sinks`
+
+**Route:** `/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science, Science
+
+What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 5 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
 ### Preposition Adventure - 76/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `c2-english-ch01-prepositions`
+
+**Route:** `/simulations/c2-english-ch01-prepositions`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
 
 **Audience:** Class 2 - English
 
-**Evidence confidence:** Medium internal evidence
-
-A strong use of spatial XR for language learning: students place objects, connect position to meaning, and practise simple location sentences.
+A spatial language lesson in which object placement makes position words concrete and supports sentence practice.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
 | Educational effectiveness | 17 | 20 |
-| Content / scientific integrity | 10 | 15 |
+| Content / scientific integrity | 11 | 15 |
 | Learner interactivity | 14 | 15 |
 | Visual and asset quality | 11 | 15 |
 | Narration and sound | 4 | 10 |
-| Usability, accessibility, comfort | 9 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
 | Performance and stability | 8 | 10 |
 | Deployment readiness | 3 | 5 |
 
 **Strengths**
 
-- Placement interaction makes abstract position words concrete
-- Five stages include guided practice, sentence prompts and memory checks
-- Bright scene, large controls, comfort mode and clean live rendering
+- 5 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
 
 **Gaps and risks**
 
-- Browser text-to-speech cannot guarantee consistent pronunciation or classroom voice quality
-- Automated scoring emphasises placement more than spoken-language evidence
-- Procedural environments repeat the visual language of other early-years lessons
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Add packaged narration and teacher-reviewed spoken-response prompts before a language-learning pilot.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
-### Effects of Force on Motion and Shape - 74/100
+### Sources of Food Sorting Lab - 76/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `c6-ch01-a01-sources-of-food`
 
-**Audience:** Class 8 - Physics
+**Route:** `/simulations/c6-ch01-a01-sources-of-food`
 
-**Evidence confidence:** Medium-high internal evidence
+**Publication status:** released
 
-The physics foundation is stronger than the presentation: learners push, redirect, brake and deform objects through a deterministic motion model.
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Science, Biology
+
+A classification investigation with targeted feedback that separates plant, animal, and fungal food sources.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 16 | 20 |
+| Content / scientific integrity | 12 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 8 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 7 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### A Step Well Structure - 75/100
+
+**Canonical slug:** `c5-ch06-a02-a-step-well-structure`
+
+**Route:** `/simulations/c5-ch06-a02-a-step-well-structure`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Acids, Bases & Neutralisation - 75/100
+
+**Canonical slug:** `c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test`
+
+**Route:** `/simulations/c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 10 - Chemistry
+
+An experiment-bench sequence connecting litmus, universal indicator, pH classification, and neutralisation.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -261,136 +710,775 @@ The physics foundation is stronger than the presentation: learners push, redirec
 | Narration and sound | 4 | 10 |
 | Usability, accessibility, comfort | 8 | 10 |
 | Performance and stability | 7 | 10 |
-| Deployment readiness | 2 | 5 |
+| Deployment readiness | 3 | 5 |
 
 **Strengths**
 
-- Fixed-step tests demonstrate inertia, braking, directional force and bounded collisions
-- Six stages connect starting, stopping, speeding, direction change and deformation
-- Direct manipulation provides meaningful cause-and-effect feedback
+- 5 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
 
 **Gaps and risks**
 
-- Post-entry production audit produced a blank headless frame despite a mounted canvas
-- No packaged narration and limited visual asset richness
-- Deformation examples need closer visual realism and headset acceptance
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Treat visual rendering acceptance and richer deformation feedback as release gates before pilot.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
-### Sources of Food Sorting Lab - 74/100
+### Camp in the Snow - 75/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `c5-ch09-a03-camp-in-the-snow`
 
-**Audience:** Class 6 - Science and Biology
+**Route:** `/simulations/c5-ch09-a03-camp-in-the-snow`
 
-**Evidence confidence:** Medium internal evidence
+**Publication status:** released
 
-A clear, usable sorting experience with unusually complete spoken feedback, but limited visual depth and comparatively thin dedicated test coverage.
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Cotton Farming - 75/100
+
+**Canonical slug:** `c6-ch03-a01-cotton-farming`
+
+**Route:** `/simulations/c6-ch03-a01-cotton-farming`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Environmental Science
+
+Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Dead Sea: Salt Water and Its Effects - 75/100
+
+**Canonical slug:** `c5-ch07-a02-dead-sea-salt-water-and-its-effects`
+
+**Route:** `/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Diagnosis of Malaria - 75/100
+
+**Canonical slug:** `c5-ch08-a01-diagnosis-of-malaria`
+
+**Route:** `/simulations/c5-ch08-a01-diagnosis-of-malaria`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Food Spoilage - 75/100
+
+**Canonical slug:** `c5-ch04-a01-food-spoilage`
+
+**Route:** `/simulations/c5-ch04-a01-food-spoilage`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 6 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Introduction to Money - 75/100
+
+**Canonical slug:** `c1-math-ch01-introduction-to-money`
+
+**Route:** `/simulations/c1-math-ch01-introduction-to-money`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 1 - Mathematics
+
+An age-appropriate progression through Indian coins, notes, value comparison, simple shopping, and memory.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 11 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 11 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Introduction to the Digestive System - 75/100
+
+**Canonical slug:** `c5-ch03-a02-introduction-of-digestive-system`
+
+**Route:** `/simulations/c5-ch03-a02-introduction-of-digestive-system`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science, Biology
+
+A ten-stage pathway investigation covering organs, movement, accessory organs, absorption, recap, and healthy-habit transfer.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 8 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 7 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 10 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 10 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Life Cycle of the Mosquito - 75/100
+
+**Canonical slug:** `c5-ch08-a02-life-cycle-of-the-mosquito`
+
+**Route:** `/simulations/c5-ch08-a02-life-cycle-of-the-mosquito`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Milk Spoilage - 75/100
+
+**Canonical slug:** `c5-ch04-a02-milk-spoilage`
+
+**Route:** `/simulations/c5-ch04-a02-milk-spoilage`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 6 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Pitcher Plant - The Insect Hunter - 75/100
+
+**Canonical slug:** `c5-ch05-a01-pitcher-plant-the-insect-hunter`
+
+**Route:** `/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Pitcher Plant - The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### River Crossing Adventure - 75/100
+
+**Canonical slug:** `c5-ch09-a01-river-crossing-adventure`
+
+**Route:** `/simulations/c5-ch09-a01-river-crossing-adventure`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Seed Dispersal - 75/100
+
+**Canonical slug:** `c5-ch05-a02-seed-dispersal`
+
+**Route:** `/simulations/c5-ch05-a02-seed-dispersal`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Snow Mountain Climbing - 75/100
+
+**Canonical slug:** `c5-ch09-a04-snow-mountain-climbing`
+
+**Route:** `/simulations/c5-ch09-a04-snow-mountain-climbing`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 8 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### The Effects of Force on an Object's Motion and Shape - 75/100
+
+**Canonical slug:** `c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape`
+
+**Route:** `/simulations/c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 8 - Physics
+
+A deterministic physics investigation of starting, stopping, speeding, redirection, collision, and deformation.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 8 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 7 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 6 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### The Making of Aam Papad - 75/100
+
+**Canonical slug:** `c5-ch04-a03-the-making-of-aam-papad`
+
+**Route:** `/simulations/c5-ch04-a03-the-making-of-aam-papad`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### The Process of Cotton Ginning - 75/100
+
+**Canonical slug:** `c6-ch03-a02-the-process-of-cotton-ginning`
+
+**Route:** `/simulations/c6-ch03-a02-the-process-of-cotton-ginning`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 6 - Science
+
+The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 6 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### The Storage of Rainwater - 75/100
+
+**Canonical slug:** `c5-ch06-a01-the-storage-of-rainwater`
+
+**Route:** `/simulations/c5-ch06-a01-the-storage-of-rainwater`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science
+
+The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 9 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Colour Adventure - 74/100
+
+**Canonical slug:** `c1-art-a01-learning-of-colours`
+
+**Route:** `/simulations/c1-art-a01-learning-of-colours`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 1 - Art
+
+An early-years recognition and memory journey with large targets, visible feedback, and a canonical release record.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
 | Educational effectiveness | 16 | 20 |
 | Content / scientific integrity | 11 | 15 |
 | Learner interactivity | 13 | 15 |
-| Visual and asset quality | 8 | 15 |
-| Narration and sound | 9 | 10 |
-| Usability, accessibility, comfort | 8 | 10 |
-| Performance and stability | 7 | 10 |
-| Deployment readiness | 2 | 5 |
-
-**Strengths**
-
-- Students classify eight foods as plant, animal or fungal and receive misconception feedback
-- 36 packaged clips cover stages, item clues, correct and incorrect placements
-- Live tabletop and controller-accessible category platforms rendered without errors
-
-**Gaps and risks**
-
-- Simplified food tokens and tabletop make the experience feel closer to a 3D worksheet
-- Only two dedicated viewer regression tests despite many feedback branches
-- Little transfer beyond the authored item set
-
-**Management action:** Improve food asset recognisability, add transfer items, and expand scoring regression coverage.
-
-### Acids, Bases & Neutralisation - 73/100
-
-**Band:** Promising Internal QA
-
-**Audience:** Class 10 - Chemistry
-
-**Evidence confidence:** Medium internal evidence
-
-A sound learning sequence for indicators and neutralisation, with a tested chemistry model but a presentation that still reads as an early procedural prototype.
-
-| Dimension | Score | Maximum |
-|---|---:|---:|
-| Educational effectiveness | 17 | 20 |
-| Content / scientific integrity | 14 | 15 |
-| Learner interactivity | 14 | 15 |
-| Visual and asset quality | 8 | 15 |
-| Narration and sound | 4 | 10 |
-| Usability, accessibility, comfort | 8 | 10 |
-| Performance and stability | 6 | 10 |
-| Deployment readiness | 2 | 5 |
-
-**Strengths**
-
-- Five stages connect litmus, universal indicator, pH and neutralisation
-- Tested model maps acid/neutral/base states and indicator colours
-- Learners act on an experiment bench rather than only answer questions
-
-**Gaps and risks**
-
-- Post-entry production audit produced a blank headless frame despite a mounted canvas
-- No packaged narration or high-detail glassware/liquid assets
-- No explicit laboratory-safety assessment or classroom validation
-
-**Management action:** Resolve cross-browser rendering, add laboratory-quality materials and include a safety decision stage.
-
-### Colour Adventure - 71/100
-
-**Band:** Promising Internal QA
-
-**Audience:** Class 1 - Art and Foundational Learning
-
-**Evidence confidence:** Medium internal evidence
-
-A cheerful early-years colour experience with good visual appeal and gated memory activities, weakened by release-governance and narration gaps.
-
-| Dimension | Score | Maximum |
-|---|---:|---:|
-| Educational effectiveness | 16 | 20 |
-| Content / scientific integrity | 10 | 15 |
-| Learner interactivity | 13 | 15 |
 | Visual and asset quality | 12 | 15 |
 | Narration and sound | 4 | 10 |
-| Usability, accessibility, comfort | 9 | 10 |
-| Performance and stability | 6 | 10 |
-| Deployment readiness | 1 | 5 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 7 | 10 |
+| Deployment readiness | 3 | 5 |
 
 **Strengths**
 
-- Bright rainbow classroom and colour worlds are immediately understandable
-- Five-stage recognition, finding and memory journey uses large age-appropriate controls
-- Live scene rendered cleanly with comfort and restart support
+- 14 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 14 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
 
 **Gaps and risks**
 
-- Launchable publicly but absent from the canonical 12-module release registry
-- Relies on browser speech instead of a consistent child-friendly voice
-- Scientific/content review evidence is lighter than for curriculum-registered modules
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Fix release registration first, then package narration and conduct an early-years usability review.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
-### The Breathing Process in Human - 70/100
+### The Breathing Process in Human - 73/100
 
-**Band:** Promising Internal QA
+**Canonical slug:** `c7-ch10-a02-the-breathing-process-in-human`
+
+**Route:** `/simulations/c7-ch10-a02-the-breathing-process-in-human`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
 
 **Audience:** Class 7 - Biology
 
-**Evidence confidence:** Medium internal evidence
-
-A well-scoped six-stage physiology lesson covering both mechanics and gas exchange, but current production rendering and asset evidence are not yet convincing enough for pilot use.
+A six-stage physiology lesson connecting airway structure, diaphragm motion, chest volume, and gas exchange.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -400,97 +1488,75 @@ A well-scoped six-stage physiology lesson covering both mechanics and gas exchan
 | Visual and asset quality | 8 | 15 |
 | Narration and sound | 4 | 10 |
 | Usability, accessibility, comfort | 8 | 10 |
-| Performance and stability | 5 | 10 |
-| Deployment readiness | 2 | 5 |
+| Performance and stability | 7 | 10 |
+| Deployment readiness | 3 | 5 |
 
 **Strengths**
 
-- Traces airway, lungs, diaphragm, chest volume and alveolar gas exchange
-- Action/evidence gates prevent passive progression
-- Low comfort-risk design and shared browser/VR framework
+- 6 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
 
 **Gaps and risks**
 
-- Post-entry production audit produced a blank headless frame despite a mounted canvas
-- Procedural anatomy and no packaged narration reduce realism and consistency
-- Only four dedicated experience tests and no external anatomy review evidence
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
-**Management action:** Prioritise visible respiratory mechanics, packaged narration and anatomy review before headset trials.
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
 
-### Introduction to the Digestive System - 70/100
+## Contribution appendix
 
-**Band:** Promising Internal QA
+This appendix maps every PR #8 contribution to its canonical released class. Scores compare the immutable PR head with the integrated internal-QA implementation.
 
-**Audience:** Class 5 - Biology
+| PR slug | Canonical slug | Before | After | Delta | Main remediation | Remaining risk |
+|---|---|---:|---:|---:|---|---|
+| `walls-tell-stories-ancient-fort-visit` | `c5-ch10-a01-a-visit-of-ancient-fort` | 65 | 79 | +14 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `up-you-go-snow-mountain-climbing` | `c5-ch09-a04-snow-mountain-climbing` | 52 | 75 | +23 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `up-you-go-camp-in-snow` | `c5-ch09-a03-camp-in-the-snow` | 51 | 75 | +24 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `up-you-go-rock-climbing` | `c5-ch09-a02-rock-climbing` | 61 | 79 | +18 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `up-you-go-river-crossing-adventure` | `c5-ch09-a01-river-crossing-adventure` | 52 | 75 | +23 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `treat-for-mosquitoes-mosquito-life-cycle` | `c5-ch08-a02-life-cycle-of-the-mosquito` | 57 | 75 | +18 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `treat-for-mosquitoes-malaria-diagnosis` | `c5-ch08-a01-diagnosis-of-malaria` | 57 | 75 | +18 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `experiments-with-water-float-or-sink` | `c5-ch07-a01-a-concept-about-what-floats-what-sinks` | 64 | 78 | +14 | Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `experiments-with-water-dead-sea-salt-water` | `c5-ch07-a02-dead-sea-salt-water-and-its-effects` | 56 | 75 | +19 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `experiments-with-water-soluble-insoluble` | `c5-ch07-a03-soluble-and-insoluble-substances` | 63 | 81 | +18 | Integrated the useful PR experiment as an enhancement of the existing Solubility class, avoiding a duplicate 36th simulation. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `every-drop-counts-rainwater-storage` | `c5-ch06-a01-the-storage-of-rainwater` | 54 | 75 | +21 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `every-drop-counts-stepwell-structure` | `c5-ch06-a02-a-step-well-structure` | 52 | 75 | +23 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `seeds-and-seeds-seed-dispersal` | `c5-ch05-a02-seed-dispersal` | 54 | 75 | +21 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `seeds-and-seeds-pitcher-plant` | `c5-ch05-a01-pitcher-plant-the-insect-hunter` | 54 | 75 | +21 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `mangoes-round-the-year-aam-papad` | `c5-ch04-a03-the-making-of-aam-papad` | 50 | 75 | +25 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `mangoes-round-the-year-milk-spoilage` | `c5-ch04-a02-milk-spoilage` | 50 | 75 | +25 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `mangoes-round-the-year-food-spoilage` | `c5-ch04-a01-food-spoilage` | 50 | 75 | +25 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `sorting-materials-by-shape` | `c6-ch04-a01-sorting-materials-according-to-their-shape` | 51 | 78 | +27 | Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `fibre-to-fabric-cotton-farming` | `c6-ch03-a01-cotton-farming` | 52 | 75 | +23 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `fibre-to-fabric-cotton-ginning` | `c6-ch03-a02-the-process-of-cotton-ginning` | 52 | 75 | +23 | Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `components-of-food-mineral-sources` | `c6-ch02-a05-the-sources-of-minerals-in-food` | 58 | 78 | +20 | Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `components-of-food-vitamins-deficiencies` | `c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies` | 58 | 78 | +20 | Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
+| `components-of-food-lipid-test` | `c6-ch02-a03-test-the-presence-of-lipids` | 62 | 78 | +16 | Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry. | No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks. |
 
-**Evidence confidence:** High internal evidence
+## Rubric, evidence method, and limitations
 
-The lesson design is ambitious and thorough, but the deployed visual experience is materially degraded because every authored organ model request fails and falls back to procedural geometry.
+### Weighted rubric
 
-| Dimension | Score | Maximum |
-|---|---:|---:|
-| Educational effectiveness | 18 | 20 |
-| Content / scientific integrity | 12 | 15 |
-| Learner interactivity | 14 | 15 |
-| Visual and asset quality | 8 | 15 |
-| Narration and sound | 4 | 10 |
-| Usability, accessibility, comfort | 9 | 10 |
-| Performance and stability | 4 | 10 |
-| Deployment readiness | 1 | 5 |
+| Dimension | Weight |
+|---|---:|
+| Educational effectiveness | 20 |
+| Content / scientific integrity | 15 |
+| Learner interactivity | 15 |
+| Visual and asset quality | 15 |
+| Narration and sound | 10 |
+| Usability, accessibility, comfort | 10 |
+| Performance and stability | 10 |
+| Deployment readiness | 5 |
 
-**Strengths**
+### Evidence method
 
-- Ten-stage food journey covers organs, peristalsis, accessory organs, absorption, recap and healthy habits
-- Strong accessible HTML controls, subtitles, comfort mode and Quest controller design
-- 21 focused tests protect pathway, evidence gates and assessment scoring
+Scores are computed from canonical definitions, declared stage/action/evidence/assessment counts, narration and asset manifests, focused behavior tests, production-build inclusion, browser-contract observations, and immutable PR-head evidence references.
 
-**Gaps and risks**
+### Limitations
 
-- All 11 production GLB requests returned 404 during audit
-- No packaged narration; browser voice quality varies by device
-- Procedural fallback cannot deliver the intended body-scale anatomical realism
-
-**Management action:** Block pilot release until GLB delivery is fixed and every organ is visually accepted on browser and Quest.
-
-### Solar System: Gravity's Orchestra - 66/100
-
-**Band:** Needs focused improvement
-
-**Audience:** Classes 8-10 - Science, Physics and Geography
-
-**Evidence confidence:** High internal evidence
-
-The portfolio's deepest conceptual and scientific design is currently unusable in production: the live route pauses before mounting the 3D world.
-
-| Dimension | Score | Maximum |
-|---|---:|---:|
-| Educational effectiveness | 19 | 20 |
-| Content / scientific integrity | 15 | 15 |
-| Learner interactivity | 15 | 15 |
-| Visual and asset quality | 7 | 15 |
-| Narration and sound | 4 | 10 |
-| Usability, accessibility, comfort | 5 | 10 |
-| Performance and stability | 1 | 10 |
-| Deployment readiness | 0 | 5 |
-
-**Strengths**
-
-- Eight-stage mission confronts orbital-speed, hottest-planet, scale and comet misconceptions
-- Verified Kepler-law, orbital-period, scale-blend and comet models with 35 dedicated tests
-- Credited local textures for the Sun and all eight planets plus a free observatory mode
-
-**Gaps and risks**
-
-- Production stops with 'roundRect is not a function' and mounts no canvas
-- Two production resources returned 403 in the focused runtime inspection
-- No packaged narration and medium comfort risk remain unvalidated on Quest
-
-**Management action:** Treat as a release blocker: fix the runtime and resource failures, redeploy, then repeat the full visual/audio/controller audit.
-
-## Method and limitations
-
-Scores combine educational effectiveness (20), content/scientific integrity (15), learner interactivity (15), visual and asset quality (15), narration and sound (10), usability/accessibility/comfort (10), performance and stability (10), and deployment readiness (5).
-
-The requested video-quality category was omitted because these are real-time simulations, not pre-rendered videos. Its useful intent is covered by visual and asset quality.
-
-No controlled classroom outcomes, teacher workload studies or signed Quest acceptance runs were available. These are internal product-readiness scores, not evidence of measured learning gain.
+- Scores are product indicators, not grades for a contributor and not evidence of measured learning gain.
+- Released does not mean school-validated. Publication status and evidence maturity are separate fields.
+- Quest and classroom evidence are absent. Browser/build evidence cannot replace physical-headset or teacher-led acceptance.
+- Scores must be recalculated after material implementation changes or new signed evidence.

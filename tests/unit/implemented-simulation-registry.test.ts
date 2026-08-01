@@ -24,12 +24,15 @@ function mutableClone(
 }
 
 describe("implemented simulation registry", () => {
-  it("contains exactly the 13 current released classes", () => {
-    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(13);
+  it("contains the complete released registry while preserving the 13 legacy module seeds", () => {
+    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(35);
     expect(SIMULATION_MODULES).toHaveLength(13);
-    expect(IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id).sort()).toEqual(
-      SIMULATION_MODULES.map((module) => module.id).sort(),
+    const implementedIds = new Set(
+      IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id),
     );
+    expect(
+      SIMULATION_MODULES.every(module => implementedIds.has(module.id)),
+    ).toBe(true);
     expect(
       IMPLEMENTED_SIMULATIONS.every(
         ({ module }) =>
@@ -158,7 +161,7 @@ describe("implemented simulation registry", () => {
 
     expect(definition?.contribution).toMatchObject({
       source: "pr-8",
-      contributor: "Aditya K. R. Pandey",
+      contributor: "Aditya Kumar Pandey",
     });
     expect(definition?.module.legacyAliases).toContain(
       "experiments-with-water-soluble-insoluble",

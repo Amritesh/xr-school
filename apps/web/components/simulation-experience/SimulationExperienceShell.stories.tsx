@@ -120,6 +120,14 @@ export const ErrorState = {
   },
 };
 
+export const FeedbackState = {
+  args: {
+    ...Default.args,
+    snapshot: INCOMPLETE_SNAPSHOT,
+    feedback: 'The first observation is recorded; use it to explain the next choice.',
+  },
+};
+
 // completionEyebrow/Headline/Body/ActionLabel pass through to
 // BrowserExperienceHud so each simulation can show its own completion
 // summary instead of a hardcoded, Pollination-specific one.

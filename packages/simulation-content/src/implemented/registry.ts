@@ -3,6 +3,8 @@ import {
   type ImplementedSimulationDefinition,
 } from '@xr-school/simulation-schema';
 import { EXISTING_IMPLEMENTED_SIMULATIONS } from './existing.js';
+import { GUIDED_IMPLEMENTED_SIMULATIONS } from './guided/index.js';
+import { INTERACTIVE_SIMULATIONS } from './interactive/index.js';
 
 export interface ImplementedSimulationPathResolution {
   definition: ImplementedSimulationDefinition;
@@ -189,7 +191,11 @@ export function createImplementedSimulationRegistry(
 }
 
 const registry = createImplementedSimulationRegistry(
-  EXISTING_IMPLEMENTED_SIMULATIONS,
+  [
+    ...EXISTING_IMPLEMENTED_SIMULATIONS,
+    ...GUIDED_IMPLEMENTED_SIMULATIONS,
+    ...INTERACTIVE_SIMULATIONS,
+  ],
 );
 
 export const IMPLEMENTED_SIMULATIONS = registry.definitions;

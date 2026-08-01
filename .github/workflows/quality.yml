@@ -23,8 +23,22 @@ jobs:
           node-version: "22"
           cache: "npm"
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: Install dependencies
         run: npm ci
+
+      - name: Install report dependencies
+        run: python -m pip install -r requirements-report.txt
+
+      - name: Install Poppler
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Run strict verification
         run: npm run verify
@@ -34,7 +48,17 @@ jobs:
           git diff --exit-code -- \
             generated/openapi/openapi.json \
             apps/web/lib/scienceCatalog.generated.ts \
-            apps/web/lib/curriculumSearch.generated.ts
+            apps/web/lib/curriculumSearch.generated.ts \
+            reports/data/implemented-simulation-quality-cards.json \
+            reports/data/implemented-simulation-quality-evidence.json \
+            reports/data/new-simulation-before-after-scorecard.json \
+            reports/data/simulation-quality-pdf-visual-qa.json \
+            output/pdf/xr-school-implemented-simulations-quality-report.md \
+            output/pdf/xr-school-implemented-simulations-quality-report.pdf \
+            output/pdf/xr-school-new-simulations-top-10-mistakes.md \
+            output/pdf/xr-school-new-simulations-top-10-mistakes.pdf \
+            output/pdf/aditya-contribution-improvement-report.md \
+            output/pdf/aditya-contribution-improvement-report.pdf
 
   drift-check:
     name: Spec Drift Check

@@ -1,0 +1,3582 @@
+{
+  "pr": 8,
+  "headSha": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+  "contributor": "GitHub @Adityakrpand",
+  "integrationSummary": {
+    "contributions": 23,
+    "netNewClasses": 22,
+    "existingEnhancements": 1,
+    "baselineAverage": 55.4,
+    "postIntegrationAverage": 76.3,
+    "signedQuestAcceptanceRuns": 0,
+    "classroomStudies": 0
+  },
+  "comparisons": [
+    {
+      "prSlug": "walls-tell-stories-ancient-fort-visit",
+      "canonicalSlug": "c5-ch10-a01-a-visit-of-ancient-fort",
+      "title": "A Visit of an Ancient Fort",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 11,
+          "interactivity": 12,
+          "visuals": 9,
+          "audio": 5,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 65,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned A Visit of an Ancient Fort topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Contributor audio existed, but stable cue ownership, content hashes, captions, and shared playback lifecycle were not standardized."
+        ],
+        "evidence": [
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/AncientFortVisitViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 8,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 79,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch10-a01-a-visit-of-ancient-fort",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-ancient-fort",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "walls-tell-stories-ancient-fort-visit:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch10-a01-a-visit-of-ancient-fort",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "up-you-go-snow-mountain-climbing",
+      "canonicalSlug": "c5-ch09-a04-snow-mountain-climbing",
+      "title": "Snow Mountain Climbing",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 14,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 52,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Snow Mountain Climbing topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-snow-mountain-climbing:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/SnowMountainClimbingViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-snow-mountain-climbing:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-snow-mountain-climbing:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-snow-mountain-climbing:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch09-a04-snow-mountain-climbing",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-snow-mountain-climbing:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-snow-mountain-climbing",
+            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-snow-mountain-climbing:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-snow-mountain-climbing:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch09-a04-snow-mountain-climbing",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "up-you-go-camp-in-snow",
+      "canonicalSlug": "c5-ch09-a03-camp-in-the-snow",
+      "title": "Camp in the Snow",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 13,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 51,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Camp in the Snow topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-camp-in-snow:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/CampInSnowViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-camp-in-snow:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-camp-in-snow:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-camp-in-snow:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch09-a03-camp-in-the-snow",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-camp-in-snow:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-camp-in-snow",
+            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-camp-in-snow:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-camp-in-snow:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch09-a03-camp-in-the-snow",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "up-you-go-rock-climbing",
+      "canonicalSlug": "c5-ch09-a02-rock-climbing",
+      "title": "Rock Climbing",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 9,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 5,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 61,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Rock Climbing topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Contributor audio existed, but stable cue ownership, content hashes, captions, and shared playback lifecycle were not standardized."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-rock-climbing:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/RockClimbingViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 8,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 79,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-rock-climbing:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-rock-climbing:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-rock-climbing:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch09-a02-rock-climbing",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-rock-climbing:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-rock-climbing",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-rock-climbing:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-rock-climbing:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch09-a02-rock-climbing",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "up-you-go-river-crossing-adventure",
+      "canonicalSlug": "c5-ch09-a01-river-crossing-adventure",
+      "title": "River Crossing Adventure",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 14,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 52,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned River Crossing Adventure topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-river-crossing-adventure:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/RiverCrossingAdventureViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "up-you-go-river-crossing-adventure:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-river-crossing-adventure:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-river-crossing-adventure:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch09-a01-river-crossing-adventure",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-river-crossing-adventure:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-river-crossing",
+            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "up-you-go-river-crossing-adventure:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "up-you-go-river-crossing-adventure:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch09-a01-river-crossing-adventure",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "treat-for-mosquitoes-mosquito-life-cycle",
+      "canonicalSlug": "c5-ch08-a02-life-cycle-of-the-mosquito",
+      "title": "Life Cycle of the Mosquito",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 9,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 57,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Life Cycle of the Mosquito topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/MosquitoLifeCycleViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch08-a02-life-cycle-of-the-mosquito",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-mosquito-life-cycle",
+            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-mosquito-life-cycle:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "treat-for-mosquitoes-malaria-diagnosis",
+      "canonicalSlug": "c5-ch08-a01-diagnosis-of-malaria",
+      "title": "Diagnosis of Malaria",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 9,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 57,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Diagnosis of Malaria topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/MalariaDiagnosisViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch08-a01-diagnosis-of-malaria",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-malaria-diagnosis",
+            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "treat-for-mosquitoes-malaria-diagnosis:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "experiments-with-water-float-or-sink",
+      "canonicalSlug": "c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+      "title": "What Floats, What Sinks?",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 11,
+          "interactivity": 13,
+          "visuals": 11,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 64,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned What Floats, What Sinks? topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "experiments-with-water-float-or-sink:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/FloatOrSinkViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 18,
+          "integrity": 14,
+          "interactivity": 14,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 78,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
+          "Separated pure domain outcomes from the shared interactive investigation session so unknown actions cannot advance the lesson.",
+          "Added executable behavior tests and registered the class through the shared route/viewer host instead of a viewer-local lifecycle."
+        ],
+        "evidence": [
+          {
+            "id": "experiments-with-water-float-or-sink:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/interactive/floatOrSink.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "experiments-with-water-float-or-sink:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/interactive-investigation-session.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-float-or-sink:post-assets",
+            "kind": "asset",
+            "ref": "assets-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-float-or-sink:post-narration",
+            "kind": "narration",
+            "ref": "narration-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+            "finding": "5 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-float-or-sink:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "experiments-with-water-float-or-sink:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "experiments-with-water-dead-sea-salt-water",
+      "canonicalSlug": "c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+      "title": "Dead Sea: Salt Water and Its Effects",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 56,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Dead Sea: Salt Water and Its Effects topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/DeadSeaSaltWaterViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-dead-sea-salt-water",
+            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "experiments-with-water-dead-sea-salt-water:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "experiments-with-water-soluble-insoluble",
+      "canonicalSlug": "c5-ch07-a03-soluble-and-insoluble-substances",
+      "title": "Soluble and Insoluble Substances Lab",
+      "integration": "existing-enhancement",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 11,
+          "interactivity": 13,
+          "visuals": 10,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 63,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Soluble and Insoluble Substances Lab topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "experiments-with-water-soluble-insoluble:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/SolubleInsolubleViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 19,
+          "integrity": 15,
+          "interactivity": 15,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 81,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Integrated the useful PR experiment as an enhancement of the existing Solubility class, avoiding a duplicate 36th simulation.",
+          "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
+          "Separated pure domain outcomes from the shared interactive investigation session so unknown actions cannot advance the lesson.",
+          "Added executable behavior tests and registered the class through the shared route/viewer host instead of a viewer-local lifecycle."
+        ],
+        "evidence": [
+          {
+            "id": "experiments-with-water-soluble-insoluble:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/interactive/solubility.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "experiments-with-water-soluble-insoluble:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/interactive-investigation-session.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-soluble-insoluble:post-assets",
+            "kind": "asset",
+            "ref": "assets-c5-ch07-a03-soluble-and-insoluble-substances",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-soluble-insoluble:post-narration",
+            "kind": "narration",
+            "ref": "narration-c5-ch07-a03-soluble-and-insoluble-substances",
+            "finding": "5 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "experiments-with-water-soluble-insoluble:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "experiments-with-water-soluble-insoluble:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "every-drop-counts-rainwater-storage",
+      "canonicalSlug": "c5-ch06-a01-the-storage-of-rainwater",
+      "title": "The Storage of Rainwater",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 16,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 54,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned The Storage of Rainwater topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "every-drop-counts-rainwater-storage:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/RainwaterStorageViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "every-drop-counts-rainwater-storage:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "every-drop-counts-rainwater-storage:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "every-drop-counts-rainwater-storage:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch06-a01-the-storage-of-rainwater",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "every-drop-counts-rainwater-storage:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-rainwater-storage",
+            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "every-drop-counts-rainwater-storage:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "every-drop-counts-rainwater-storage:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "every-drop-counts-stepwell-structure",
+      "canonicalSlug": "c5-ch06-a02-a-step-well-structure",
+      "title": "A Step Well Structure",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 14,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 52,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned A Step Well Structure topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "every-drop-counts-stepwell-structure:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/StepwellStructureViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "every-drop-counts-stepwell-structure:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "every-drop-counts-stepwell-structure:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "every-drop-counts-stepwell-structure:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch06-a02-a-step-well-structure",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "every-drop-counts-stepwell-structure:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-stepwell-structure",
+            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "every-drop-counts-stepwell-structure:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "every-drop-counts-stepwell-structure:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch06-a02-a-step-well-structure",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "seeds-and-seeds-seed-dispersal",
+      "canonicalSlug": "c5-ch05-a02-seed-dispersal",
+      "title": "Seed Dispersal",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 16,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 54,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Seed Dispersal topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "seeds-and-seeds-seed-dispersal:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/SeedDispersalViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "seeds-and-seeds-seed-dispersal:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-seed-dispersal:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-seed-dispersal:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch05-a02-seed-dispersal",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-seed-dispersal:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-seed-dispersal",
+            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-seed-dispersal:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-seed-dispersal:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch05-a02-seed-dispersal",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "seeds-and-seeds-pitcher-plant",
+      "canonicalSlug": "c5-ch05-a01-pitcher-plant-the-insect-hunter",
+      "title": "Pitcher Plant — The Insect Hunter",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 16,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 54,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Pitcher Plant — The Insect Hunter topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "seeds-and-seeds-pitcher-plant:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/PitcherPlantViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "seeds-and-seeds-pitcher-plant:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-pitcher-plant:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-pitcher-plant:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch05-a01-pitcher-plant-the-insect-hunter",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-pitcher-plant:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-pitcher-plant",
+            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-pitcher-plant:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "seeds-and-seeds-pitcher-plant:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "mangoes-round-the-year-aam-papad",
+      "canonicalSlug": "c5-ch04-a03-the-making-of-aam-papad",
+      "title": "The Making of Aam Papad",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 12,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 50,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned The Making of Aam Papad topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "mangoes-round-the-year-aam-papad:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/AamPapadViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "mangoes-round-the-year-aam-papad:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-aam-papad:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-aam-papad:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch04-a03-the-making-of-aam-papad",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-aam-papad:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-aam-papad",
+            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-aam-papad:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-aam-papad:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "mangoes-round-the-year-milk-spoilage",
+      "canonicalSlug": "c5-ch04-a02-milk-spoilage",
+      "title": "Milk Spoilage",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 12,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 50,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Milk Spoilage topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/MilkSpoilageViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch04-a02-milk-spoilage",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-milk-spoilage",
+            "finding": "6 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-milk-spoilage:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch04-a02-milk-spoilage",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "mangoes-round-the-year-food-spoilage",
+      "canonicalSlug": "c5-ch04-a01-food-spoilage",
+      "title": "Food Spoilage",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 12,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 50,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Food Spoilage topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "mangoes-round-the-year-food-spoilage:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/FoodSpoilageViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "mangoes-round-the-year-food-spoilage:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-food-spoilage:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-food-spoilage:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c05-ch04-a01-food-spoilage",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-food-spoilage:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-food-spoilage",
+            "finding": "6 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-food-spoilage:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "mangoes-round-the-year-food-spoilage:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c5-ch04-a01-food-spoilage",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "sorting-materials-by-shape",
+      "canonicalSlug": "c6-ch04-a01-sorting-materials-according-to-their-shape",
+      "title": "Sorting Materials According to Their Shape",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 13,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 51,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Sorting Materials According to Their Shape topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "sorting-materials-by-shape:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/ShapeSortingViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 18,
+          "integrity": 14,
+          "interactivity": 14,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 78,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
+          "Separated pure domain outcomes from the shared interactive investigation session so unknown actions cannot advance the lesson.",
+          "Added executable behavior tests and registered the class through the shared route/viewer host instead of a viewer-local lifecycle."
+        ],
+        "evidence": [
+          {
+            "id": "sorting-materials-by-shape:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/interactive/shapeSorting.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "sorting-materials-by-shape:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/interactive-investigation-session.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "sorting-materials-by-shape:post-assets",
+            "kind": "asset",
+            "ref": "assets-c6-ch04-a01-sorting-materials-according-to-their-shape",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "sorting-materials-by-shape:post-narration",
+            "kind": "narration",
+            "ref": "narration-c6-ch04-a01-sorting-materials-according-to-their-shape",
+            "finding": "4 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "sorting-materials-by-shape:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "sorting-materials-by-shape:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "fibre-to-fabric-cotton-farming",
+      "canonicalSlug": "c6-ch03-a01-cotton-farming",
+      "title": "Cotton Farming",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 14,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 52,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned Cotton Farming topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "fibre-to-fabric-cotton-farming:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/CottonFarmingViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "fibre-to-fabric-cotton-farming:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-farming:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-farming:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c06-ch03-a01-cotton-farming",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-farming:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-cotton-farming",
+            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-farming:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-farming:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c6-ch03-a01-cotton-farming",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "fibre-to-fabric-cotton-ginning",
+      "canonicalSlug": "c6-ch03-a02-the-process-of-cotton-ginning",
+      "title": "The Process of Cotton Ginning",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 14,
+          "integrity": 8,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 52,
+        "band": "Rebuild before pilot",
+        "strengths": [
+          "Selected the curriculum-aligned The Process of Cotton Ginning topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "fibre-to-fabric-cotton-ginning:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/CottonGinningViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 17,
+          "integrity": 13,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 75,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
+          "Replaced the cloned renderer/controller lifecycle with a shared guided viewer, declarative scene adapter, normalized actions, and evidence-gated controller.",
+          "Converted contributor panoramas to bounded local WebP assets, retained explicit credit, added digest checks, and preserved scene fallbacks."
+        ],
+        "evidence": [
+          {
+            "id": "fibre-to-fabric-cotton-ginning:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/guided/definitions.generated.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-ginning:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/guided-simulation-controller.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-ginning:post-assets",
+            "kind": "asset",
+            "ref": "assets:sim-c06-ch03-a02-the-process-of-cotton-ginning",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-ginning:post-narration",
+            "kind": "narration",
+            "ref": "narration:guided-cotton-ginning",
+            "finding": "6 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-ginning:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "fibre-to-fabric-cotton-ginning:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "components-of-food-mineral-sources",
+      "canonicalSlug": "c6-ch02-a05-the-sources-of-minerals-in-food",
+      "title": "The Sources of Minerals in Food",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 10,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 58,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned The Sources of Minerals in Food topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "components-of-food-mineral-sources:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/MineralSourcesViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 18,
+          "integrity": 14,
+          "interactivity": 14,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 78,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
+          "Separated pure domain outcomes from the shared interactive investigation session so unknown actions cannot advance the lesson.",
+          "Added executable behavior tests and registered the class through the shared route/viewer host instead of a viewer-local lifecycle."
+        ],
+        "evidence": [
+          {
+            "id": "components-of-food-mineral-sources:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/interactive/mineralSources.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "components-of-food-mineral-sources:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/interactive-investigation-session.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-mineral-sources:post-assets",
+            "kind": "asset",
+            "ref": "assets-c6-ch02-a05-the-sources-of-minerals-in-food",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-mineral-sources:post-narration",
+            "kind": "narration",
+            "ref": "narration-c6-ch02-a05-the-sources-of-minerals-in-food",
+            "finding": "4 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-mineral-sources:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "components-of-food-mineral-sources:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "components-of-food-vitamins-deficiencies",
+      "canonicalSlug": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+      "title": "Sources of Vitamins and Their Deficiencies",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 10,
+          "interactivity": 10,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 58,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Sources of Vitamins and Their Deficiencies topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "components-of-food-vitamins-deficiencies:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/VitaminDeficiencyViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 18,
+          "integrity": 14,
+          "interactivity": 14,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 78,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
+          "Separated pure domain outcomes from the shared interactive investigation session so unknown actions cannot advance the lesson.",
+          "Added executable behavior tests and registered the class through the shared route/viewer host instead of a viewer-local lifecycle."
+        ],
+        "evidence": [
+          {
+            "id": "components-of-food-vitamins-deficiencies:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/interactive/vitaminDeficiencies.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "components-of-food-vitamins-deficiencies:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/interactive-investigation-session.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-vitamins-deficiencies:post-assets",
+            "kind": "asset",
+            "ref": "assets-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-vitamins-deficiencies:post-narration",
+            "kind": "narration",
+            "ref": "narration-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+            "finding": "4 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-vitamins-deficiencies:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "components-of-food-vitamins-deficiencies:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    },
+    {
+      "prSlug": "components-of-food-lipid-test",
+      "canonicalSlug": "c6-ch02-a03-test-the-presence-of-lipids",
+      "title": "Test the Presence of Lipids",
+      "integration": "new-class",
+      "contributor": "GitHub @Adityakrpand",
+      "baseline": {
+        "sourceRevision": "621dfb61b39a4c49e8abb46ce60c54ea3d044479",
+        "scores": {
+          "education": 18,
+          "integrity": 11,
+          "interactivity": 13,
+          "visuals": 9,
+          "audio": 1,
+          "usability": 5,
+          "stability": 3,
+          "deployment": 2
+        },
+        "total": 62,
+        "band": "Needs focused improvement",
+        "strengths": [
+          "Selected the curriculum-aligned Test the Presence of Lipids topic and expressed it as a staged spatial class.",
+          "Contributed useful learner-facing scene, interaction, panorama, and narration ideas that could be retained during integration.",
+          "Established a working route-level prototype that made the intended student journey concrete for review."
+        ],
+        "defects": [
+          "The viewer owned renderer, animation, input, audio, state, and disposal concerns instead of using the project runtime contract.",
+          "The regression test inspected source strings rather than executing the learner behavior, so it could pass while the class was broken.",
+          "Narration depended on missing files or runtime/browser speech; the PR portfolio referenced 189 requests while only 16 clips were tracked."
+        ],
+        "evidence": [
+          {
+            "id": "components-of-food-lipid-test:baseline-viewer",
+            "kind": "git",
+            "ref": "git:621dfb61b39a4c49e8abb46ce60c54ea3d044479:apps/web/components/simulations/LipidTestViewer.tsx",
+            "finding": "Immutable PR-head viewer evidence used for all eight baseline dimensions; scores do not use the remediated tree.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ]
+      },
+      "postIntegration": {
+        "scores": {
+          "education": 18,
+          "integrity": 14,
+          "interactivity": 14,
+          "visuals": 9,
+          "audio": 4,
+          "usability": 8,
+          "stability": 8,
+          "deployment": 3
+        },
+        "total": 78,
+        "band": "Promising internal QA",
+        "remediation": [
+          "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
+          "Separated pure domain outcomes from the shared interactive investigation session so unknown actions cannot advance the lesson.",
+          "Added executable behavior tests and registered the class through the shared route/viewer host instead of a viewer-local lifecycle."
+        ],
+        "evidence": [
+          {
+            "id": "components-of-food-lipid-test:post-source",
+            "kind": "source",
+            "ref": "packages/simulation-content/src/implemented/interactive/lipidTest.ts",
+            "finding": "Canonical curriculum, stage, action, evidence, assessment, narration, asset, alias, and release metadata replace viewer-local declarations.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "components-of-food-lipid-test:post-behavior",
+            "kind": "test",
+            "ref": "tests/unit/interactive-investigation-session.test.ts",
+            "finding": "Executable behavior tests cover allowed actions, evidence-gated progress, retry behavior, assessment, restart, and unknown-action safety.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-lipid-test:post-assets",
+            "kind": "asset",
+            "ref": "assets-c6-ch02-a03-test-the-presence-of-lipids",
+            "finding": "Optimized local assets, digests, dimensions, credit, license status, and fallbacks are declared and validated; unknown upstream provenance remains explicit.",
+            "dimensions": [
+              "visuals",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-lipid-test:post-narration",
+            "kind": "narration",
+            "ref": "narration-c6-ch02-a03-test-the-presence-of-lipids",
+            "finding": "5 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "dimensions": [
+              "audio",
+              "usability",
+              "stability"
+            ]
+          },
+          {
+            "id": "components-of-food-lipid-test:post-build",
+            "kind": "build",
+            "ref": "npm run verify",
+            "finding": "Registry, package, API, route, narration, asset, type, test, and production-build gates execute from the root verification command.",
+            "dimensions": [
+              "education",
+              "integrity",
+              "interactivity",
+              "visuals",
+              "audio",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          },
+          {
+            "id": "components-of-food-lipid-test:post-browser",
+            "kind": "browser",
+            "ref": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
+            "finding": "The canonical route is registered through the shared browser host; headset and classroom evidence remain explicitly unsigned.",
+            "dimensions": [
+              "interactivity",
+              "usability",
+              "stability",
+              "deployment"
+            ]
+          }
+        ],
+        "remainingRisks": [
+          "No signed physical-headset acceptance has been run, so comfort, controller discoverability, frame rate, and listener quality remain internal-QA risks.",
+          "No controlled classroom study has been run, so the release makes no claim of measured learning improvement.",
+          "Upstream generation/license metadata for the contributed panorama remains undocumented and is carried as an explicit provenance limitation."
+        ],
+        "nextAction": "Run the published reviewer checklist on a representative browser and headset, then pilot with a teacher and record evidence before raising maturity."
+      }
+    }
+  ]
+}

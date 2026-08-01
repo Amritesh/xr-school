@@ -1,33 +1,29 @@
-import { describe, expect, it } from "vitest";
-import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { describe, expect, it } from 'vitest';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-const assignments: Record<string, string> = {
-  "AamPapadViewer.tsx": "food-courtyard-360.png",
-  "CottonFarmingViewer.tsx": "cotton-field-360.png",
-  "CottonGinningViewer.tsx": "cotton-ginning-workshop-360.png",
-  "FoodSpoilageViewer.tsx": "food-courtyard-360.png",
-  "LipidTestViewer.tsx": "nutrition-lab-360.png",
-  "MilkSpoilageViewer.tsx": "food-courtyard-360.png",
-  "MineralSourcesViewer.tsx": "nutrition-lab-360.png",
-  "RockClimbingViewer.tsx": "up-you-go-rock-climbing-360.png",
-  "ShapeSortingViewer.tsx": "materials-classroom-360.png",
-  "VitaminDeficiencyViewer.tsx": "nutrition-lab-360.png",
-};
+import { GUIDED_IMPLEMENTED_SIMULATIONS } from '@xr-school/simulation-content';
 
-describe("Realistic simulation environments", () => {
-  it("assigns and disposes a topic-specific environment in every listed contributed viewer", () => {
-    for (const [viewer, environment] of Object.entries(assignments)) {
-      const source = readFileSync(resolve(process.cwd(), "apps/web/components/simulations", viewer), "utf8");
-      expect(source, viewer).toContain("applyRealisticEnvironment");
-      expect(source, viewer).toContain(environment);
-      expect(source, viewer).toContain("realisticEnvironment.dispose()");
+describe('Canonical guided environments', () => {
+  it('assigns one topic-specific local environment to every guided class', () => {
+    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(17);
+    for (const record of GUIDED_IMPLEMENTED_SIMULATIONS) {
+      const environments = record.assets.assets.filter(asset => asset.kind === 'environment');
+      expect(environments, record.module.slug).toHaveLength(1);
+      const environment = environments[0];
+      expect(environment.url).toBe(`/simulations/${record.module.slug}/environment.webp`);
+      expect(existsSync(resolve(process.cwd(), 'apps/web/public', environment.url.slice(1)))).toBe(true);
     }
   });
 
-  it("includes every referenced panorama", () => {
-    for (const environment of new Set(Object.values(assignments))) {
-      expect(existsSync(resolve(process.cwd(), "apps/web/public/environments", environment)), environment).toBe(true);
-    }
+  it('loads and disposes the shared environment texture', () => {
+    const source = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/simulations/guided/createDeclarativeGuidedSceneWorld.ts'),
+      'utf8',
+    );
+    expect(source).toContain('metadata.environmentUrl');
+    expect(source).toContain('context.scene.background = texture');
+    expect(source).toContain('environmentTexture?.dispose()');
+    expect(source).toContain('disposeObject(root)');
   });
 });

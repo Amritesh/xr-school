@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-08-01",
+  "method": "Rendered first, middle, and final pages with Poppler and inspected contact sheets.",
+  "reports": [
+    {
+      "file": "aditya-contribution-improvement-report.pdf",
+      "pages": 28,
+      "representativePages": [
+        1,
+        14,
+        28
+      ],
+      "sha256": "1c4a6753508b7d2e101138b8495310f9d41c4815a07ea7ba8b8e3ede5b5f6c4e",
+      "checks": [
+        "no clipping",
+        "readable hierarchy",
+        "consistent margins",
+        "searchable text",
+        "A4 static pages"
+      ]
+    },
+    {
+      "file": "xr-school-implemented-simulations-quality-report.pdf",
+      "pages": 43,
+      "representativePages": [
+        1,
+        21,
+        43
+      ],
+      "sha256": "a97cb400777cc35be7193d4502ca68ca5fddfb1035c6abf92172fcf210e05e81",
+      "checks": [
+        "no clipping",
+        "readable hierarchy",
+        "consistent margins",
+        "searchable text",
+        "A4 static pages"
+      ]
+    },
+    {
+      "file": "xr-school-new-simulations-top-10-mistakes.pdf",
+      "pages": 12,
+      "representativePages": [
+        1,
+        6,
+        12
+      ],
+      "sha256": "bd59619e1978c05a66699ce78a0ac35495a652d5fc076fe1bbb6901c624e0e6e",
+      "checks": [
+        "no clipping",
+        "readable hierarchy",
+        "consistent margins",
+        "searchable text",
+        "A4 static pages"
+      ]
+    }
+  ]
+}

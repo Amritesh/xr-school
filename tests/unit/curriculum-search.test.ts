@@ -35,7 +35,10 @@ describe('curriculum search', () => {
       '/simulations/c5-ch03-a02-introduction-of-digestive-system',
       '/simulations/c5-ch07-a03-soluble-and-insoluble-substances',
     ]));
-    expect(results).toHaveLength(2);
+    // The 17 integrated Class 5 guided classes expand this released filter
+    // beyond the two original simulations while preserving both originals.
+    expect(results).toHaveLength(18);
+    expect(results.every(result => result.releaseMaturity === 'internalQA')).toBe(true);
   });
 
   it('keeps catalogued candidates searchable without launch URLs', () => {

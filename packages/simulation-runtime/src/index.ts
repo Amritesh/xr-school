@@ -93,11 +93,88 @@ export type {
   MatterPhase,
   MatterStateOutput,
 } from './models/matterStateModel.js';
+export {
+  FLOAT_OR_SINK_OBJECTS,
+  evaluateBuoyancy,
+  initialFloatOrSinkState,
+  reduceFloatOrSink,
+} from './models/floatOrSinkModel.js';
+export type {
+  BuoyancyInput,
+  BuoyancyResult,
+  FloatOrSinkState,
+  FloatSinkObject,
+  FloatSinkObjectId,
+  FloatSinkOutcome,
+} from './models/floatOrSinkModel.js';
+export {
+  SOLUBILITY_SUBSTANCES,
+  createSolubilityModel,
+  initialSolubilityInvestigationState,
+  reduceSolubilityInvestigation,
+  runFairSolubilityTrial,
+} from './models/solubilityModel.js';
+export type {
+  MixtureClass,
+  MixtureSnapshot,
+  SaturationState,
+  SolubilityInvestigationState,
+  SolubilityModel,
+  SolubilityModelConfig,
+  SolubilityPrediction,
+  SubstanceDefinition,
+  SubstanceId,
+} from './models/solubilityModel.js';
+export {
+  LIPID_PROCEDURE,
+  LIPID_SAMPLES,
+  initialLipidTestState,
+  reduceLipidTest,
+} from './models/lipidTestModel.js';
+export type {
+  LipidObservation,
+  LipidPrediction,
+  LipidProcedureStep,
+  LipidSampleDefinition,
+  LipidSampleId,
+  LipidSampleRecord,
+  LipidTestState,
+} from './models/lipidTestModel.js';
+export {
+  MINERAL_CASES,
+  VITAMIN_CASES,
+  createNutritionMatchReducer,
+} from './models/nutritionMatchModel.js';
+export type {
+  NutritionCase,
+  NutritionMatchState,
+} from './models/nutritionMatchModel.js';
+export {
+  SHAPE_ITEMS,
+  initialShapeSortingState,
+  reduceShapeSorting,
+} from './models/shapeSortingModel.js';
+export type {
+  ShapeId,
+  ShapeItem,
+  ShapeItemId,
+  ShapeSortingState,
+} from './models/shapeSortingModel.js';
 export { createLessonSession } from './experience/lessonSession.js';
 export type {
   LessonSession,
   LessonSnapshot,
 } from './experience/lessonSession.js';
+export { createInteractiveInvestigationSession } from './experience/interactiveInvestigation.js';
+export type {
+  AssessmentBinding,
+  InteractiveInvestigationConfig,
+  InteractiveInvestigationSession,
+  InteractiveInvestigationSnapshot,
+  InvestigationFeedback,
+  InvestigationReducer,
+  InvestigationTransition,
+} from './experience/interactiveInvestigation.js';
 export { createActionRouter } from './input/actionRouter.js';
 export type {
   ActionHandler,
