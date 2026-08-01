@@ -41,6 +41,9 @@ test.describe('deployed simulation release', () => {
       );
       expect(response?.status()).toBe(200);
       await expect(page.locator('[data-simulation-id]').first()).toBeAttached();
+      const browserLaunch = page.getByTestId('simulation-launch').first();
+      await expect(browserLaunch).toBeVisible();
+      await browserLaunch.click();
       await expect(page.getByTestId('simulation-canvas').first()).toBeVisible();
     }
   });
