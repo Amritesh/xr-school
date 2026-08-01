@@ -25,6 +25,7 @@ test('launches the solar mission with textures and accessible learning actions',
 test('completes the inquiry and opens the free observatory', async ({ page }) => {
   test.setTimeout(process.env.CI ? 300_000 : 120_000);
   await page.goto(solarSystemUrl, { waitUntil: 'networkidle' });
+  const experience = page.locator('main[data-simulation-id]');
   const audioPreference = page.getByLabel('Audio', { exact: true });
   if (await audioPreference.count()) await audioPreference.uncheck();
   const reducedMotion = page.getByLabel('Reduced motion', { exact: true });
@@ -64,8 +65,13 @@ test('completes the inquiry and opens the free observatory', async ({ page }) =>
 
   await page.getByRole('button', { name: 'Tail points away from the Sun' }).click();
   await page.getByRole('button', { name: 'Ride the comet' }).click();
-  await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible({ timeout: 30_000 });
-  await continueMission();
+  const cometContinue = page.getByRole('button', { name: 'Continue' });
+  await expect.poll(async () => {
+    if (await cometContinue.isVisible()) return 'continue';
+    return await experience.getAttribute('data-stage-id');
+  }, { timeout: process.env.CI ? 120_000 : 30_000 }).toMatch(/continue|stage-debrief/);
+  if (await cometContinue.isVisible()) await cometContinue.click();
+  await expect(experience).toHaveAttribute('data-stage-id', 'stage-debrief');
 
   await page.getByRole('button', { name: 'Its year is longer' }).click();
   await page.getByRole('button', { name: 'Collect your mission badge' }).click();

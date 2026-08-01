@@ -488,6 +488,12 @@ export default function SolarSystemMissionViewer() {
             return;
           }
           world.rideComet();
+          if (preferences.reducedMotion) {
+            pendingCometEvidenceRef.current = false;
+            note('Reduced-motion observation: the comet passed the Sun without moving the camera, and its tail stayed pointed away from the Sun.');
+            performLessonAction('ride-comet', source);
+            return;
+          }
           pendingCometEvidenceRef.current = true;
           note('Riding with the comet. Keep your eye on the tail as it swings around the Sun…');
           performLessonAction('ride-comet', source, { deferEvidence: true });
@@ -520,7 +526,7 @@ export default function SolarSystemMissionViewer() {
       default:
         return;
     }
-  }, [note, performLessonAction]);
+  }, [note, performLessonAction, preferences.reducedMotion]);
   selectRef.current = missionSelect;
 
   const previous = useCallback(() => {
