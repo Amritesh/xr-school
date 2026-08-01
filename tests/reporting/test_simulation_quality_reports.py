@@ -10,6 +10,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import reportlab
+
 from scripts.lib.simulation_quality_reports import (
     ascii_text,
     build_aditya_markdown,
@@ -264,6 +266,11 @@ def pdf_text(path: Path) -> str:
 
 
 class ReportPrimitiveTests(unittest.TestCase):
+    def test_report_renderer_matches_the_version_locked_for_ci(self) -> None:
+        requirements = (ROOT / "requirements-report.txt").read_text(encoding="utf-8").splitlines()
+        locked_version = next(line.split("==", 1)[1] for line in requirements if line.startswith("reportlab=="))
+        self.assertEqual(reportlab.Version, locked_version)
+
     def test_ascii_normalization_replaces_problematic_dashes_and_symbols(self) -> None:
         self.assertEqual(
             ascii_text("Evidence‑backed – released ≠ school‑validated — 35×23"),
