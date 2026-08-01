@@ -1,4 +1,4 @@
-import type { NormalizedRect } from '../../../../packages/simulation-schema/src/index';
+import type { NormalizedRect } from '@xr-school/simulation-schema';
 
 function area(rect: NormalizedRect) {
   return Math.max(0, rect.width) * Math.max(0, rect.height);

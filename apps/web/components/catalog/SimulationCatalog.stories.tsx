@@ -1,4 +1,4 @@
-import type { CurriculumSearchDocument } from '../../../../packages/simulation-schema/src/index';
+import type { CurriculumSearchDocument } from '@xr-school/simulation-schema';
 import SimulationCatalog from './SimulationCatalog';
 import type { CatalogCard } from '@/lib/simulationAvailability';
 

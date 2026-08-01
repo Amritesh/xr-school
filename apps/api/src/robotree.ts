@@ -6,7 +6,7 @@ import {
   type JoinHeadsetRequest,
   type StudentProgress,
   type TeacherCommand,
-} from '../../../packages/classroom-sync/src/index';
+} from '@xr-school/classroom-sync';
 
 /**
  * Robotree VR Smart Classroom — local-first classroom control API.

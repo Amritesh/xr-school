@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import type { NormalizedInputSource } from '../../../../packages/simulation-schema/src/index';
+import type { NormalizedInputSource } from '@xr-school/simulation-schema';
 import {
   createSelectionHighlight,
   type SelectionHighlight,

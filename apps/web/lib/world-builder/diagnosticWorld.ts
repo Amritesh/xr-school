@@ -3,7 +3,7 @@ import {
   BROWSER_ENHANCED_PROFILE,
   QUEST_BASELINE_PROFILE,
   type WorldBundle,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export const DIAGNOSTIC_WORLD: WorldBundle = {
   world: {

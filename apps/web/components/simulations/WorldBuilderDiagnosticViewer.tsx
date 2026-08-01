@@ -8,22 +8,22 @@ import {
   createAssessmentSession,
   type AssessmentAnswerResult,
   type AssessmentSession,
-} from '../../../../packages/simulation-runtime/src/world/assessment';
+} from '@xr-school/simulation-runtime';
 import {
   createRapierWorld,
-} from '../../../../packages/simulation-runtime/src/physics/rapierWorld';
+} from '@xr-school/simulation-runtime';
 import {
   createResourceRegistry,
-} from '../../../../packages/simulation-runtime/src/world/resourceRegistry';
+} from '@xr-school/simulation-runtime';
 import {
   createScientificModelRegistry,
-} from '../../../../packages/simulation-runtime/src/world/scientificModels';
+} from '@xr-school/simulation-runtime';
 import {
   createWorldRuntime,
-} from '../../../../packages/simulation-runtime/src/world/runtime';
+} from '@xr-school/simulation-runtime';
 import {
   createLessonSession,
-} from '../../../../packages/simulation-runtime/src/experience/lessonSession';
+} from '@xr-school/simulation-runtime';
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';

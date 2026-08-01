@@ -5,7 +5,7 @@ import {
   type LessonSnapshot,
   type PollinationEvent,
   type PollinationSnapshot,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '@xr-school/simulation-runtime';
 import { POLLINATION_WORLD } from './pollinationWorld';
 import {
   createPollinationExperiment,

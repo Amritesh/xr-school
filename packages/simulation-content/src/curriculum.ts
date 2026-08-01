@@ -1,7 +1,9 @@
 import type {
   CourseRecord,
   CurriculumChapterRecord,
+  GradeBand,
   LearningConceptRecord,
+  SimulationModuleRecord,
 } from '@xr-school/simulation-schema';
 
 export const LEARNING_CONCEPTS: LearningConceptRecord[] = [
@@ -808,3 +810,57 @@ export const COURSES: CourseRecord[] = [
     searchKeywords: ['class 10', 'acids', 'bases', 'ph', 'neutralisation'],
   },
 ];
+
+const CLASS_LEVELS_BY_GRADE_BAND: Readonly<Record<GradeBand, readonly number[]>> = {
+  kindergarten: [],
+  class1To2: [1, 2],
+  class3To5: [3, 4, 5],
+  class6To8: [6, 7, 8],
+  class9To10: [9, 10],
+  class11To12: [11, 12],
+};
+
+function encodedClassLevels(identifier: string): number[] | undefined {
+  const canonical = identifier.replace(/^sim-/, '');
+  const match = /^c(\d{1,2})(?:-(\d{1,2}))?(?:-|$)/.exec(canonical);
+  if (!match) return undefined;
+  const first = Number(match[1]);
+  const last = Number(match[2] ?? match[1]);
+  if (
+    !Number.isInteger(first)
+    || !Number.isInteger(last)
+    || first < 1
+    || last > 12
+    || last < first
+  ) {
+    return undefined;
+  }
+  return Array.from({ length: last - first + 1 }, (_, index) => first + index);
+}
+
+/**
+ * Resolves the exact curriculum class for a canonical simulation module.
+ * The canonical `cNN`/`cN-M` identity takes precedence, followed by explicit
+ * course links, with grade-band expansion reserved for genuinely multi-grade
+ * modules whose stable identity does not encode an exact class or range.
+ */
+export function classLevelsForSimulation(
+  module: SimulationModuleRecord,
+  courses: readonly CourseRecord[] = COURSES,
+): number[] {
+  for (const identifier of [module.id, module.slug]) {
+    const encodedLevels = encodedClassLevels(identifier);
+    if (encodedLevels) return encodedLevels;
+  }
+
+  const linkedLevels = courses
+    .filter(course => course.simulationIds.includes(module.id))
+    .map(course => course.classLevel);
+  if (linkedLevels.length > 0) {
+    return [...new Set(linkedLevels)].sort((left, right) => left - right);
+  }
+
+  return [...new Set(
+    module.gradeBands.flatMap(gradeBand => CLASS_LEVELS_BY_GRADE_BAND[gradeBand]),
+  )].sort((left, right) => left - right);
+}

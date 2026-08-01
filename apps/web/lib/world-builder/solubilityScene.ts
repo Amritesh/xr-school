@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import type { QualityProfileId } from '../../../../packages/simulation-schema/src/index';
+import type { QualityProfileId } from '@xr-school/simulation-schema';
 import {
   SOLUBILITY_SUBSTANCES,
   type MixtureSnapshot,

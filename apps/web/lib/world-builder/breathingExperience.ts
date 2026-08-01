@@ -1,10 +1,10 @@
 import {
   createLessonSession,
   type LessonSnapshot,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '@xr-school/simulation-runtime';
 import type {
   ExperienceDefinition,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export const BREATHING_EXPERIENCE_DEFINITION: ExperienceDefinition = {
   id: 'experience-breathing-process',

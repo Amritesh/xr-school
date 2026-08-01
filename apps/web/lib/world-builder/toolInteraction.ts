@@ -1,7 +1,7 @@
 import type {
   NormalizedAction,
   NormalizedInputSource,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export type ToolInteractionState =
   | 'idle'

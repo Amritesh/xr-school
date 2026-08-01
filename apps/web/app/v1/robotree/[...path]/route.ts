@@ -3,7 +3,7 @@ import {
   ClassroomSessionManager,
   type ClassroomSession,
   type DemoLogin,
-} from '../../../../../../packages/classroom-sync/src/index';
+} from '@xr-school/classroom-sync';
 import { loadSession, saveSession } from '@/lib/server/robotreeStore';
 
 /**

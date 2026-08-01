@@ -13,9 +13,9 @@ import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import {
   createAssessmentSession,
   type AssessmentAnswerResult,
-} from '../../../../packages/simulation-runtime/src/world/assessment';
-import { createScientificModelRegistry } from '../../../../packages/simulation-runtime/src/world/scientificModels';
-import { evaluateMatterState } from '../../../../packages/simulation-runtime/src/models/matterStateModel';
+} from '@xr-school/simulation-runtime';
+import { createScientificModelRegistry } from '@xr-school/simulation-runtime';
+import { evaluateMatterState } from '@xr-school/simulation-runtime';
 import { matterAgitationForce } from '@/lib/world-builder/matterParticleForces';
 import { createEnvironment } from '@/lib/world-builder/environmentFactory';
 import { createMaterialFactory } from '@/lib/world-builder/materialFactory';

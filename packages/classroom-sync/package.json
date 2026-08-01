@@ -16,6 +16,10 @@
     "build": "tsc -p tsconfig.build.json",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "@xr-school/simulation-content": "0.1.0",
+    "@xr-school/simulation-schema": "0.1.0"
+  },
   "devDependencies": {
     "typescript": "^5.9.3"
   }

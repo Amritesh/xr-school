@@ -3,7 +3,7 @@ import {
   BROWSER_ENHANCED_PROFILE,
   QUEST_BASELINE_PROFILE,
   type QualityProfileId,
-} from '../../../../packages/simulation-schema/src/world';
+} from '@xr-school/simulation-schema';
 
 export interface PresentationMetrics {
   fps: number;

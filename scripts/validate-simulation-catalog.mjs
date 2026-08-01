@@ -2,8 +2,18 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+import { IMPLEMENTED_SIMULATIONS } from '@xr-school/simulation-content';
+
 const ROOT = process.cwd();
 const CATALOG_PATH = resolve(ROOT, 'docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv');
+const QUALITY_CARDS_PATH = resolve(
+  ROOT,
+  'reports/data/implemented-simulation-quality-cards.json',
+);
+const QUALITY_EVIDENCE_PATH = resolve(
+  ROOT,
+  'reports/data/implemented-simulation-quality-evidence.json',
+);
 
 const VALID_GRADE_BANDS = new Set(['class3To5', 'class6To8', 'class9To10']);
 const VALID_FORMATS = new Set(['immersiveVr', 'threeSixtyVr', 'interactive3d', 'guidedVisualization', 'practicalLabSimulation', 'virtualFieldVisit', 'revisionMode']);
@@ -84,9 +94,49 @@ export function validateRows(rows) {
   return errors;
 }
 
+function duplicateValues(values) {
+  const seen = new Set();
+  const duplicates = new Set();
+  for (const value of values) {
+    if (seen.has(value)) duplicates.add(value);
+    seen.add(value);
+  }
+  return [...duplicates].sort();
+}
+
+export function validateReleasedReportInputs({ definitions, qualityCards, qualityEvidence }) {
+  const errors = [];
+  const expected = definitions
+    .filter(definition => definition.module.publicationStatus === 'released')
+    .map(definition => definition.module.slug)
+    .sort();
+  const inputs = {
+    'quality cards': qualityCards.map(item => item.slug),
+    'quality evidence': qualityEvidence.simulations.map(item => item.slug),
+  };
+
+  for (const [label, values] of Object.entries(inputs)) {
+    for (const duplicate of duplicateValues(values)) {
+      errors.push(`${label}: duplicate released simulation ${duplicate}`);
+    }
+    const actual = [...values].sort();
+    const missing = expected.filter(slug => !actual.includes(slug));
+    const unexpected = actual.filter(slug => !expected.includes(slug));
+    if (missing.length > 0) errors.push(`${label}: missing ${missing.join(', ')}`);
+    if (unexpected.length > 0) errors.push(`${label}: unexpected ${unexpected.join(', ')}`);
+  }
+
+  return errors;
+}
+
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const rows = parseCatalogCsv(readFileSync(CATALOG_PATH, 'utf8'));
   const errors = validateRows(rows);
+  errors.push(...validateReleasedReportInputs({
+    definitions: IMPLEMENTED_SIMULATIONS,
+    qualityCards: JSON.parse(readFileSync(QUALITY_CARDS_PATH, 'utf8')),
+    qualityEvidence: JSON.parse(readFileSync(QUALITY_EVIDENCE_PATH, 'utf8')),
+  }));
   const summary = summarizeCatalog(rows);
 
   console.log(`Science catalog rows: ${rows.length}`);

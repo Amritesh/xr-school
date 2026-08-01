@@ -1,6 +1,6 @@
 import type {
   LessonSnapshot,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '@xr-school/simulation-runtime';
 import BrowserExperienceHud from './BrowserExperienceHud';
 
 const IN_PROGRESS_SNAPSHOT: LessonSnapshot = {

@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
+  IMPLEMENTED_SIMULATIONS,
+  routeForSimulation,
+} from '@xr-school/simulation-content';
+import {
   ClassroomSessionManager,
   DEMO_ACTIVITIES,
+  toDemoActivity,
   type ClassroomSession,
   type DemoLogin,
 } from '../../packages/classroom-sync/src/index';
@@ -26,23 +31,48 @@ describe('Robotree classroom session manager', () => {
     manager.selectContent(session.id, 'class-8', 'physics', 'circuit', 'circuit');
   }
 
-  it('offers only the original implemented demos as classroom activities', () => {
-    expect(DEMO_ACTIVITIES.map((activity) => activity.id)).toEqual([
-      'pollination',
-      'circuit',
-      'c9-ch01-a02-states-of-matter',
-      'c6-ch01-a01-sources-of-food',
-      'c5-ch07-a03-soluble-and-insoluble-substances',
-      'c5-ch03-a02-introduction-of-digestive-system',
-      'c7-ch10-a02-the-breathing-process-in-human',
-      'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
-      'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
-      'c1-art-a01-learning-of-colours',
-      'c1-math-ch01-introduction-to-money',
-      'c2-english-ch01-prepositions',
-      'c8-10-science-solar-system',
-    ]);
-    expect(DEMO_ACTIVITIES.every((activity) => activity.simulationHref === `/simulations/${activity.id}`)).toBe(true);
+  it('offers every released registry simulation as a classroom activity', () => {
+    const released = IMPLEMENTED_SIMULATIONS.filter(
+      definition => definition.module.publicationStatus === 'released',
+    );
+
+    expect(DEMO_ACTIVITIES.map(activity => activity.id)).toEqual(
+      released.map(definition => definition.module.slug),
+    );
+    expect(DEMO_ACTIVITIES.map(activity => activity.moduleId)).toEqual(
+      released.map(definition => definition.module.id),
+    );
+    expect(DEMO_ACTIVITIES.map(activity => activity.simulationHref)).toEqual(
+      released.map(routeForSimulation),
+    );
+  });
+
+  it('keeps an unlinked canonical Class 5 definition at its exact class', () => {
+    const template = IMPLEMENTED_SIMULATIONS.find(
+      definition => definition.module.slug === 'c5-ch07-a03-soluble-and-insoluble-substances',
+    )!;
+    const unlinkedDefinition = {
+      ...template,
+      module: {
+        ...template.module,
+        id: 'sim-c05-ch99-a01-unlinked-classroom-projection',
+        slug: 'c5-ch99-a01-unlinked-classroom-projection',
+      },
+    };
+
+    expect(toDemoActivity(unlinkedDefinition)).toMatchObject({
+      classIds: ['class-5'],
+      gradeLabel: 'Class 5',
+    });
+  });
+
+  it('preserves an encoded multi-class range for a released registry activity', () => {
+    expect(DEMO_ACTIVITIES.find(
+      activity => activity.id === 'c8-10-science-solar-system',
+    )).toMatchObject({
+      classIds: ['class-8', 'class-9', 'class-10'],
+      gradeLabel: 'Class 8-10',
+    });
   });
 
   it('creates a session in open state with a join code', () => {

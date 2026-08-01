@@ -25,7 +25,7 @@ export type {
   SubjectOption,
   TeacherCommand,
   TeacherCommandType,
-} from '../../../packages/classroom-sync/src/types';
+} from '@xr-school/classroom-sync';
 
 export {
   DEMO_ACTIVITIES,
@@ -33,4 +33,4 @@ export {
   DEMO_CLASSES,
   DEMO_SUBJECTS,
   findActivity,
-} from '../../../packages/classroom-sync/src/demoContent';
+} from '@xr-school/classroom-sync';

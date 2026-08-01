@@ -1,4 +1,4 @@
-import type { Vector3Tuple } from '../../../../packages/simulation-schema/src/index';
+import type { Vector3Tuple } from '@xr-school/simulation-schema';
 
 export function evaluateReach(
   target: Vector3Tuple,

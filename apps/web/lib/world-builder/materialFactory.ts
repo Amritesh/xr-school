@@ -4,7 +4,7 @@ import type {
   AssetManifest,
   PbrMaterialDefinition,
   QualityProfileId,
-} from '../../../../packages/simulation-schema/src/world';
+} from '@xr-school/simulation-schema';
 
 export type TextureChannel =
   | 'baseColor'

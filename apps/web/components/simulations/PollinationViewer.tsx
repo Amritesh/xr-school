@@ -4,16 +4,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type {
   NormalizedInputSource,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 import {
   createScientificModelRegistry,
-} from '../../../../packages/simulation-runtime/src/world/scientificModels';
+} from '@xr-school/simulation-runtime';
 import {
   pollinationSnapshotForStage,
-} from '../../../../packages/simulation-runtime/src/models/pollinationModel';
+} from '@xr-school/simulation-runtime';
 import type {
   LessonSnapshot,
-} from '../../../../packages/simulation-runtime/src/experience/lessonSession';
+} from '@xr-school/simulation-runtime';
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';

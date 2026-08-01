@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import * as THREE from 'three';
-import type { LessonSnapshot } from '../../../../packages/simulation-runtime/src/index';
+import type { LessonSnapshot } from '@xr-school/simulation-runtime';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import type { QualityProfileId } from '../../../../packages/simulation-schema/src/index';
+import type { QualityProfileId } from '@xr-school/simulation-schema';
 import {
   createBee,
   createFlowerSpecimen,

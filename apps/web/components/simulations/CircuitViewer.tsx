@@ -4,13 +4,13 @@ import * as THREE from 'three';
 import {
   createAssessmentSession,
   type AssessmentAnswerResult,
-} from '../../../../packages/simulation-runtime/src/world/assessment';
+} from '@xr-school/simulation-runtime';
 import {
   createScientificModelRegistry,
-} from '../../../../packages/simulation-runtime/src/world/scientificModels';
+} from '@xr-school/simulation-runtime';
 import {
   evaluateCircuit,
-} from '../../../../packages/simulation-runtime/src/models/circuitModel';
+} from '@xr-school/simulation-runtime';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import ExperienceFocusGuide from '@/components/simulation-experience/ExperienceFocusGuide';

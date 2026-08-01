@@ -1,4 +1,5 @@
 export {
+  classLevelsForSimulation,
   COURSES,
   CURRICULUM_CHAPTERS,
   LEARNING_CONCEPTS,

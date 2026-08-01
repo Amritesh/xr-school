@@ -67,6 +67,8 @@ export interface ChapterOption {
 
 export interface ActivityOption {
   id: string;
+  /** Canonical simulation registry identifier; `id` remains the classroom launch slug. */
+  moduleId: string;
   title: string;
   type: ActivityType;
   estimatedMinutes: number;
@@ -78,6 +80,8 @@ export interface ActivityOption {
   subjectLabel?: string;
   gradeLabel?: string;
   simulationHref?: string;
+  publicationStatus: import('@xr-school/simulation-schema').PublicationStatus;
+  evidenceMaturity: import('@xr-school/simulation-schema').EvidenceMaturity;
 }
 
 export interface HeadsetDevice {

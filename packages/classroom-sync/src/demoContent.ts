@@ -1,18 +1,96 @@
+import {
+  classLevelsForSimulation,
+  COURSES,
+  IMPLEMENTED_SIMULATIONS,
+  routeForSimulation,
+} from '@xr-school/simulation-content';
+import type {
+  ImplementedSimulationDefinition,
+  SimulationFormat,
+  Subject,
+} from '@xr-school/simulation-schema';
+
 import type { ActivityOption, ChapterOption, ClassOption, SubjectOption } from './types.js';
 
 /**
- * Fixed demo content for the Robotree VR Smart Classroom demo.
- * Only the original implemented simulations are startable. Other class and
- * subject rows remain visible in the UI as disabled roadmap entries.
+ * Robotree launch content is a projection of the canonical released registry.
+ * Roadmap-only class and subject rows remain visible as disabled UI options,
+ * but no independently maintained simulation list exists here.
  */
 
-export const DEMO_CLASSES: ClassOption[] = Array.from({ length: 12 }, (_, i) => {
-  const classLevel = i + 1;
+const SUBJECT_PRESENTATION: Readonly<Record<Subject, { id: string; label: string }>> = {
+  science: { id: 'science', label: 'Science' },
+  environmentalScience: { id: 'evs', label: 'Environmental Science' },
+  mathematics: { id: 'mathematics', label: 'Mathematics' },
+  physics: { id: 'physics', label: 'Physics' },
+  chemistry: { id: 'chemistry', label: 'Chemistry' },
+  biology: { id: 'biology', label: 'Biology' },
+  geography: { id: 'geography', label: 'Geography' },
+  history: { id: 'history', label: 'History' },
+  english: { id: 'english', label: 'English' },
+  art: { id: 'art', label: 'Art' },
+  computerScience: { id: 'computer', label: 'Computer Science' },
+  vocationalSkills: { id: 'vocational', label: 'Vocational Skills' },
+  careerExposure: { id: 'career', label: 'Career Exposure' },
+};
+
+function activityType(format: SimulationFormat): ActivityOption['type'] {
+  switch (format) {
+    case 'immersiveVr':
+    case 'threeSixtyVr':
+    case 'virtualFieldVisit':
+      return 'vrActivity';
+    case 'revisionMode':
+      return 'assessment';
+    default:
+      return 'threeDModel';
+  }
+}
+
+function gradeLabel(classLevels: readonly number[]): string {
+  if (classLevels.length === 0) return 'Kindergarten';
+  if (classLevels.length === 1) return `Class ${classLevels[0]}`;
+  return `Class ${classLevels[0]}-${classLevels[classLevels.length - 1]}`;
+}
+
+export function toDemoActivity(definition: ImplementedSimulationDefinition): ActivityOption {
+  const { module } = definition;
+  const classLevels = classLevelsForSimulation(module, COURSES);
+  const subjects = module.subjects.map(subject => SUBJECT_PRESENTATION[subject]);
+  return {
+    id: module.slug,
+    moduleId: module.id,
+    title: module.title,
+    type: activityType(module.simulationFormat),
+    estimatedMinutes: module.expectedDurationMinutes,
+    totalSteps: module.stages,
+    description: module.summary,
+    classIds: classLevels.map(classLevel => `class-${classLevel}`),
+    subjectIds: subjects.map(subject => subject.id),
+    chapterId: module.slug,
+    subjectLabel: subjects.map(subject => subject.label).join(', '),
+    gradeLabel: gradeLabel(classLevels),
+    simulationHref: routeForSimulation(definition),
+    publicationStatus: module.publicationStatus,
+    evidenceMaturity: module.evidenceMaturity,
+  };
+}
+
+export const DEMO_ACTIVITIES: ActivityOption[] = IMPLEMENTED_SIMULATIONS
+  .filter(definition => definition.module.publicationStatus === 'released')
+  .map(toDemoActivity);
+
+const availableClassIds = new Set(
+  DEMO_ACTIVITIES.flatMap(activity => activity.classIds ?? []),
+);
+
+export const DEMO_CLASSES: ClassOption[] = Array.from({ length: 12 }, (_, index) => {
+  const classLevel = index + 1;
   return {
     id: `class-${classLevel}`,
     label: `Class ${classLevel}`,
     icon: '🎓',
-    available: classLevel <= 2 || (classLevel >= 5 && classLevel <= 10),
+    available: availableClassIds.has(`class-${classLevel}`),
   };
 });
 
@@ -28,194 +106,10 @@ export const DEMO_SUBJECTS: SubjectOption[] = [
   { id: 'physics', label: 'Physics', icon: '🧲', available: true },
   { id: 'chemistry', label: 'Chemistry', icon: '⚗️', available: true },
   { id: 'biology', label: 'Biology', icon: '🧬', available: true },
+  { id: 'geography', label: 'Geography', icon: '🌍', available: true },
 ];
 
-export const DEMO_ACTIVITIES: ActivityOption[] = [
-  {
-    id: 'pollination',
-    title: 'Plant Pollination & Growth Cycle',
-    type: 'vrActivity',
-    estimatedMinutes: 10,
-    totalSteps: 8,
-    description: 'Guide pollen transfer, fertilisation, seed formation, and germination.',
-    classIds: ['class-6', 'class-7', 'class-8', 'class-9', 'class-10'],
-    subjectIds: ['biology', 'evs'],
-    chapterId: 'pollination',
-    subjectLabel: 'Biology, Environmental Science',
-    gradeLabel: 'Class 6-10',
-    simulationHref: '/simulations/pollination',
-  },
-  {
-    id: 'circuit',
-    title: "Electric Circuits & Resistance (Ohm's Law)",
-    type: 'threeDModel',
-    estimatedMinutes: 8,
-    totalSteps: 6,
-    description: 'Change resistance and observe current, electron flow, and bulb brightness.',
-    classIds: ['class-6', 'class-7', 'class-8', 'class-9', 'class-10'],
-    subjectIds: ['physics'],
-    chapterId: 'circuit',
-    subjectLabel: 'Physics',
-    gradeLabel: 'Class 6-10',
-    simulationHref: '/simulations/circuit',
-  },
-  {
-    id: 'c9-ch01-a02-states-of-matter',
-    title: 'States of Matter Particle Lab',
-    type: 'threeDModel',
-    estimatedMinutes: 10,
-    totalSteps: 6,
-    description: 'Heat and cool particles to compare solid, liquid, and gas behaviour.',
-    classIds: ['class-9'],
-    subjectIds: ['chemistry', 'physics'],
-    chapterId: 'c9-ch01-a02-states-of-matter',
-    subjectLabel: 'Chemistry, Physics',
-    gradeLabel: 'Class 9',
-    simulationHref: '/simulations/c9-ch01-a02-states-of-matter',
-  },
-  {
-    id: 'c6-ch01-a01-sources-of-food',
-    title: 'Sources of Food Sorting Lab',
-    type: 'threeDModel',
-    estimatedMinutes: 9,
-    totalSteps: 5,
-    description: 'Sort foods by plant, animal, and fungal sources with instant feedback.',
-    classIds: ['class-6'],
-    subjectIds: ['science', 'biology'],
-    chapterId: 'c6-ch01-a01-sources-of-food',
-    subjectLabel: 'Science, Biology',
-    gradeLabel: 'Class 6',
-    simulationHref: '/simulations/c6-ch01-a01-sources-of-food',
-  },
-  {
-    id: 'c5-ch07-a03-soluble-and-insoluble-substances',
-    title: 'Soluble and Insoluble Substances Lab',
-    type: 'threeDModel',
-    estimatedMinutes: 8,
-    totalSteps: 6,
-    description: 'Predict, stir, and observe which substances dissolve in water.',
-    classIds: ['class-5'],
-    subjectIds: ['evs', 'science'],
-    chapterId: 'c5-ch07-a03-soluble-and-insoluble-substances',
-    subjectLabel: 'Environmental Science, Science',
-    gradeLabel: 'Class 5',
-    simulationHref: '/simulations/c5-ch07-a03-soluble-and-insoluble-substances',
-  },
-  {
-    id: 'c5-ch03-a02-introduction-of-digestive-system',
-    title: 'Introduction to the Digestive System',
-    type: 'vrActivity',
-    estimatedMinutes: 10,
-    totalSteps: 7,
-    description: 'Move food through organs and see where nutrients and water are absorbed.',
-    classIds: ['class-5'],
-    subjectIds: ['evs', 'biology'],
-    chapterId: 'c5-ch03-a02-introduction-of-digestive-system',
-    subjectLabel: 'Environmental Science, Biology',
-    gradeLabel: 'Class 5',
-    simulationHref: '/simulations/c5-ch03-a02-introduction-of-digestive-system',
-  },
-  {
-    id: 'c7-ch10-a02-the-breathing-process-in-human',
-    title: 'The Breathing Process in Human',
-    type: 'threeDModel',
-    estimatedMinutes: 10,
-    totalSteps: 6,
-    description: 'Move the diaphragm and watch the lungs, ribs, and airflow respond.',
-    classIds: ['class-7'],
-    subjectIds: ['biology'],
-    chapterId: 'c7-ch10-a02-the-breathing-process-in-human',
-    subjectLabel: 'Biology',
-    gradeLabel: 'Class 7',
-    simulationHref: '/simulations/c7-ch10-a02-the-breathing-process-in-human',
-  },
-  {
-    id: 'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
-    title: "The Effects of Force on an Object's Motion and Shape",
-    type: 'threeDModel',
-    estimatedMinutes: 10,
-    totalSteps: 6,
-    description: 'Apply pushes, braking, and side forces to change motion and shape.',
-    classIds: ['class-8'],
-    subjectIds: ['physics'],
-    chapterId: 'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
-    subjectLabel: 'Physics',
-    gradeLabel: 'Class 8',
-    simulationHref: '/simulations/c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape',
-  },
-  {
-    id: 'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
-    title: 'Acids, Bases & Neutralisation',
-    type: 'threeDModel',
-    estimatedMinutes: 10,
-    totalSteps: 6,
-    description: 'Test substances, read litmus changes, and observe neutralisation.',
-    classIds: ['class-10'],
-    subjectIds: ['chemistry'],
-    chapterId: 'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
-    subjectLabel: 'Chemistry',
-    gradeLabel: 'Class 10',
-    simulationHref: '/simulations/c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test',
-  },
-  {
-    id: 'c1-art-a01-learning-of-colours',
-    title: 'Colour Adventure',
-    type: 'vrActivity',
-    estimatedMinutes: 9,
-    totalSteps: 14,
-    description: 'Explore colours, mix paints, and complete playful colour challenges.',
-    classIds: ['class-1'],
-    subjectIds: ['art'],
-    chapterId: 'c1-art-a01-learning-of-colours',
-    subjectLabel: 'Art',
-    gradeLabel: 'Class 1',
-    simulationHref: '/simulations/c1-art-a01-learning-of-colours',
-  },
-  {
-    id: 'c1-math-ch01-introduction-to-money',
-    title: 'Introduction to Money',
-    type: 'threeDModel',
-    estimatedMinutes: 9,
-    totalSteps: 8,
-    description: 'Identify Indian coins and notes and buy simple items in Magic Money Town.',
-    classIds: ['class-1'],
-    subjectIds: ['mathematics'],
-    chapterId: 'c1-math-ch01-introduction-to-money',
-    subjectLabel: 'Mathematics',
-    gradeLabel: 'Class 1',
-    simulationHref: '/simulations/c1-math-ch01-introduction-to-money',
-  },
-  {
-    id: 'c2-english-ch01-prepositions',
-    title: 'Preposition Adventure',
-    type: 'vrActivity',
-    estimatedMinutes: 9,
-    totalSteps: 5,
-    description: 'Place objects in, on, under, behind, and between to learn position words.',
-    classIds: ['class-2'],
-    subjectIds: ['english'],
-    chapterId: 'c2-english-ch01-prepositions',
-    subjectLabel: 'English',
-    gradeLabel: 'Class 2',
-    simulationHref: '/simulations/c2-english-ch01-prepositions',
-  },
-  {
-    id: 'c8-10-science-solar-system',
-    title: 'Solar System: Gravity’s Orchestra',
-    type: 'vrActivity',
-    estimatedMinutes: 10,
-    totalSteps: 8,
-    description: 'Make gravity visible, race the planets, probe the hottest world, stretch space to true scale, and ride a comet.',
-    classIds: ['class-8', 'class-9', 'class-10'],
-    subjectIds: ['science', 'physics'],
-    chapterId: 'c8-10-science-solar-system',
-    subjectLabel: 'Science, Physics',
-    gradeLabel: 'Class 8-10',
-    simulationHref: '/simulations/c8-10-science-solar-system',
-  },
-];
-
-export const DEMO_CHAPTERS: ChapterOption[] = DEMO_ACTIVITIES.map((activity) => ({
+export const DEMO_CHAPTERS: ChapterOption[] = DEMO_ACTIVITIES.map(activity => ({
   id: activity.chapterId ?? activity.id,
   label: activity.title,
   summary: `${activity.gradeLabel} · ${activity.subjectLabel}`,
@@ -226,5 +120,5 @@ export const DEMO_CHAPTERS: ChapterOption[] = DEMO_ACTIVITIES.map((activity) => 
 }));
 
 export function findActivity(activityId: string): ActivityOption | undefined {
-  return DEMO_ACTIVITIES.find((a) => a.id === activityId);
+  return DEMO_ACTIVITIES.find(activity => activity.id === activityId);
 }

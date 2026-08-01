@@ -1,10 +1,10 @@
 import {
   createLessonSession,
   type LessonSnapshot,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '@xr-school/simulation-runtime';
 import type {
   ExperienceDefinition,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 import {
   CORRECT_COMET_TAIL,
   firstLapWinner,

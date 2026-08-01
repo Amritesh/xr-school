@@ -2,7 +2,7 @@ import type {
   CurriculumSearchDocument,
   ReleaseMaturity,
   Subject,
-} from '../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 export type CurriculumSearchFilters = {
   classLevel?: number;

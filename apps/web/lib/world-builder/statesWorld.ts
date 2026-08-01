@@ -4,7 +4,7 @@ import {
   QUEST_BASELINE_PROFILE,
   type AssetDefinition,
   type WorldBundle,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 const LICENSE = 'XR School self-authored; redistribution permitted';
 const sharedTexture = (

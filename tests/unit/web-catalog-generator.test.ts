@@ -4,15 +4,16 @@ import { describe, expect, it } from 'vitest';
 import { parseCatalogCsv } from '../../scripts/validate-simulation-catalog.mjs';
 import {
   buildCurriculumSearchDocuments,
+  buildReleasedSimulationCatalog,
   renderWebCatalogSource,
   toWebCatalogRows,
 } from '../../scripts/generate-web-catalog.mjs';
-import { SIMULATION_MODULES } from '../../packages/simulation-content/src/modules';
 import {
   COURSES,
   CURRICULUM_CHAPTERS,
+  IMPLEMENTED_SIMULATIONS,
   LEARNING_CONCEPTS,
-} from '../../packages/simulation-content/src/curriculum';
+} from '@xr-school/simulation-content';
 
 const csv = readFileSync(resolve(process.cwd(), 'docs/catalog/class-5-to-10-science-virtual-tours-catalog.csv'), 'utf8');
 const rows = toWebCatalogRows(parseCatalogCsv(csv));
@@ -51,9 +52,11 @@ describe('web catalog generator', () => {
   });
 
   it('renders a TypeScript source module with readonly catalog data', () => {
-    const source = renderWebCatalogSource(rows.slice(0, 2));
+    const releasedRows = buildReleasedSimulationCatalog(IMPLEMENTED_SIMULATIONS);
+    const source = renderWebCatalogSource(rows.slice(0, 2), releasedRows);
 
     expect(source).toContain('export const SCIENCE_SIMULATION_CATALOG');
+    expect(source).toContain('export const RELEASED_SIMULATION_CATALOG');
     expect(source).toContain('as const');
     expect(source).toContain('c5-ch01-a01-supersense-of-smell');
   });
@@ -64,13 +67,16 @@ describe('web catalog generator', () => {
       courses: COURSES,
       chapters: CURRICULUM_CHAPTERS,
       concepts: LEARNING_CONCEPTS,
-      modules: SIMULATION_MODULES,
+      definitions: IMPLEMENTED_SIMULATIONS,
     });
 
     expect(documents.length).toBeGreaterThan(500);
     expect(new Set(documents.map(document => document.id)).size).toBe(documents.length);
     expect(documents.find(document => document.id === 'simulation:pollination')).toMatchObject({
       kind: 'simulation',
+      moduleId: 'sim-pollination-001',
+      publicationStatus: 'released',
+      evidenceMaturity: 'internalQA',
       releaseMaturity: 'internalQA',
       href: '/simulations/pollination',
     });
@@ -95,5 +101,31 @@ describe('web catalog generator', () => {
         href: `/simulations/${slug}`,
       });
     }
+  });
+
+  it('derives the exact class for a released definition without a course link', () => {
+    const template = IMPLEMENTED_SIMULATIONS.find(
+      definition => definition.module.slug === 'c5-ch07-a03-soluble-and-insoluble-substances',
+    )!;
+    const unlinkedDefinition = {
+      ...template,
+      module: {
+        ...template.module,
+        id: 'sim-c05-ch99-a01-unlinked-search-projection',
+        slug: 'c5-ch99-a01-unlinked-search-projection',
+      },
+    };
+    const documents = buildCurriculumSearchDocuments({
+      catalogRows: [],
+      courses: COURSES,
+      chapters: CURRICULUM_CHAPTERS,
+      concepts: LEARNING_CONCEPTS,
+      definitions: [unlinkedDefinition],
+    });
+
+    expect(documents.find(document => document.kind === 'simulation')).toMatchObject({
+      moduleId: unlinkedDefinition.module.id,
+      classLevels: [5],
+    });
   });
 });

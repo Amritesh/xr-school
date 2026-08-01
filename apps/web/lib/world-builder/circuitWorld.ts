@@ -5,7 +5,7 @@ import {
   type AssetDefinition,
   type PbrMaterialDefinition,
   type WorldBundle,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 
 const TEXTURE_ROOT = '/world-builder/circuit';
 const ASSET_LICENSE = 'XR School self-authored; redistribution permitted';

@@ -6,7 +6,7 @@ import type {
   CurriculumSearchDocument,
   ReleaseMaturity,
   Subject,
-} from '../../../../packages/simulation-schema/src/index';
+} from '@xr-school/simulation-schema';
 import { CURRICULUM_SEARCH_DOCUMENTS } from '@/lib/curriculumSearch.generated';
 import { searchCurriculum } from '@/lib/curriculumSearch';
 import { SCIENCE_SIMULATION_CATALOG } from '@/lib/scienceCatalog.generated';

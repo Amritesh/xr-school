@@ -10317,5 +10317,126 @@ export const SCIENCE_SIMULATION_CATALOG = [
   }
 ] as const;
 
+export const RELEASED_SIMULATION_CATALOG = [
+  {
+    "id": "sim-pollination-001",
+    "slug": "pollination",
+    "title": "Plant Pollination & Growth Cycle",
+    "href": "/simulations/pollination",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-circuit-001",
+    "slug": "circuit",
+    "title": "Electric Circuits & Resistance (Ohm's Law)",
+    "href": "/simulations/circuit",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c09-ch01-a02-states-of-matter",
+    "slug": "c9-ch01-a02-states-of-matter",
+    "title": "States of Matter Particle Lab",
+    "href": "/simulations/c9-ch01-a02-states-of-matter",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c06-ch01-a01-sources-of-food",
+    "slug": "c6-ch01-a01-sources-of-food",
+    "title": "Sources of Food Sorting Lab",
+    "href": "/simulations/c6-ch01-a01-sources-of-food",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch07-a03-soluble-and-insoluble-substances",
+    "slug": "c5-ch07-a03-soluble-and-insoluble-substances",
+    "title": "Soluble and Insoluble Substances Lab",
+    "href": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch03-a02-introduction-of-digestive-system",
+    "slug": "c5-ch03-a02-introduction-of-digestive-system",
+    "title": "Introduction to the Digestive System",
+    "href": "/simulations/c5-ch03-a02-introduction-of-digestive-system",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c07-ch10-a02-the-breathing-process-in-human",
+    "slug": "c7-ch10-a02-the-breathing-process-in-human",
+    "title": "The Breathing Process in Human",
+    "href": "/simulations/c7-ch10-a02-the-breathing-process-in-human",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c08-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+    "slug": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+    "title": "The Effects of Force on an Object's Motion and Shape",
+    "href": "/simulations/c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+    "slug": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+    "title": "Acids, Bases & Neutralisation",
+    "href": "/simulations/c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c1-art-a01-learning-of-colours",
+    "slug": "c1-art-a01-learning-of-colours",
+    "title": "Colour Adventure",
+    "href": "/simulations/c1-art-a01-learning-of-colours",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c1-math-ch01-introduction-to-money",
+    "slug": "c1-math-ch01-introduction-to-money",
+    "title": "Introduction to Money",
+    "href": "/simulations/c1-math-ch01-introduction-to-money",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c2-english-ch01-prepositions",
+    "slug": "c2-english-ch01-prepositions",
+    "title": "Preposition Adventure",
+    "href": "/simulations/c2-english-ch01-prepositions",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c8-10-science-solar-system",
+    "slug": "c8-10-science-solar-system",
+    "title": "Solar System: Gravity’s Orchestra",
+    "href": "/simulations/c8-10-science-solar-system",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  }
+] as const;
+
 export type ScienceSimulationCatalogItem = (typeof SCIENCE_SIMULATION_CATALOG)[number];
 export type ScienceSimulationArchetype = ScienceSimulationCatalogItem['primaryArchetype'];
+export type ReleasedSimulationCatalogItem = (typeof RELEASED_SIMULATION_CATALOG)[number];
