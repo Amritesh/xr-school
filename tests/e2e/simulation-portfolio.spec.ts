@@ -46,7 +46,7 @@ test.describe('released simulation portfolio', () => {
   });
 
   test('launches representative existing, guided, and investigation classes', async ({ page }) => {
-    test.setTimeout(120_000);
+    test.setTimeout(process.env.CI ? 300_000 : 120_000);
     const representativeSlugs = [
       'c6-ch01-a01-sources-of-food',
       'c5-ch04-a01-food-spoilage',

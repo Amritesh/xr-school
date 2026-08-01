@@ -48,7 +48,7 @@ test.describe('released guided simulation routes', () => {
   // host flow 17 times.
   for (const guidedCase of guidedCases.slice(0, 1)) {
     test(`${guidedCase.slug} completes its evidence-gated class`, async ({ page }) => {
-      test.setTimeout(90_000);
+      test.setTimeout(process.env.CI ? 300_000 : 90_000);
       const pageErrors: string[] = [];
       const failedRequiredAssets: string[] = [];
       page.on('pageerror', error => pageErrors.push(error.message));

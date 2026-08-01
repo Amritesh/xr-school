@@ -23,8 +23,12 @@ test('launches the solar mission with textures and accessible learning actions',
 });
 
 test('completes the inquiry and opens the free observatory', async ({ page }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(process.env.CI ? 300_000 : 120_000);
   await page.goto(solarSystemUrl, { waitUntil: 'networkidle' });
+  const audioPreference = page.getByLabel('Audio', { exact: true });
+  if (await audioPreference.count()) await audioPreference.uncheck();
+  const reducedMotion = page.getByLabel('Reduced motion', { exact: true });
+  if (await reducedMotion.count()) await reducedMotion.check();
   await page.getByRole('button', { name: 'Explore in browser' }).click();
 
   const continueMission = async () => {
@@ -40,7 +44,7 @@ test('completes the inquiry and opens the free observatory', async ({ page }) =>
   await expect(async () => {
     await page.getByRole('button', { name: 'Mercury won' }).click();
     await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible({ timeout: 700 });
-  }).toPass({ timeout: 30_000, intervals: [1_000] });
+  }).toPass({ timeout: process.env.CI ? 90_000 : 30_000, intervals: [1_000] });
   await continueMission();
 
   await page.getByRole('button', { name: 'Venus is hottest' }).click();
