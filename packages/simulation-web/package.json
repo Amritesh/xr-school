@@ -1,0 +1,28 @@
+{
+  "name": "@xr-school/simulation-web",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@xr-school/simulation-runtime": "0.1.0",
+    "@xr-school/simulation-schema": "0.1.0",
+    "@types/three": "^0.170.0",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

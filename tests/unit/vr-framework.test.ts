@@ -1,12 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import * as THREE from 'three';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   createVrLocomotion,
   rotateRigAboutHead,
   smoothAxis,
 } from '../../apps/web/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '../../apps/web/lib/vr/vrPlayerRig';
 
 function source(path: string) {
   return readFileSync(resolve(process.cwd(), path), 'utf8');
@@ -21,6 +22,18 @@ const viewerPaths = [
 ];
 
 describe('shared VR simulation framework', () => {
+  it('keeps legacy app imports as public simulation-web compatibility shims', () => {
+    const rigShim = source('apps/web/lib/vr/vrPlayerRig.ts');
+    const locomotionShim = source('apps/web/lib/vr/vrLocomotion.ts');
+    const rigLibrary = source('packages/simulation-web/src/vr/vrPlayerRig.ts');
+    const locomotionLibrary = source('packages/simulation-web/src/vr/vrLocomotion.ts');
+
+    expect(rigShim).toContain("from '@xr-school/simulation-web'");
+    expect(locomotionShim).toContain("from '@xr-school/simulation-web'");
+    expect(rigLibrary).toContain('createVrPlayerRig');
+    expect(locomotionLibrary).toContain('createVrLocomotion');
+  });
+
   it('wires every QA-targeted viewer through the shared VR rig, HUD, and locomotion modules', () => {
     for (const path of viewerPaths) {
       const text = source(path);
@@ -79,43 +92,95 @@ describe('createVrLocomotion', () => {
     return { handedness, gamepad: { axes: [0, 0, axisX, axisY], buttons } };
   }
 
-  it('glides the rig toward the learner right when the left stick is pushed right', () => {
+  it('does not translate from a held thumbstick because locomotion is stationary by default', () => {
     const { rig, camera } = makeRig();
     const locomotion = createVrLocomotion({
       renderer: fakeRenderer(camera, [stick('left', 1, 0)]),
       rig,
     });
 
-    locomotion.update(1);
+    for (let index = 0; index < 100; index += 1) locomotion.update(1);
 
-    // Facing -Z, the learner's right is +X.
-    expect(rig.position.x).toBeGreaterThan(0.5);
-    expect(Math.abs(rig.position.z)).toBeLessThan(1e-6);
+    expect(rig.position.length()).toBe(0);
   });
 
-  it('glides forward along the view direction when the left stick is pushed up', () => {
+  it('rejects bounded teleport without authored spatial bounds', () => {
     const { rig, camera } = makeRig();
-    const locomotion = createVrLocomotion({
+
+    expect(() => createVrLocomotion({
       renderer: fakeRenderer(camera, [stick('left', 0, -1)]),
+      rig,
+      locomotion: 'boundedTeleport',
+    })).toThrow(/bounded teleport requires authored bounds/i);
+
+    expect(() => createVrLocomotion({
+      renderer: fakeRenderer(camera, [stick('left', 0, -1)]),
+      rig,
+      locomotion: 'boundedTeleport',
+      movementBounds: new THREE.Box3(
+        new THREE.Vector3(-1, Number.NEGATIVE_INFINITY, -1),
+        new THREE.Vector3(1, 2, 1),
+      ),
+    })).toThrow(/finite, non-empty authored bounds/i);
+  });
+
+  it('snap-teleports head-relative once per deflection and clamps to bounds', () => {
+    const { rig, camera } = makeRig();
+    const source = stick('left', 0, -1);
+    const locomotion = createVrLocomotion({
+      renderer: fakeRenderer(camera, [source]),
+      rig,
+      locomotion: 'boundedTeleport',
+      movementBounds: new THREE.Box3(
+        new THREE.Vector3(-1, -10, -1),
+        new THREE.Vector3(1, 10, 1),
+      ),
+      teleportStepMeters: 0.75,
+    });
+
+    locomotion.update(0.016);
+    expect(rig.position.z).toBeCloseTo(-0.75);
+    locomotion.update(0.016);
+    expect(rig.position.z).toBeCloseTo(-0.75);
+
+    source.gamepad.axes[3] = 0;
+    locomotion.update(0.016);
+    source.gamepad.axes[3] = -1;
+    locomotion.update(0.016);
+    expect(rig.position.z).toBeCloseTo(-1);
+  });
+
+  it('snap-turns once per right-stick deflection and rearms after release', () => {
+    const { rig, camera } = makeRig();
+    const source = stick('right', 1, 0);
+    const locomotion = createVrLocomotion({
+      renderer: fakeRenderer(camera, [source]),
       rig,
     });
 
-    locomotion.update(1);
+    locomotion.update(0.016);
+    const firstTurn = rig.rotation.y;
+    locomotion.update(0.016);
+    expect(rig.rotation.y).toBe(firstTurn);
 
-    expect(rig.position.z).toBeLessThan(-0.5);
-    expect(Math.abs(rig.position.x)).toBeLessThan(1e-6);
+    source.gamepad.axes[2] = 0;
+    locomotion.update(0.016);
+    source.gamepad.axes[2] = 1;
+    locomotion.update(0.016);
+    expect(rig.rotation.y).toBeCloseTo(firstTurn * 2);
   });
 
-  it('smoothly turns the view right when the right stick is pushed right', () => {
+  it('preserves an explicit no-turn preference', () => {
     const { rig, camera } = makeRig();
     const locomotion = createVrLocomotion({
       renderer: fakeRenderer(camera, [stick('right', 1, 0)]),
       rig,
+      turnMode: 'none',
     });
 
-    locomotion.update(0.5);
+    locomotion.update(1);
 
-    expect(rig.rotation.y).toBeLessThan(-0.1); // clockwise = turning right
+    expect(rig.rotation.y).toBe(0);
   });
 
   it('never moves the rig from the right stick, and never turns it from the left stick', () => {
@@ -155,6 +220,39 @@ describe('createVrLocomotion', () => {
     sources[0].gamepad.buttons[5].pressed = true;
     locomotion.update(0.016);
     expect(backs).toBe(2);
+  });
+});
+
+describe('createVrPlayerRig', () => {
+  it('removes controller ray children and disposes idempotently', () => {
+    const controllers = [new THREE.Group(), new THREE.Group()];
+    const removeEventListener = vi.fn();
+    const renderer = {
+      xr: {
+        getController: (index: number) => controllers[index],
+        addEventListener: vi.fn(),
+        removeEventListener,
+      },
+    } as unknown as THREE.WebGLRenderer;
+    const scene = new THREE.Scene();
+    const player = createVrPlayerRig({
+      renderer,
+      scene,
+      camera: new THREE.PerspectiveCamera(),
+      spawn: {
+        position: new THREE.Vector3(0, 0, 2),
+        lookAt: new THREE.Vector3(),
+      },
+    });
+    const rays = controllers.map(controller => controller.children[0]);
+
+    expect(rays.every(ray => ray instanceof THREE.Line)).toBe(true);
+    player.dispose();
+    player.dispose();
+
+    expect(rays.map(ray => ray.parent)).toEqual([null, null]);
+    expect(scene.children).not.toContain(player.rig);
+    expect(removeEventListener).toHaveBeenCalledTimes(2);
   });
 });
 

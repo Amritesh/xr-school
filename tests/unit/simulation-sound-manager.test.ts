@@ -4,11 +4,13 @@ import {
   playSimulationNarration,
   stopSimulationNarration,
 } from '../../apps/web/lib/simulationAudio';
+import { createNarrationController } from '@xr-school/simulation-web';
 
 class FakeAudio {
   static instances: FakeAudio[] = [];
   static playResults: Promise<void>[] = [];
   paused = true;
+  currentTime = 0;
   volume = 1;
   preload = '';
   readonly src: string;
@@ -109,5 +111,30 @@ describe('singleton simulation sound manager', () => {
 
     expect(FakeAudio.instances[1].paused).toBe(true);
     expect(FakeAudio.instances[2].paused).toBe(false);
+  });
+
+  it('shares one playback owner with manifest-driven shell narration', async () => {
+    await playSimulationNarration('legacy first', 0, '/legacy-first.mp3');
+    const legacyFirst = FakeAudio.instances[0];
+    const shell = createNarrationController({
+      id: 'shell-narration',
+      cues: [{
+        id: 'shell-cue',
+        stageId: 'stage-one',
+        text: 'Shell cue',
+        caption: 'Shell cue',
+        audioUrl: '/shell.mp3',
+      }],
+      fallback: 'browserTts',
+    });
+
+    await shell.play('shell-cue');
+    expect(legacyFirst.paused).toBe(true);
+    const shellAudio = FakeAudio.instances[1];
+
+    await playSimulationNarration('legacy replacement', 1, '/legacy-second.mp3');
+    expect(shellAudio.paused).toBe(true);
+    expect(FakeAudio.instances[2].paused).toBe(false);
+    shell.dispose();
   });
 });

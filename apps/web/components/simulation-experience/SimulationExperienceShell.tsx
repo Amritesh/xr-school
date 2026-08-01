@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import type {
   LessonSnapshot,
-} from '../../../../packages/simulation-runtime/src/index';
+} from '@xr-school/simulation-runtime';
 import { ClassroomSync } from '../robotree/ClassroomSync';
 import BrowserExperienceHud from './BrowserExperienceHud';
 import ExperienceFocusGuide, {
@@ -13,6 +13,7 @@ import LaunchPortal, { type ExperiencePreferences } from './LaunchPortal';
 import './simulation-experience.css';
 
 interface SimulationExperienceShellProps {
+  simulationId?: string;
   title: string;
   classContext: string;
   objective: string;
@@ -31,6 +32,23 @@ interface SimulationExperienceShellProps {
   completionHeadline?: string;
   completionBody?: string;
   completionActionLabel?: string;
+  primaryAction?: {
+    label: string;
+    disabled?: boolean;
+    onActivate(): void;
+  };
+  assessment?: {
+    promptId: string;
+    question: string;
+    options: readonly { id: string; label: string }[];
+    selectedId?: string;
+    feedback?: string;
+    onAnswer(optionId: string): void;
+  };
+  caption?: string;
+  onReplayNarration?: () => void;
+  onRestart?: () => void;
+  helpText?: string;
   focusGuide?: FocusGuideState;
   error?: string;
   projector?: boolean;
@@ -38,6 +56,7 @@ interface SimulationExperienceShellProps {
 }
 
 export default function SimulationExperienceShell({
+  simulationId,
   title,
   classContext,
   objective,
@@ -56,6 +75,12 @@ export default function SimulationExperienceShell({
   completionHeadline,
   completionBody,
   completionActionLabel,
+  primaryAction,
+  assessment,
+  caption,
+  onReplayNarration,
+  onRestart,
+  helpText,
   focusGuide,
   error,
   projector = false,
@@ -64,6 +89,8 @@ export default function SimulationExperienceShell({
   return (
     <main
       className="simulation-experience"
+      data-simulation-id={simulationId ?? snapshot.experienceId}
+      data-stage-id={snapshot.stageId}
       data-projector={projector}
       data-reduced-motion={preferences.reducedMotion}
     >
@@ -99,6 +126,12 @@ export default function SimulationExperienceShell({
           completionHeadline={completionHeadline}
           completionBody={completionBody}
           completionActionLabel={completionActionLabel}
+          primaryAction={primaryAction}
+          assessment={assessment}
+          caption={caption}
+          onReplayNarration={onReplayNarration}
+          onRestart={onRestart}
+          helpText={helpText}
           onPrevious={onPrevious}
           onNext={onNext}
         />

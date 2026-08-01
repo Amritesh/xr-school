@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@xr-school/simulation-runtime": ["../simulation-runtime/src/index.ts"],
+      "@xr-school/simulation-schema": ["../simulation-schema/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

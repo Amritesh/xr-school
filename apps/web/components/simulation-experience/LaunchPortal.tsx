@@ -47,7 +47,12 @@ export default function LaunchPortal({
         <p>{objective}</p>
         <div className="simulation-experience__launch-actions">
           {onEnterVr && <button type="button" onClick={onEnterVr}>Enter VR</button>}
-          <button type="button" className="secondary" onClick={onStartBrowser}>
+          <button
+            type="button"
+            className="secondary"
+            data-testid="simulation-launch"
+            onClick={onStartBrowser}
+          >
             Explore in browser
           </button>
         </div>

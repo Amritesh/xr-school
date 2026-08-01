@@ -3,19 +3,25 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 describe('web simulation runtime host', () => {
-  it('owns the renderer loop, adaptive presentation, and resource disposal', () => {
-    const source = readFileSync(resolve(
+  it('keeps the app path as a compatibility forwarder to the library host', () => {
+    const appSource = readFileSync(resolve(
       process.cwd(),
       'apps/web/lib/world-builder/webSimulationRuntime.ts',
     ), 'utf8');
+    const librarySource = readFileSync(resolve(
+      process.cwd(),
+      'packages/simulation-web/src/compat/createWebSimulationRuntime.ts',
+    ), 'utf8');
 
-    expect(source).toContain('createWorldRuntime');
-    expect(source).toContain('createPresentationPipeline');
-    expect(source).toContain('detectDeviceProfile');
-    expect(source).toContain('renderer.setAnimationLoop');
-    expect(source).toContain('resourceRegistry.disposeAll');
-    expect(source).toContain("renderer.xr.addEventListener('sessionstart'");
-    expect(source).toContain("renderer.xr.addEventListener('sessionend'");
+    expect(appSource).toContain("from '@xr-school/simulation-web'");
+    expect(appSource).not.toContain('new THREE.WebGLRenderer');
+    expect(librarySource).toContain('createWorldRuntime');
+    expect(librarySource).toContain('createPresentationPipeline');
+    expect(librarySource).toContain('detectDeviceProfile');
+    expect(librarySource).toContain('renderer.setAnimationLoop');
+    expect(librarySource).toContain('resourceRegistry.disposeAll');
+    expect(librarySource).toContain("renderer.xr.addEventListener('sessionstart'");
+    expect(librarySource).toContain("renderer.xr.addEventListener('sessionend'");
   });
 
   it('keeps Rapier out of non-rigid-body client bundles', () => {

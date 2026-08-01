@@ -9,6 +9,9 @@ export default defineConfig({
       '@xr-school/simulation-schema': fileURLToPath(
         new URL('./packages/simulation-schema/src/index.ts', import.meta.url),
       ),
+      '@xr-school/simulation-runtime': fileURLToPath(
+        new URL('./packages/simulation-runtime/src/index.ts', import.meta.url),
+      ),
       '@xr-school/evaluation-engine': fileURLToPath(
         new URL('./packages/evaluation-engine/src/index.ts', import.meta.url),
       ),
@@ -17,6 +20,9 @@ export default defineConfig({
       ),
       '@xr-school/simulation-content': fileURLToPath(
         new URL('./packages/simulation-content/src/index.ts', import.meta.url),
+      ),
+      '@xr-school/simulation-web': fileURLToPath(
+        new URL('./packages/simulation-web/src/index.ts', import.meta.url),
       ),
     },
   },

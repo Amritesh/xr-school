@@ -11,6 +11,7 @@ const libraryPackages = [
   'simulation-content',
   'classroom-sync',
   'evaluation-engine',
+  'simulation-web',
 ] as const;
 
 const expectedPackageOrder = [
@@ -19,6 +20,7 @@ const expectedPackageOrder = [
   'evaluation-engine',
   'simulation-content',
   'classroom-sync',
+  'simulation-web',
 ] as const;
 
 interface PackageManifest {
@@ -177,6 +179,11 @@ describe('workspace package boundaries', () => {
       'type-check:packages': 'node scripts/type-check-packages.mjs',
       build: 'npm run build:packages && npm --workspace apps/web run build',
     });
+    const verify = rootManifest.scripts?.verify ?? '';
+    expect(verify.indexOf('npm run build:packages')).toBeGreaterThanOrEqual(0);
+    expect(verify.indexOf('npm run build:packages')).toBeLessThan(
+      verify.indexOf('npm --workspace apps/web run type-check'),
+    );
   });
 
   it('uses npm-compatible local versions and links every library workspace', () => {
@@ -216,7 +223,16 @@ describe('workspace package boundaries', () => {
 
     expect(webManifest.dependencies).toMatchObject({
       '@xr-school/simulation-content': '0.1.0',
+      '@xr-school/simulation-runtime': '0.1.0',
       '@xr-school/simulation-schema': '0.1.0',
+      '@xr-school/simulation-web': '0.1.0',
+    });
+  });
+
+  it('ships the Three.js declarations referenced by the public web API', () => {
+    expect(readManifest('simulation-web').dependencies).toMatchObject({
+      '@types/three': '^0.170.0',
+      three: '^0.170.0',
     });
   });
 });

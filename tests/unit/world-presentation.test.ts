@@ -8,6 +8,30 @@ import {
 } from '../../apps/web/lib/world-builder/materialFactory';
 
 describe('world presentation adapters', () => {
+  const presentationSource = readFileSync(
+    resolve(
+      process.cwd(),
+      'packages/simulation-web/src/presentation/createPresentationPipeline.ts',
+    ),
+    'utf8',
+  );
+
+  it('keeps world-builder presentation and device helpers as package forwarders', () => {
+    const presentationShim = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/presentationPipeline.ts'),
+      'utf8',
+    );
+    const deviceShim = readFileSync(
+      resolve(process.cwd(), 'apps/web/lib/world-builder/deviceProfile.ts'),
+      'utf8',
+    );
+
+    expect(presentationShim).toContain("from '@xr-school/simulation-web'");
+    expect(deviceShim).toContain("from '@xr-school/simulation-web'");
+    expect(presentationShim).not.toContain('three/addons/postprocessing');
+    expect(deviceShim).not.toContain('packages/simulation-runtime/src');
+  });
+
   it('uses sRGB only for color-bearing texture channels', () => {
     expect(textureColorSpaceForChannel('baseColor')).toBe('srgb');
     expect(textureColorSpaceForChannel('emissive')).toBe('srgb');
@@ -31,24 +55,24 @@ describe('world presentation adapters', () => {
   });
 
   it('keeps full-screen post-processing out of immersive XR', () => {
-    const source = readFileSync(
-      resolve(process.cwd(), 'apps/web/lib/world-builder/presentationPipeline.ts'),
-      'utf8',
-    );
-
-    expect(source).toContain('renderer.xr.isPresenting');
-    expect(source).toContain('renderer.render(scene, camera)');
-    expect(source).toContain('composer.render()');
+    expect(presentationSource).toContain('renderer.xr.isPresenting');
+    expect(presentationSource).toContain('renderer.render(scene, camera)');
+    expect(presentationSource).toContain('composer.render()');
   });
 
   it('keeps the canvas CSS size aligned with the logical viewport', () => {
-    const source = readFileSync(
-      resolve(process.cwd(), 'apps/web/lib/world-builder/presentationPipeline.ts'),
-      'utf8',
-    );
+    expect(presentationSource).toContain('renderer.setSize(width, height);');
+    expect(presentationSource).not.toContain('renderer.setSize(width, height, false)');
+  });
 
-    expect(source).toContain('renderer.setSize(width, height);');
-    expect(source).not.toContain('renderer.setSize(width, height, false)');
+  it('caps composer and antialiasing resolution to the active quality profile', () => {
+    expect(presentationSource).toContain(
+      'const cappedPixelRatio = Math.min(pixelRatio, PROFILES[profileId].maxPixelRatio)',
+    );
+    expect(presentationSource).toContain(
+      'new SMAAPass(width * cappedPixelRatio, height * cappedPixelRatio)',
+    );
+    expect(presentationSource).toContain('composer.setPixelRatio(cappedPixelRatio)');
   });
 
   it('does not pass absent texture maps to Three.js material constructors', async () => {

@@ -136,7 +136,8 @@
   left: 104px;
   right: 16px;
   display: grid;
-  grid-template-columns: 1fr minmax(130px, 320px) 1fr;
+  grid-template-areas: 'title progress actions';
+  grid-template-columns: minmax(0, 1fr) minmax(130px, 320px) auto;
   gap: 14px;
   align-items: center;
   min-height: 52px;
@@ -147,9 +148,24 @@
   backdrop-filter: blur(14px);
 }
 
-.simulation-experience__topbar > button { justify-self: end; }
+.simulation-experience__topbar > strong {
+  grid-area: title;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simulation-experience__topbar-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
 
 .simulation-experience__progress {
+  grid-area: progress;
   height: 3px;
   overflow: hidden;
   border-radius: 99px;
@@ -195,6 +211,28 @@
   font-size: .75rem;
   line-height: 1.45;
   backdrop-filter: blur(12px);
+}
+
+.simulation-experience__caption {
+  position: absolute;
+  z-index: 7;
+  top: 84px;
+  left: 50%;
+  width: min(720px, calc(100vw - 32px));
+  margin: 0;
+  padding: 9px 14px;
+  border: 1px solid rgba(211, 223, 255, .2);
+  border-radius: 12px;
+  color: #f7fbff;
+  background: rgba(7, 11, 27, .82);
+  box-shadow: 0 12px 38px rgba(0, 0, 0, .28);
+  font-size: clamp(.82rem, 1.6vw, 1rem);
+  font-weight: 750;
+  line-height: 1.45;
+  text-align: center;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  transform: translateX(-50%);
 }
 
 .simulation-experience__complete-panel {
@@ -291,6 +329,9 @@
   bottom: 16px;
   left: 16px;
   display: grid;
+  grid-template-areas:
+    'number content actions'
+    'assessment assessment assessment';
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 14px;
   align-items: center;
@@ -633,6 +674,7 @@
 .solar-observatory > small { color: #8fa9bf; line-height: 1.45; }
 
 .simulation-experience__stage-number {
+  grid-area: number;
   display: grid;
   width: 46px;
   height: 46px;
@@ -643,9 +685,58 @@
   font-weight: 900;
 }
 
+.simulation-experience__stage-copy {
+  grid-area: content;
+  min-width: 0;
+}
+
 .simulation-experience__mission-dock h2 { margin: 3px 0; font-size: 1.08rem; }
 .simulation-experience__mission-dock p { color: #b5c1d3; font-size: .8rem; }
-.simulation-experience__mission-actions { display: flex; gap: 8px; }
+.simulation-experience__mission-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.simulation-experience__assessment {
+  grid-area: assessment;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid rgba(211, 223, 255, .15);
+  border-radius: 12px;
+  background: rgba(2, 8, 24, .28);
+}
+
+.simulation-experience__assessment legend,
+.simulation-experience__assessment [data-testid='feedback'] {
+  grid-column: 1 / -1;
+}
+
+.simulation-experience__assessment legend {
+  padding: 0 5px;
+  color: #e8f7ff;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.simulation-experience__assessment button {
+  width: 100%;
+}
+
+.simulation-experience__assessment button[aria-pressed='true'] {
+  outline: 2px solid var(--experience-cyan);
+  outline-offset: 1px;
+}
+
+.simulation-experience__assessment [data-testid='feedback'] {
+  margin: 2px 0 0;
+}
 
 .simulation-experience[data-projector='true'] {
   font-size: 118%;
@@ -654,10 +745,24 @@
 @media (max-width: 760px) {
   .simulation-experience__topbar {
     left: 92px;
-    grid-template-columns: 1fr 120px auto;
+    grid-template-areas:
+      'title progress'
+      'actions actions';
+    grid-template-columns: minmax(0, 1fr) minmax(120px, 1fr);
+  }
+  .simulation-experience__topbar-actions {
+    justify-self: stretch;
   }
   .simulation-experience__topbar strong { font-size: 0; }
   .simulation-experience__topbar strong::after { content: 'XR'; font-size: .75rem; }
+  .simulation-experience__caption {
+    top: 132px;
+    width: min(620px, calc(100vw - 24px));
+  }
+  .simulation-experience__evidence-drawer,
+  .simulation-experience__scale-note {
+    top: 132px;
+  }
   .pollination-action-tray,
   .breathing-action-tray,
   .force-motion-action-tray,
@@ -677,15 +782,33 @@
 }
 
 @media (max-width: 520px) {
+  .simulation-experience__topbar {
+    right: 12px;
+    left: 12px;
+  }
+  .simulation-experience__topbar-actions {
+    justify-content: stretch;
+  }
+  .simulation-experience__topbar-actions button {
+    flex: 1 1 120px;
+  }
+  .simulation-experience__caption {
+    top: 142px;
+    width: calc(100vw - 24px);
+  }
   .simulation-experience__mission-dock {
-    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'number content'
+      'actions actions'
+      'assessment assessment';
+    grid-template-columns: auto minmax(0, 1fr);
     right: 12px;
     bottom: 12px;
     left: 12px;
     width: auto;
   }
   .simulation-experience__mission-actions {
-    grid-column: 1 / -1;
+    justify-content: stretch;
   }
   .simulation-experience__mission-actions button { flex: 1; }
   .simulation-experience__preferences { display: grid; grid-template-columns: 1fr 1fr; }

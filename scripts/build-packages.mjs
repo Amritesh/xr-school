@@ -6,6 +6,7 @@ const packageNames = [
   '@xr-school/evaluation-engine',
   '@xr-school/simulation-content',
   '@xr-school/classroom-sync',
+  '@xr-school/simulation-web',
 ];
 
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';

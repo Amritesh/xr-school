@@ -12,14 +12,20 @@ const VIEWERS = [
 ];
 
 describe('implemented simulation audio contract', () => {
-  it('keeps the shared browser/headset narration utility available', () => {
-    const source = readFileSync(resolve(process.cwd(), 'apps/web/lib/simulationAudio.ts'), 'utf8');
+  it('keeps the legacy app API as a forwarder to the shared narration owner', () => {
+    const appSource = readFileSync(resolve(
+      process.cwd(),
+      'apps/web/lib/simulationAudio.ts',
+    ), 'utf8');
+    const librarySource = readFileSync(resolve(
+      process.cwd(),
+      'packages/simulation-web/src/audio/legacySimulationAudio.ts',
+    ), 'utf8');
 
-    expect(source).toContain('export async function playSimulationNarration');
-    expect(source).toContain('AudioContext');
-    expect(source).toContain('HTMLAudioElement');
-    expect(source).toContain('new Audio');
-    expect(source).toContain('speechSynthesis');
+    expect(appSource).toContain("from '@xr-school/simulation-web'");
+    expect(appSource).not.toContain('new Audio');
+    expect(librarySource).toContain('createNarrationController');
+    expect(librarySource).toContain('export async function playSimulationNarration');
   });
 
   it('requires every implemented viewer to start narration through the shared utility', () => {
