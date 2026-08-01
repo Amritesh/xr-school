@@ -3,6 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  esbuild: {
+    jsx: 'automatic',
+  },
   resolve: {
     alias: {
       // Public package imports must work in tests before any dist files exist on a clean checkout.
@@ -24,6 +27,7 @@ export default defineConfig({
       '@xr-school/simulation-web': fileURLToPath(
         new URL('./packages/simulation-web/src/index.ts', import.meta.url),
       ),
+      '@': fileURLToPath(new URL('./apps/web', import.meta.url)),
     },
   },
   test: {

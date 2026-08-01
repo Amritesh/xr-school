@@ -1,9 +1,5 @@
-'use client';
+import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';
 
-import dynamic from 'next/dynamic';
-
-const StatesOfMatterViewer = dynamic(() => import('../../../components/simulations/StatesOfMatterViewer'), { ssr: false });
-
-export default function StatesOfMatterPage() {
-  return <StatesOfMatterViewer />;
+export default function Page() {
+  return <SimulationRoutePage slug="c9-ch01-a02-states-of-matter" />;
 }

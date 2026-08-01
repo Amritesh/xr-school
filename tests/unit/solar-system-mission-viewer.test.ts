@@ -6,9 +6,11 @@ const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/Solar
 const routePath = resolve(process.cwd(), 'apps/web/app/simulations/c8-10-science-solar-system/page.tsx');
 
 describe('Classes 8-10 Solar System mission viewer', () => {
-  it('exposes a dedicated simulation route', () => {
+  it('exposes its canonical route through the shared viewer registry', () => {
     expect(existsSync(routePath)).toBe(true);
-    expect(readFileSync(routePath, 'utf8')).toContain('SolarSystemMissionViewer');
+    const source = readFileSync(routePath, 'utf8');
+    expect(source).toContain('SimulationRoutePage');
+    expect(source).toContain('slug="c8-10-science-solar-system"');
   });
 
   it('is built on the shared world-builder stack, not a private runtime', () => {

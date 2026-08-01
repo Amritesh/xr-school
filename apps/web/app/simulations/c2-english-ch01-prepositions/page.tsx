@@ -1,7 +1,5 @@
-'use client';
+import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';
 
-import PrepositionAdventureViewer from '@/components/simulations/PrepositionAdventureViewer';
-
-export default function PrepositionAdventurePage() {
-  return <PrepositionAdventureViewer />;
+export default function Page() {
+  return <SimulationRoutePage slug="c2-english-ch01-prepositions" />;
 }

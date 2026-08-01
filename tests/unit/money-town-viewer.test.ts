@@ -6,9 +6,11 @@ const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/Money
 const routePath = resolve(process.cwd(), 'apps/web/app/simulations/c1-math-ch01-introduction-to-money/page.tsx');
 
 describe('Class 1 Money Town viewer', () => {
-  it('exposes a dedicated simulation route', () => {
+  it('exposes its canonical route through the shared viewer registry', () => {
     expect(existsSync(routePath)).toBe(true);
-    expect(readFileSync(routePath, 'utf8')).toContain('MoneyTownViewer');
+    const source = readFileSync(routePath, 'utf8');
+    expect(source).toContain('SimulationRoutePage');
+    expect(source).toContain('slug="c1-math-ch01-introduction-to-money"');
   });
 
   it('keeps Quest controls, narration, accessibility, and no-student affordances', () => {

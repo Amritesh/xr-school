@@ -1,8 +1,8 @@
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
+  REQUIRED_OPENAPI_ROUTES,
   extractSimulationSlugs,
-  resolveViewerName,
   validateSimulationWorkspace,
 } from '../../scripts/validate-simulations.mjs';
 
@@ -19,12 +19,7 @@ describe('simulation validation CLI helpers', () => {
     expect(slugs).toEqual(['pollination', 'c9-ch01-a02-states-of-matter']);
   });
 
-  it('resolves known viewer component names from slugs', () => {
-    expect(resolveViewerName('pollination')).toBe('PollinationViewer');
-    expect(resolveViewerName('c6-ch01-a01-sources-of-food')).toBe('FoodSourcesSortingViewer');
-  });
-
-  it('reports missing pages, viewers, OpenAPI routes, and forbidden XR fit types', () => {
+  it('reports missing pages, the shared viewer registry, OpenAPI routes, and forbidden XR fit types', () => {
     const files = new Map<string, string>([
       [
         pathFromRoot('packages/simulation-content/src/modules.ts'),
@@ -50,12 +45,59 @@ describe('simulation validation CLI helpers', () => {
       'Missing page for slug "pollination": apps/web/app/simulations/pollination/page.tsx',
     );
     expect(result.errors).toContain(
-      'Missing viewer component for slug "pollination": components/simulations/PollinationViewer.tsx',
+      'Missing shared viewer registry: apps/web/lib/simulations/viewerRegistry.ts',
     );
     expect(result.errors).toContain('OpenAPI missing route: /v1/evaluation-records');
     expect(result.errors).toContain('/v1/simulation-modules is missing POST operation');
     expect(result.errors).toContain(
       'Simulation uses forbidden xrFitType "normalClassroomBetter". Only strongVrFit or arTabletFit may be built.',
     );
+  });
+
+  it('accepts a thin server route whose client boundary lives in the shared viewer registry', () => {
+    const files = new Map<string, string>([
+      [
+        pathFromRoot('packages/simulation-content/src/modules.ts'),
+        "{ slug: 'pollination', xrFitType: 'strongVrFit' }",
+      ],
+      [
+        pathFromRoot('apps/web/app/simulations/pollination/page.tsx'),
+        [
+          "import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';",
+          '',
+          'export default function Page() {',
+          '  return <SimulationRoutePage slug="pollination" />;',
+          '}',
+        ].join('\n'),
+      ],
+      [
+        pathFromRoot('apps/web/components/simulations/PollinationViewer.tsx'),
+        "'use client'; export default function PollinationViewer() { return null; }",
+      ],
+      [
+        pathFromRoot('apps/web/lib/simulations/viewerRegistry.ts'),
+        "'use client'; export const registry = { pollination: () => import('./PollinationViewer') };",
+      ],
+      [
+        pathFromRoot('generated/openapi/openapi.json'),
+        JSON.stringify({
+          paths: Object.fromEntries(
+            REQUIRED_OPENAPI_ROUTES.map(route => [
+              route,
+              route === '/v1/simulation-modules' ? { get: {}, post: {} } : {},
+            ]),
+          ),
+        }),
+      ],
+    ]);
+
+    const result = validateSimulationWorkspace({
+      root,
+      exists: candidate => files.has(candidate),
+      readFile: candidate => files.get(candidate) ?? '',
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.passes).toContain('pollination/page.tsx delegates to SimulationRoutePage');
   });
 });

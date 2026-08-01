@@ -1,12 +1,5 @@
-'use client';
+import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';
 
-import dynamic from 'next/dynamic';
-
-const ColourAdventureViewer = dynamic(
-  () => import('@/components/simulations/ColourAdventureViewer'),
-  { ssr: false },
-);
-
-export default function ColourAdventurePage() {
-  return <ColourAdventureViewer />;
+export default function Page() {
+  return <SimulationRoutePage slug="c1-art-a01-learning-of-colours" />;
 }

@@ -1,7 +1,5 @@
-'use client';
+import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';
 
-import SolarSystemMissionViewer from '@/components/simulations/SolarSystemMissionViewer';
-
-export default function SolarSystemMissionPage() {
-  return <SolarSystemMissionViewer />;
+export default function Page() {
+  return <SimulationRoutePage slug="c8-10-science-solar-system" />;
 }

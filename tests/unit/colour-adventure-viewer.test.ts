@@ -6,9 +6,11 @@ const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/Colou
 const routePath = resolve(process.cwd(), 'apps/web/app/simulations/c1-art-a01-learning-of-colours/page.tsx');
 
 describe('Class 1 colour adventure viewer', () => {
-  it('exposes a dedicated simulation route', () => {
+  it('exposes its canonical route through the shared viewer registry', () => {
     expect(existsSync(routePath)).toBe(true);
-    expect(readFileSync(routePath, 'utf8')).toContain('ColourAdventureViewer');
+    const source = readFileSync(routePath, 'utf8');
+    expect(source).toContain('SimulationRoutePage');
+    expect(source).toContain('slug="c1-art-a01-learning-of-colours"');
   });
 
   it('keeps Quest controls, narration, accessibility, and no-student classroom affordances', () => {

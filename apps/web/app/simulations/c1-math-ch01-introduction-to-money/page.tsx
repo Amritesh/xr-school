@@ -1,7 +1,5 @@
-'use client';
+import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';
 
-import MoneyTownViewer from '@/components/simulations/MoneyTownViewer';
-
-export default function MoneyTownPage() {
-  return <MoneyTownViewer />;
+export default function Page() {
+  return <SimulationRoutePage slug="c1-math-ch01-introduction-to-money" />;
 }

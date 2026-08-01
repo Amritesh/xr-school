@@ -6,9 +6,11 @@ const viewerPath = resolve(process.cwd(), 'apps/web/components/simulations/Prepo
 const routePath = resolve(process.cwd(), 'apps/web/app/simulations/c2-english-ch01-prepositions/page.tsx');
 
 describe('Class 2 preposition adventure viewer', () => {
-  it('exposes a dedicated simulation route', () => {
+  it('exposes its canonical route through the shared viewer registry', () => {
     expect(existsSync(routePath)).toBe(true);
-    expect(readFileSync(routePath, 'utf8')).toContain('PrepositionAdventureViewer');
+    const source = readFileSync(routePath, 'utf8');
+    expect(source).toContain('SimulationRoutePage');
+    expect(source).toContain('slug="c2-english-ch01-prepositions"');
   });
 
   it('keeps Quest/WebXR controls, narration, accessibility, and no-student affordances', () => {

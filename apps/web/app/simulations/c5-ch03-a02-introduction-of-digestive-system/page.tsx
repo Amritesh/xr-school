@@ -1,12 +1,5 @@
-'use client';
+import SimulationRoutePage from '@/components/simulations/shared/SimulationRoutePage';
 
-import dynamic from 'next/dynamic';
-
-const DigestiveSystemViewer = dynamic(
-  () => import('../../../components/simulations/DigestiveSystemViewer'),
-  { ssr: false },
-);
-
-export default function DigestiveSystemPage() {
-  return <DigestiveSystemViewer />;
+export default function Page() {
+  return <SimulationRoutePage slug="c5-ch03-a02-introduction-of-digestive-system" />;
 }
