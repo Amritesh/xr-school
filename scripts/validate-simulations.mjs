@@ -81,6 +81,7 @@ const viewerNameMap = {
   'components-of-food-mineral-sources': 'MineralSourcesViewer',
   'components-of-food-vitamins-deficiencies': 'VitaminDeficiencyViewer',
   'components-of-food-lipid-test': 'LipidTestViewer',
+  'nutrition-in-plants-secret-kitchen': 'SecretGardenKitchenViewer',
   pollination: 'PollinationViewer',
   circuit: 'CircuitViewer',
 };

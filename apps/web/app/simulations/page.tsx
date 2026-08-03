@@ -266,6 +266,17 @@ const SIMS = [
     minutes: 10,
   },
   {
+    slug: 'nutrition-in-plants-secret-kitchen',
+    emoji: '🌿',
+    color: '#84cc16',
+    subject: 'Science',
+    grade: 'Class 7',
+    title: 'The Secret Kitchen of the Garden',
+    xrFit: 'Strong VR Fit',
+    stages: 11,
+    minutes: 12,
+  },
+  {
     slug: 'circuit',
     emoji: '⚡',
     color: '#fbbf24',

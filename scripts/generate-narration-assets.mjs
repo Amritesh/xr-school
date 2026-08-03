@@ -39,6 +39,7 @@ const narrationProfiles = Object.fromEntries([
   "RiverCrossingAdventureViewer.tsx",
   "RockClimbingViewer.tsx",
   "SeedDispersalViewer.tsx",
+  "SecretGardenKitchenViewer.tsx",
   "ShapeSortingViewer.tsx",
   "SnowMountainClimbingViewer.tsx",
   "SolubleInsolubleViewer.tsx",
