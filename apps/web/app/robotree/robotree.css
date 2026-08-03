@@ -473,3 +473,173 @@
   .rt-main { padding: 1.1rem 0.9rem 3rem; }
   .rt-topbar { padding: 0.75rem 0.9rem; }
 }
+
+/* Public entry surfaces (login + headset join) — site design language.
+   Mirrors the paper/purple showcase styling in globals.css; operational
+   classroom screens keep the dark tech theme above. */
+
+.rt-public {
+  --rt-paper: #f7f5ff;
+  --rt-ink: #24143f;
+  --rt-muted: rgba(36, 20, 63, 0.68);
+  --rt-quiet: rgba(36, 20, 63, 0.5);
+  --rt-line: rgba(54, 25, 102, 0.14);
+  --rt-line-strong: rgba(54, 25, 102, 0.24);
+  --rt-purple: #6f35f2;
+  --rt-purple-dark: #3c167f;
+  --rt-green: #348a69;
+  --rt-amber: #a86700;
+  --rt-red: #b23f37;
+  --rt-blue: #315fbd;
+  --rt-display-font: Iowan Old Style, Baskerville, "Times New Roman", serif;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 6% 4%, rgba(169, 216, 255, 0.26), transparent 24rem),
+    radial-gradient(circle at 96% 12%, rgba(255, 171, 157, 0.2), transparent 22rem),
+    var(--rt-paper);
+  color: var(--rt-ink);
+}
+
+.rt-public::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+  content: "";
+  pointer-events: none;
+}
+
+.rt-public :focus-visible {
+  outline: 3px solid var(--rt-purple);
+  outline-offset: 3px;
+}
+
+.rt-public .rt-topbar {
+  position: static;
+  min-height: 5.5rem;
+  border-bottom: 1px solid var(--rt-line);
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.rt-public .rt-brand-mark {
+  position: relative;
+  transform: rotate(-6deg);
+  border: 2px solid var(--rt-purple);
+  border-radius: 48% 52% 44% 56%;
+  background: #a9ead7;
+  font-size: 1rem;
+}
+
+.rt-public .rt-brand-mark::after {
+  position: absolute;
+  top: -0.28rem;
+  right: -0.18rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: #ffab9d;
+  content: "";
+}
+
+.rt-public .rt-brand-name strong { color: var(--rt-ink); font-weight: 850; }
+.rt-public .rt-brand-name small { color: var(--rt-quiet); }
+
+.rt-public .rt-login-card {
+  border: 1px solid rgba(111, 53, 242, 0.18);
+  border-radius: 1.4rem;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 24px 65px rgba(60, 22, 127, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.rt-public .rt-title {
+  color: var(--rt-ink);
+  font-family: var(--rt-display-font);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.rt-public .rt-note { color: var(--rt-muted); }
+
+.rt-public .rt-code {
+  border-color: rgba(111, 53, 242, 0.3);
+  background: rgba(111, 53, 242, 0.09);
+  color: var(--rt-purple);
+}
+
+.rt-public .rt-field label { color: var(--rt-quiet); }
+
+.rt-public .rt-field input,
+.rt-public .rt-field select {
+  min-height: 2.85rem;
+  padding-inline: 1rem;
+  border: 1px solid var(--rt-line);
+  border-radius: 99px;
+  background: #fff;
+  color: var(--rt-ink);
+}
+
+.rt-public .rt-field input::placeholder { color: var(--rt-quiet); }
+
+.rt-public .rt-field input:focus,
+.rt-public .rt-field select:focus {
+  outline: 3px solid var(--rt-purple);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.rt-public .rt-btn {
+  border-color: var(--rt-line-strong);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--rt-ink);
+}
+
+.rt-public .rt-btn:hover { border-color: rgba(111, 53, 242, 0.38); color: var(--rt-purple); }
+
+.rt-public .rt-btn-primary {
+  border-color: var(--rt-purple);
+  background: var(--rt-purple);
+  color: #fff;
+}
+
+.rt-public .rt-btn-primary:hover {
+  border-color: var(--rt-purple-dark);
+  background: var(--rt-purple-dark);
+  color: #fff;
+}
+
+.rt-public .rt-pill {
+  border-color: var(--rt-line);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--rt-quiet);
+}
+
+.rt-public .rt-pill-green {
+  border-color: rgba(111, 53, 242, 0.3);
+  background: rgba(111, 53, 242, 0.08);
+  color: var(--rt-purple);
+}
+
+.rt-public .rt-pill-blue {
+  border-color: rgba(49, 95, 189, 0.3);
+  background: rgba(49, 95, 189, 0.08);
+  color: var(--rt-blue);
+}
+
+.rt-public .rt-pill-amber {
+  border-color: rgba(168, 103, 0, 0.26);
+  background: rgba(255, 216, 111, 0.25);
+  color: var(--rt-amber);
+}
+
+.rt-public .rt-pill-red {
+  border-color: rgba(178, 63, 55, 0.3);
+  background: rgba(178, 63, 55, 0.08);
+  color: var(--rt-red);
+}

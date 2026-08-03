@@ -2,12 +2,14 @@ import Link from 'next/link';
 
 export function RobotreeShell({
   meta,
+  tone,
   children,
 }: {
   meta?: React.ReactNode;
+  tone?: 'public';
   children: React.ReactNode;
 }) {
-  return (
+  const shell = (
     <>
       <header className="rt-topbar">
         <Link href="/robotree/login" className="rt-brand">
@@ -24,4 +26,5 @@ export function RobotreeShell({
       <main className="rt-main">{children}</main>
     </>
   );
+  return tone === 'public' ? <div className="rt-public">{shell}</div> : shell;
 }

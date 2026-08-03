@@ -41,3 +41,16 @@ export const ErrorState = {
     children: 'Connection lost.',
   },
 };
+
+export const PublicEntry = {
+  args: {
+    tone: 'public',
+    meta: <span className="rt-pill rt-pill-blue">Headset Client</span>,
+    children: 'Public entry content',
+  },
+};
+
+export const Mobile = {
+  args: PublicEntry.args,
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
+};

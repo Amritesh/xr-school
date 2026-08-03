@@ -28,7 +28,7 @@ export default function RobotreeHeadsetJoinPage() {
   }
 
   return (
-    <RobotreeShell meta={<span className="rt-pill rt-pill-blue">Headset Client</span>}>
+    <RobotreeShell tone="public" meta={<span className="rt-pill rt-pill-blue">Headset Client</span>}>
       <div className="rt-login-wrap" style={{ minHeight: 'calc(100vh - 10rem)' }}>
         <form className="rt-login-card" onSubmit={join}>
           <span className="rt-pill rt-pill-green" style={{ marginBottom: '0.9rem' }}>

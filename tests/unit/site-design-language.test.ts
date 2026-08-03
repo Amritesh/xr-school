@@ -14,6 +14,16 @@ describe('XR School public website design language', () => {
     expect(css).toContain('border-radius: 99px');
   });
 
+  it('carries the design language onto the robotree entry surfaces', () => {
+    const css = read('apps/web/app/robotree/robotree.css');
+
+    expect(css).toContain('.rt-public');
+    expect(css).toContain('--rt-paper: #f7f5ff');
+    expect(css).toContain('--rt-purple: #6f35f2');
+    expect(css).toContain('Iowan Old Style');
+    expect(css).toContain('border-radius: 99px');
+  });
+
   it('keeps responsive and reduced-motion behavior across the public website', () => {
     const catalogCss = read('apps/web/app/globals.css');
 

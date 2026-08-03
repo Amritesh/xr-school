@@ -3,7 +3,7 @@ import { DemoLoginForm } from '@/components/robotree/DemoLoginForm';
 
 export default function RobotreeLoginPage() {
   return (
-    <div className="rt-login-wrap">
+    <div className="rt-public rt-login-wrap">
       <div style={{ display: 'grid', gap: '0.9rem', justifyItems: 'center' }}>
         <DemoLoginForm />
         <p className="rt-note">
