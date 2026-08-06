@@ -2,6 +2,17 @@ import Link from 'next/link';
 
 const SIMS = [
   {
+    slug: 'sunita-in-space-space-shuttle-launch',
+    emoji: '🚀',
+    color: '#fb923c',
+    subject: 'Environmental Studies',
+    grade: 'Class 5',
+    title: 'A Space Shuttle Launch',
+    xrFit: 'Strong VR Fit',
+    stages: 10,
+    minutes: 12,
+  },
+  {
     slug: 'walls-tell-stories-ancient-fort-visit',
     emoji: '🏰',
     color: '#f5c16c',

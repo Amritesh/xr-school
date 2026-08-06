@@ -10,6 +10,24 @@ await app.register(cors, {
 // Simulation catalog — seed data matching TypeSpec SimulationModule model
 const SIMULATIONS = [
   {
+    id: 'sim-sunita-in-space-space-shuttle-launch-001',
+    slug: 'sunita-in-space-space-shuttle-launch',
+    title: 'A Space Shuttle Launch',
+    summary: 'Operate a supervised Shuttle mission from launch control through safety checks, countdown, liftoff, Max Q, booster and tank separation, and low Earth orbit.',
+    gradeBands: ['class3To5'],
+    subjects: ['environmentalScience', 'science'],
+    applicableBoards: ['cbse'],
+    simulationFormat: 'immersiveVr',
+    xrFitType: 'strongVrFit',
+    xrFitJustification: 'The immersive launch sequence makes the Shuttle stack, thrust direction, curved ascent, timed separation events and orbital free fall spatially observable without exposing learners to launch hazards.',
+    learningObjective: 'Students will identify the three main parts of a Space Shuttle, sequence a supervised launch through orbit, and explain booster recovery, external-tank disposal and orbital microgravity.',
+    evidenceConfidenceLevel: 'expertDesigned',
+    comfortRiskLevel: 'low',
+    expectedDurationMinutes: 12,
+    stages: 10,
+    status: 'released',
+  },
+  {
     id: 'sim-walls-tell-stories-ancient-fort-visit-001',
     slug: 'walls-tell-stories-ancient-fort-visit',
     title: 'A Visit to an Ancient Fort',

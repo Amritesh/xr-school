@@ -15,6 +15,7 @@ const assignments: Record<string, string> = {
   "RockClimbingViewer.tsx": "up-you-go-rock-climbing-360.png",
   "SecretGardenKitchenViewer.tsx": "nutrition-plants-garden-360.png",
   "ShapeSortingViewer.tsx": "materials-classroom-360.png",
+  "SpaceShuttleLaunchViewer.tsx": "space-shuttle-launchpad-360.jpg",
   "VitaminDeficiencyViewer.tsx": "nutrition-lab-360.png",
 };
 
