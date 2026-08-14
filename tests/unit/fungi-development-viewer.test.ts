@@ -5,7 +5,6 @@ import {
   coordinateFungiAction,
   createInitialFungiViewerState,
   fieldGuideCardsFor,
-  FUNGI_LEARNING_CONTROLS_STYLE,
   projectFungiSandbox,
   stageEvidenceFor,
   vrChoiceActionFor,
@@ -18,21 +17,6 @@ const viewerPath = resolve(
 );
 
 describe('Living Mycelium viewer coordinator', () => {
-  it('keeps every learning control in a bounded, scrollable right-side rail', () => {
-    expect(FUNGI_LEARNING_CONTROLS_STYLE).toMatchObject({
-      position: 'absolute',
-      right: 16,
-      top: 'clamp(104px, 21vh, 150px)',
-      bottom: 16,
-      width: 'min(520px, calc(100% - 32px))',
-      overflowY: 'auto',
-      overflowX: 'hidden',
-      boxSizing: 'border-box',
-    });
-    expect(FUNGI_LEARNING_CONTROLS_STYLE).not.toHaveProperty('left');
-    expect(FUNGI_LEARNING_CONTROLS_STYLE).not.toHaveProperty('maxHeight');
-  });
-
   it('retains the first growth prediction while allowing a corrected retry', () => {
     let initial = createInitialFungiViewerState();
     initial = coordinateFungiAction(initial, { actionId: 'guide:spore-guide', source: 'mouse' }).state;
@@ -400,6 +384,13 @@ describe('Living Mycelium viewer coordinator', () => {
 
 describe('Living Mycelium viewer integration contract', () => {
   const source = readFileSync(viewerPath, 'utf8');
+
+  it('publishes the responsive lab-rail selector exercised by browser geometry acceptance', () => {
+    expect(source).toContain('className="fungi-learning-controls"');
+    expect(source).toContain('data-testid="fungi-learning-controls"');
+    expect(source).toContain('@media (max-width: 1119px)');
+    expect(source).toContain('@media (max-width: 520px)');
+  });
 
   it('uses the shared experience, rendering, narration, input, and VR owners', () => {
     for (const token of [

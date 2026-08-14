@@ -480,23 +480,6 @@ const controlStyle = {
   cursor: 'pointer',
 } as const;
 
-export const FUNGI_LEARNING_CONTROLS_STYLE = {
-  position: 'absolute',
-  right: 16,
-  top: 'clamp(104px, 21vh, 150px)',
-  bottom: 16,
-  width: 'min(520px, calc(100% - 32px))',
-  overflowY: 'auto',
-  overflowX: 'hidden',
-  boxSizing: 'border-box',
-  zIndex: 5,
-  borderRadius: 16,
-  background: 'rgba(7,24,18,.94)',
-  color: '#f7fee7',
-  padding: 16,
-  boxShadow: '0 12px 30px rgba(0,0,0,.35)',
-} as const;
-
 export default function FungiDevelopmentViewer() {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -976,13 +959,52 @@ export default function FungiDevelopmentViewer() {
       helpText="Use the labelled controls or select the same objects in the world. No generic Next action records evidence."
       scaleNote="Microscopic structures and five accelerated days are explanatory models, not literal size or real-time speed."
     >
+      <style>{`
+        .fungi-learning-controls {
+          position: absolute;
+          z-index: 5;
+          top: 150px;
+          right: 16px;
+          bottom: 16px;
+          width: min(520px, calc(100% - 32px));
+          overflow-x: hidden;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          box-sizing: border-box;
+          padding: 16px;
+          border-radius: 16px;
+          background: rgba(7, 24, 18, .94);
+          color: #f7fee7;
+          box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+        }
+
+        @media (max-width: 1119px) {
+          .fungi-learning-controls {
+            top: clamp(150px, 20vh, 170px);
+            bottom: calc(min(48vh, 320px) + 12px);
+          }
+        }
+
+        @media (max-width: 520px) {
+          .fungi-learning-controls {
+            top: 150px;
+            right: 12px;
+            left: 12px;
+            width: auto;
+          }
+        }
+      `}</style>
       <SimulationCanvasHost
         ref={mountRef}
         ariaLabel="Persistent forest laboratory showing fungi, hyphae, spores, useful roles, food safety, and a nutrient circle"
         busy={!worldRef.current && !runtimeError}
       />
       {started && (
-        <section aria-label="Living Mycelium learning controls" style={FUNGI_LEARNING_CONTROLS_STYLE}>
+        <section
+          aria-label="Living Mycelium learning controls"
+          className="fungi-learning-controls"
+          data-testid="fungi-learning-controls"
+        >
           <h2 style={{ margin: '0 0 6px' }}>{stage.title}</h2>
           <p style={{ margin: '0 0 10px' }}>{stage.cue}</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>{!completed && stageControls()}</div>
