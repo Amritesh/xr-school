@@ -52,10 +52,6 @@ const STAGE_ACTIONS: Readonly<Record<FungiStageId, string>> = {
 };
 const STAGE_EVIDENCE = Object.fromEntries(EXPERIENCE.stages.map(stage => [stage.id, stage.completionEvidenceIds[0]]));
 
-const ACCEPTED_OPTIONS: Readonly<Record<string, string>> = Object.fromEntries(
-  ASSESSMENT.prompts.map(prompt => [prompt.id, prompt.acceptedEvidenceIds[0]]),
-);
-
 const FINAL_REVIEW_PROMPTS = [
   'development-order-observation',
   'baking-fungus-observation',
@@ -99,9 +95,6 @@ const WORLD_ACTION_BY_TARGET: Readonly<Record<string, string>> = {
   'role-compost': 'role:compost',
   'fresh-item': 'classify:fresh-item:safe',
   'mouldy-item': 'classify:mouldy-item:unsafe',
-  'hypha-network-label': 'vr-answer:mycelium-observation:mycelium',
-  yeast: 'vr-answer:baking-fungus-observation:yeast',
-  'safety-warning': 'vr-answer:mould-safety-misconception:reject-whole-soft-food',
   'quiz-mushroom-1': 'review-open:development-order-observation',
   'quiz-mushroom-2': 'review-open:baking-fungus-observation',
   'quiz-mushroom-3': 'review-open:mould-safety-misconception',
@@ -123,6 +116,8 @@ const DEFAULT_PREFERENCES: ExperiencePreferences = {
   reducedMotion: false,
 };
 
+const VR_HELP_TEXT = 'Trigger selects a labelled object or answer. B goes back. Use Previous for the prior stage, Replay Narration to hear the current cue, Restart to clear progress, or Exit to leave VR.';
+
 export interface FungiViewerState {
   model: FungiDevelopmentState;
   firstAnswers: Record<string, string>;
@@ -131,7 +126,6 @@ export interface FungiViewerState {
   finalReviewPromptIds: string[];
   openedVrPromptIds: string[];
   foodClassifications: string[];
-  usefulRoleIds: string[];
   doughRisen: boolean;
   badgeCollected: boolean;
   evidenceDelayMs: number;
@@ -167,7 +161,6 @@ export function createInitialFungiViewerState(
     finalReviewPromptIds: [],
     openedVrPromptIds: [],
     foodClassifications: [],
-    usefulRoleIds: [],
     doughRisen: false,
     badgeCollected: false,
     evidenceDelayMs: options.reducedMotion ? 0 : 34,
@@ -178,6 +171,63 @@ function feedbackForAssessment(promptId: string, correct: boolean) {
   const prompt = ASSESSMENT.prompts.find(candidate => candidate.id === promptId);
   if (!prompt) return 'That question is not available here.';
   return correct ? prompt.explanation : prompt.hint;
+}
+
+function usefulRolesComplete(state: FungiViewerState) {
+  const roles = new Set(state.model.usefulRoleMatches.map(match => match.role));
+  return ['food', 'medicine', 'decomposer'].every(role => roles.has(role as 'food' | 'medicine' | 'decomposer'));
+}
+
+function assessmentLockFeedback(promptId: string, state: FungiViewerState, finalReview: boolean) {
+  if (finalReview) {
+    return state.openedVrPromptIds.includes(promptId)
+      ? undefined
+      : 'Open this review mushroom before choosing its answer.';
+  }
+  if (promptId === 'mycelium-observation' && state.model.touchedHyphae.length < 3) {
+    return 'Observe all three unique hypha branches before naming their connected network.';
+  }
+  if (promptId === 'growth-condition-prediction'
+    && (state.model.sporeGuidance.length === 0 || state.model.sporeLandings.length === 0)) {
+    return 'Guide and land the spore before comparing its growth conditions.';
+  }
+  if (promptId === 'baking-fungus-observation' && (!state.doughRisen || !usefulRolesComplete(state))) {
+    return 'Observe the dough rise and match all three useful fungus roles before answering.';
+  }
+  if (promptId === 'mould-safety-misconception' && !finalReview && state.foodClassifications.length < 2) {
+    return 'Classify both food items before resolving the mould-safety question.';
+  }
+  return undefined;
+}
+
+export interface FungiVrPrompt {
+  promptId: string;
+  question: string;
+  route: 'answer' | 'review';
+  choices: Array<{ optionId: string; label: string }>;
+}
+
+export function vrPromptForStage(stageId: FungiStageId, state: FungiViewerState): FungiVrPrompt | undefined {
+  const promptId = stageId === 'fungal-forensics' ? 'fungi-precheck'
+    : stageId === 'under-the-cap' && state.model.touchedHyphae.length === 3 ? 'mycelium-observation'
+      : stageId === 'spore-flight' && state.model.sporeGuidance.length > 0 && state.model.sporeLandings.length > 0 ? 'growth-condition-prediction'
+        : stageId === 'fungi-at-work' && state.doughRisen && usefulRolesComplete(state) ? 'baking-fungus-observation'
+          : stageId === 'food-safety-scan' && state.foodClassifications.length === 2 ? 'mould-safety-misconception'
+            : stageId === 'forest-circle' ? state.openedVrPromptIds.at(-1) : undefined;
+  const prompt = ASSESSMENT.prompts.find(candidate => candidate.id === promptId);
+  if (!prompt?.options) return undefined;
+  return {
+    promptId: prompt.id,
+    question: prompt.question,
+    route: (FINAL_REVIEW_PROMPTS as readonly string[]).includes(prompt.id) ? 'review' : 'answer',
+    choices: prompt.options.slice(0, 3).map(option => ({ optionId: option.id, label: option.label })),
+  };
+}
+
+export function vrChoiceActionFor(prompt: FungiVrPrompt, visibleChoiceIndex: number) {
+  const choice = prompt.choices[visibleChoiceIndex];
+  if (!choice) throw new Error('VR choice index is not visible');
+  return `${prompt.route}:${prompt.promptId}:${choice.optionId}`;
 }
 
 /** Pure learning coordinator shared by DOM, pointer, touch, keyboard, and XR routes. */
@@ -192,6 +242,9 @@ export function coordinateFungiAction(
   try {
     if (actionId.startsWith('select:')) {
       const objectId = actionId.slice('select:'.length);
+      if (!Object.hasOwn(state.firstAnswers, 'fungi-precheck')) {
+        return { state, feedback: 'Make your fungi prediction first, then classify each specimen from the evidence.' };
+      }
       if (objectId === 'green-plant') {
         return {
           state,
@@ -199,24 +252,9 @@ export function coordinateFungiAction(
         };
       }
       if (objectId !== 'mushroom' && objectId !== 'bread-mould') throw new Error('unknown specimen');
-      let next = updateModel(state, { type: 'select-fungus', objectId });
-      const pairComplete = next.model.selectedFungi.includes('mushroom') && next.model.selectedFungi.includes('bread-mould');
-      if (pairComplete) {
-        next = {
-          ...next,
-          firstAnswers: Object.hasOwn(next.firstAnswers, 'fungi-precheck')
-            ? next.firstAnswers
-            : { ...next.firstAnswers, 'fungi-precheck': 'mushroom-and-bread-mould' },
-          latestAnswers: { ...next.latestAnswers, 'fungi-precheck': 'mushroom-and-bread-mould' },
-          resolvedPromptIds: unique(next.resolvedPromptIds, 'fungi-precheck'),
-        };
-      }
       return {
-        state: next,
+        state: updateModel(state, { type: 'select-fungus', objectId }),
         feedback: `${objectId === 'mushroom' ? 'Mushroom' : 'Bread mould'} recorded as a fungus.`,
-        assessment: pairComplete
-          ? { promptId: 'fungi-precheck', optionId: 'mushroom-and-bread-mould' }
-          : undefined,
       };
     }
     if (actionId.startsWith('inspect:')) {
@@ -262,15 +300,21 @@ export function coordinateFungiAction(
     }
     if (actionId.startsWith('role:')) {
       const roleId = actionId.slice('role:'.length);
-      const roleEvidence = roleId === 'bakery'
-        ? 'bakery:yeast'
+      const match = roleId === 'bakery'
+        ? { objectId: 'yeast' as const, role: 'food' as const }
         : roleId === 'medicine'
-          ? 'medicine:fungus'
-          : roleId === 'compost' ? 'compost:decomposer' : undefined;
-      if (!roleEvidence) throw new Error('unknown role');
+          ? { objectId: 'antibiotic-producing-fungus' as const, role: 'medicine' as const }
+          : roleId === 'compost'
+            ? { objectId: 'saprotrophic-fungus' as const, role: 'decomposer' as const }
+            : undefined;
+      if (!match) throw new Error('unknown role');
       return {
-        state: { ...state, usefulRoleIds: unique(state.usefulRoleIds, roleEvidence) },
-        feedback: roleId === 'bakery' ? 'Yeast matched to bakery: its gas bubbles help dough rise.' : `${roleId} role matched from the visible evidence.`,
+        state: updateModel(state, { type: 'match-useful-role', ...match }),
+        feedback: roleId === 'bakery'
+          ? 'Yeast matched to baking: its activity produces gas that helps dough rise.'
+          : roleId === 'medicine'
+            ? 'An antibiotic-producing fungus matched to medicine; this does not make mouldy food safe.'
+            : 'A saprotrophic fungus matched as a decomposer that recycles dead matter.',
       };
     }
     if (actionId.startsWith('classify:')) {
@@ -286,35 +330,28 @@ export function coordinateFungiAction(
     if (actionId.startsWith('review-open:')) {
       const promptId = actionId.slice('review-open:'.length);
       const prompt = ASSESSMENT.prompts.find(candidate => candidate.id === promptId);
-      if (action.source === 'xr-controller' && state.openedVrPromptIds.includes(promptId)) {
-        return coordinateFungiAction(state, { actionId: `review:${promptId}:${ACCEPTED_OPTIONS[promptId]}`, source: action.source });
-      }
+      if (!prompt || !(FINAL_REVIEW_PROMPTS as readonly string[]).includes(promptId)) throw new Error('unknown review prompt');
       return {
-        state: { ...state, openedVrPromptIds: unique(state.openedVrPromptIds, promptId) },
-        feedback: `${prompt?.question ?? 'That review mushroom is not available.'} Select the mushroom again to commit the evidence-based choice.`,
+        state: {
+          ...state,
+          openedVrPromptIds: [
+            ...state.openedVrPromptIds.filter(openedPromptId => openedPromptId !== promptId),
+            promptId,
+          ],
+        },
+        feedback: `${prompt.question} Choose one of the visible answers.`,
       };
-    }
-    if (actionId.startsWith('vr-answer:')) {
-      const [, promptId, ...optionParts] = actionId.split(':');
-      const optionId = optionParts.join(':');
-      const prompt = ASSESSMENT.prompts.find(candidate => candidate.id === promptId);
-      if (!prompt) throw new Error('unknown VR assessment');
-      if (!state.openedVrPromptIds.includes(promptId)) {
-        return {
-          state: { ...state, openedVrPromptIds: unique(state.openedVrPromptIds, promptId) },
-          feedback: `${prompt.question} Select the labelled evidence target again to commit your answer.`,
-        };
-      }
-      return coordinateFungiAction(state, { actionId: `answer:${promptId}:${optionId}`, source: action.source });
     }
     if (actionId.startsWith('answer:') || actionId.startsWith('review:')) {
       const isFinalReview = actionId.startsWith('review:');
       const [, promptId, ...optionParts] = actionId.split(':');
       const optionId = optionParts.join(':');
-      if (!Object.hasOwn(ACCEPTED_OPTIONS, promptId)) throw new Error('unknown question');
-      const prompt = ASSESSMENT.prompts.find(candidate => candidate.id === promptId)!;
+      const prompt = ASSESSMENT.prompts.find(candidate => candidate.id === promptId);
+      if (!prompt) throw new Error('unknown question');
       if (!(prompt.options ?? []).some(option => option.id === optionId)) throw new Error('unknown option');
-      const correct = ACCEPTED_OPTIONS[promptId] === optionId;
+      const lockFeedback = assessmentLockFeedback(promptId, state, isFinalReview);
+      if (lockFeedback) return { state, feedback: lockFeedback };
+      const correct = prompt.acceptedEvidenceIds.includes(optionId);
       let next: FungiViewerState = {
         ...state,
         firstAnswers: Object.hasOwn(state.firstAnswers, promptId)
@@ -370,11 +407,36 @@ export function stageEvidenceFor(stageId: FungiStageId, state: FungiViewerState)
     'under-the-cap': state.model.touchedHyphae.length === 3 && resolved('mycelium-observation'),
     'spore-flight': state.model.sporeGuidance.length > 0 && state.model.sporeLandings.length > 0 && resolved('growth-condition-prediction'),
     'five-day-time-lens': state.model.visitedDays.length === 5 && state.model.lifeCycleLabels.length === 5,
-    'fungi-at-work': state.doughRisen && state.usefulRoleIds.length === 3 && resolved('baking-fungus-observation'),
+    'fungi-at-work': state.doughRisen && usefulRolesComplete(state) && resolved('baking-fungus-observation'),
     'food-safety-scan': state.foodClassifications.length === 2 && resolved('mould-safety-misconception'),
     'forest-circle': state.badgeCollected && FINAL_REVIEW_PROMPTS.every(promptId => state.finalReviewPromptIds.includes(promptId)),
   } satisfies Record<FungiStageId, boolean>;
   return ready[stageId] ? STAGE_EVIDENCE[stageId] : undefined;
+}
+
+const STAGE_LEARNING_POINTS: Readonly<Record<FungiStageId, string>> = {
+  'fungal-forensics': 'Mushrooms and bread mould are fungi; unlike green plants, fungi absorb food instead of photosynthesising.',
+  'under-the-cap': 'A hypha is one fungal thread; many connected hyphae form a mycelium.',
+  'spore-flight': 'After a spore lands, suitable warmth and moisture support faster fungal development.',
+  'five-day-time-lens': 'The model proceeds from landed spore to hyphae, mycelium, spore structures, and released spores.',
+  'fungi-at-work': 'Yeast helps dough rise, some fungi provide food or medicines, and decomposer fungi recycle matter.',
+  'food-safety-scan': 'Hidden hyphae may extend beyond visible mould in soft food, so reject the whole item and tell an adult.',
+  'forest-circle': 'Fungal decomposition returns nutrients, while warm damp conditions make new growth more likely.',
+};
+
+export function fieldGuideCardsFor(state: FungiViewerState) {
+  return EXPERIENCE.stages.map((guideStage, stageIndex) => {
+    const stageId = guideStage.id as FungiStageId;
+    const evidenceId = stageEvidenceFor(stageId, state);
+    return {
+      stageIndex,
+      stageId,
+      title: guideStage.title,
+      evidenceId: evidenceId ?? guideStage.completionEvidenceIds[0],
+      collected: Boolean(evidenceId),
+      learningPoint: STAGE_LEARNING_POINTS[stageId],
+    };
+  });
 }
 
 export function projectFungiSandbox(input: FungalGrowthInput) {
@@ -418,6 +480,8 @@ export default function FungiDevelopmentViewer() {
   const handlerRef = useRef<(actionId: string, source: NormalizedInputSource) => void>(() => {});
   const previousRef = useRef<() => void>(() => {});
   const replayRef = useRef<() => void>(() => {});
+  const restartRef = useRef<() => void>(() => {});
+  const helpRef = useRef<() => void>(() => {});
 
   const [started, setStarted] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
@@ -459,11 +523,6 @@ export default function FungiDevelopmentViewer() {
   const projectWorld = useCallback((next: FungiViewerState, sandboxEnabled = sandboxOpen) => {
     worldRef.current?.setState({
       ...next.model,
-      usefulRoleMatches: [
-        ...(next.usefulRoleIds.includes('bakery:yeast') ? [{ objectId: 'mushroom' as const, role: 'food' as const }] : []),
-        ...(next.usefulRoleIds.includes('medicine:fungus') ? [{ objectId: 'mushroom' as const, role: 'medicine' as const }] : []),
-        ...(next.usefulRoleIds.includes('compost:decomposer') ? [{ objectId: 'bread-mould' as const, role: 'decomposer' as const }] : []),
-      ],
       doughRisen: next.doughRisen,
       completed: next.model.completed,
       sandboxEnabled,
@@ -538,12 +597,15 @@ export default function FungiDevelopmentViewer() {
 
   const next = useCallback(() => {
     if (!snapshotRef.current.stageComplete || snapshotRef.current.lessonComplete) {
-      setFeedback(snapshotRef.current.lessonComplete ? 'The mission is complete. Open the Field Guide or Growth Sandbox.' : 'Complete the authored action and observe its evidence before continuing.');
+      const message = snapshotRef.current.lessonComplete ? 'The mission is complete. Open the Field Guide or Growth Sandbox.' : 'Complete the authored action and observe its evidence before continuing.';
+      feedbackRef.current = message;
+      setFeedback(message);
       return;
     }
     try {
       const nextSnapshot = lessonRef.current.next();
       applySnapshot(nextSnapshot);
+      feedbackRef.current = nextSnapshot.cue;
       setFeedback(nextSnapshot.cue);
       narrate(nextSnapshot.stageIndex);
     } catch (error) {
@@ -554,6 +616,7 @@ export default function FungiDevelopmentViewer() {
   const previous = useCallback(() => {
     const previousSnapshot = lessonRef.current.previous();
     applySnapshot(previousSnapshot);
+    feedbackRef.current = previousSnapshot.cue;
     setFeedback(previousSnapshot.cue);
     narrate(previousSnapshot.stageIndex);
   }, [applySnapshot, narrate]);
@@ -565,7 +628,9 @@ export default function FungiDevelopmentViewer() {
     while (nextSnapshot.stageIndex < targetIndex) nextSnapshot = lessonRef.current.next();
     applySnapshot(nextSnapshot);
     setFieldGuideOpen(false);
-    setFeedback(`Replaying ${nextSnapshot.stageTitle}. Existing evidence is retained.`);
+    const message = `Replaying ${nextSnapshot.stageTitle}. Existing evidence is retained.`;
+    feedbackRef.current = message;
+    setFeedback(message);
     narrate(nextSnapshot.stageIndex);
   }, [applySnapshot, narrate]);
 
@@ -584,11 +649,19 @@ export default function FungiDevelopmentViewer() {
     setFieldGuideOpen(false);
     setSandboxOpen(false);
     setSandboxInput({ day: 5, temperatureC: 27, moisturePercent: 82 });
-    setFeedback('Mission restarted. Choose the mushroom and bread mould.');
+    const message = 'Mission restarted. Make your fungi prediction before classifying the specimens.';
+    feedbackRef.current = message;
+    setFeedback(message);
     projectWorld(freshState, false);
     narrate(0);
   }, [applySnapshot, narrate, preferences.reducedMotion, projectWorld]);
-  replayRef.current = restart;
+  replayRef.current = () => narrate(snapshotRef.current.stageIndex);
+  restartRef.current = restart;
+  helpRef.current = () => {
+    feedbackRef.current = VR_HELP_TEXT;
+    setFeedback(VR_HELP_TEXT);
+    if (preferences.audio) void playSimulationNarration(VR_HELP_TEXT, snapshotRef.current.stageIndex);
+  };
 
   const enterVr = useCallback(async () => {
     if (!rendererRef.current || !('xr' in navigator)) {
@@ -694,14 +767,19 @@ export default function FungiDevelopmentViewer() {
           const hudButton = hud.buttonIdFor(targetId);
           if (hudButton === 'previous') previousRef.current();
           else if (hudButton === 'replay') replayRef.current();
+          else if (hudButton === 'help') helpRef.current();
+          else if (hudButton === 'restart') restartRef.current();
           else if (hudButton === 'exit') void host?.renderer.xr.getSession()?.end();
           else if (hudButton === 'next') next();
+          else if (hudButton === 'choice-a' || hudButton === 'choice-b' || hudButton === 'choice-c') {
+            const prompt = vrPromptForStage(snapshotRef.current.stageId as FungiStageId, stateRef.current);
+            const choiceIndex = hudButton === 'choice-a' ? 0 : hudButton === 'choice-b' ? 1 : 2;
+            if (prompt && prompt.choices[choiceIndex]) {
+              routeAction(vrChoiceActionFor(prompt, choiceIndex), source);
+            }
+          }
           else {
-            const actionId = source === 'xr-controller'
-              && targetId === 'spore-landing'
-              && stateRef.current.model.sporeLandings.length > 0
-              ? 'vr-answer:growth-condition-prediction:warm-moist'
-              : WORLD_ACTION_BY_TARGET[targetId];
+            const actionId = WORLD_ACTION_BY_TARGET[targetId];
             if (actionId) routeAction(actionId, source);
           }
         },
@@ -730,18 +808,23 @@ export default function FungiDevelopmentViewer() {
           locomotion.update(context.frameDeltaSeconds);
           interaction.updateXrHover();
           const current = snapshotRef.current;
+          const prompt = vrPromptForStage(current.stageId as FungiStageId, stateRef.current);
           const content: VrHudContent = current.lessonComplete ? {
             eyebrow: 'Mission complete',
             title: 'Fungi Explorer',
             body: 'Review the evidence, then replay or exit.',
             bullets: evidenceRef.current,
-            buttons: ['replay', 'exit'],
+            buttons: ['help', 'replay', 'restart', 'exit'],
           } : {
             eyebrow: `Stage ${current.stageIndex + 1} / ${current.stageCount}`,
             title: current.stageTitle,
-            body: current.cue,
+            body: prompt?.question ?? current.cue,
+            choices: prompt?.choices.map(choice => ({ label: choice.label })),
             hint: current.stageComplete ? 'Evidence recorded. Next is now available.' : feedbackRef.current,
-            buttons: current.stageIndex > 0 ? ['previous', 'next', 'replay'] : ['next', 'replay'],
+            buttons: [
+              ...(current.stageIndex > 0 ? ['previous' as const] : []),
+              'next', 'help', 'replay', 'restart', 'exit',
+            ],
           };
           hud.setVisible(true);
           hud.setContent(content);
@@ -821,17 +904,17 @@ export default function FungiDevelopmentViewer() {
       case 'fungal-forensics':
         return <>{button('select:mushroom', 'Select mushroom')}{button('select:bread-mould', 'Select bread mould')}{button('select:green-plant', 'Select green plant')}{assessmentFor('fungi-precheck')}</>;
       case 'under-the-cap':
-        return <>{button('inspect:hypha-tip-alpha', 'Touch hypha alpha')}{button('inspect:hypha-tip-beta', 'Touch hypha beta')}{button('inspect:hypha-tip-gamma', 'Touch hypha gamma')}{assessmentFor('mycelium-observation')}</>;
+        return <>{button('inspect:hypha-tip-alpha', 'Touch hypha alpha')}{button('inspect:hypha-tip-beta', 'Touch hypha beta')}{button('inspect:hypha-tip-gamma', 'Touch hypha gamma')}{vrPromptForStage('under-the-cap', viewerState) && assessmentFor('mycelium-observation')}</>;
       case 'spore-flight':
-        return <>{button('guide:spore-guide', 'Guide the spore')}{button('land:spore-landing', 'Land on moist bread')}{assessmentFor('growth-condition-prediction')}</>;
+        return <>{button('guide:spore-guide', 'Guide the spore')}{button('land:spore-landing', 'Land on moist bread')}{vrPromptForStage('spore-flight', viewerState) && assessmentFor('growth-condition-prediction')}</>;
       case 'five-day-time-lens':
         return <><div aria-label="Five day timeline">{[1, 2, 3, 4, 5].map(day => button(`visit-day:${day}`, `Observe day ${day}`))}</div><p>Build the order:</p>{LIFE_CYCLE_LABELS.map(label => button(`sequence:${label}`, LIFE_CYCLE_TEXT[label]))}</>;
       case 'fungi-at-work':
-        return <>{button('trigger:dough-rise', 'Activate yeast and compare dough')}{button('role:bakery', 'Match fungus to bakery')}{button('role:medicine', 'Match fungus to medicine')}{button('role:compost', 'Match fungus to compost')}{assessmentFor('baking-fungus-observation')}</>;
+        return <>{button('trigger:dough-rise', 'Activate yeast and compare dough')}{button('role:bakery', 'Match yeast to baking')}{button('role:medicine', 'Match antibiotic-producing fungus to medicine')}{button('role:compost', 'Match saprotrophic fungus to decomposition')}{vrPromptForStage('fungi-at-work', viewerState) && assessmentFor('baking-fungus-observation')}</>;
       case 'food-safety-scan':
-        return <>{button('classify:fresh-item:safe', 'Classify fresh item as check before use')}{button('classify:mouldy-item:unsafe', 'Classify mouldy soft food as unsafe')}{assessmentFor('mould-safety-misconception')}</>;
+        return <>{button('classify:fresh-item:safe', 'Classify fresh item as check before use')}{button('classify:mouldy-item:unsafe', 'Classify mouldy soft food as unsafe')}{vrPromptForStage('food-safety-scan', viewerState) && assessmentFor('mould-safety-misconception')}</>;
       case 'forest-circle':
-        return <>{FINAL_REVIEW_PROMPTS.map(promptId => <div key={promptId}>{assessmentFor(promptId, true)}</div>)}{button('collect:fungi-explorer-badge', 'Collect Fungi Explorer badge')}</>;
+        return <>{FINAL_REVIEW_PROMPTS.map(promptId => <div key={promptId}>{button(`review-open:${promptId}`, `Open ${promptId.replaceAll('-', ' ')}`)}{viewerState.openedVrPromptIds.includes(promptId) && assessmentFor(promptId, true)}</div>)}{button('collect:fungi-explorer-badge', 'Collect Fungi Explorer badge')}</>;
       default:
         return null;
     }
@@ -888,7 +971,7 @@ export default function FungiDevelopmentViewer() {
                 <button type="button" style={controlStyle} onClick={() => { setSandboxOpen(value => !value); worldRef.current?.setState({ sandboxEnabled: !sandboxOpen }); }}>Growth Sandbox</button>
                 <button type="button" style={controlStyle} onClick={restart}>Restart full mission</button>
               </div>
-              {fieldGuideOpen && <aside aria-label="Fungi Field Guide"><h4>Field Guide</h4><ul><li>Hypha: one fungal thread.</li><li>Mycelium: a connected feeding network of hyphae.</li><li>Spores: reproductive cells that can spread and land.</li><li>Fungi can support baking, medicine, decomposition, and food webs; some also spoil food.</li></ul><div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>{EXPERIENCE.stages.map((guideStage, index) => <button key={guideStage.id} type="button" style={controlStyle} onClick={() => replayStage(index)}>Replay {guideStage.title}</button>)}</div></aside>}
+              {fieldGuideOpen && <aside aria-label="Fungi Field Guide"><h4>Field Guide</h4><div style={{ display: 'grid', gap: 10 }}>{fieldGuideCardsFor(viewerState).map(card => <article key={card.stageId} style={{ border: '1px solid rgba(255,255,255,.25)', borderRadius: 10, padding: 10 }}><h5>{card.title}</h5><p><strong>{card.collected ? 'Collected observation' : 'Observation to collect'}:</strong> {card.evidenceId}</p><p>{card.learningPoint}</p><button type="button" style={controlStyle} onClick={() => replayStage(card.stageIndex)}>Replay {card.title}</button></article>)}</div></aside>}
               {sandboxOpen && (
                 <section aria-label="Growth Sandbox">
                   <h4>Growth Sandbox</h4>

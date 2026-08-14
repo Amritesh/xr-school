@@ -134,9 +134,9 @@ describe('procedural fungi forest world', () => {
     const world = createFungiWorld();
     world.setState({
       usefulRoleMatches: [
-        { objectId: 'bread-mould', role: 'food' },
-        { objectId: 'mushroom', role: 'medicine' },
-        { objectId: 'bread-mould', role: 'decomposer' },
+        { objectId: 'yeast', role: 'food' },
+        { objectId: 'antibiotic-producing-fungus', role: 'medicine' },
+        { objectId: 'saprotrophic-fungus', role: 'decomposer' },
       ],
       doughRise: 0.75,
       safetyDecisions: ['observe-without-touching-or-eating'],
@@ -357,9 +357,9 @@ describe('procedural fungi forest world', () => {
       if (stage === 'fungi-at-work') world.setState({
         doughRisen: true,
         usefulRoleMatches: [
-          { objectId: 'bread-mould', role: 'food' },
-          { objectId: 'mushroom', role: 'medicine' },
-          { objectId: 'bread-mould', role: 'decomposer' },
+          { objectId: 'yeast', role: 'food' },
+          { objectId: 'antibiotic-producing-fungus', role: 'medicine' },
+          { objectId: 'saprotrophic-fungus', role: 'decomposer' },
         ],
       });
       if (stage === 'forest-circle') world.setState({ completed: true, sandboxEnabled: true });

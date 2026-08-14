@@ -754,7 +754,7 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       nonEmpty(next.sporeGuidance, 'spore guidance');
       nonEmpty(next.sporeLandings, 'spore landing');
       if (next.usefulRoleMatches?.some(match =>
-        !['mushroom', 'bread-mould'].includes(match.objectId)
+        !['yeast', 'antibiotic-producing-fungus', 'saprotrophic-fungus'].includes(match.objectId)
         || !['decomposer', 'food', 'medicine'].includes(match.role))) {
         throw new Error('useful role match is invalid');
       }

@@ -8,6 +8,7 @@ import {
   smoothAxis,
 } from '../../apps/web/lib/vr/vrLocomotion';
 import { createVrPlayerRig } from '../../apps/web/lib/vr/vrPlayerRig';
+import { createVrHudPanel } from '../../apps/web/lib/vr/vrHudPanel';
 
 function source(path: string) {
   return readFileSync(resolve(process.cwd(), path), 'utf8');
@@ -261,9 +262,51 @@ describe('shared VR HUD panel', () => {
   it('exposes controller-selectable HUD buttons for universal VR navigation', () => {
     const text = source('apps/web/lib/vr/vrHudPanel.ts');
 
-    expect(text).toContain("export type VrHudButtonId = 'previous' | 'next' | 'replay' | 'exit'");
+    expect(text).toContain("'choice-a'");
+    expect(text).toContain("'choice-b'");
+    expect(text).toContain("'choice-c'");
+    expect(text).toContain("'help'");
+    expect(text).toContain("'restart'");
     expect(text).toContain("buttonIdFor(objectName: string)");
     expect(text).toContain('Trigger: select');
     expect(text).toContain('B: back');
+  });
+
+  it('shows, resolves, and hides authored choices and distinct help/restart controls', () => {
+    const draw = vi.fn();
+    const context = {
+      clearRect: draw, fillRect: draw, strokeRect: draw, fillText: draw,
+      measureText: (text: string) => ({ width: text.length * 12 }),
+      fillStyle: '', strokeStyle: '', lineWidth: 1, font: '', textAlign: '', textBaseline: '',
+    };
+    vi.stubGlobal('document', {
+      createElement: () => ({ width: 0, height: 0, getContext: () => context }),
+    });
+    const panel = createVrHudPanel({ scene: new THREE.Scene() });
+
+    panel.setContent({
+      eyebrow: 'Question', title: 'Choose', body: 'Which answer?',
+      choices: [{ label: 'First' }, { label: 'Second' }, { label: 'Third' }],
+      buttons: ['previous', 'help', 'replay', 'restart', 'exit'],
+    });
+    expect(panel.buttonIdFor('vr-hud-choice-a')).toBe('choice-a');
+    expect(panel.buttonIdFor('vr-hud-choice-b')).toBe('choice-b');
+    expect(panel.buttonIdFor('vr-hud-choice-c')).toBe('choice-c');
+    expect(panel.buttonIdFor('vr-hud-help')).toBe('help');
+    expect(panel.buttonIdFor('vr-hud-restart')).toBe('restart');
+    expect(panel.buttons['choice-a'].visible).toBe(true);
+    expect(panel.buttons['choice-c'].visible).toBe(true);
+
+    const visible = Object.values(panel.buttons).filter(button => button.visible);
+    expect(Math.max(...visible.map(button => Math.abs(button.position.x)))).toBeLessThan(0.65);
+    expect(new Set(visible.map(button => button.position.y)).size).toBeGreaterThanOrEqual(3);
+    expect(panel.buttonIdFor('vr-hud-toString')).toBeUndefined();
+
+    panel.setContent({ eyebrow: 'Stage', title: 'Observe', body: 'No question', buttons: ['replay'] });
+    expect(panel.buttons['choice-a'].visible).toBe(false);
+    expect(panel.buttons.help.visible).toBe(false);
+    expect(panel.buttons.restart.visible).toBe(false);
+    panel.dispose();
+    vi.unstubAllGlobals();
   });
 });

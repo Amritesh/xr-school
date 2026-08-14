@@ -181,6 +181,7 @@ export type {
   FungalObjectId,
   FungalQuizAnswer,
   FungalSafetyOutcome,
+  FungalUsefulActorId,
   FungalUsefulRole,
   FungalUsefulRoleMatch,
   FungiDevelopmentAction,

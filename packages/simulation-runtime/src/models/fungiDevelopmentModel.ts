@@ -18,6 +18,10 @@ export type FungalLifeCycleLabel =
   | 'spore-structure-forms'
   | 'spores-release';
 export type FungalUsefulRole = 'decomposer' | 'food' | 'medicine';
+export type FungalUsefulActorId =
+  | 'yeast'
+  | 'antibiotic-producing-fungus'
+  | 'saprotrophic-fungus';
 export type FungalSafetyOutcome =
   | 'observe-without-touching-or-eating'
   | 'touch-or-eat-unknown-fungus';
@@ -70,6 +74,12 @@ const FUNGAL_USEFUL_ROLES: readonly FungalUsefulRole[] = [
   'decomposer',
   'food',
   'medicine',
+];
+
+const FUNGAL_USEFUL_ACTOR_IDS: readonly FungalUsefulActorId[] = [
+  'yeast',
+  'antibiotic-producing-fungus',
+  'saprotrophic-fungus',
 ];
 
 const FUNGAL_SAFETY_OUTCOMES: readonly FungalSafetyOutcome[] = [
@@ -157,7 +167,7 @@ export function evaluateFungalGrowth(
 }
 
 export interface FungalUsefulRoleMatch {
-  objectId: FungalObjectId;
+  objectId: FungalUsefulActorId;
   role: FungalUsefulRole;
 }
 
@@ -199,7 +209,7 @@ export type FungiDevelopmentAction =
   | { type: 'record-life-cycle'; label: FungalLifeCycleLabel }
   | {
       type: 'match-useful-role';
-      objectId: FungalObjectId;
+      objectId: FungalUsefulActorId;
       role: FungalUsefulRole;
     }
   | { type: 'decide-safety'; outcome: FungalSafetyOutcome }
@@ -351,9 +361,8 @@ export function reduceFungiDevelopment(
       break;
     }
     case 'match-useful-role': {
-      const object = FUNGAL_OBJECTS[action.objectId];
-      if (!object || object.kingdom !== 'fungus') {
-        throw new Error(`Unknown fungal object ${String(action.objectId)}`);
+      if (!FUNGAL_USEFUL_ACTOR_IDS.includes(action.objectId)) {
+        throw new Error(`Unknown fungal useful actor ${String(action.objectId)}`);
       }
       if (!FUNGAL_USEFUL_ROLES.includes(action.role)) {
         throw new Error(`Unknown fungal useful role ${String(action.role)}`);

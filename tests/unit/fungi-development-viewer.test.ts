@@ -4,8 +4,11 @@ import { describe, expect, it } from 'vitest';
 import {
   coordinateFungiAction,
   createInitialFungiViewerState,
+  fieldGuideCardsFor,
   projectFungiSandbox,
   stageEvidenceFor,
+  vrChoiceActionFor,
+  vrPromptForStage,
 } from '../../apps/web/components/simulations/FungiDevelopmentViewer';
 
 const viewerPath = resolve(
@@ -15,7 +18,9 @@ const viewerPath = resolve(
 
 describe('Living Mycelium viewer coordinator', () => {
   it('retains the first growth prediction while allowing a corrected retry', () => {
-    const initial = createInitialFungiViewerState();
+    let initial = createInitialFungiViewerState();
+    initial = coordinateFungiAction(initial, { actionId: 'guide:spore-guide', source: 'mouse' }).state;
+    initial = coordinateFungiAction(initial, { actionId: 'land:spore-landing', source: 'mouse' }).state;
     const wrong = coordinateFungiAction(initial, {
       actionId: 'answer:growth-condition-prediction:dry-cold',
       source: 'keyboard',
@@ -36,17 +41,54 @@ describe('Living Mycelium viewer coordinator', () => {
     });
   });
 
-  it('records the selected fungi pair as the initial precheck before evidence', () => {
+  it('records an authentic precheck wrong-to-correct before classification without selection auto-answering', () => {
     let state = createInitialFungiViewerState();
+    const wrong = coordinateFungiAction(state, {
+      actionId: 'answer:fungi-precheck:mushroom-and-green-plant', source: 'xr-controller',
+    });
+    const corrected = coordinateFungiAction(wrong.state, {
+      actionId: 'answer:fungi-precheck:mushroom-and-bread-mould', source: 'xr-controller',
+    });
+    state = corrected.state;
+    expect(state.firstAnswers['fungi-precheck']).toBe('mushroom-and-green-plant');
+    expect(state.latestAnswers['fungi-precheck']).toBe('mushroom-and-bread-mould');
+
     const first = coordinateFungiAction(state, { actionId: 'select:mushroom', source: 'xr-controller' });
     state = first.state;
     expect(first.assessment).toBeUndefined();
     expect(stageEvidenceFor('fungal-forensics', state)).toBeUndefined();
 
     const pair = coordinateFungiAction(state, { actionId: 'select:bread-mould', source: 'xr-controller' });
-    expect(pair.assessment).toEqual({ promptId: 'fungi-precheck', optionId: 'mushroom-and-bread-mould' });
-    expect(pair.state.firstAnswers['fungi-precheck']).toBe('mushroom-and-bread-mould');
+    expect(pair.assessment).toBeUndefined();
+    expect(pair.state.firstAnswers['fungi-precheck']).toBe('mushroom-and-green-plant');
     expect(stageEvidenceFor('fungal-forensics', pair.state)).toBe('fungi-pair-classified');
+  });
+
+  it('requires a fungi prediction before either specimen can be classified', () => {
+    const initial = createInitialFungiViewerState();
+    const premature = coordinateFungiAction(initial, {
+      actionId: 'select:mushroom', source: 'mouse',
+    });
+    expect(premature.state).toBe(initial);
+    expect(premature.feedback).toMatch(/prediction first/i);
+  });
+
+  it('rejects observation answers until their authored evidence is visible', () => {
+    const cases = [
+      ['mycelium-observation', 'mycelium'],
+      ['growth-condition-prediction', 'warm-moist'],
+      ['baking-fungus-observation', 'yeast'],
+      ['mould-safety-misconception', 'reject-whole-soft-food'],
+    ] as const;
+    for (const [promptId, optionId] of cases) {
+      const initial = createInitialFungiViewerState();
+      const result = coordinateFungiAction(initial, {
+        actionId: `answer:${promptId}:${optionId}`, source: 'xr-controller',
+      });
+      expect(result.state, promptId).toBe(initial);
+      expect(result.assessment, promptId).toBeUndefined();
+      expect(result.feedback, promptId).toMatch(/observe|first|before/i);
+    }
   });
 
   it('credits only three unique authored hypha targets', () => {
@@ -174,8 +216,12 @@ describe('Living Mycelium viewer coordinator', () => {
     expect(stageEvidenceFor('fungi-at-work', state)).toBeUndefined();
     state = coordinateFungiAction(state, { actionId: 'answer:baking-fungus-observation:yeast', source: 'keyboard' }).state;
     expect(stageEvidenceFor('fungi-at-work', state)).toBe('useful-roles-matched');
-    expect(state.usefulRoleIds).toEqual(['bakery:yeast', 'medicine:fungus', 'compost:decomposer']);
-    expect(state.model.usefulRoleMatches).not.toContainEqual({ objectId: 'bread-mould', role: 'food' });
+    expect(state.model.usefulRoleMatches).toEqual([
+      { objectId: 'yeast', role: 'food' },
+      { objectId: 'antibiotic-producing-fungus', role: 'medicine' },
+      { objectId: 'saprotrophic-fungus', role: 'decomposer' },
+    ]);
+    expect(state).not.toHaveProperty('usefulRoleIds');
 
     state = coordinateFungiAction(state, { actionId: 'classify:fresh-item:safe', source: 'touch' }).state;
     state = coordinateFungiAction(state, { actionId: 'classify:mouldy-item:unsafe', source: 'touch' }).state;
@@ -185,7 +231,7 @@ describe('Living Mycelium viewer coordinator', () => {
     expect(stageEvidenceFor('food-safety-scan', state)).toBe('mould-safety-resolved');
   });
 
-  it('requires four correct final review actions before badge collection', () => {
+  it('requires each final mushroom to open before its review answer and retains wrong XR choices', () => {
     let state = createInitialFungiViewerState();
     const earlyBadge = coordinateFungiAction(state, {
       actionId: 'collect:fungi-explorer-badge',
@@ -194,15 +240,36 @@ describe('Living Mycelium viewer coordinator', () => {
     expect(earlyBadge.state.badgeCollected).toBe(false);
     expect(earlyBadge.feedback).toMatch(/four review/i);
 
-    for (const [promptId, optionId] of [
+    const premature = coordinateFungiAction(state, {
+      actionId: 'review:forest-transfer:warm-damp-surface', source: 'xr-controller',
+    });
+    expect(premature.state).toBe(state);
+    expect(premature.assessment).toBeUndefined();
+
+    for (const [promptId, optionId, wrongOptionId] of [
       ['development-order-observation', 'spore-hyphae-mycelium-structures-release'],
       ['baking-fungus-observation', 'yeast'],
       ['mould-safety-misconception', 'reject-whole-soft-food'],
       ['forest-transfer', 'warm-damp-surface'],
-    ]) {
+    ].map(([promptId, optionId]) => [
+      promptId,
+      optionId,
+      promptId === 'development-order-observation' ? 'release-mycelium-spore'
+        : promptId === 'baking-fungus-observation' ? 'green-plant'
+          : promptId === 'mould-safety-misconception' ? 'cutting-makes-safe' : 'cool-dry-surface',
+    ] as const)) {
+      state = coordinateFungiAction(state, {
+        actionId: `review-open:${promptId}`,
+        source: 'xr-controller',
+      }).state;
+      state = coordinateFungiAction(state, {
+        actionId: `review:${promptId}:${wrongOptionId}`,
+        source: 'xr-controller',
+      }).state;
+      expect(state.latestAnswers[promptId]).toBe(wrongOptionId);
       state = coordinateFungiAction(state, {
         actionId: `review:${promptId}:${optionId}`,
-        source: 'keyboard',
+        source: 'xr-controller',
       }).state;
     }
     expect(stageEvidenceFor('forest-circle', state)).toBeUndefined();
@@ -212,6 +279,90 @@ describe('Living Mycelium viewer coordinator', () => {
     }).state;
     expect(state.model.completed).toBe(true);
     expect(stageEvidenceFor('forest-circle', state)).toBe('forest-transfer-explained');
+  });
+
+  it('maps visible HUD choice indices to canonical option IDs and can choose a wrong answer', () => {
+    let state = createInitialFungiViewerState();
+    const precheck = vrPromptForStage('fungal-forensics', state);
+    expect(precheck?.choices.map(choice => choice.optionId)).toEqual([
+      'mushroom-and-bread-mould', 'mushroom-and-green-plant', 'bread-mould-and-green-plant',
+    ]);
+    const wrongAction = vrChoiceActionFor(precheck!, 1);
+    expect(wrongAction).toBe('answer:fungi-precheck:mushroom-and-green-plant');
+    state = coordinateFungiAction(state, { actionId: wrongAction, source: 'xr-controller' }).state;
+    expect(state.latestAnswers['fungi-precheck']).toBe('mushroom-and-green-plant');
+  });
+
+  it('makes the most recently opened review mushroom the active HUD prompt without answering it', () => {
+    let state = createInitialFungiViewerState();
+    for (const promptId of ['development-order-observation', 'forest-transfer', 'development-order-observation']) {
+      state = coordinateFungiAction(state, {
+        actionId: `review-open:${promptId}`, source: 'xr-controller',
+      }).state;
+    }
+    expect(vrPromptForStage('forest-circle', state)?.promptId).toBe('development-order-observation');
+    expect(state.latestAnswers).toEqual({});
+    expect(state.model.quizAnswers).toEqual([]);
+  });
+
+  it('builds per-stage Field Guide evidence cards with replay targets', () => {
+    let state = createInitialFungiViewerState();
+    state = coordinateFungiAction(state, {
+      actionId: 'answer:fungi-precheck:mushroom-and-bread-mould', source: 'keyboard',
+    }).state;
+    state = coordinateFungiAction(state, { actionId: 'select:mushroom', source: 'mouse' }).state;
+    state = coordinateFungiAction(state, { actionId: 'select:bread-mould', source: 'mouse' }).state;
+    const cards = fieldGuideCardsFor(state);
+    expect(cards).toHaveLength(7);
+    expect(cards[0]).toMatchObject({
+      stageIndex: 0,
+      title: 'Fungal Forensics',
+      evidenceId: 'fungi-pair-classified',
+      collected: true,
+      learningPoint: expect.stringMatching(/fungi|plant/i),
+    });
+    expect(cards[1]).toMatchObject({ stageIndex: 1, collected: false });
+  });
+
+  it('completes a headset-style world-action and HUD-choice path before resetting cleanly', () => {
+    let state = createInitialFungiViewerState({ reducedMotion: true });
+    const act = (actionId: string) => {
+      state = coordinateFungiAction(state, { actionId, source: 'xr-controller' }).state;
+    };
+    const chooseAccepted = (stageId: Parameters<typeof vrPromptForStage>[0]) => {
+      const prompt = vrPromptForStage(stageId, state)!;
+      const acceptedIndex = prompt.choices.findIndex(choice => [
+        'mushroom-and-bread-mould', 'mycelium', 'warm-moist', 'yeast',
+        'reject-whole-soft-food', 'spore-hyphae-mycelium-structures-release', 'warm-damp-surface',
+      ].includes(choice.optionId));
+      act(vrChoiceActionFor(prompt, acceptedIndex));
+    };
+
+    chooseAccepted('fungal-forensics');
+    act('select:mushroom'); act('select:bread-mould');
+    act('inspect:hypha-tip-alpha'); act('inspect:hypha-tip-beta'); act('inspect:hypha-tip-gamma');
+    chooseAccepted('under-the-cap');
+    act('guide:spore-guide'); act('land:spore-landing'); chooseAccepted('spore-flight');
+    for (const day of [1, 2, 3, 4, 5]) act(`visit-day:${day}`);
+    act('trigger:dough-rise'); act('role:bakery'); act('role:medicine'); act('role:compost');
+    chooseAccepted('fungi-at-work');
+    act('classify:fresh-item:safe'); act('classify:mouldy-item:unsafe'); chooseAccepted('food-safety-scan');
+    for (const promptId of [
+      'development-order-observation', 'baking-fungus-observation',
+      'mould-safety-misconception', 'forest-transfer',
+    ]) {
+      act(`review-open:${promptId}`);
+      chooseAccepted('forest-circle');
+    }
+    act('collect:fungi-explorer-badge');
+    expect(state).toMatchObject({ badgeCollected: true, model: { completed: true } });
+
+    const reset = createInitialFungiViewerState({ reducedMotion: true });
+    expect(reset).toMatchObject({
+      firstAnswers: {}, latestAnswers: {}, resolvedPromptIds: [],
+      finalReviewPromptIds: [], openedVrPromptIds: [], badgeCollected: false,
+      evidenceDelayMs: 0, model: { completed: false, usefulRoleMatches: [] },
+    });
   });
 });
 
@@ -263,20 +414,33 @@ describe('Living Mycelium viewer integration contract', () => {
     expect(source).toContain('Field Guide');
     expect(source).toContain('Growth Sandbox');
     expect(source).toContain('type="range"');
-    expect(source).toContain('replayStage(index)');
+    expect(source).toContain('replayStage(card.stageIndex)');
     expect(source).toContain('Warm, moist reference');
     expect(source).toContain('Your sandbox conditions');
   });
 
-  it('provides explicit VR assessment commits after visible question targets', () => {
+  it('provides authored VR choices that dispatch the same normalized assessment routes as DOM', () => {
     for (const token of [
-      'hypha-network-label',
-      'vr-answer:mycelium-observation:mycelium',
-      'vr-answer:growth-condition-prediction:warm-moist',
-      'vr-answer:baking-fungus-observation:yeast',
-      'vr-answer:mould-safety-misconception:reject-whole-soft-food',
+      'vrPromptForStage',
+      'vrChoiceActionFor',
+      "hudButton === 'choice-a'",
+      "hudButton === 'choice-b'",
+      "hudButton === 'choice-c'",
     ]) expect(source).toContain(token);
     expect(source).toContain('openedVrPromptIds');
+    expect(source).not.toContain('ACCEPTED_OPTIONS');
+    expect(source).not.toContain('vr-answer:');
+    expect(source).not.toContain('usefulRoleIds');
+  });
+
+  it('keeps replay narration, help, restart, previous/back, and exit as distinct VR controls', () => {
+    expect(source).toContain('restartRef.current = restart');
+    expect(source).toMatch(/replayRef\.current\s*=\s*\(\)\s*=>\s*narrate/);
+    expect(source).toContain("hudButton === 'help'");
+    expect(source).toContain("hudButton === 'restart'");
+    expect(source).toContain("hudButton === 'previous'");
+    expect(source).toContain("hudButton === 'exit'");
+    expect(source).toContain('feedbackRef.current =');
   });
 
   it('does not own audio, raw renderer loops, or force movement', () => {

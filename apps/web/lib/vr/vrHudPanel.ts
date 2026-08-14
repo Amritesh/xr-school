@@ -11,7 +11,20 @@ import * as THREE from 'three';
  * in front of them and re-centres itself when they turn or walk away.
  */
 
-export type VrHudButtonId = 'previous' | 'next' | 'replay' | 'exit';
+export type VrHudButtonId =
+  | 'previous'
+  | 'next'
+  | 'choice-a'
+  | 'choice-b'
+  | 'choice-c'
+  | 'help'
+  | 'replay'
+  | 'restart'
+  | 'exit';
+
+export interface VrHudChoice {
+  label: string;
+}
 
 export interface VrHudContent {
   /** Small line above the title, e.g. "Stage 2 / 8". */
@@ -22,13 +35,20 @@ export interface VrHudContent {
   hint?: string;
   /** "Today you learned" list for the completion screen. */
   bullets?: string[];
+  /** Up to three authored answer labels, selected through choice A/B/C. */
+  choices?: VrHudChoice[];
   buttons: VrHudButtonId[];
 }
 
 const BUTTON_STYLE: Record<VrHudButtonId, { label: string; color: string }> = {
   previous: { label: '◀ Previous', color: '#94a3b8' },
   next: { label: 'Next ▶', color: '#fbbf24' },
-  replay: { label: '⟲ Replay Activity', color: '#4ade80' },
+  'choice-a': { label: 'A', color: '#38bdf8' },
+  'choice-b': { label: 'B', color: '#38bdf8' },
+  'choice-c': { label: 'C', color: '#38bdf8' },
+  help: { label: '? Help', color: '#c084fc' },
+  replay: { label: '⟲ Replay Narration', color: '#4ade80' },
+  restart: { label: '↻ Restart', color: '#fb923c' },
   exit: { label: '✕ Exit Simulation', color: '#f87171' },
 };
 
@@ -161,9 +181,21 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
 
     ctx.fillStyle = '#d1d5db';
     ctx.font = '29px sans-serif';
-    for (const line of wrapLines(ctx, content.body, w - 80).slice(0, 5)) {
+    for (const line of wrapLines(ctx, content.body, w - 80).slice(0, 4)) {
       ctx.fillText(line, 40, cursorY);
       cursorY += 39;
+    }
+
+    if (content.choices?.length) {
+      cursorY += 8;
+      ctx.fillStyle = '#bae6fd';
+      ctx.font = 'bold 25px sans-serif';
+      for (const [index, choice] of content.choices.slice(0, 3).entries()) {
+        const prefix = String.fromCharCode(65 + index);
+        const line = wrapLines(ctx, `${prefix}. ${choice.label}`, w - 96)[0] ?? '';
+        ctx.fillText(line, 48, cursorY);
+        cursorY += 34;
+      }
     }
 
     if (content.bullets?.length) {
@@ -194,20 +226,34 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
     texture.needsUpdate = true;
   }
 
-  function layoutButtons(visibleIds: VrHudButtonId[]) {
-    const total = visibleIds.length * BUTTON_WIDTH
-      + Math.max(0, visibleIds.length - 1) * BUTTON_GAP;
+  function positionRow(ids: VrHudButtonId[], y: number) {
+    const total = ids.length * BUTTON_WIDTH + Math.max(0, ids.length - 1) * BUTTON_GAP;
+    ids.forEach((id, index) => {
+      buttons[id].position.set(
+        -total / 2 + BUTTON_WIDTH / 2 + index * (BUTTON_WIDTH + BUTTON_GAP),
+        y,
+        0.01,
+      );
+    });
+  }
+
+  function layoutButtons(content: VrHudContent) {
+    const choiceIds = (['choice-a', 'choice-b', 'choice-c'] as const)
+      .slice(0, Math.min(content.choices?.length ?? 0, 3));
+    const controlIds = content.buttons.filter(id => !id.startsWith('choice-'));
+    const visibleIds = new Set<VrHudButtonId>([...choiceIds, ...controlIds]);
     for (const id of Object.keys(buttons) as VrHudButtonId[]) {
       const mesh = buttons[id];
-      const index = visibleIds.indexOf(id);
-      mesh.visible = index >= 0;
-      if (index >= 0) {
-        mesh.position.set(
-          -total / 2 + BUTTON_WIDTH / 2 + index * (BUTTON_WIDTH + BUTTON_GAP),
-          -PANEL_HEIGHT / 2 - BUTTON_HEIGHT / 2 - 0.035,
-          0.01,
-        );
-      }
+      mesh.visible = visibleIds.has(id);
+    }
+    const firstRowY = -PANEL_HEIGHT / 2 - BUTTON_HEIGHT / 2 - 0.035;
+    positionRow([...choiceIds], firstRowY);
+    const controlStartY = choiceIds.length ? firstRowY - BUTTON_HEIGHT - BUTTON_GAP : firstRowY;
+    for (let offset = 0; offset < controlIds.length; offset += 3) {
+      positionRow(
+        controlIds.slice(offset, offset + 3),
+        controlStartY - Math.floor(offset / 3) * (BUTTON_HEIGHT + BUTTON_GAP),
+      );
     }
   }
 
@@ -216,7 +262,7 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
     if (key === contentKey) return;
     contentKey = key;
     draw(content);
-    layoutButtons(content.buttons);
+    layoutButtons(content);
   }
 
   // ── Lazy follow ──────────────────────────────────────────────────────
@@ -272,7 +318,8 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
   /** Resolves a raycast hit name to a HUD button id, if it is one. */
   function buttonIdFor(objectName: string): VrHudButtonId | undefined {
     const id = objectName.replace('vr-hud-', '') as VrHudButtonId;
-    return objectName.startsWith('vr-hud-') && id in buttons ? id : undefined;
+    return objectName.startsWith('vr-hud-')
+      && Object.prototype.hasOwnProperty.call(buttons, id) ? id : undefined;
   }
 
   function dispose() {

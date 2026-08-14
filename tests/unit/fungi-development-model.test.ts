@@ -114,7 +114,7 @@ describe('fungi development model', () => {
       { type: 'visit-day', day: 1 },
       {
         type: 'match-useful-role',
-        objectId: 'bread-mould',
+        objectId: 'saprotrophic-fungus',
         role: 'decomposer',
       },
       {
@@ -132,7 +132,7 @@ describe('fungi development model', () => {
       sporeGuidance: ['air-current-1'],
       sporeLandings: ['moist-bread'],
       visitedDays: [1],
-      usefulRoleMatches: [{ objectId: 'bread-mould', role: 'decomposer' }],
+      usefulRoleMatches: [{ objectId: 'saprotrophic-fungus', role: 'decomposer' }],
       quizAnswers: [
         {
           questionId: 'transfer-1',
@@ -148,10 +148,27 @@ describe('fungi development model', () => {
       'spore-guided:air-current-1',
       'spore-landed:moist-bread',
       'day-visited:1',
-      'useful-role:bread-mould:decomposer',
+      'useful-role:saprotrophic-fungus:decomposer',
       'quiz-answered:transfer-1',
     ]);
     expect(initialFungiDevelopmentState.evidenceIds).toEqual([]);
+  });
+
+  it('keeps useful actors scientifically distinct from classification specimens', () => {
+    const state = reduceAll([
+      { type: 'match-useful-role', objectId: 'yeast', role: 'food' },
+      { type: 'match-useful-role', objectId: 'antibiotic-producing-fungus', role: 'medicine' },
+      { type: 'match-useful-role', objectId: 'saprotrophic-fungus', role: 'decomposer' },
+    ]);
+
+    expect(state.usefulRoleMatches).toEqual([
+      { objectId: 'yeast', role: 'food' },
+      { objectId: 'antibiotic-producing-fungus', role: 'medicine' },
+      { objectId: 'saprotrophic-fungus', role: 'decomposer' },
+    ]);
+    expect(() => reduceFungiDevelopment(state, {
+      type: 'match-useful-role', objectId: 'mushroom', role: 'medicine',
+    } as never)).toThrow(/useful actor/i);
   });
 
   it('does not fabricate evidence when the same event is repeated', () => {
@@ -285,7 +302,7 @@ describe('fungi development model', () => {
       /growth condition choice/i,
     ],
     [
-      { type: 'match-useful-role', objectId: 'mushroom', role: 'runs-fast' },
+      { type: 'match-useful-role', objectId: 'yeast', role: 'runs-fast' },
       /useful role/i,
     ],
     [{ type: 'decide-safety', outcome: 'lick-it' }, /safety outcome/i],
