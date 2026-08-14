@@ -117,7 +117,8 @@ export function createAssessmentSession(sequence: AssessmentSequence) {
       const allEvidence = evidence();
       const eligibleEvidence = sequence.masteryRule.allowHintedMastery
         ? allEvidence
-        : allEvidence.filter(item => !item.hinted);
+        // Correcting a misconception demonstrates resolution; other mastery evidence stays independent.
+        : allEvidence.filter(item => !item.hinted || item.kind === 'misconception');
       const eligibleKinds = new Set(eligibleEvidence.map(item => item.kind));
       const missingKinds = sequence.masteryRule.requiredKinds.filter(
         kind => !eligibleKinds.has(kind),

@@ -209,7 +209,7 @@ const assessment: AssessmentSequence = {
   masteryRule: {
     requiredEvidenceCount: 3,
     requiredKinds: ["observation", "misconception", "transfer"],
-    allowHintedMastery: true,
+    allowHintedMastery: false,
   },
 };
 

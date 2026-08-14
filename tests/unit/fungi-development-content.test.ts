@@ -180,7 +180,7 @@ describe("canonical fungi development content", () => {
     expect(masteryRule).toEqual({
       requiredEvidenceCount: 3,
       requiredKinds: ["observation", "misconception", "transfer"],
-      allowHintedMastery: true,
+      allowHintedMastery: false,
     });
   });
 

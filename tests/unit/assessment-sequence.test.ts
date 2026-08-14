@@ -96,4 +96,53 @@ describe("assessment mastery engine", () => {
       attempts: 2,
     });
   });
+
+  it("accepts a corrected misconception but rejects corrected transfer under strict mastery", () => {
+    const strictSequence: AssessmentSequence = {
+      ...TEST_SEQUENCE,
+      masteryRule: {
+        requiredEvidenceCount: 3,
+        requiredKinds: ["observation", "misconception", "transfer"],
+        allowHintedMastery: false,
+      },
+    };
+    const independentTransfer = createAssessmentSession(strictSequence);
+
+    independentTransfer.answer("observe", "sphere");
+    independentTransfer.answer("misconception", "yes");
+    independentTransfer.answer("misconception", "no");
+    independentTransfer.answer("transfer", "no");
+    expect(independentTransfer.mastery()).toMatchObject({
+      mastered: true,
+      eligibleEvidenceCount: 3,
+      missingKinds: [],
+    });
+
+    const correctedTransfer = createAssessmentSession(strictSequence);
+    correctedTransfer.answer("observe", "sphere");
+    correctedTransfer.answer("misconception", "yes");
+    correctedTransfer.answer("misconception", "no");
+    correctedTransfer.answer("transfer", "yes");
+    correctedTransfer.answer("transfer", "no");
+    expect(correctedTransfer.mastery()).toMatchObject({
+      mastered: false,
+      eligibleEvidenceCount: 2,
+      missingKinds: ["transfer"],
+    });
+  });
+
+  it("keeps corrected transfer eligible when hinted mastery is explicitly allowed", () => {
+    const session = createAssessmentSession(TEST_SEQUENCE);
+
+    session.answer("observe", "sphere");
+    session.answer("misconception", "no");
+    session.answer("transfer", "yes");
+    session.answer("transfer", "no");
+
+    expect(session.mastery()).toMatchObject({
+      mastered: true,
+      eligibleEvidenceCount: 3,
+      missingKinds: [],
+    });
+  });
 });

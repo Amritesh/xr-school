@@ -138,6 +138,35 @@ describe("fungi development lesson experience", () => {
     });
   });
 
+  it("does not award mastery when the independent transfer requires a retry", () => {
+    const assessment = createAssessmentSession(FUNGI_DEVELOPMENT.assessment);
+
+    assessment.answer("mycelium-observation", "mycelium");
+    assessment.answer(
+      "mould-safety-misconception",
+      "cutting-makes-safe",
+    );
+    assessment.answer(
+      "mould-safety-misconception",
+      "reject-whole-soft-food",
+    );
+    assessment.answer("forest-transfer", "cool-dry-surface");
+    assessment.answer("forest-transfer", "warm-damp-surface");
+
+    expect(assessment.evidence()).toContainEqual(
+      expect.objectContaining({
+        promptId: "forest-transfer",
+        kind: "transfer",
+        hinted: true,
+      }),
+    );
+    expect(assessment.mastery()).toMatchObject({
+      mastered: false,
+      eligibleEvidenceCount: 2,
+      missingKinds: ["transfer"],
+    });
+  });
+
   it("preserves the first dry-cold growth prediction after a warm-moist retry", () => {
     const dryPrediction = reduceFungiDevelopment(
       initialFungiDevelopmentState,
