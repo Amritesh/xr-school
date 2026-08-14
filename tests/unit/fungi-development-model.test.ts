@@ -182,7 +182,7 @@ describe('fungi development model', () => {
     ).toThrow(/expected hypha-grows/i);
   });
 
-  it('resolves the unsafe-to-touch-or-eat misconception only after a corrected decision', () => {
+  it('resolves an unsafe-to-touch-or-eat decision after a correction', () => {
     const misconception = reduceFungiDevelopment(initialFungiDevelopmentState, {
       type: 'decide-safety',
       outcome: 'touch-or-eat-unknown-fungus',
@@ -197,6 +197,52 @@ describe('fungi development model', () => {
     expect(corrected.safetyDecisions).toEqual([
       'touch-or-eat-unknown-fungus',
       'observe-without-touching-or-eating',
+    ]);
+  });
+
+  it('treats a correct-first safety decision as misconception resolution for mastery', () => {
+    const state = reduceAll([
+      { type: 'visit-day', day: 1 },
+      {
+        type: 'decide-safety',
+        outcome: 'observe-without-touching-or-eating',
+      },
+      {
+        type: 'answer-quiz',
+        questionId: 'new-sample',
+        answer: 'fungus',
+        correct: true,
+        independentTransfer: true,
+      },
+    ]);
+
+    expect(state).toMatchObject({
+      safetyMisconceptionResolved: true,
+      mastery: true,
+      completed: false,
+    });
+  });
+
+  it('does not regress resolution across safe, unsafe, safe decisions', () => {
+    const safe = reduceFungiDevelopment(initialFungiDevelopmentState, {
+      type: 'decide-safety',
+      outcome: 'observe-without-touching-or-eating',
+    });
+    const unsafe = reduceFungiDevelopment(safe, {
+      type: 'decide-safety',
+      outcome: 'touch-or-eat-unknown-fungus',
+    });
+    const safeAgain = reduceFungiDevelopment(unsafe, {
+      type: 'decide-safety',
+      outcome: 'observe-without-touching-or-eating',
+    });
+
+    expect(safe.safetyMisconceptionResolved).toBe(true);
+    expect(unsafe.safetyMisconceptionResolved).toBe(true);
+    expect(safeAgain.safetyMisconceptionResolved).toBe(true);
+    expect(safeAgain.safetyDecisions).toEqual([
+      'observe-without-touching-or-eating',
+      'touch-or-eat-unknown-fungus',
     ]);
   });
 

@@ -382,17 +382,12 @@ export function reduceFungiDevelopment(
           `Unknown fungal safety outcome ${String(action.outcome)}`,
         );
       }
-      if (state.safetyDecisions.includes(action.outcome)) return state;
-      const hadMisconception = state.safetyDecisions.includes(
-        'touch-or-eat-unknown-fungus',
-      );
       next = {
         ...state,
-        safetyDecisions: [...state.safetyDecisions, action.outcome],
+        safetyDecisions: addUnique(state.safetyDecisions, action.outcome),
         safetyMisconceptionResolved:
           state.safetyMisconceptionResolved ||
-          (hadMisconception &&
-            action.outcome === 'observe-without-touching-or-eating'),
+          action.outcome === 'observe-without-touching-or-eating',
         evidenceIds: addEvidence(state, `safety-decision:${action.outcome}`),
       };
       break;
