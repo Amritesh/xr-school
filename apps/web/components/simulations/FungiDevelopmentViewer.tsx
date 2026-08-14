@@ -480,6 +480,23 @@ const controlStyle = {
   cursor: 'pointer',
 } as const;
 
+export const FUNGI_LEARNING_CONTROLS_STYLE = {
+  position: 'absolute',
+  right: 16,
+  top: 'clamp(104px, 21vh, 150px)',
+  bottom: 16,
+  width: 'min(520px, calc(100% - 32px))',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  boxSizing: 'border-box',
+  zIndex: 5,
+  borderRadius: 16,
+  background: 'rgba(7,24,18,.94)',
+  color: '#f7fee7',
+  padding: 16,
+  boxShadow: '0 12px 30px rgba(0,0,0,.35)',
+} as const;
+
 export default function FungiDevelopmentViewer() {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -965,7 +982,7 @@ export default function FungiDevelopmentViewer() {
         busy={!worldRef.current && !runtimeError}
       />
       {started && (
-        <section aria-label="Living Mycelium learning controls" style={{ position: 'absolute', left: 16, right: 16, bottom: 16, zIndex: 5, maxHeight: '48vh', overflow: 'auto', borderRadius: 16, background: 'rgba(7,24,18,.94)', color: '#f7fee7', padding: 16, boxShadow: '0 12px 30px rgba(0,0,0,.35)' }}>
+        <section aria-label="Living Mycelium learning controls" style={FUNGI_LEARNING_CONTROLS_STYLE}>
           <h2 style={{ margin: '0 0 6px' }}>{stage.title}</h2>
           <p style={{ margin: '0 0 10px' }}>{stage.cue}</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>{!completed && stageControls()}</div>
