@@ -969,4 +969,29 @@ describe("implemented simulation definition", () => {
     expect(definition.module.viewerKey).toBe(" ");
     expect(definition.assets.assets[0].sha256).toBeUndefined();
   });
+
+  it("accepts truthful user-story provenance for a new class", () => {
+    const definition = validInteractiveDefinition();
+    definition.contribution = {
+      source: "user-story",
+      integration: "new-class",
+    };
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual([]);
+  });
+
+  it("rejects unsupported contribution source and integration values", () => {
+    const definition = validInteractiveDefinition();
+    definition.contribution = {
+      source: "invented-source",
+      integration: "catalog-duplicate",
+    } as unknown as ImplementedSimulationDefinition["contribution"];
+
+    expect(validateImplementedSimulationDefinition(definition)).toEqual(
+      expect.arrayContaining([
+        'implemented.contribution.source: expected "existing", "pr-8", or "user-story"',
+        'implemented.contribution.integration: expected "new-class"',
+      ]),
+    );
+  });
 });

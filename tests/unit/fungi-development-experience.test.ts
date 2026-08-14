@@ -9,6 +9,9 @@ import {
   initialFungiDevelopmentState,
   reduceFungiDevelopment,
 } from "../../packages/simulation-runtime/src/index";
+import type {
+  FungalGrowthConditionChoice,
+} from "../../packages/simulation-runtime/src/index";
 
 function completeLesson() {
   const session = createLessonSession(FUNGI_DEVELOPMENT_EXPERIENCE);
@@ -69,14 +72,17 @@ describe("fungi development lesson experience", () => {
     const assessment = createAssessmentSession(FUNGI_DEVELOPMENT.assessment);
 
     assessment.answer("mycelium-observation", "mycelium");
-    assessment.answer("mould-safety-misconception", "do-not-eat");
+    assessment.answer(
+      "mould-safety-misconception",
+      "reject-whole-soft-food",
+    );
     expect(assessment.mastery()).toMatchObject({
       mastered: false,
       missingKinds: ["transfer"],
     });
 
     expect(
-      assessment.answer("forest-transfer", "fungi-recycle-nutrients"),
+      assessment.answer("forest-transfer", "warm-damp-surface"),
     ).toMatchObject({ correct: true });
     expect(assessment.mastery()).toMatchObject({
       mastered: true,
@@ -100,5 +106,57 @@ describe("fungi development lesson experience", () => {
       firstGrowthPrediction: "dry-cold",
       latestGrowthPrediction: "warm-moist",
     });
+  });
+
+  it("shares exact canonical growth-condition option IDs with the reducer", () => {
+    const prompt = FUNGI_DEVELOPMENT.assessment.prompts.find(
+      ({ id }) => id === "growth-condition-prediction",
+    );
+    const optionIds = prompt?.options?.map(({ id }) => id) ?? [];
+
+    expect(optionIds).toEqual(["warm-moist", "dry-cold", "hot-dry"]);
+    for (const condition of optionIds) {
+      const state = reduceFungiDevelopment(initialFungiDevelopmentState, {
+        type: "choose-growth-condition",
+        condition: condition as FungalGrowthConditionChoice,
+      });
+      expect(state.latestGrowthPrediction).toBe(condition);
+    }
+  });
+
+  it("rejects the cut-off-mould claim and resolves it with hidden-hyphae evidence", () => {
+    const assessment = createAssessmentSession(FUNGI_DEVELOPMENT.assessment);
+
+    expect(
+      assessment.answer(
+        "mould-safety-misconception",
+        "cutting-makes-safe",
+      ),
+    ).toMatchObject({
+      correct: false,
+      hint: expect.stringMatching(/hidden.*hyphae|beyond.*visible/i),
+    });
+    expect(
+      assessment.answer(
+        "mould-safety-misconception",
+        "reject-whole-soft-food",
+      ),
+    ).toMatchObject({ correct: true, attempts: 2 });
+  });
+
+  it("accepts warm and damp surface reasoning as independent transfer evidence", () => {
+    const assessment = createAssessmentSession(FUNGI_DEVELOPMENT.assessment);
+
+    expect(
+      assessment.answer("forest-transfer", "warm-damp-surface"),
+    ).toMatchObject({ correct: true });
+    expect(assessment.evidence()).toContainEqual(
+      expect.objectContaining({
+        promptId: "forest-transfer",
+        kind: "transfer",
+        evidenceId: "warm-damp-surface",
+        hinted: false,
+      }),
+    );
   });
 });

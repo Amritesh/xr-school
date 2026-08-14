@@ -112,7 +112,7 @@ const assessment: AssessmentSequence = {
         "Which condition is best for the modelled spore to begin growing?",
       options: [
         { id: "warm-moist", label: "Warm and moist" },
-        { id: "cold-dry", label: "Cold and dry" },
+        { id: "dry-cold", label: "Dry and cold" },
         { id: "hot-dry", label: "Hot and dry" },
       ],
       acceptedEvidenceIds: ["warm-moist"],
@@ -162,18 +162,24 @@ const assessment: AssessmentSequence = {
       id: "mould-safety-misconception",
       kind: "misconception",
       stageId: "food-safety-scan",
-      question: "What should you do with visibly mouldy food?",
+      question:
+        "Does cutting off the visible mould patch make a slice of soft bread safe to eat?",
       options: [
-        { id: "taste-small-piece", label: "Taste a small piece to check it" },
         {
-          id: "do-not-eat",
-          label: "Do not eat it; tell an adult and discard it safely",
+          id: "cutting-makes-safe",
+          label: "Yes, the remaining soft bread is safe",
+        },
+        {
+          id: "reject-whole-soft-food",
+          label:
+            "No, reject the whole visibly mouldy soft food and tell an adult",
         },
       ],
-      acceptedEvidenceIds: ["do-not-eat"],
-      hint: "Use the observed safety sign: never taste or open a mould culture.",
+      acceptedEvidenceIds: ["reject-whole-soft-food"],
+      hint:
+        "Look for hidden hyphae that may extend beyond the visible mould patch.",
       explanation:
-        "Do not eat mouldy food. Observe unknown fungi without touching or tasting them and ask an adult to handle disposal.",
+        "No. Hidden hyphae may extend beyond the visible patch in soft food, so reject the whole visibly mouldy item and ask an adult to dispose of it safely.",
       retryPolicy: "immediateWithHint",
     },
     {
@@ -181,22 +187,22 @@ const assessment: AssessmentSequence = {
       kind: "transfer",
       stageId: "forest-circle",
       question:
-        "A new forest sample has dead leaves breaking down near fungal threads. What is the best explanation?",
+        "After practice, two cloth surfaces are stored in different places. Which is more likely to develop fungal growth over the next few days?",
       options: [
         {
-          id: "fungi-recycle-nutrients",
-          label:
-            "Fungi decompose the leaves and return nutrients to the forest system",
+          id: "warm-damp-surface",
+          label: "The damp towel sealed in the warm sports bag",
         },
         {
-          id: "fungi-make-sunlight",
-          label: "Fungi make sunlight for nearby plants",
+          id: "cool-dry-surface",
+          label: "The dry towel on a cool, ventilated shelf",
         },
       ],
-      acceptedEvidenceIds: ["fungi-recycle-nutrients"],
-      hint: "Compare the new sample with the observed forest nutrient circle.",
+      acceptedEvidenceIds: ["warm-damp-surface"],
+      hint:
+        "Compare both temperature and moisture with the evidence from spore flight.",
       explanation:
-        "Fungal decomposers absorb materials from dead matter and recycle nutrients that other forest organisms can use.",
+        "The warm, moist towel provides conditions that support faster fungal growth than the cool, dry, ventilated surface.",
       retryPolicy: "immediateWithHint",
     },
   ],
@@ -344,6 +350,7 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
   },
   legacyPaths: [],
   contribution: {
-    source: "existing",
+    source: "user-story",
+    integration: "new-class",
   },
 };

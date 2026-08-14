@@ -36,7 +36,8 @@ export interface ImplementedSimulationDefinition {
   assets: AssetManifest;
   legacyPaths: string[];
   contribution: {
-    source: "existing" | "pr-8";
+    source: "existing" | "pr-8" | "user-story";
+    integration?: "new-class";
     contributor?: string;
     sourcePath?: string;
   };
@@ -781,10 +782,19 @@ export function validateImplementedSimulationDefinition(
   }
   if (
     definition.contribution.source !== "existing" &&
-    definition.contribution.source !== "pr-8"
+    definition.contribution.source !== "pr-8" &&
+    definition.contribution.source !== "user-story"
   ) {
     errors.push(
-      'implemented.contribution.source: expected "existing" or "pr-8"',
+      'implemented.contribution.source: expected "existing", "pr-8", or "user-story"',
+    );
+  }
+  if (
+    definition.contribution.integration !== undefined &&
+    definition.contribution.integration !== "new-class"
+  ) {
+    errors.push(
+      'implemented.contribution.integration: expected "new-class"',
     );
   }
   if (definition.contribution.contributor !== undefined) {
