@@ -92,6 +92,52 @@ describe("fungi development lesson experience", () => {
     });
   });
 
+  it("allows a supported misconception retry to contribute to mastery while transfer stays independent", () => {
+    const assessment = createAssessmentSession(FUNGI_DEVELOPMENT.assessment);
+
+    assessment.answer("mycelium-observation", "mycelium");
+    expect(
+      assessment.answer(
+        "mould-safety-misconception",
+        "cutting-makes-safe",
+      ),
+    ).toMatchObject({ correct: false });
+    expect(
+      assessment.answer(
+        "mould-safety-misconception",
+        "reject-whole-soft-food",
+      ),
+    ).toMatchObject({ correct: true, attempts: 2 });
+    expect(assessment.evidence()).toContainEqual(
+      expect.objectContaining({
+        promptId: "mould-safety-misconception",
+        kind: "misconception",
+        hinted: true,
+      }),
+    );
+    expect(assessment.mastery()).toMatchObject({
+      mastered: false,
+      missingKinds: ["transfer"],
+    });
+
+    expect(
+      assessment.answer("forest-transfer", "warm-damp-surface"),
+    ).toMatchObject({ correct: true, attempts: 1 });
+    expect(assessment.evidence()).toContainEqual(
+      expect.objectContaining({
+        promptId: "forest-transfer",
+        kind: "transfer",
+        hinted: false,
+      }),
+    );
+    expect(assessment.mastery()).toMatchObject({
+      mastered: true,
+      evidenceCount: 3,
+      eligibleEvidenceCount: 3,
+      missingKinds: [],
+    });
+  });
+
   it("preserves the first dry-cold growth prediction after a warm-moist retry", () => {
     const dryPrediction = reduceFungiDevelopment(
       initialFungiDevelopmentState,
