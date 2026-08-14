@@ -57,6 +57,14 @@ export const FUNGI_TARGET_IDS = [
 
 export type FungiTargetId = typeof FUNGI_TARGET_IDS[number];
 
+/** The four assessment prompts represented by the final quiz mushrooms. */
+export const FUNGI_QUIZ_TARGET_BY_QUESTION = {
+  'development-order-observation': 'quiz-mushroom-1',
+  'baking-fungus-observation': 'quiz-mushroom-2',
+  'mould-safety-misconception': 'quiz-mushroom-3',
+  'forest-transfer': 'quiz-mushroom-4',
+} as const satisfies Record<string, FungiTargetId>;
+
 export interface FungiWorldConfig {
   seed?: number;
   profile?: 'questBaseline' | 'browserBalanced' | 'browserEnhanced';
@@ -103,6 +111,7 @@ export interface FungiWorldSnapshot {
   paused: boolean;
   reducedMotion: boolean;
   disposed: boolean;
+  ambientPhase: number;
   sporeOffset: number;
   layoutSignature: string;
 }
@@ -242,11 +251,12 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       meshGeometry: THREE.BufferGeometry,
       meshMaterial: THREE.Material,
       name?: string,
+      shadows: { castShadow?: boolean; receiveShadow?: boolean } = {},
     ) => {
       const mesh = new THREE.Mesh(meshGeometry, meshMaterial);
       if (name) mesh.name = name;
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
+      mesh.castShadow = shadows.castShadow ?? true;
+      mesh.receiveShadow = shadows.receiveShadow ?? true;
       parent.add(mesh);
       return mesh;
     };
@@ -261,7 +271,10 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       group.name = `target-${id}`;
       group.position.set(...position);
       group.userData.targetId = id;
-      const hit = addMesh(group, geometry.unitSphere, material.hit, `${id}-hit-volume`);
+      const hit = addMesh(group, geometry.unitSphere, material.hit, `${id}-hit-volume`, {
+        castShadow: false,
+        receiveShadow: false,
+      });
       hit.scale.setScalar(radius);
       hit.userData.interactionSurface = true;
       layer.add(group);
@@ -340,7 +353,10 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
     rock.scale.set(0.8, 0.42, 0.65);
     rock.position.set(3.15, 0.32, 2.45);
     for (let index = 0; index < 3; index += 1) {
-      const mist = addMesh(root, geometry.plane, material.glass, `cool-mist-layer-${index + 1}`);
+      const mist = addMesh(root, geometry.plane, material.glass, `cool-mist-layer-${index + 1}`, {
+        castShadow: false,
+        receiveShadow: false,
+      });
       mist.scale.set(9 - index, 1.2 + index * 0.25, 1);
       mist.position.set(0, 0.5 + index * 0.5, -3.8 + index * 3.7);
       mist.userData.fogDensity = 0.022;
@@ -690,11 +706,15 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       const safe = safetyMisconceptionResolved || safetyDecisions.includes('observe-without-touching-or-eating');
       warning.userData.resolved = safe;
       warning.scale.setScalar(safe ? 0.86 : 1.08);
-      for (let index = 0; index < 4; index += 1) {
-        const quizTarget = targets[`quiz-mushroom-${index + 1}` as FungiTargetId];
-        const answer = quizAnswers[index];
-        quizTarget.userData.correct = answer?.correct;
-        quizTarget.scale.setScalar(answer ? (answer.correct ? 1.12 : 0.9) : 1);
+      for (const quizTargetId of Object.values(FUNGI_QUIZ_TARGET_BY_QUESTION)) {
+        targets[quizTargetId].userData.correct = undefined;
+        targets[quizTargetId].scale.setScalar(1);
+      }
+      for (const answer of quizAnswers) {
+        const quizTargetId = FUNGI_QUIZ_TARGET_BY_QUESTION[answer.questionId as keyof typeof FUNGI_QUIZ_TARGET_BY_QUESTION];
+        const quizTarget = targets[quizTargetId];
+        quizTarget.userData.correct = answer.correct;
+        quizTarget.scale.setScalar(answer.correct ? 1.12 : 0.9);
       }
       badge.userData.earned = completed;
       thermometer.userData.temperatureC = sandboxTemperatureC;
@@ -742,7 +762,11 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         'observe-without-touching-or-eating', 'touch-or-eat-unknown-fungus',
       ].includes(choice))) throw new Error('safety decision is invalid');
       if (next.quizAnswers?.some(answer =>
-        !answer.questionId?.trim() || !answer.answer?.trim()
+        !answer.questionId?.trim() || !(answer.questionId in FUNGI_QUIZ_TARGET_BY_QUESTION))) {
+        throw new Error('quiz question ID is invalid');
+      }
+      if (next.quizAnswers?.some(answer =>
+        !answer.answer?.trim()
         || typeof answer.correct !== 'boolean' || typeof answer.independentTransfer !== 'boolean')) {
         throw new Error('quiz answer is invalid');
       }
@@ -794,7 +818,7 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         requireFiniteRange(elapsedSeconds, 'elapsed seconds', 0, Number.MAX_VALUE);
         if (paused || reducedMotion || disposed) return;
         motionTime += deltaSeconds;
-        sporeOffset = Number((Math.sin(motionTime * 0.7) * 0.12).toFixed(6));
+        sporeOffset = Math.sin(motionTime * 0.7) * 0.12;
         placeSpores(motionTime);
         const landingBase = sporeLandings.length > 0 ? 0.68 : 0.55;
         landingRing.scale.setScalar(landingBase + Math.sin(motionTime * 1.8) * 0.035);
@@ -826,6 +850,7 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
           paused,
           reducedMotion,
           disposed,
+          ambientPhase: sporeOffset,
           sporeOffset,
           layoutSignature: `${seed}:${layoutParts.join('|')}`,
         };

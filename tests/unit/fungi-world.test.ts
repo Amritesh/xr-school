@@ -141,7 +141,7 @@ describe('procedural fungi forest world', () => {
       doughRise: 0.75,
       safetyDecisions: ['observe-without-touching-or-eating'],
       quizAnswers: [{
-        questionId: 'q1', answer: 'spores', correct: true, independentTransfer: true,
+        questionId: 'development-order-observation', answer: 'spores', correct: true, independentTransfer: true,
       }],
       completed: true,
       sandboxEnabled: true,
@@ -161,6 +161,39 @@ describe('procedural fungi forest world', () => {
     expect(isEffectivelyVisible(world.targets['completion-badge'])).toBe(true);
     expect(isEffectivelyVisible(world.targets['sandbox-temperature'])).toBe(true);
     expect(world.snapshot()).toMatchObject({ completed: true, sandboxEnabled: true });
+
+    world.dispose();
+  });
+
+  it('projects the latest quiz retry by stable question ID without shifting mushrooms', () => {
+    const world = createFungiWorld();
+    world.setStage('forest-circle');
+    world.setState({
+      quizAnswers: [
+        {
+          questionId: 'development-order-observation', answer: 'wrong',
+          correct: false, independentTransfer: false,
+        },
+        {
+          questionId: 'baking-fungus-observation', answer: 'yeast',
+          correct: true, independentTransfer: false,
+        },
+        {
+          questionId: 'development-order-observation', answer: 'correct-order',
+          correct: true, independentTransfer: false,
+        },
+      ],
+    });
+
+    expect(world.targets['quiz-mushroom-1'].userData.correct).toBe(true);
+    expect(world.targets['quiz-mushroom-2'].userData.correct).toBe(true);
+    expect(world.targets['quiz-mushroom-3'].userData.correct).toBeUndefined();
+    expect(world.targets['quiz-mushroom-4'].userData.correct).toBeUndefined();
+    expect(world.targets['quiz-mushroom-1'].scale.x).toBeCloseTo(1.12);
+    expect(world.targets['quiz-mushroom-2'].scale.x).toBeCloseTo(1.12);
+    expect(() => world.setState({ quizAnswers: [{
+      questionId: 'unknown-question', answer: 'x', correct: true, independentTransfer: false,
+    }] })).toThrow(/question ID/i);
 
     world.dispose();
   });
@@ -232,6 +265,45 @@ describe('procedural fungi forest world', () => {
     world.setReducedMotion(false);
     world.update(0.25, 1);
     expect(world.snapshot().sporeOffset).not.toBe(moving);
+
+    world.dispose();
+  });
+
+  it('updates ambient phase numerically from deterministic elapsed motion', () => {
+    const world = createFungiWorld();
+    expect(world.snapshot().ambientPhase).toBe(0);
+
+    world.update(0.25, 0.25);
+    expect(typeof world.snapshot().ambientPhase).toBe('number');
+    expect(world.snapshot().ambientPhase).toBeCloseTo(Math.sin(0.25 * 0.7) * 0.12, 12);
+    world.update(0.5, 0.75);
+    expect(world.snapshot().ambientPhase).toBeCloseTo(Math.sin(0.75 * 0.7) * 0.12, 12);
+
+    world.dispose();
+  });
+
+  it('keeps hit volumes and mist out of shadows while solids remain grounded', () => {
+    const world = createFungiWorld();
+    const hitVolumes: THREE.Mesh[] = [];
+    const mistMeshes: THREE.Mesh[] = [];
+    world.root.traverse(object => {
+      if (!(object instanceof THREE.Mesh)) return;
+      if (object.name.endsWith('-hit-volume')) hitVolumes.push(object);
+      if (object.name.startsWith('cool-mist-layer-')) mistMeshes.push(object);
+    });
+
+    expect(hitVolumes).toHaveLength(FUNGI_TARGET_IDS.length);
+    expect(hitVolumes.every(mesh => !mesh.castShadow && !mesh.receiveShadow)).toBe(true);
+    expect(mistMeshes).toHaveLength(3);
+    expect(mistMeshes.every(mesh => !mesh.castShadow && !mesh.receiveShadow)).toBe(true);
+    const mushroomSolid = world.targets.mushroom.children.find(object =>
+      object instanceof THREE.Group,
+    )?.children.find(object => object instanceof THREE.Mesh) as THREE.Mesh;
+    const log = world.root.getObjectByName('fallen-log') as THREE.Mesh;
+    expect(mushroomSolid.castShadow).toBe(true);
+    expect(mushroomSolid.receiveShadow).toBe(true);
+    expect(log.castShadow).toBe(true);
+    expect(log.receiveShadow).toBe(true);
 
     world.dispose();
   });
