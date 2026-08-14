@@ -18,3 +18,4 @@ export type {
 } from './implemented/registry.js';
 export * from './implemented/guided/index.js';
 export * from './implemented/interactive/index.js';
+export * from './implemented/fungiDevelopment.js';

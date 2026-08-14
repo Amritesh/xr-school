@@ -25,7 +25,7 @@ function mutableClone(
 
 describe("implemented simulation registry", () => {
   it("contains the complete released registry while preserving the 13 legacy module seeds", () => {
-    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(35);
+    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(36);
     expect(SIMULATION_MODULES).toHaveLength(13);
     const implementedIds = new Set(
       IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id),
@@ -40,6 +40,25 @@ describe("implemented simulation registry", () => {
           module.evidenceMaturity === "internalQA",
       ),
     ).toBe(true);
+  });
+
+  it("looks up Living Mycelium Lab once by its canonical identity", () => {
+    const definition = findImplementedSimulation(
+      "sim-c08-ch02-a03-fungi-and-its-development",
+    );
+
+    expect(definition?.module).toMatchObject({
+      slug: "c8-ch02-a03-fungi-and-its-development",
+      viewerKey: "fungi-development",
+    });
+    expect(findImplementedSimulation("c8-ch02-a03-fungi-and-its-development")).toBe(
+      definition,
+    );
+    expect(
+      IMPLEMENTED_SIMULATIONS.filter(
+        ({ module }) => module.viewerKey === "fungi-development",
+      ),
+    ).toHaveLength(1);
   });
 
   it("uses unique module IDs, slugs, routes, and viewer keys", () => {

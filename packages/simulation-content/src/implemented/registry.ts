@@ -3,6 +3,7 @@ import {
   type ImplementedSimulationDefinition,
 } from '@xr-school/simulation-schema';
 import { EXISTING_IMPLEMENTED_SIMULATIONS } from './existing.js';
+import { FUNGI_DEVELOPMENT } from './fungiDevelopment.js';
 import { GUIDED_IMPLEMENTED_SIMULATIONS } from './guided/index.js';
 import { INTERACTIVE_SIMULATIONS } from './interactive/index.js';
 
@@ -195,6 +196,7 @@ const registry = createImplementedSimulationRegistry(
     ...EXISTING_IMPLEMENTED_SIMULATIONS,
     ...GUIDED_IMPLEMENTED_SIMULATIONS,
     ...INTERACTIVE_SIMULATIONS,
+    FUNGI_DEVELOPMENT,
   ],
 );
 
