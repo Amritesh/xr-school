@@ -1,6 +1,10 @@
 export type FungalObjectId = 'mushroom' | 'bread-mould' | 'green-plant';
 export type FungalKingdom = 'fungus' | 'plant';
 export type FungalGrowthCondition = 'favourable' | 'slow' | 'suppressed';
+export type FungalGrowthConditionChoice =
+  | 'dry-cold'
+  | 'warm-moist'
+  | 'hot-dry';
 export type FungalGrowthStage =
   | 'landed-spore'
   | 'hyphae-visible'
@@ -72,6 +76,9 @@ const FUNGAL_SAFETY_OUTCOMES: readonly FungalSafetyOutcome[] = [
   'observe-without-touching-or-eating',
   'touch-or-eat-unknown-fungus',
 ];
+
+const FUNGAL_GROWTH_CONDITION_CHOICES: readonly FungalGrowthConditionChoice[] =
+  ['dry-cold', 'warm-moist', 'hot-dry'];
 
 export const FUNGAL_GROWTH_BOUNDS = {
   day: { minimum: 1, maximum: 5 },
@@ -166,8 +173,8 @@ export interface FungiDevelopmentState {
   touchedHyphae: string[];
   sporeGuidance: string[];
   sporeLandings: string[];
-  firstGrowthPrediction?: FungalGrowthStage;
-  latestGrowthPrediction?: FungalGrowthStage;
+  firstGrowthPrediction?: FungalGrowthConditionChoice;
+  latestGrowthPrediction?: FungalGrowthConditionChoice;
   visitedDays: number[];
   lifeCycleLabels: FungalLifeCycleLabel[];
   usefulRoleMatches: FungalUsefulRoleMatch[];
@@ -184,7 +191,10 @@ export type FungiDevelopmentAction =
   | { type: 'touch-hypha'; hyphaId: string }
   | { type: 'guide-spore'; guidanceId: string }
   | { type: 'land-spore'; landingId: string }
-  | { type: 'predict-growth'; stage: FungalGrowthStage }
+  | {
+      type: 'choose-growth-condition';
+      condition: FungalGrowthConditionChoice;
+    }
   | { type: 'visit-day'; day: number }
   | { type: 'record-life-cycle'; label: FungalLifeCycleLabel }
   | {
@@ -242,7 +252,6 @@ function withMastery(state: FungiDevelopmentState): FungiDevelopmentState {
   return {
     ...state,
     mastery:
-      state.completed &&
       hasObservation &&
       state.safetyMisconceptionResolved &&
       hasIndependentTransfer,
@@ -298,15 +307,21 @@ export function reduceFungiDevelopment(
       };
       break;
     }
-    case 'predict-growth':
-      if (!FUNGAL_GROWTH_STAGES.includes(action.stage)) {
-        throw new Error(`Unknown fungal growth stage ${String(action.stage)}`);
+    case 'choose-growth-condition':
+      if (!FUNGAL_GROWTH_CONDITION_CHOICES.includes(action.condition)) {
+        throw new Error(
+          `Unknown fungal growth condition choice ${String(action.condition)}`,
+        );
       }
       next = {
         ...state,
-        firstGrowthPrediction: state.firstGrowthPrediction ?? action.stage,
-        latestGrowthPrediction: action.stage,
-        evidenceIds: addEvidence(state, `growth-prediction:${action.stage}`),
+        firstGrowthPrediction:
+          state.firstGrowthPrediction ?? action.condition,
+        latestGrowthPrediction: action.condition,
+        evidenceIds: addEvidence(
+          state,
+          `growth-condition-choice:${action.condition}`,
+        ),
       };
       break;
     case 'visit-day': {

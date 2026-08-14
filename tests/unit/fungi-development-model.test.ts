@@ -90,19 +90,19 @@ describe('fungi development model', () => {
     expect(() => evaluateFungalGrowth(input)).toThrow(message);
   });
 
-  it('preserves the first prediction while updating the latest prediction', () => {
+  it('preserves the first condition choice while updating the latest choice', () => {
     const first = reduceFungiDevelopment(initialFungiDevelopmentState, {
-      type: 'predict-growth',
-      stage: 'hyphae-visible',
+      type: 'choose-growth-condition',
+      condition: 'dry-cold',
     });
     const retry = reduceFungiDevelopment(first, {
-      type: 'predict-growth',
-      stage: 'mycelium-spreading',
+      type: 'choose-growth-condition',
+      condition: 'warm-moist',
     });
 
-    expect(retry.firstGrowthPrediction).toBe('hyphae-visible');
-    expect(retry.latestGrowthPrediction).toBe('mycelium-spreading');
-    expect(first.latestGrowthPrediction).toBe('hyphae-visible');
+    expect(retry.firstGrowthPrediction).toBe('dry-cold');
+    expect(retry.latestGrowthPrediction).toBe('warm-moist');
+    expect(first.latestGrowthPrediction).toBe('dry-cold');
   });
 
   it('records selections, unique touches, spore activity, days, roles, quiz answers, and evidence immutably', () => {
@@ -207,7 +207,7 @@ describe('fungi development model', () => {
     expect(completedOnly.completed).toBe(true);
     expect(completedOnly.mastery).toBe(false);
 
-    const mastered = reduceAll([
+    const masteredBeforeCompletion = reduceAll([
       { type: 'visit-day', day: 1 },
       { type: 'decide-safety', outcome: 'touch-or-eat-unknown-fungus' },
       { type: 'decide-safety', outcome: 'observe-without-touching-or-eating' },
@@ -218,9 +218,11 @@ describe('fungi development model', () => {
         correct: true,
         independentTransfer: true,
       },
-      { type: 'complete' },
     ]);
-    expect(mastered).toMatchObject({ completed: true, mastery: true });
+    expect(masteredBeforeCompletion).toMatchObject({
+      completed: false,
+      mastery: true,
+    });
   });
 
   it('rejects unknown actions', () => {
@@ -232,7 +234,10 @@ describe('fungi development model', () => {
   });
 
   it.each([
-    [{ type: 'predict-growth', stage: 'giant-mushroom' }, /growth stage/i],
+    [
+      { type: 'choose-growth-condition', condition: 'giant-mushroom' },
+      /growth condition choice/i,
+    ],
     [
       { type: 'match-useful-role', objectId: 'mushroom', role: 'runs-fast' },
       /useful role/i,

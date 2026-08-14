@@ -171,6 +171,7 @@ export {
 } from './models/fungiDevelopmentModel.js';
 export type {
   FungalGrowthCondition,
+  FungalGrowthConditionChoice,
   FungalGrowthInput,
   FungalGrowthResult,
   FungalGrowthStage,
