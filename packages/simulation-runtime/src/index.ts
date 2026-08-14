@@ -160,6 +160,31 @@ export type {
   ShapeItemId,
   ShapeSortingState,
 } from './models/shapeSortingModel.js';
+export {
+  FUNGAL_GROWTH_BOUNDS,
+  FUNGAL_GROWTH_STAGES,
+  FUNGAL_LIFE_CYCLE_LABELS,
+  FUNGAL_OBJECTS,
+  evaluateFungalGrowth,
+  initialFungiDevelopmentState,
+  reduceFungiDevelopment,
+} from './models/fungiDevelopmentModel.js';
+export type {
+  FungalGrowthCondition,
+  FungalGrowthInput,
+  FungalGrowthResult,
+  FungalGrowthStage,
+  FungalKingdom,
+  FungalLifeCycleLabel,
+  FungalObjectDefinition,
+  FungalObjectId,
+  FungalQuizAnswer,
+  FungalSafetyOutcome,
+  FungalUsefulRole,
+  FungalUsefulRoleMatch,
+  FungiDevelopmentAction,
+  FungiDevelopmentState,
+} from './models/fungiDevelopmentModel.js';
 export { createLessonSession } from './experience/lessonSession.js';
 export type {
   LessonSession,
