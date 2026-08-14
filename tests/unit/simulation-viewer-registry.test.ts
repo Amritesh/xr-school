@@ -42,6 +42,10 @@ const EXPECTED_VIEWERS = {
     fileName: "ForceMotionViewer.tsx",
     load: () => import("../../apps/web/components/simulations/ForceMotionViewer"),
   },
+  "fungi-development": {
+    fileName: "FungiDevelopmentViewer.tsx",
+    load: () => import("../../apps/web/components/simulations/FungiDevelopmentViewer"),
+  },
   "money-town": {
     fileName: "MoneyTownViewer.tsx",
     load: () => import("../../apps/web/components/simulations/MoneyTownViewer"),
@@ -79,9 +83,9 @@ describe("released simulation viewer registry", () => {
     );
     const releasedKeys = released.map(({ module }) => module.viewerKey).sort();
 
-    expect(released).toHaveLength(35);
+    expect(released).toHaveLength(36);
     expect([...SIMULATION_VIEWER_KEYS].sort()).toEqual(releasedKeys);
-    expect(SIMULATION_VIEWER_KEYS).toHaveLength(35);
+    expect(SIMULATION_VIEWER_KEYS).toHaveLength(36);
     expect(SIMULATION_VIEWER_KEYS).toEqual(expect.arrayContaining([
       ...Object.keys(EXPECTED_VIEWERS),
       ...GUIDED_SIMULATION_DEFINITIONS.map(definition => definition.viewerKey),

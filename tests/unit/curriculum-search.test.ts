@@ -9,6 +9,7 @@ describe('curriculum search', () => {
     ['particle motion', 'c9-ch01-a02-states-of-matter'],
     ['solubility', 'c5-ch07-a03-soluble-and-insoluble-substances'],
     ['food sources', 'c6-ch01-a01-sources-of-food'],
+    ['mycelium', 'c8-ch02-a03-fungi-and-its-development'],
   ])('connects the concept “%s” to its working simulation', (query, slug) => {
     const results = searchCurriculum(CURRICULUM_SEARCH_DOCUMENTS, query);
 

@@ -332,6 +332,9 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "science"
     ],
     "conceptIds": [
+      "concept-fungi",
+      "concept-mycelium",
+      "concept-decomposition",
       "concept-solar-system",
       "concept-planet-order",
       "concept-orbits-gravity",
@@ -355,6 +358,9 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "through",
       "observable",
       "models",
+      "fungi",
+      "mycelium",
+      "microorganisms",
       "solar",
       "system",
       "planets"
@@ -755,6 +761,39 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "chapter",
       "10",
       "topic"
+    ]
+  },
+  {
+    "id": "chapter:chapter-cbse-c8-microorganisms",
+    "kind": "chapter",
+    "title": "Microorganisms: Friend and Foe",
+    "summary": "CBSE Class 8 Science · Chapter 2",
+    "href": "/simulations#chapter-cbse-c8-microorganisms",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "science"
+    ],
+    "conceptIds": [
+      "concept-fungi",
+      "concept-mycelium",
+      "concept-decomposition"
+    ],
+    "tokens": [
+      "microorganisms",
+      "friend",
+      "and",
+      "foe",
+      "cbse",
+      "class",
+      "8",
+      "science",
+      "chapter",
+      "2",
+      "topic",
+      "fungi",
+      "development"
     ]
   },
   {
@@ -1790,6 +1829,144 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "fungus",
       "mushroom",
       "decomposer"
+    ]
+  },
+  {
+    "id": "concept:concept-fungi",
+    "kind": "concept",
+    "title": "Fungi as a distinct kingdom",
+    "summary": "Fungi are organisms that absorb nutrients from their surroundings rather than making food by photosynthesis.",
+    "href": "/simulations#concept-fungi",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-fungi"
+    ],
+    "tokens": [
+      "fungi",
+      "as",
+      "a",
+      "distinct",
+      "kingdom",
+      "are",
+      "organisms",
+      "that",
+      "absorb",
+      "nutrients",
+      "from",
+      "their",
+      "surroundings",
+      "rather",
+      "than",
+      "making",
+      "food",
+      "by",
+      "photosynthesis",
+      "supports",
+      "recognition",
+      "of",
+      "mushrooms",
+      "and",
+      "moulds",
+      "safe",
+      "reasoning",
+      "about",
+      "useful",
+      "harmful",
+      "fungal",
+      "fungus",
+      "mushroom",
+      "mould",
+      "spore",
+      "absorbs"
+    ]
+  },
+  {
+    "id": "concept:concept-mycelium",
+    "kind": "concept",
+    "title": "Hyphae and mycelium",
+    "summary": "A hypha is a fungal thread, and many connected hyphae form a nutrient-absorbing mycelium.",
+    "href": "/simulations#concept-mycelium",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-mycelium"
+    ],
+    "tokens": [
+      "hyphae",
+      "and",
+      "mycelium",
+      "a",
+      "hypha",
+      "is",
+      "fungal",
+      "thread",
+      "many",
+      "connected",
+      "form",
+      "nutrient",
+      "absorbing",
+      "makes",
+      "hidden",
+      "growth",
+      "in",
+      "soil",
+      "wood",
+      "food",
+      "easier",
+      "to",
+      "interpret",
+      "threads",
+      "hyphal",
+      "network"
+    ]
+  },
+  {
+    "id": "concept:concept-decomposition",
+    "kind": "concept",
+    "title": "Fungal decomposition",
+    "summary": "Decomposer fungi break down dead organic matter and return nutrients to ecosystems.",
+    "href": "/simulations#concept-decomposition",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "biology"
+    ],
+    "conceptIds": [
+      "concept-decomposition"
+    ],
+    "tokens": [
+      "fungal",
+      "decomposition",
+      "decomposer",
+      "fungi",
+      "break",
+      "down",
+      "dead",
+      "organic",
+      "matter",
+      "and",
+      "return",
+      "nutrients",
+      "to",
+      "ecosystems",
+      "explains",
+      "composting",
+      "decay",
+      "soil",
+      "forest",
+      "nutrient",
+      "cycles",
+      "recycling"
     ]
   },
   {
@@ -6648,6 +6825,91 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "based",
       "grouping",
       "rule"
+    ]
+  },
+  {
+    "id": "simulation:c8-ch02-a03-fungi-and-its-development",
+    "kind": "simulation",
+    "title": "Living Mycelium Lab: Fungi and Its Development",
+    "summary": "Enter a scale-shifting fungal lab to classify fungi, inspect hyphae, guide spores, observe five days of development, and reason about uses, safety, and forests.",
+    "href": "/simulations/c8-ch02-a03-fungi-and-its-development",
+    "classLevels": [
+      8
+    ],
+    "subjects": [
+      "biology",
+      "science"
+    ],
+    "conceptIds": [
+      "concept-fungi",
+      "concept-mycelium",
+      "concept-decomposition"
+    ],
+    "releaseMaturity": "internalQA",
+    "moduleId": "sim-c08-ch02-a03-fungi-and-its-development",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "tokens": [
+      "living",
+      "mycelium",
+      "lab",
+      "fungi",
+      "and",
+      "its",
+      "development",
+      "enter",
+      "a",
+      "scale",
+      "shifting",
+      "fungal",
+      "to",
+      "classify",
+      "inspect",
+      "hyphae",
+      "guide",
+      "spores",
+      "observe",
+      "five",
+      "days",
+      "of",
+      "reason",
+      "about",
+      "uses",
+      "safety",
+      "forests",
+      "identify",
+      "sequence",
+      "explain",
+      "useful",
+      "harmful",
+      "ecosystem",
+      "roles",
+      "from",
+      "evidence",
+      "biology",
+      "science",
+      "as",
+      "distinct",
+      "kingdom",
+      "organisms",
+      "fungus",
+      "mushroom",
+      "mould",
+      "spore",
+      "absorbs",
+      "nutrients",
+      "threads",
+      "hyphal",
+      "network",
+      "hypha",
+      "growth",
+      "decomposition",
+      "decomposer",
+      "nutrient",
+      "recycling",
+      "dead",
+      "matter",
+      "forest"
     ]
   },
   {
@@ -13541,44 +13803,6 @@ export const CURRICULUM_SEARCH_DOCUMENTS = [
       "foe",
       "biology",
       "modelinspection",
-      "use",
-      "labeled",
-      "3d",
-      "inspection",
-      "with",
-      "isolate",
-      "zoom",
-      "explode",
-      "compare",
-      "vocabulary",
-      "layer"
-    ]
-  },
-  {
-    "id": "simulation:c8-ch02-a03-fungi-and-its-development",
-    "kind": "simulation",
-    "title": "Fungi and its development",
-    "summary": "Microorganisms : Friend and Foe · Class 8 biology",
-    "href": "/simulations#c8-ch02-a03-fungi-and-its-development",
-    "classLevels": [
-      8
-    ],
-    "subjects": [
-      "biology"
-    ],
-    "conceptIds": [],
-    "releaseMaturity": "catalogued",
-    "tokens": [
-      "fungi",
-      "and",
-      "its",
-      "development",
-      "microorganisms",
-      "friend",
-      "foe",
-      "biology",
-      "modelinspection",
-      "processtimeline",
       "use",
       "labeled",
       "3d",

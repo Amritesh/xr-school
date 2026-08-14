@@ -115,7 +115,7 @@ def write_fixture_data(directory: Path) -> tuple[Path, Path, Path, list[dict], l
     evidence_records: list[dict] = []
     contribution_slugs = {canonical for _, canonical, _ in CONTRIBUTION_IDENTITIES}
     canonical_slugs = [canonical for _, canonical, _ in CONTRIBUTION_IDENTITIES]
-    canonical_slugs.extend(f"existing-canonical-simulation-{index:02d}" for index in range(1, 13))
+    canonical_slugs.extend(f"existing-canonical-simulation-{index:02d}" for index in range(1, 14))
     for index, slug in enumerate(canonical_slugs, 1):
         title = f"Canonical Simulation {index:02d} - Evidence Lab"
         cards.append(
@@ -216,8 +216,8 @@ def write_fixture_data(directory: Path) -> tuple[Path, Path, Path, list[dict], l
     evidence = {
         "auditDate": "2026-08-01",
         "portfolio": {
-            "publiclyLaunchableSimulations": 35,
-            "evidenceMaturityDistribution": {"internalQA": 35},
+            "publiclyLaunchableSimulations": 36,
+            "evidenceMaturityDistribution": {"internalQA": 36},
             "schoolOutcomeStudies": 0,
             "signedQuestAcceptanceRuns": 0,
         },
@@ -286,13 +286,13 @@ class ReportPrimitiveTests(unittest.TestCase):
         self.assertEqual(quality_band(55), "Needs focused improvement")
         self.assertEqual(quality_band(54), "Rebuild before pilot")
 
-    def test_report_inputs_fail_closed_until_all_35_and_23_records_exist(self) -> None:
+    def test_report_inputs_fail_closed_until_all_36_and_23_records_exist(self) -> None:
         with tempfile.TemporaryDirectory() as fixture_tmp:
             cards_path, evidence_path, scorecard_path, cards, comparisons = write_fixture_data(Path(fixture_tmp))
             evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
             scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
             validate_report_inputs(cards, evidence, scorecard)
-            with self.assertRaisesRegex(ValueError, "Expected 35 quality cards"):
+            with self.assertRaisesRegex(ValueError, "Expected 36 quality cards"):
                 validate_report_inputs(cards[:-1], evidence, scorecard)
             with self.assertRaisesRegex(ValueError, "Expected 23 contribution comparisons"):
                 validate_report_inputs(cards, evidence, {**scorecard, "comparisons": comparisons[:-1]})
@@ -303,8 +303,8 @@ class ReportPrimitiveTests(unittest.TestCase):
             evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
             scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
             markdown = build_portfolio_markdown(cards, evidence, scorecard)
-            self.assertIn("**Scope:** 35 released simulations", markdown)
-            self.assertEqual(len(re.findall(r"^### .+ - \d+/100$", markdown, re.MULTILINE)), 35)
+            self.assertIn("**Scope:** 36 released simulations", markdown)
+            self.assertEqual(len(re.findall(r"^### .+ - \d+/100$", markdown, re.MULTILINE)), 36)
             ranked = markdown.split("## Ranked portfolio", 1)[1].split("## Portfolio priorities", 1)[0]
             for card in cards:
                 self.assertEqual(ranked.count(f"| {card['title']} |"), 1)
@@ -352,7 +352,7 @@ class SimulationQualityReportTests(unittest.TestCase):
             second = run_generator("generate_simulation_quality_report.py", [*common, "--output-dir", second_tmp])
             assert_success(self, first)
             assert_success(self, second)
-            self.assertIn("35 quality cards and 23 contribution rows", first.stdout)
+            self.assertIn("36 quality cards and 23 contribution rows", first.stdout)
 
             markdown_name = "xr-school-implemented-simulations-quality-report.md"
             pdf_name = "xr-school-implemented-simulations-quality-report.pdf"
@@ -364,9 +364,9 @@ class SimulationQualityReportTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(first_pdf).digest(), hashlib.sha256(second_pdf).digest())
 
             markdown = first_markdown.decode("utf-8")
-            self.assertIn("**Scope:** 35 released simulations", markdown)
+            self.assertIn("**Scope:** 36 released simulations", markdown)
             quality_card_block = markdown.split("## Quality cards", 1)[1].split("## Contribution appendix", 1)[0]
-            self.assertEqual(len(re.findall(r"^### ", quality_card_block, re.MULTILINE)), 35)
+            self.assertEqual(len(re.findall(r"^### ", quality_card_block, re.MULTILINE)), 36)
             ranked = markdown.split("## Ranked portfolio", 1)[1].split("## Portfolio priorities", 1)[0]
             for card in cards:
                 self.assertEqual(ranked.count(f"| {card['title']} |"), 1)

@@ -157,8 +157,8 @@ function validateRegistry(
   const released = definitions.filter(
     definition => definition.module.publicationStatus === 'released',
   );
-  if (released.length !== 35) {
-    errors.push(`registry: expected exactly 35 released simulations, received ${released.length}`);
+  if (released.length !== 36) {
+    errors.push(`registry: expected exactly 36 released simulations, received ${released.length}`);
   }
   const slugs = released.map(definition => definition.module.slug);
   const duplicates = slugs.filter((slug, index) => slugs.indexOf(slug) !== index);
@@ -224,8 +224,8 @@ export function validatePortfolioData({
   const cardRecords = Array.isArray(cards) ? cards : [];
   if (!Array.isArray(cards)) errors.push('cards: expected an array');
   const cardSlugs = cardRecords.map(card => isRecord(card) && hasText(card.slug) ? card.slug : '');
-  if (cardRecords.length !== 35) {
-    errors.push(`cards: expected exactly 35 records, received ${cardRecords.length}`);
+  if (cardRecords.length !== 36) {
+    errors.push(`cards: expected exactly 36 records, received ${cardRecords.length}`);
   }
   validateExactSet('cards canonical slugs', cardSlugs, expectedSlugs, errors);
 
@@ -243,8 +243,8 @@ export function validatePortfolioData({
     errors.push('evidence.simulations: expected an array');
   }
   const evidenceSlugs = evidenceRecords.map(record => isRecord(record) && hasText(record.slug) ? record.slug : '');
-  if (evidenceRecords.length !== 35) {
-    errors.push(`evidence.simulations: expected exactly 35 records, received ${evidenceRecords.length}`);
+  if (evidenceRecords.length !== 36) {
+    errors.push(`evidence.simulations: expected exactly 36 records, received ${evidenceRecords.length}`);
   }
   validateExactSet('evidence canonical slugs', evidenceSlugs, expectedSlugs, errors);
 
@@ -403,9 +403,9 @@ export function validatePortfolioData({
   const assets = evidenceRecords.reduce((sum, record) =>
     sum + (isRecord(record) && isRecord(record.assets) ? numberAt(record.assets.count) : 0), 0);
   const expectedPortfolio: Record<string, unknown> = {
-    publiclyLaunchableSimulations: 35,
+    publiclyLaunchableSimulations: 36,
     evidenceMaturityDistribution: {
-      internalQA: 35,
+      internalQA: 36,
       deviceVerified: 0,
       classroomVerified: 0,
     },
@@ -486,7 +486,7 @@ export function validateBeforeAfterScorecard({
     }
     const definition = definitionBySlug.get(expected.canonicalSlug);
     if (!definition) {
-      errors.push(`${path}.canonicalSlug: not found in the 35-class registry`);
+      errors.push(`${path}.canonicalSlug: not found in the 36-class registry`);
       return;
     }
     if (definition.contribution.source !== 'pr-8') {

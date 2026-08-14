@@ -7,7 +7,7 @@ const expectedSha = process.env.XR_EXPECTED_SHA;
 test.describe('deployed simulation release', () => {
   test.skip(!expectedSha, 'XR_EXPECTED_SHA is required for hosted acceptance');
 
-  test('serves the expected 35-class internal-QA release', async ({ page, request }) => {
+  test('serves the expected 36-class internal-QA release', async ({ page, request }) => {
     test.setTimeout(660_000);
     const deadline = Date.now() + 600_000;
     let metadata: Record<string, unknown> | undefined;
@@ -26,9 +26,9 @@ test.describe('deployed simulation release', () => {
     }
     expect(metadata).toEqual({
       commitSha: expectedSha,
-      publiclyLaunchable: 35,
+      publiclyLaunchable: 36,
       evidenceMaturity: {
-        internalQA: 35,
+        internalQA: 36,
         deviceVerified: 0,
         classroomVerified: 0,
       },

@@ -270,6 +270,73 @@
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
   },
   {
+    "slug": "c8-ch02-a03-fungi-and-its-development",
+    "title": "Living Mycelium Lab: Fungi and Its Development",
+    "route": "/simulations/c8-ch02-a03-fungi-and-its-development",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [],
+    "grade": "Class 8",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
+      "visuals": 11,
+      "audio": 4,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c8-ch02-a03-fungi-and-its-development:definition",
+        "c8-ch02-a03-fungi-and-its-development:behavior"
+      ],
+      "integrity": [
+        "c8-ch02-a03-fungi-and-its-development:definition",
+        "c8-ch02-a03-fungi-and-its-development:behavior"
+      ],
+      "interactivity": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "c8-ch02-a03-fungi-and-its-development:browser-contract"
+      ],
+      "visuals": [
+        "c8-ch02-a03-fungi-and-its-development:assets"
+      ],
+      "audio": [
+        "c8-ch02-a03-fungi-and-its-development:narration"
+      ],
+      "usability": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "c8-ch02-a03-fungi-and-its-development:narration",
+        "c8-ch02-a03-fungi-and-its-development:browser-contract"
+      ],
+      "stability": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "c8-ch02-a03-fungi-and-its-development:assets",
+        "c8-ch02-a03-fungi-and-its-development:release-build"
+      ],
+      "deployment": [
+        "c8-ch02-a03-fungi-and-its-development:release-build"
+      ]
+    },
+    "summary": "Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "7 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
     "slug": "circuit",
     "title": "Electric Circuits & Resistance (Ohm's Law)",
     "route": "/simulations/circuit",

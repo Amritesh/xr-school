@@ -10632,6 +10632,15 @@ export const RELEASED_SIMULATION_CATALOG = [
     "releaseMaturity": "internalQA",
     "publicationStatus": "released",
     "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c08-ch02-a03-fungi-and-its-development",
+    "slug": "c8-ch02-a03-fungi-and-its-development",
+    "title": "Living Mycelium Lab: Fungi and Its Development",
+    "href": "/simulations/c8-ch02-a03-fungi-and-its-development",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
   }
 ] as const;
 

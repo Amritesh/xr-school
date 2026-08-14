@@ -197,6 +197,9 @@ function baselineScores(total: number, hasContributedAudio: boolean): QualitySco
 }
 
 function contentPath(definition: ImplementedSimulationDefinition): string {
+  if (definition.contribution.source === 'user-story') {
+    return 'packages/simulation-content/src/implemented/fungiDevelopment.ts';
+  }
   if (definition.contribution.source !== 'pr-8') {
     return 'packages/simulation-content/src/implemented/existing.ts';
   }
@@ -215,6 +218,9 @@ function contentPath(definition: ImplementedSimulationDefinition): string {
 }
 
 function behaviorTest(definition: ImplementedSimulationDefinition): string {
+  if (definition.contribution.source === 'user-story') {
+    return 'tests/unit/fungi-development-viewer.test.ts';
+  }
   if (definition.contribution.source !== 'pr-8') {
     return 'tests/unit/implemented-simulation-registry.test.ts';
   }
@@ -515,8 +521,8 @@ export function generateSimulationQualityData(): void {
   const released = IMPLEMENTED_SIMULATIONS.filter(
     definition => definition.module.publicationStatus === 'released',
   );
-  if (released.length !== 35) {
-    throw new Error(`Expected 35 released simulations before report generation; received ${released.length}`);
+  if (released.length !== 36) {
+    throw new Error(`Expected 36 released simulations before report generation; received ${released.length}`);
   }
   const evidence = released.map(evidenceRecord);
   const cards = released

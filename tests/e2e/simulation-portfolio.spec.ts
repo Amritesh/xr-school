@@ -24,14 +24,14 @@ async function launchBrowserExperience(page: Page): Promise<void> {
 }
 
 test.describe('released simulation portfolio', () => {
-  test('has exactly 35 honest released records', () => {
-    expect(released).toHaveLength(35);
+  test('has exactly 36 honest released records', () => {
+    expect(released).toHaveLength(36);
     expect(released.every(
       definition => definition.module.evidenceMaturity === 'internalQA',
     )).toBe(true);
   });
 
-  test('serves all 35 canonical routes with their release identity', async ({ request }) => {
+  test('serves all 36 canonical routes with their release identity', async ({ request }) => {
     test.setTimeout(120_000);
     for (const definition of released) {
       const response = await request.get(routeForSimulation(definition));

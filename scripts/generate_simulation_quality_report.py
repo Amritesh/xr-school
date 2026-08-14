@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the complete 35-class portfolio report from audited data."""
+"""Generate the complete 36-class portfolio report from audited data."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ def main() -> None:
     pdf_path = args.output_dir / "xr-school-implemented-simulations-quality-report.pdf"
     markdown_path.write_text(markdown, encoding="utf-8", newline="\n")
     pages = render_markdown_pdf(markdown, pdf_path, title="XR School Implemented Simulation Quality Report")
-    print(f"Generated {pages}-page portfolio report from 35 quality cards and 23 contribution rows")
+    print(f"Generated {pages}-page portfolio report from 36 quality cards and 23 contribution rows")
 
 
 if __name__ == "__main__":

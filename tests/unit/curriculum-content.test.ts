@@ -10,8 +10,8 @@ import { validateCurriculumGraph } from '../../packages/simulation-schema/src/in
 describe('canonical curriculum content', () => {
   it('defines typed courses, chapters, and concepts for every working simulation', () => {
     expect(COURSES).toHaveLength(11);
-    expect(CURRICULUM_CHAPTERS).toHaveLength(22);
-    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(71);
+    expect(CURRICULUM_CHAPTERS).toHaveLength(23);
+    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(74);
 
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
     for (const { module } of IMPLEMENTED_SIMULATIONS) {
@@ -83,6 +83,7 @@ describe('canonical curriculum content', () => {
       'sim-c1-math-ch01-introduction-to-money',
       'sim-c2-english-ch01-prepositions',
       'sim-c8-10-science-solar-system',
+      'sim-c08-ch02-a03-fungi-and-its-development',
     ]) {
       expect(linkedSimulationIds.has(simulationId)).toBe(true);
     }
@@ -99,6 +100,13 @@ describe('canonical curriculum content', () => {
     expect(CURRICULUM_CHAPTERS.find(
       item => item.id === 'chapter-cbse-c8-solar-system',
     )?.simulationIds).toEqual(['sim-c8-10-science-solar-system']);
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c8-microorganisms',
+    )).toMatchObject({
+      chapterNumber: 2,
+      conceptIds: ['concept-fungi', 'concept-mycelium', 'concept-decomposition'],
+      simulationIds: ['sim-c08-ch02-a03-fungi-and-its-development'],
+    });
   });
 
   it('links Colour Adventure through honest Class 1 Art concepts', () => {

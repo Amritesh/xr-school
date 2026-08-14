@@ -22,13 +22,13 @@
     },
     {
       "file": "xr-school-implemented-simulations-quality-report.pdf",
-      "pages": 43,
+      "pages": 44,
       "representativePages": [
         1,
-        21,
-        43
+        22,
+        44
       ],
-      "sha256": "a97cb400777cc35be7193d4502ca68ca5fddfb1035c6abf92172fcf210e05e81",
+      "sha256": "9b47d47896dbe97faa3c93e5ffb998bd9c78d680c73946ace6764bb97dc8fbd6",
       "checks": [
         "no clipping",
         "readable hierarchy",

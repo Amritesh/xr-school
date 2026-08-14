@@ -2,19 +2,19 @@
 
 **Audit date:** 2026-08-01
 
-**Scope:** 35 released simulations
+**Scope:** 36 released simulations
 
-**Portfolio average:** 76.5/100
+**Portfolio average:** 76.6/100
 
-**Evidence maturity:** 35 internal QA; 0 device verified; 0 classroom verified
+**Evidence maturity:** 36 internal QA; 0 device verified; 0 classroom verified
 
 **Audit position:** Released means publicly launchable. Released does not mean school-validated, Quest-verified, classroom-verified, or proven to improve learning outcomes.
 
 ## Executive summary
 
-The released portfolio contains 35 canonical simulations. Its evidence-backed product-indicator average is **76.5/100**: 0 pilot candidates, 35 promising internal-QA classes, 0 needing focused improvement, and 0 requiring rebuild before pilot.
+The released portfolio contains 36 canonical simulations. Its evidence-backed product-indicator average is **76.6/100**: 0 pilot candidates, 36 promising internal-QA classes, 0 needing focused improvement, and 0 requiring rebuild before pilot.
 
-Repository evidence records 233 narration cues, 36 packaged narration clips, 0 missing narration files, and 102 declared assets. These are implementation indicators, not learner-outcome measurements.
+Repository evidence records 240 narration cues, 36 packaged narration clips, 0 missing narration files, and 102 declared assets. These are implementation indicators, not learner-outcome measurements.
 
 Quest and classroom evidence are absent: no signed physical-device acceptance runs or controlled classroom studies are represented in this audit. Every class therefore remains at internal QA evidence maturity.
 
@@ -27,40 +27,41 @@ Quest and classroom evidence are absent: no signed physical-device acceptance ru
 | 3 | Soluble and Insoluble Substances Lab | `c5-ch07-a03-soluble-and-insoluble-substances` | 81 | Promising internal QA | internalQA |
 | 4 | States of Matter Particle Lab | `c9-ch01-a02-states-of-matter` | 81 | Promising internal QA | internalQA |
 | 5 | Electric Circuits & Resistance (Ohm's Law) | `circuit` | 80 | Promising internal QA | internalQA |
-| 6 | A Visit of an Ancient Fort | `c5-ch10-a01-a-visit-of-ancient-fort` | 79 | Promising internal QA | internalQA |
-| 7 | Rock Climbing | `c5-ch09-a02-rock-climbing` | 79 | Promising internal QA | internalQA |
-| 8 | Sorting Materials According to Their Shape | `c6-ch04-a01-sorting-materials-according-to-their-shape` | 78 | Promising internal QA | internalQA |
-| 9 | Sources of Vitamins and Their Deficiencies | `c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies` | 78 | Promising internal QA | internalQA |
-| 10 | Test the Presence of Lipids | `c6-ch02-a03-test-the-presence-of-lipids` | 78 | Promising internal QA | internalQA |
-| 11 | The Sources of Minerals in Food | `c6-ch02-a05-the-sources-of-minerals-in-food` | 78 | Promising internal QA | internalQA |
-| 12 | What Floats, What Sinks? | `c5-ch07-a01-a-concept-about-what-floats-what-sinks` | 78 | Promising internal QA | internalQA |
-| 13 | Preposition Adventure | `c2-english-ch01-prepositions` | 76 | Promising internal QA | internalQA |
-| 14 | Sources of Food Sorting Lab | `c6-ch01-a01-sources-of-food` | 76 | Promising internal QA | internalQA |
-| 15 | A Step Well Structure | `c5-ch06-a02-a-step-well-structure` | 75 | Promising internal QA | internalQA |
-| 16 | Acids, Bases & Neutralisation | `c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test` | 75 | Promising internal QA | internalQA |
-| 17 | Camp in the Snow | `c5-ch09-a03-camp-in-the-snow` | 75 | Promising internal QA | internalQA |
-| 18 | Cotton Farming | `c6-ch03-a01-cotton-farming` | 75 | Promising internal QA | internalQA |
-| 19 | Dead Sea: Salt Water and Its Effects | `c5-ch07-a02-dead-sea-salt-water-and-its-effects` | 75 | Promising internal QA | internalQA |
-| 20 | Diagnosis of Malaria | `c5-ch08-a01-diagnosis-of-malaria` | 75 | Promising internal QA | internalQA |
-| 21 | Food Spoilage | `c5-ch04-a01-food-spoilage` | 75 | Promising internal QA | internalQA |
-| 22 | Introduction to Money | `c1-math-ch01-introduction-to-money` | 75 | Promising internal QA | internalQA |
-| 23 | Introduction to the Digestive System | `c5-ch03-a02-introduction-of-digestive-system` | 75 | Promising internal QA | internalQA |
-| 24 | Life Cycle of the Mosquito | `c5-ch08-a02-life-cycle-of-the-mosquito` | 75 | Promising internal QA | internalQA |
-| 25 | Milk Spoilage | `c5-ch04-a02-milk-spoilage` | 75 | Promising internal QA | internalQA |
-| 26 | Pitcher Plant - The Insect Hunter | `c5-ch05-a01-pitcher-plant-the-insect-hunter` | 75 | Promising internal QA | internalQA |
-| 27 | River Crossing Adventure | `c5-ch09-a01-river-crossing-adventure` | 75 | Promising internal QA | internalQA |
-| 28 | Seed Dispersal | `c5-ch05-a02-seed-dispersal` | 75 | Promising internal QA | internalQA |
-| 29 | Snow Mountain Climbing | `c5-ch09-a04-snow-mountain-climbing` | 75 | Promising internal QA | internalQA |
-| 30 | The Effects of Force on an Object's Motion and Shape | `c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape` | 75 | Promising internal QA | internalQA |
-| 31 | The Making of Aam Papad | `c5-ch04-a03-the-making-of-aam-papad` | 75 | Promising internal QA | internalQA |
-| 32 | The Process of Cotton Ginning | `c6-ch03-a02-the-process-of-cotton-ginning` | 75 | Promising internal QA | internalQA |
-| 33 | The Storage of Rainwater | `c5-ch06-a01-the-storage-of-rainwater` | 75 | Promising internal QA | internalQA |
-| 34 | Colour Adventure | `c1-art-a01-learning-of-colours` | 74 | Promising internal QA | internalQA |
-| 35 | The Breathing Process in Human | `c7-ch10-a02-the-breathing-process-in-human` | 73 | Promising internal QA | internalQA |
+| 6 | Living Mycelium Lab: Fungi and Its Development | `c8-ch02-a03-fungi-and-its-development` | 80 | Promising internal QA | internalQA |
+| 7 | A Visit of an Ancient Fort | `c5-ch10-a01-a-visit-of-ancient-fort` | 79 | Promising internal QA | internalQA |
+| 8 | Rock Climbing | `c5-ch09-a02-rock-climbing` | 79 | Promising internal QA | internalQA |
+| 9 | Sorting Materials According to Their Shape | `c6-ch04-a01-sorting-materials-according-to-their-shape` | 78 | Promising internal QA | internalQA |
+| 10 | Sources of Vitamins and Their Deficiencies | `c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies` | 78 | Promising internal QA | internalQA |
+| 11 | Test the Presence of Lipids | `c6-ch02-a03-test-the-presence-of-lipids` | 78 | Promising internal QA | internalQA |
+| 12 | The Sources of Minerals in Food | `c6-ch02-a05-the-sources-of-minerals-in-food` | 78 | Promising internal QA | internalQA |
+| 13 | What Floats, What Sinks? | `c5-ch07-a01-a-concept-about-what-floats-what-sinks` | 78 | Promising internal QA | internalQA |
+| 14 | Preposition Adventure | `c2-english-ch01-prepositions` | 76 | Promising internal QA | internalQA |
+| 15 | Sources of Food Sorting Lab | `c6-ch01-a01-sources-of-food` | 76 | Promising internal QA | internalQA |
+| 16 | A Step Well Structure | `c5-ch06-a02-a-step-well-structure` | 75 | Promising internal QA | internalQA |
+| 17 | Acids, Bases & Neutralisation | `c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test` | 75 | Promising internal QA | internalQA |
+| 18 | Camp in the Snow | `c5-ch09-a03-camp-in-the-snow` | 75 | Promising internal QA | internalQA |
+| 19 | Cotton Farming | `c6-ch03-a01-cotton-farming` | 75 | Promising internal QA | internalQA |
+| 20 | Dead Sea: Salt Water and Its Effects | `c5-ch07-a02-dead-sea-salt-water-and-its-effects` | 75 | Promising internal QA | internalQA |
+| 21 | Diagnosis of Malaria | `c5-ch08-a01-diagnosis-of-malaria` | 75 | Promising internal QA | internalQA |
+| 22 | Food Spoilage | `c5-ch04-a01-food-spoilage` | 75 | Promising internal QA | internalQA |
+| 23 | Introduction to Money | `c1-math-ch01-introduction-to-money` | 75 | Promising internal QA | internalQA |
+| 24 | Introduction to the Digestive System | `c5-ch03-a02-introduction-of-digestive-system` | 75 | Promising internal QA | internalQA |
+| 25 | Life Cycle of the Mosquito | `c5-ch08-a02-life-cycle-of-the-mosquito` | 75 | Promising internal QA | internalQA |
+| 26 | Milk Spoilage | `c5-ch04-a02-milk-spoilage` | 75 | Promising internal QA | internalQA |
+| 27 | Pitcher Plant - The Insect Hunter | `c5-ch05-a01-pitcher-plant-the-insect-hunter` | 75 | Promising internal QA | internalQA |
+| 28 | River Crossing Adventure | `c5-ch09-a01-river-crossing-adventure` | 75 | Promising internal QA | internalQA |
+| 29 | Seed Dispersal | `c5-ch05-a02-seed-dispersal` | 75 | Promising internal QA | internalQA |
+| 30 | Snow Mountain Climbing | `c5-ch09-a04-snow-mountain-climbing` | 75 | Promising internal QA | internalQA |
+| 31 | The Effects of Force on an Object's Motion and Shape | `c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape` | 75 | Promising internal QA | internalQA |
+| 32 | The Making of Aam Papad | `c5-ch04-a03-the-making-of-aam-papad` | 75 | Promising internal QA | internalQA |
+| 33 | The Process of Cotton Ginning | `c6-ch03-a02-the-process-of-cotton-ginning` | 75 | Promising internal QA | internalQA |
+| 34 | The Storage of Rainwater | `c5-ch06-a01-the-storage-of-rainwater` | 75 | Promising internal QA | internalQA |
+| 35 | Colour Adventure | `c1-art-a01-learning-of-colours` | 74 | Promising internal QA | internalQA |
+| 36 | The Breathing Process in Human | `c7-ch10-a02-the-breathing-process-in-human` | 73 | Promising internal QA | internalQA |
 
 ## Portfolio priorities
 
-Priorities are derived from the three lowest average rubric attainment ratios across the complete 35-card dataset.
+Priorities are derived from the three lowest average rubric attainment ratios across the complete 36-card dataset.
 
 1. **Narration and sound:** portfolio mean 4.6/10. Address the card-level evidence gaps and next actions before raising evidence maturity.
 2. **Deployment readiness:** portfolio mean 3.0/5. Address the card-level evidence gaps and next actions before raising evidence maturity.
@@ -266,6 +267,47 @@ A tested circuit investigation connecting component manipulation, current flow, 
 - 4 declared stages connect the curriculum objective to observable learner actions and evidence.
 - 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
 - 4 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Living Mycelium Lab: Fungi and Its Development - 80/100
+
+**Canonical slug:** `c8-ch02-a03-fungi-and-its-development`
+
+**Route:** `/simulations/c8-ch02-a03-fungi-and-its-development`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 8 - Biology, Science
+
+Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 18 | 20 |
+| Content / scientific integrity | 14 | 15 |
+| Learner interactivity | 14 | 15 |
+| Visual and asset quality | 11 | 15 |
+| Narration and sound | 4 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 7 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 7 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.
 
 **Gaps and risks**
 

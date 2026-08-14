@@ -1,13 +1,13 @@
 {
   "auditDate": "2026-08-01",
   "portfolio": {
-    "publiclyLaunchableSimulations": 35,
+    "publiclyLaunchableSimulations": 36,
     "evidenceMaturityDistribution": {
-      "internalQA": 35,
+      "internalQA": 36,
       "deviceVerified": 0,
       "classroomVerified": 0
     },
-    "narrationCues": 233,
+    "narrationCues": 240,
     "packagedNarrationClips": 36,
     "missingNarrationFiles": 0,
     "assets": 102,
@@ -3866,6 +3866,115 @@
         },
         {
           "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c8-ch02-a03-fungi-and-its-development",
+      "title": "Living Mycelium Lab: Fungi and Its Development",
+      "route": "/simulations/c8-ch02-a03-fungi-and-its-development",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "interactive",
+      "contribution": "user-story",
+      "counts": {
+        "stages": 7,
+        "actions": 7,
+        "evidence": 7,
+        "assessmentPrompts": 7
+      },
+      "narration": {
+        "cues": 7,
+        "captions": 7,
+        "packagedAudio": 0,
+        "missingFiles": 0,
+        "hashValidated": 0,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 0,
+        "provenanceComplete": true,
+        "fallback": "shared procedural scene fallback",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/fungiDevelopment.ts",
+          "finding": "7 canonical stages, 7 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:behavior",
+          "kind": "test",
+          "ref": "tests/unit/fungi-development-viewer.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:assets",
+          "kind": "asset",
+          "ref": "shared procedural scene",
+          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:narration",
+          "kind": "narration",
+          "ref": "narration-fungi-development",
+          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c8-ch02-a03-fungi-and-its-development",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:release-build",
           "kind": "build",
           "ref": "npm --workspace apps/web run build",
           "finding": "The route is included in the static production build and canonical registry coverage gate.",

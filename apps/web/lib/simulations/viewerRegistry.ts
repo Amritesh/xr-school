@@ -103,6 +103,10 @@ const VIEWER_INPUTS = {
     sourcePath: 'apps/web/components/simulations/ForceMotionViewer.tsx',
     load: () => import('../../components/simulations/ForceMotionViewer'),
   },
+  'fungi-development': {
+    sourcePath: 'apps/web/components/simulations/FungiDevelopmentViewer.tsx',
+    load: () => import('../../components/simulations/FungiDevelopmentViewer'),
+  },
   'acid-base': {
     sourcePath: 'apps/web/components/simulations/AcidBaseViewer.tsx',
     load: () => import('../../components/simulations/AcidBaseViewer'),

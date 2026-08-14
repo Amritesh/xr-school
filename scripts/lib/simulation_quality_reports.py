@@ -111,8 +111,8 @@ def validate_report_inputs(
     """Fail closed unless the complete audited release datasets are present."""
 
     cards = _require_sequence(cards_value, "quality cards")
-    if len(cards) != 35:
-        raise ValueError(f"Expected 35 quality cards, found {len(cards)}")
+    if len(cards) != 36:
+        raise ValueError(f"Expected 36 quality cards, found {len(cards)}")
     card_slugs: list[str] = []
     for index, item in enumerate(cards):
         card = _require_mapping(item, f"quality card {index + 1}")
@@ -121,19 +121,19 @@ def validate_report_inputs(
             raise ValueError(f"quality card {index + 1}.slug must be non-empty")
         card_slugs.append(slug)
         _validate_scores(card.get("scores"), f"quality card {slug}.scores")
-    if len(set(card_slugs)) != 35:
+    if len(set(card_slugs)) != 36:
         raise ValueError("Quality-card slugs must be unique")
 
     evidence = _require_mapping(evidence_value, "portfolio evidence")
     simulations = _require_sequence(evidence.get("simulations"), "portfolio evidence.simulations")
-    if len(simulations) != 35:
-        raise ValueError(f"Expected 35 evidence records, found {len(simulations)}")
+    if len(simulations) != 36:
+        raise ValueError(f"Expected 36 evidence records, found {len(simulations)}")
     evidence_slugs = [
         _require_mapping(record, f"evidence record {index + 1}").get("slug")
         for index, record in enumerate(simulations)
     ]
-    if set(evidence_slugs) != set(card_slugs) or len(set(evidence_slugs)) != 35:
-        raise ValueError("Evidence records must match the 35 quality-card slugs exactly")
+    if set(evidence_slugs) != set(card_slugs) or len(set(evidence_slugs)) != 36:
+        raise ValueError("Evidence records must match the 36 quality-card slugs exactly")
 
     scorecard = _require_mapping(scorecard_value, "contribution scorecard")
     if scorecard.get("pr") != 8 or scorecard.get("headSha") != PR8_HEAD:
@@ -244,7 +244,7 @@ def build_portfolio_markdown(
         "",
         f"**Audit date:** {audit_date}",
         "",
-        "**Scope:** 35 released simulations",
+        "**Scope:** 36 released simulations",
         "",
         f"**Portfolio average:** {average:.1f}/100",
         "",
@@ -254,7 +254,7 @@ def build_portfolio_markdown(
         "",
         "## Executive summary",
         "",
-        f"The released portfolio contains 35 canonical simulations. Its evidence-backed product-indicator average is **{average:.1f}/100**: {bands['Pilot candidate']} pilot candidates, {bands['Promising internal QA']} promising internal-QA classes, {bands['Needs focused improvement']} needing focused improvement, and {bands['Rebuild before pilot']} requiring rebuild before pilot.",
+        f"The released portfolio contains 36 canonical simulations. Its evidence-backed product-indicator average is **{average:.1f}/100**: {bands['Pilot candidate']} pilot candidates, {bands['Promising internal QA']} promising internal-QA classes, {bands['Needs focused improvement']} needing focused improvement, and {bands['Rebuild before pilot']} requiring rebuild before pilot.",
         "",
         f"Repository evidence records {int(portfolio.get('narrationCues', 0))} narration cues, {int(portfolio.get('packagedNarrationClips', 0))} packaged narration clips, {int(portfolio.get('missingNarrationFiles', 0))} missing narration files, and {int(portfolio.get('assets', 0))} declared assets. These are implementation indicators, not learner-outcome measurements.",
         "",
@@ -275,7 +275,7 @@ def build_portfolio_markdown(
             "",
             "## Portfolio priorities",
             "",
-            "Priorities are derived from the three lowest average rubric attainment ratios across the complete 35-card dataset.",
+            "Priorities are derived from the three lowest average rubric attainment ratios across the complete 36-card dataset.",
             "",
         ]
     )
