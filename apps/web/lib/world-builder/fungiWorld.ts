@@ -762,7 +762,8 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         'observe-without-touching-or-eating', 'touch-or-eat-unknown-fungus',
       ].includes(choice))) throw new Error('safety decision is invalid');
       if (next.quizAnswers?.some(answer =>
-        !answer.questionId?.trim() || !(answer.questionId in FUNGI_QUIZ_TARGET_BY_QUESTION))) {
+        !answer.questionId?.trim()
+        || !Object.hasOwn(FUNGI_QUIZ_TARGET_BY_QUESTION, answer.questionId))) {
         throw new Error('quiz question ID is invalid');
       }
       if (next.quizAnswers?.some(answer =>

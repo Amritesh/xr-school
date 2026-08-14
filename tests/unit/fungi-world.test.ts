@@ -198,6 +198,32 @@ describe('procedural fungi forest world', () => {
     world.dispose();
   });
 
+  it('rejects prototype quiz IDs atomically and recovers with a valid projection', () => {
+    const world = createFungiWorld();
+    world.setStage('forest-circle');
+    const before = world.snapshot();
+
+    for (const questionId of ['toString', '__proto__']) {
+      expect(() => world.setState({ quizAnswers: [{
+        questionId, answer: 'prototype-value', correct: true, independentTransfer: false,
+      }] })).toThrow(/quiz question ID is invalid/i);
+      expect(world.snapshot()).toEqual(before);
+      expect(world.targets['quiz-mushroom-1'].userData.correct).toBeUndefined();
+      expect(world.targets['quiz-mushroom-2'].userData.correct).toBeUndefined();
+      expect(world.targets['quiz-mushroom-3'].userData.correct).toBeUndefined();
+      expect(world.targets['quiz-mushroom-4'].userData.correct).toBeUndefined();
+    }
+
+    world.setState({ quizAnswers: [{
+      questionId: 'forest-transfer', answer: 'warm-damp-surface',
+      correct: true, independentTransfer: true,
+    }] });
+    expect(world.targets['quiz-mushroom-4'].userData.correct).toBe(true);
+    expect(world.targets['quiz-mushroom-1'].userData.correct).toBeUndefined();
+
+    world.dispose();
+  });
+
   it('shows before and risen dough side by side with observably different bounds', () => {
     const world = createFungiWorld();
     world.setStage('fungi-at-work');
