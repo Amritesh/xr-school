@@ -73,6 +73,11 @@ const EXPECTED_VIEWERS = {
   },
 } as const;
 
+// This integration check cold-loads every released viewer module. Its focused
+// runtime is already close to Vitest's 5 s unit-test default and full-suite
+// transform contention can legitimately push it past that boundary.
+const VIEWER_LOAD_TIMEOUT_MS = 15_000;
+
 function expectedViewer(viewerKey: string) {
   return EXPECTED_VIEWERS[viewerKey as keyof typeof EXPECTED_VIEWERS];
 }
@@ -136,7 +141,7 @@ describe("released simulation viewer registry", () => {
       expect(element.props).toMatchObject({ definition: guidedDefinition });
       expect(element.props.sceneAdapter.id).toBe(`guided:${definition.module.id}`);
     }
-  });
+  }, VIEWER_LOAD_TIMEOUT_MS);
 
   it("preserves diagnostic source-path metadata for every viewer", () => {
     for (const [viewerKey, expected] of Object.entries(EXPECTED_VIEWERS)) {
