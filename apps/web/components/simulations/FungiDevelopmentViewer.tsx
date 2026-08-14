@@ -8,6 +8,7 @@ import {
   createAssessmentSession,
   createLessonSession,
   evaluateFungalGrowth,
+  hasCompleteFungalUsefulRoleMatches,
   initialFungiDevelopmentState,
   reduceFungiDevelopment,
   type FungalGrowthInput,
@@ -174,8 +175,7 @@ function feedbackForAssessment(promptId: string, correct: boolean) {
 }
 
 function usefulRolesComplete(state: FungiViewerState) {
-  const roles = new Set(state.model.usefulRoleMatches.map(match => match.role));
-  return ['food', 'medicine', 'decomposer'].every(role => roles.has(role as 'food' | 'medicine' | 'decomposer'));
+  return hasCompleteFungalUsefulRoleMatches(state.model.usefulRoleMatches);
 }
 
 function assessmentLockFeedback(promptId: string, state: FungiViewerState, finalReview: boolean) {
@@ -203,11 +203,24 @@ function assessmentLockFeedback(promptId: string, state: FungiViewerState, final
 export interface FungiVrPrompt {
   promptId: string;
   question: string;
-  route: 'answer' | 'review';
-  choices: Array<{ optionId: string; label: string }>;
+  choices: Array<{ optionId: string; label: string; actionId: string }>;
 }
 
 export function vrPromptForStage(stageId: FungiStageId, state: FungiViewerState): FungiVrPrompt | undefined {
+  if (stageId === 'five-day-time-lens'
+    && state.model.visitedDays.length === 5
+    && state.model.lifeCycleLabels.length < LIFE_CYCLE_LABELS.length) {
+    const sequenceIndex = state.model.lifeCycleLabels.length;
+    const labelIndexes = [sequenceIndex, (sequenceIndex + 2) % 5, (sequenceIndex + 4) % 5];
+    return {
+      promptId: `life-cycle-sequence-${sequenceIndex + 1}`,
+      question: `Which lifecycle observation belongs in position ${sequenceIndex + 1}?`,
+      choices: labelIndexes.map(index => {
+        const label = LIFE_CYCLE_LABELS[index];
+        return { optionId: label, label: LIFE_CYCLE_TEXT[label], actionId: `sequence:${label}` };
+      }),
+    };
+  }
   const promptId = stageId === 'fungal-forensics' ? 'fungi-precheck'
     : stageId === 'under-the-cap' && state.model.touchedHyphae.length === 3 ? 'mycelium-observation'
       : stageId === 'spore-flight' && state.model.sporeGuidance.length > 0 && state.model.sporeLandings.length > 0 ? 'growth-condition-prediction'
@@ -219,15 +232,18 @@ export function vrPromptForStage(stageId: FungiStageId, state: FungiViewerState)
   return {
     promptId: prompt.id,
     question: prompt.question,
-    route: (FINAL_REVIEW_PROMPTS as readonly string[]).includes(prompt.id) ? 'review' : 'answer',
-    choices: prompt.options.slice(0, 3).map(option => ({ optionId: option.id, label: option.label })),
+    choices: prompt.options.slice(0, 3).map(option => ({
+      optionId: option.id,
+      label: option.label,
+      actionId: `${(FINAL_REVIEW_PROMPTS as readonly string[]).includes(prompt.id) ? 'review' : 'answer'}:${prompt.id}:${option.id}`,
+    })),
   };
 }
 
 export function vrChoiceActionFor(prompt: FungiVrPrompt, visibleChoiceIndex: number) {
   const choice = prompt.choices[visibleChoiceIndex];
   if (!choice) throw new Error('VR choice index is not visible');
-  return `${prompt.route}:${prompt.promptId}:${choice.optionId}`;
+  return choice.actionId;
 }
 
 /** Pure learning coordinator shared by DOM, pointer, touch, keyboard, and XR routes. */
@@ -275,13 +291,10 @@ export function coordinateFungiAction(
     if (actionId.startsWith('visit-day:')) {
       const day = Number(actionId.slice('visit-day:'.length));
       const duplicate = state.model.visitedDays.includes(day);
-      let next = updateModel(state, { type: 'visit-day', day });
-      if (action.source === 'xr-controller' && day === next.model.lifeCycleLabels.length + 1) {
-        next = updateModel(next, { type: 'record-life-cycle', label: LIFE_CYCLE_LABELS[day - 1] });
-      }
+      const next = updateModel(state, { type: 'visit-day', day });
       return {
         state: next,
-        feedback: duplicate ? `Day ${day} is already in your observation record.` : `Day ${day} observed: ${evaluateFungalGrowth({ day, temperatureC: 27, moisturePercent: 82 }).stage}${action.source === 'xr-controller' ? '; its ordered label was recorded.' : '.'}`,
+        feedback: duplicate ? `Day ${day} is already in your observation record.` : `Day ${day} observed: ${evaluateFungalGrowth({ day, temperatureC: 27, moisturePercent: 82 }).stage}.`,
       };
     }
     if (actionId.startsWith('sequence:')) {
@@ -479,6 +492,7 @@ export default function FungiDevelopmentViewer() {
   const snapshotRef = useRef<LessonSnapshot>(lessonRef.current.snapshot());
   const handlerRef = useRef<(actionId: string, source: NormalizedInputSource) => void>(() => {});
   const previousRef = useRef<() => void>(() => {});
+  const nextRef = useRef<() => void>(() => {});
   const replayRef = useRef<() => void>(() => {});
   const restartRef = useRef<() => void>(() => {});
   const helpRef = useRef<() => void>(() => {});
@@ -496,6 +510,11 @@ export default function FungiDevelopmentViewer() {
   const [fieldGuideOpen, setFieldGuideOpen] = useState(false);
   const [sandboxOpen, setSandboxOpen] = useState(false);
   const [sandboxInput, setSandboxInput] = useState<FungalGrowthInput>({ day: 5, temperatureC: 27, moisturePercent: 82 });
+
+  const publishFeedback = useCallback((message: string) => {
+    feedbackRef.current = message;
+    setFeedback(message);
+  }, []);
 
   const stage = EXPERIENCE.stages[snapshot.stageIndex];
   const caption = FUNGI_DEVELOPMENT_NARRATION.cues[snapshot.stageIndex]?.caption ?? stage.cue;
@@ -552,12 +571,12 @@ export default function FungiDevelopmentViewer() {
           return nextEvidence;
         });
       } catch (error) {
-        setFeedback(error instanceof Error ? error.message : String(error));
+        publishFeedback(error instanceof Error ? error.message : String(error));
       }
     };
     if (delayMs === 0) commit();
     else evidenceTimerRef.current = setTimeout(commit, delayMs);
-  }, [applySnapshot]);
+  }, [applySnapshot, publishFeedback]);
 
   const handleNormalizedAction = useCallback((actionId: string, source: NormalizedInputSource) => {
     const result = coordinateFungiAction(stateRef.current, { actionId, source });
@@ -570,15 +589,14 @@ export default function FungiDevelopmentViewer() {
       try {
         assessmentRef.current.answer(result.assessment.promptId, result.assessment.optionId);
       } catch (error) {
-        setFeedback(error instanceof Error ? error.message : String(error));
+        publishFeedback(error instanceof Error ? error.message : String(error));
         return;
       }
     }
-    feedbackRef.current = result.feedback;
-    setFeedback(result.feedback);
+    publishFeedback(result.feedback);
     const evidenceId = stageEvidenceFor(snapshotRef.current.stageId as FungiStageId, result.state);
     if (evidenceId) recordEvidenceAfterProjection(evidenceId, result.state.evidenceDelayMs);
-  }, [projectWorld, recordEvidenceAfterProjection]);
+  }, [projectWorld, publishFeedback, recordEvidenceAfterProjection]);
   handlerRef.current = handleNormalizedAction;
 
   const routeAction = useCallback((actionId: string, source: NormalizedInputSource) => {
@@ -598,28 +616,26 @@ export default function FungiDevelopmentViewer() {
   const next = useCallback(() => {
     if (!snapshotRef.current.stageComplete || snapshotRef.current.lessonComplete) {
       const message = snapshotRef.current.lessonComplete ? 'The mission is complete. Open the Field Guide or Growth Sandbox.' : 'Complete the authored action and observe its evidence before continuing.';
-      feedbackRef.current = message;
-      setFeedback(message);
+      publishFeedback(message);
       return;
     }
     try {
       const nextSnapshot = lessonRef.current.next();
       applySnapshot(nextSnapshot);
-      feedbackRef.current = nextSnapshot.cue;
-      setFeedback(nextSnapshot.cue);
+      publishFeedback(nextSnapshot.cue);
       narrate(nextSnapshot.stageIndex);
     } catch (error) {
-      setFeedback(error instanceof Error ? error.message : String(error));
+      publishFeedback(error instanceof Error ? error.message : String(error));
     }
-  }, [applySnapshot, narrate]);
+  }, [applySnapshot, narrate, publishFeedback]);
+  nextRef.current = next;
 
   const previous = useCallback(() => {
     const previousSnapshot = lessonRef.current.previous();
     applySnapshot(previousSnapshot);
-    feedbackRef.current = previousSnapshot.cue;
-    setFeedback(previousSnapshot.cue);
+    publishFeedback(previousSnapshot.cue);
     narrate(previousSnapshot.stageIndex);
-  }, [applySnapshot, narrate]);
+  }, [applySnapshot, narrate, publishFeedback]);
   previousRef.current = previous;
 
   const replayStage = useCallback((targetIndex: number) => {
@@ -629,10 +645,9 @@ export default function FungiDevelopmentViewer() {
     applySnapshot(nextSnapshot);
     setFieldGuideOpen(false);
     const message = `Replaying ${nextSnapshot.stageTitle}. Existing evidence is retained.`;
-    feedbackRef.current = message;
-    setFeedback(message);
+    publishFeedback(message);
     narrate(nextSnapshot.stageIndex);
-  }, [applySnapshot, narrate]);
+  }, [applySnapshot, narrate, publishFeedback]);
 
   const restart = useCallback(() => {
     if (evidenceTimerRef.current) clearTimeout(evidenceTimerRef.current);
@@ -650,22 +665,20 @@ export default function FungiDevelopmentViewer() {
     setSandboxOpen(false);
     setSandboxInput({ day: 5, temperatureC: 27, moisturePercent: 82 });
     const message = 'Mission restarted. Make your fungi prediction before classifying the specimens.';
-    feedbackRef.current = message;
-    setFeedback(message);
+    publishFeedback(message);
     projectWorld(freshState, false);
     narrate(0);
-  }, [applySnapshot, narrate, preferences.reducedMotion, projectWorld]);
+  }, [applySnapshot, narrate, preferences.reducedMotion, projectWorld, publishFeedback]);
   replayRef.current = () => narrate(snapshotRef.current.stageIndex);
   restartRef.current = restart;
   helpRef.current = () => {
-    feedbackRef.current = VR_HELP_TEXT;
-    setFeedback(VR_HELP_TEXT);
+    publishFeedback(VR_HELP_TEXT);
     if (preferences.audio) void playSimulationNarration(VR_HELP_TEXT, snapshotRef.current.stageIndex);
   };
 
   const enterVr = useCallback(async () => {
     if (!rendererRef.current || !('xr' in navigator)) {
-      setFeedback('Immersive VR is unavailable. Browser controls remain fully usable.');
+      publishFeedback('Immersive VR is unavailable. Browser controls remain fully usable.');
       return;
     }
     try {
@@ -679,9 +692,9 @@ export default function FungiDevelopmentViewer() {
       setStarted(true);
       narrate(snapshotRef.current.stageIndex);
     } catch (error) {
-      setFeedback(`WebXR could not start; your browser progress is preserved. ${error instanceof Error ? error.message : ''}`.trim());
+      publishFeedback(`WebXR could not start; your browser progress is preserved. ${error instanceof Error ? error.message : ''}`.trim());
     }
-  }, [narrate]);
+  }, [narrate, publishFeedback]);
 
   useEffect(() => {
     if (!('xr' in navigator)) return;
@@ -770,7 +783,7 @@ export default function FungiDevelopmentViewer() {
           else if (hudButton === 'help') helpRef.current();
           else if (hudButton === 'restart') restartRef.current();
           else if (hudButton === 'exit') void host?.renderer.xr.getSession()?.end();
-          else if (hudButton === 'next') next();
+          else if (hudButton === 'next') nextRef.current();
           else if (hudButton === 'choice-a' || hudButton === 'choice-b' || hudButton === 'choice-c') {
             const prompt = vrPromptForStage(snapshotRef.current.stageId as FungiStageId, stateRef.current);
             const choiceIndex = hudButton === 'choice-a' ? 0 : hudButton === 'choice-b' ? 1 : 2;

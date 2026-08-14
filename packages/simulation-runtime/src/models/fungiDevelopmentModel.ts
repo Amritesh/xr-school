@@ -70,17 +70,11 @@ export const FUNGAL_LIFE_CYCLE_LABELS: readonly FungalLifeCycleLabel[] = [
   'spores-release',
 ];
 
-const FUNGAL_USEFUL_ROLES: readonly FungalUsefulRole[] = [
-  'decomposer',
-  'food',
-  'medicine',
-];
-
-const FUNGAL_USEFUL_ACTOR_IDS: readonly FungalUsefulActorId[] = [
-  'yeast',
-  'antibiotic-producing-fungus',
-  'saprotrophic-fungus',
-];
+export const FUNGAL_USEFUL_ROLE_BY_ACTOR: Readonly<Record<FungalUsefulActorId, FungalUsefulRole>> = {
+  yeast: 'food',
+  'antibiotic-producing-fungus': 'medicine',
+  'saprotrophic-fungus': 'decomposer',
+};
 
 const FUNGAL_SAFETY_OUTCOMES: readonly FungalSafetyOutcome[] = [
   'observe-without-touching-or-eating',
@@ -169,6 +163,17 @@ export function evaluateFungalGrowth(
 export interface FungalUsefulRoleMatch {
   objectId: FungalUsefulActorId;
   role: FungalUsefulRole;
+}
+
+export function hasCompleteFungalUsefulRoleMatches(
+  matches: readonly FungalUsefulRoleMatch[],
+): boolean {
+  const expected = Object.entries(FUNGAL_USEFUL_ROLE_BY_ACTOR) as Array<[
+    FungalUsefulActorId,
+    FungalUsefulRole,
+  ]>;
+  return matches.length === expected.length && expected.every(([objectId, role]) =>
+    matches.some(match => match.objectId === objectId && match.role === role));
 }
 
 export interface FungalQuizAnswer {
@@ -361,11 +366,12 @@ export function reduceFungiDevelopment(
       break;
     }
     case 'match-useful-role': {
-      if (!FUNGAL_USEFUL_ACTOR_IDS.includes(action.objectId)) {
+      if (!Object.hasOwn(FUNGAL_USEFUL_ROLE_BY_ACTOR, action.objectId)) {
         throw new Error(`Unknown fungal useful actor ${String(action.objectId)}`);
       }
-      if (!FUNGAL_USEFUL_ROLES.includes(action.role)) {
-        throw new Error(`Unknown fungal useful role ${String(action.role)}`);
+      const expectedRole = FUNGAL_USEFUL_ROLE_BY_ACTOR[action.objectId];
+      if (action.role !== expectedRole) {
+        throw new Error(`${action.objectId} must match the ${expectedRole} useful role`);
       }
       const duplicate = state.usefulRoleMatches.some(
         (match) =>

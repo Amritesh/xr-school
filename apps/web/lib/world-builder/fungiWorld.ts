@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { FUNGAL_USEFUL_ROLE_BY_ACTOR } from '@xr-school/simulation-runtime';
 import type {
   FungalObjectId,
   FungalQuizAnswer,
@@ -754,8 +755,8 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       nonEmpty(next.sporeGuidance, 'spore guidance');
       nonEmpty(next.sporeLandings, 'spore landing');
       if (next.usefulRoleMatches?.some(match =>
-        !['yeast', 'antibiotic-producing-fungus', 'saprotrophic-fungus'].includes(match.objectId)
-        || !['decomposer', 'food', 'medicine'].includes(match.role))) {
+        !Object.hasOwn(FUNGAL_USEFUL_ROLE_BY_ACTOR, match.objectId)
+        || FUNGAL_USEFUL_ROLE_BY_ACTOR[match.objectId] !== match.role)) {
         throw new Error('useful role match is invalid');
       }
       if (next.safetyDecisions?.some(choice => ![

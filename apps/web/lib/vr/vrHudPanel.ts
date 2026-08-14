@@ -189,12 +189,27 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
     if (content.choices?.length) {
       cursorY += 8;
       ctx.fillStyle = '#bae6fd';
-      ctx.font = 'bold 25px sans-serif';
-      for (const [index, choice] of content.choices.slice(0, 3).entries()) {
-        const prefix = String.fromCharCode(65 + index);
-        const line = wrapLines(ctx, `${prefix}. ${choice.label}`, w - 96)[0] ?? '';
-        ctx.fillText(line, 48, cursorY);
-        cursorY += 34;
+      const authoredChoices = content.choices.slice(0, 3);
+      const bottom = content.hint ? h - 122 : h - 66;
+      const availableHeight = Math.max(48, bottom - cursorY);
+      let fontSize = 25;
+      let choiceLines: string[][] = [];
+      while (fontSize >= 13) {
+        ctx.font = `bold ${fontSize}px sans-serif`;
+        choiceLines = authoredChoices.map((choice, index) =>
+          wrapLines(ctx, `${String.fromCharCode(65 + index)}. ${choice.label}`, w - 96));
+        const lineHeight = fontSize + 8;
+        const requiredHeight = choiceLines.reduce((sum, lines) => sum + lines.length * lineHeight + 5, 0);
+        if (requiredHeight <= availableHeight || fontSize === 13) break;
+        fontSize -= 1;
+      }
+      const lineHeight = Math.min(fontSize + 8, availableHeight / Math.max(1, choiceLines.reduce((sum, lines) => sum + lines.length, 0)));
+      for (const lines of choiceLines) {
+        for (const line of lines) {
+          ctx.fillText(line, 48, cursorY);
+          cursorY += lineHeight;
+        }
+        cursorY += 5;
       }
     }
 

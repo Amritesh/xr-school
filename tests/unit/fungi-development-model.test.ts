@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   FUNGAL_GROWTH_STAGES,
   FUNGAL_OBJECTS,
+  FUNGAL_USEFUL_ROLE_BY_ACTOR,
   evaluateFungalGrowth,
+  hasCompleteFungalUsefulRoleMatches,
   initialFungiDevelopmentState,
   reduceFungiDevelopment,
 } from '../../packages/simulation-runtime/src/index';
@@ -155,6 +157,11 @@ describe('fungi development model', () => {
   });
 
   it('keeps useful actors scientifically distinct from classification specimens', () => {
+    expect(FUNGAL_USEFUL_ROLE_BY_ACTOR).toEqual({
+      yeast: 'food',
+      'antibiotic-producing-fungus': 'medicine',
+      'saprotrophic-fungus': 'decomposer',
+    });
     const state = reduceAll([
       { type: 'match-useful-role', objectId: 'yeast', role: 'food' },
       { type: 'match-useful-role', objectId: 'antibiotic-producing-fungus', role: 'medicine' },
@@ -166,6 +173,17 @@ describe('fungi development model', () => {
       { objectId: 'antibiotic-producing-fungus', role: 'medicine' },
       { objectId: 'saprotrophic-fungus', role: 'decomposer' },
     ]);
+    expect(hasCompleteFungalUsefulRoleMatches(state.usefulRoleMatches)).toBe(true);
+    const before = structuredClone(state);
+    expect(() => reduceFungiDevelopment(state, {
+      type: 'match-useful-role', objectId: 'yeast', role: 'medicine',
+    })).toThrow(/yeast.*food/i);
+    expect(state).toEqual(before);
+    expect(hasCompleteFungalUsefulRoleMatches([
+      { objectId: 'yeast', role: 'food' },
+      { objectId: 'antibiotic-producing-fungus', role: 'medicine' },
+      { objectId: 'yeast', role: 'food' },
+    ])).toBe(false);
     expect(() => reduceFungiDevelopment(state, {
       type: 'match-useful-role', objectId: 'mushroom', role: 'medicine',
     } as never)).toThrow(/useful actor/i);

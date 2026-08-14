@@ -153,6 +153,12 @@ describe('procedural fungi forest world', () => {
     expect(world.targets['role-medicine'].userData.matched).toBe(true);
     expect(world.targets['role-compost'].userData.matched).toBe(true);
     expect(world.targets['role-bakery'].scale.x).toBeGreaterThan(1);
+
+    const beforeInvalidPair = world.snapshot();
+    expect(() => world.setState({
+      usefulRoleMatches: [{ objectId: 'yeast', role: 'medicine' }],
+    })).toThrow(/useful role match/i);
+    expect(world.snapshot()).toEqual(beforeInvalidPair);
     expect(world.targets['role-medicine'].scale.x).toBeGreaterThan(1);
     expect(world.targets['role-compost'].scale.x).toBeGreaterThan(1);
     expect(world.targets['safety-warning'].userData.resolved).toBe(true);

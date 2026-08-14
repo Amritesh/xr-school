@@ -274,8 +274,9 @@ describe('shared VR HUD panel', () => {
 
   it('shows, resolves, and hides authored choices and distinct help/restart controls', () => {
     const draw = vi.fn();
+    const fillText = vi.fn();
     const context = {
-      clearRect: draw, fillRect: draw, strokeRect: draw, fillText: draw,
+      clearRect: draw, fillRect: draw, strokeRect: draw, fillText,
       measureText: (text: string) => ({ width: text.length * 12 }),
       fillStyle: '', strokeStyle: '', lineWidth: 1, font: '', textAlign: '', textBaseline: '',
     };
@@ -306,6 +307,30 @@ describe('shared VR HUD panel', () => {
     expect(panel.buttons['choice-a'].visible).toBe(false);
     expect(panel.buttons.help.visible).toBe(false);
     expect(panel.buttons.restart.visible).toBe(false);
+
+    fillText.mockClear();
+    panel.setContent({
+      eyebrow: 'Question', title: 'Sequence', body: 'Choose the complete observation.',
+      choices: [
+        { label: 'Spore lands, then a hypha grows, then mycelium spreads before spore structures form and spores release' },
+        { label: 'Spores release before any hypha appears, which is the incorrect reverse order' },
+        { label: 'Mycelium disappears immediately while every observed lifecycle evidence card remains visible' },
+      ],
+      buttons: ['replay'],
+    });
+    const renderedChoice = fillText.mock.calls
+      .filter(([, , y]) => typeof y === 'number' && y > 210 && y < 560)
+      .map(([text]) => String(text))
+      .join(' ');
+    expect(renderedChoice).toContain('A. Spore lands');
+    expect(renderedChoice).toContain('spores release');
+    expect(renderedChoice).toContain('incorrect reverse order');
+    expect(renderedChoice).toContain('evidence card remains visible');
+    const choiceYs = fillText.mock.calls
+      .filter(([, , y]) => typeof y === 'number' && y > 210 && y < 600)
+      .map(([, , y]) => Number(y));
+    expect(Math.max(...choiceYs)).toBeLessThanOrEqual(574);
+    expect(Math.max(...fillText.mock.calls.map(([, , y]) => Number(y)))).toBeLessThanOrEqual(608);
     panel.dispose();
     vi.unstubAllGlobals();
   });

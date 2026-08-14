@@ -165,7 +165,9 @@ export {
   FUNGAL_GROWTH_STAGES,
   FUNGAL_LIFE_CYCLE_LABELS,
   FUNGAL_OBJECTS,
+  FUNGAL_USEFUL_ROLE_BY_ACTOR,
   evaluateFungalGrowth,
+  hasCompleteFungalUsefulRoleMatches,
   initialFungiDevelopmentState,
   reduceFungiDevelopment,
 } from './models/fungiDevelopmentModel.js';

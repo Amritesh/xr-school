@@ -152,7 +152,7 @@ describe('Living Mycelium viewer coordinator', () => {
     expect(stageEvidenceFor('five-day-time-lens', state)).toBe('five-day-sequence-observed');
   });
 
-  it('lets ordered VR day targets build the same five-label sequence', () => {
+  it('requires explicit VR lifecycle choices after observing all five days', () => {
     let state = createInitialFungiViewerState();
     for (const day of [1, 2, 3, 4, 5]) {
       state = coordinateFungiAction(state, {
@@ -160,10 +160,19 @@ describe('Living Mycelium viewer coordinator', () => {
         source: 'xr-controller',
       }).state;
     }
-    expect(state.model.lifeCycleLabels).toEqual([
-      'spore-lands', 'hypha-grows', 'mycelium-forms', 'spore-structure-forms', 'spores-release',
-    ]);
-    expect(stageEvidenceFor('five-day-time-lens', state)).toBe('five-day-sequence-observed');
+    expect(state.model.lifeCycleLabels).toEqual([]);
+    const firstPrompt = vrPromptForStage('five-day-time-lens', state)!;
+    expect(firstPrompt.choices.map(choice => choice.actionId)).toContain('sequence:spore-lands');
+    const wrongIndex = firstPrompt.choices.findIndex(choice => choice.actionId !== 'sequence:spore-lands');
+    const wrong = coordinateFungiAction(state, {
+      actionId: vrChoiceActionFor(firstPrompt, wrongIndex), source: 'xr-controller',
+    });
+    expect(wrong.state).toBe(state);
+    const correctIndex = firstPrompt.choices.findIndex(choice => choice.actionId === 'sequence:spore-lands');
+    state = coordinateFungiAction(state, {
+      actionId: vrChoiceActionFor(firstPrompt, correctIndex), source: 'xr-controller',
+    }).state;
+    expect(state.model.lifeCycleLabels).toEqual(['spore-lands']);
   });
 
   it('does not complete a stage from an unknown or generic next action', () => {
@@ -344,6 +353,13 @@ describe('Living Mycelium viewer coordinator', () => {
     chooseAccepted('under-the-cap');
     act('guide:spore-guide'); act('land:spore-landing'); chooseAccepted('spore-flight');
     for (const day of [1, 2, 3, 4, 5]) act(`visit-day:${day}`);
+    for (const expected of [
+      'spore-lands', 'hypha-grows', 'mycelium-forms', 'spore-structure-forms', 'spores-release',
+    ]) {
+      const prompt = vrPromptForStage('five-day-time-lens', state)!;
+      const choiceIndex = prompt.choices.findIndex(choice => choice.actionId === `sequence:${expected}`);
+      act(vrChoiceActionFor(prompt, choiceIndex));
+    }
     act('trigger:dough-rise'); act('role:bakery'); act('role:medicine'); act('role:compost');
     chooseAccepted('fungi-at-work');
     act('classify:fresh-item:safe'); act('classify:mouldy-item:unsafe'); chooseAccepted('food-safety-scan');
@@ -434,13 +450,17 @@ describe('Living Mycelium viewer integration contract', () => {
   });
 
   it('keeps replay narration, help, restart, previous/back, and exit as distinct VR controls', () => {
+    expect(source).toContain('const nextRef = useRef');
+    expect(source).toContain('nextRef.current = next');
+    expect(source).toContain("hudButton === 'next') nextRef.current()");
     expect(source).toContain('restartRef.current = restart');
     expect(source).toMatch(/replayRef\.current\s*=\s*\(\)\s*=>\s*narrate/);
     expect(source).toContain("hudButton === 'help'");
     expect(source).toContain("hudButton === 'restart'");
     expect(source).toContain("hudButton === 'previous'");
     expect(source).toContain("hudButton === 'exit'");
-    expect(source).toContain('feedbackRef.current =');
+    expect(source).toContain('const publishFeedback = useCallback');
+    expect(source).toContain('feedbackRef.current = message');
   });
 
   it('does not own audio, raw renderer loops, or force movement', () => {
