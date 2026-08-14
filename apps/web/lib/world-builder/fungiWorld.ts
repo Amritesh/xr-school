@@ -37,6 +37,8 @@ export const FUNGI_TARGET_IDS = [
   'day-5',
   'yeast',
   'dough',
+  'dough-before',
+  'dough-after',
   'role-bakery',
   'role-medicine',
   'role-compost',
@@ -76,6 +78,7 @@ export type FungiWorldStateProjection = Partial<Pick<
 >> & {
   currentDay?: number;
   doughRise?: number;
+  doughRisen?: boolean;
   sandboxEnabled?: boolean;
   sandboxTemperatureC?: number;
   sandboxMoisturePercent?: number;
@@ -231,6 +234,7 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       cap: ownGeometry(new THREE.SphereGeometry(1, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2)),
       gill: ownGeometry(new THREE.BoxGeometry(0.7, 0.018, 0.04)),
       star: ownGeometry(new THREE.TorusKnotGeometry(0.18, 0.045, 32, 6, 2, 3)),
+      warningTriangle: ownGeometry(new THREE.ConeGeometry(1, 1, 3)),
     };
 
     const addMesh = (
@@ -456,19 +460,36 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       display.visible = day === 1;
       timeLens.add(display);
       const growth = GROWTH[day - 1];
+      display.userData.phase = growth.phase;
+      display.userData.coverage = growth.coverage;
       for (let index = 0; index < growth.visibleStructures; index += 1) {
-        const isStalk = day >= 4 && index >= 13 && index < 21;
-        const isReleasedSpore = day === 5 && index >= 21;
+        const kind = index === 0
+          ? 'landed-spore'
+          : index < 5
+            ? 'hypha'
+            : index < 13
+              ? 'mycelium'
+              : index < 21
+                ? 'sporangium'
+                : 'released-spore';
+        const isHypha = kind === 'hypha';
+        const isSporangium = kind === 'sporangium';
+        const isReleasedSpore = kind === 'released-spore';
         const structure = addMesh(
           display,
-          isStalk ? geometry.cylinder : geometry.smoothSphere,
+          isHypha || isSporangium ? geometry.cylinder : geometry.smoothSphere,
           isReleasedSpore ? material.spore : index === 0 ? material.moss : material.mycelium,
-          `day-${day}-structure-${index + 1}`,
+          `day-${day}-${kind}-${index + 1}`,
         );
+        structure.userData.growthStructure = kind;
         const angle = index * 2.399963;
         const radius = day === 1 ? 0 : 0.18 + (index % Math.max(2, day * 2)) * 0.13;
-        structure.position.set(Math.cos(angle) * radius, 0.25 + (isStalk ? 0.17 : (index % 3) * 0.025), Math.sin(angle) * radius);
-        if (isStalk) structure.scale.set(0.035, 0.34, 0.035);
+        structure.position.set(Math.cos(angle) * radius, 0.25 + (isSporangium ? 0.17 : (index % 3) * 0.025), Math.sin(angle) * radius);
+        if (isHypha) {
+          structure.scale.set(0.022, 0.25, 0.022);
+          structure.rotation.z = Math.PI / 2;
+          structure.rotation.y = angle;
+        } else if (isSporangium) structure.scale.set(0.035, 0.34, 0.035);
         else structure.scale.setScalar(isReleasedSpore ? 0.035 : 0.07 + day * 0.014);
       }
       const breadBase = addMesh(display, geometry.box, material.cream, `day-${day}-bread-surface`);
@@ -480,6 +501,11 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
     // 5. Useful fungi portals and a visible yeast/dough transformation.
     const useful = layers['fungi-at-work'];
     const portalIds = ['role-bakery', 'role-medicine', 'role-compost'] as const;
+    const portalRoles = {
+      'role-bakery': 'food',
+      'role-medicine': 'medicine',
+      'role-compost': 'decomposer',
+    } as const;
     const portalX = [-2.2, 0, 2.2];
     portalIds.forEach((id, index) => {
       const portal = addTarget(id, useful, [portalX[index], 0.2, 0.25], 0.72);
@@ -492,7 +518,7 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       const top = addMesh(portal, geometry.box, left.material as THREE.Material);
       top.scale.set(0.77, 0.12, 0.12);
       top.position.y = 1.3;
-      portal.userData.role = id.replace('role-', '');
+      portal.userData.role = portalRoles[id];
     });
     const yeast = addTarget('yeast', useful, [-1.15, 0.25, 1.8], 0.45);
     for (let index = 0; index < 7; index += 1) {
@@ -500,9 +526,22 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       cell.scale.set(0.08, 0.1, 0.08);
       cell.position.set((index % 3) * 0.14 - 0.14, Math.floor(index / 3) * 0.13, 0);
     }
-    const dough = addTarget('dough', useful, [1.15, 0.28, 1.8], 0.58);
-    const doughBody = addMesh(dough, geometry.smoothSphere, material.cream, 'rising-dough-before-after');
-    doughBody.scale.set(0.55, 0.38, 0.55);
+    const dough = addTarget('dough', useful, [1.15, 0.52, 1.8], 1.15);
+    dough.userData.action = 'observe-dough-rise';
+    const doughBefore = addTarget('dough-before', dough, [-0.62, -0.24, 0], 0.48);
+    const beforeBody = addMesh(doughBefore, geometry.smoothSphere, material.cream, 'unrisen-dough-body');
+    beforeBody.scale.set(0.46, 0.28, 0.46);
+    const doughAfter = addTarget('dough-after', dough, [0.62, -0.24, 0], 0.7);
+    const afterBody = addMesh(doughAfter, geometry.smoothSphere, material.cream, 'risen-dough-body');
+    afterBody.scale.set(0.56, 0.34, 0.56);
+    const bubbles = new THREE.Group();
+    bubbles.name = 'risen-dough-bubbles';
+    doughAfter.add(bubbles);
+    for (let index = 0; index < 5; index += 1) {
+      const bubble = addMesh(bubbles, geometry.torus, material.amber, `dough-bubble-${index + 1}`);
+      bubble.scale.setScalar(0.055 + index * 0.008);
+      bubble.position.set(-0.24 + index * 0.12, 0.18 + (index % 2) * 0.08, 0.48);
+    }
 
     // 6. Safety scan with redundant symbol/shape cues.
     const safety = layers['food-safety-scan'];
@@ -512,6 +551,18 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
     const fresh = addTarget('fresh-item', safety, [-1.15, 0.42, 0], 0.6);
     const freshFood = addMesh(fresh, geometry.smoothSphere, material.cream, 'fresh-food-checkmark-anchor');
     freshFood.scale.set(0.55, 0.34, 0.45);
+    const checkShort = addMesh(fresh, geometry.box, material.leaf, 'safe-check-short-stroke');
+    checkShort.scale.set(0.07, 0.23, 0.04);
+    checkShort.position.set(-0.17, 0.43, 0.47);
+    checkShort.rotation.z = -0.65;
+    const checkLong = addMesh(fresh, geometry.box, material.leaf, 'safe-check-long-stroke');
+    checkLong.scale.set(0.07, 0.36, 0.04);
+    checkLong.position.set(0.08, 0.54, 0.47);
+    checkLong.rotation.z = 0.7;
+    const safePlaque = addMesh(fresh, geometry.box, material.slate, 'safe-label-plaque');
+    safePlaque.scale.set(0.72, 0.17, 0.035);
+    safePlaque.position.set(0, 1.0, 0);
+    safePlaque.userData.text = 'Fresh: check before using';
     fresh.userData.symbol = 'check';
     const mouldy = addTarget('mouldy-item', safety, [0.5, 0.42, 0], 0.6);
     const mouldyFood = addMesh(mouldy, geometry.box, material.cream, 'mouldy-food');
@@ -522,8 +573,18 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
       patch.position.set(-0.3 + index * 0.18, 0.25 + (index % 2) * 0.1, 0.32);
     }
     const warning = addTarget('safety-warning', safety, [2.0, 0.62, 0], 0.62);
-    const warningTriangle = addMesh(warning, geometry.cone, material.warning, 'warning-symbol-and-label-anchor');
-    warningTriangle.scale.set(0.52, 0.8, 0.18);
+    const warningTriangle = addMesh(warning, geometry.warningTriangle, material.warning, 'unsafe-warning-triangle');
+    warningTriangle.scale.set(0.58, 0.88, 0.16);
+    const exclamationStem = addMesh(warning, geometry.box, material.cream, 'unsafe-exclamation-stem');
+    exclamationStem.scale.set(0.055, 0.25, 0.035);
+    exclamationStem.position.set(0, 0.1, 0.18);
+    const exclamationDot = addMesh(warning, geometry.smoothSphere, material.cream, 'unsafe-exclamation-dot');
+    exclamationDot.scale.setScalar(0.075);
+    exclamationDot.position.set(0, -0.27, 0.18);
+    const unsafePlaque = addMesh(warning, geometry.box, material.slate, 'unsafe-label-plaque');
+    unsafePlaque.scale.set(0.92, 0.17, 0.035);
+    unsafePlaque.position.set(0, 0.95, 0);
+    unsafePlaque.userData.text = 'Mouldy: do not touch or eat';
     warning.userData.symbol = 'warning-triangle';
     const hiddenHypha = addTarget('mould-hidden-hyphae', safety, [0.5, 0.08, -0.5], 0.48);
     for (let index = 0; index < 5; index += 1) {
@@ -616,10 +677,12 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         dayTarget.scale.setScalar(day === currentDay ? 1.18 : 1);
         dayTarget.userData.visited = visitedDays.includes(day);
       }
-      dough.scale.set(1, 1 + doughRise * 0.8, 1);
       dough.userData.rise = doughRise;
+      doughAfter.scale.set(1, 1 + doughRise * 0.9, 1);
+      doughAfter.position.y = -0.24 + doughRise * 0.12;
+      bubbles.visible = doughRise > 0;
       portalIds.forEach(id => {
-        const role = id.replace('role-', '');
+        const role = portalRoles[id];
         const matched = usefulRoleMatches.some(match => match.role === role);
         targets[id].userData.matched = matched;
         targets[id].scale.setScalar(matched ? 1.08 : 1);
@@ -654,6 +717,9 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         }
       }
       if (next.doughRise !== undefined) requireFiniteRange(next.doughRise, 'dough rise', 0, 1);
+      if (next.doughRisen !== undefined && typeof next.doughRisen !== 'boolean') {
+        throw new Error('dough risen must be boolean');
+      }
       if (next.sandboxTemperatureC !== undefined) requireFiniteRange(next.sandboxTemperatureC, 'sandbox temperature', 0, 45);
       if (next.sandboxMoisturePercent !== undefined) requireFiniteRange(next.sandboxMoisturePercent, 'sandbox moisture', 0, 100);
       if (next.selectedFungi?.some(id => !['mushroom', 'bread-mould', 'green-plant'].includes(id))) {
@@ -718,6 +784,7 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         if (next.completed !== undefined) completed = next.completed;
         if (next.sandboxEnabled !== undefined) sandboxEnabled = next.sandboxEnabled;
         if (next.doughRise !== undefined) doughRise = next.doughRise;
+        if (next.doughRisen !== undefined) doughRise = next.doughRisen ? 1 : 0;
         if (next.sandboxTemperatureC !== undefined) sandboxTemperatureC = next.sandboxTemperatureC;
         if (next.sandboxMoisturePercent !== undefined) sandboxMoisturePercent = next.sandboxMoisturePercent;
         applyState();
@@ -739,11 +806,20 @@ export function createFungiWorld(config: FungiWorldConfig = {}): FungiWorld {
         reducedMotion = reduced;
       },
       snapshot() {
-        const growth = GROWTH[currentDay - 1];
+        const currentGrowthDisplay = dayDisplays[currentDay - 1];
+        let visibleStructures = 0;
+        currentGrowthDisplay.traverse(object => {
+          if (object instanceof THREE.Mesh && object.userData.growthStructure
+            && effectivelyVisible(object)) visibleStructures += 1;
+        });
         return {
           stage,
           currentDay,
-          growth: { ...growth },
+          growth: {
+            phase: currentGrowthDisplay.userData.phase,
+            visibleStructures,
+            coverage: currentGrowthDisplay.userData.coverage,
+          },
           touchedHyphae: [...touchedHyphae],
           completed,
           sandboxEnabled,

@@ -60,7 +60,10 @@ describe('procedural fungi forest world', () => {
     ['under-the-cap', ['hypha-tip-alpha', 'hypha-tip-beta', 'hypha-tip-gamma', 'hypha-network-label']],
     ['spore-flight', ['spore-guide', 'spore-landing']],
     ['five-day-time-lens', ['day-1', 'day-2', 'day-3', 'day-4', 'day-5']],
-    ['fungi-at-work', ['yeast', 'dough', 'role-bakery', 'role-medicine', 'role-compost']],
+    ['fungi-at-work', [
+      'yeast', 'dough', 'dough-before', 'dough-after',
+      'role-bakery', 'role-medicine', 'role-compost',
+    ]],
     ['food-safety-scan', ['fresh-item', 'mouldy-item', 'safety-warning', 'mould-hidden-hyphae']],
     ['forest-circle', ['quiz-mushroom-1', 'quiz-mushroom-2', 'quiz-mushroom-3', 'quiz-mushroom-4']],
   ] as const)('shows only relevant targets during %s', (stage, visibleIds) => {
@@ -93,7 +96,15 @@ describe('procedural fungi forest world', () => {
     world.setStage('five-day-time-lens');
     const samples = [1, 2, 3, 4, 5].map(day => {
       world.setState({ currentDay: day, visitedDays: [day] });
-      return world.snapshot().growth;
+      const display = world.root.getObjectByName(`bread-growth-day-${day}`);
+      expect(display, `day ${day} display`).toBeDefined();
+      expect(isEffectivelyVisible(display!), `day ${day} display`).toBe(true);
+      const visibleNames: string[] = [];
+      display!.traverse(object => {
+        if (object instanceof THREE.Mesh && isEffectivelyVisible(object)
+          && object.userData.growthStructure) visibleNames.push(object.name);
+      });
+      return { ...world.snapshot().growth, visibleNames };
     });
 
     expect(samples.map(sample => sample.phase)).toEqual([
@@ -105,6 +116,16 @@ describe('procedural fungi forest world', () => {
     ]);
     expect(samples.map(sample => sample.visibleStructures)).toEqual([1, 5, 13, 21, 37]);
     expect(samples.map(sample => sample.coverage)).toEqual([0.04, 0.18, 0.46, 0.7, 0.92]);
+    expect(samples.map(sample => sample.visibleNames.filter(name => name.includes('landed-spore')).length))
+      .toEqual([1, 1, 1, 1, 1]);
+    expect(samples.map(sample => sample.visibleNames.filter(name => name.includes('hypha-')).length))
+      .toEqual([0, 4, 4, 4, 4]);
+    expect(samples.map(sample => sample.visibleNames.filter(name => name.includes('mycelium-')).length))
+      .toEqual([0, 0, 8, 8, 8]);
+    expect(samples.map(sample => sample.visibleNames.filter(name => name.includes('sporangium-')).length))
+      .toEqual([0, 0, 0, 8, 8]);
+    expect(samples.map(sample => sample.visibleNames.filter(name => name.includes('released-spore-')).length))
+      .toEqual([0, 0, 0, 0, 16]);
 
     world.dispose();
   });
@@ -115,6 +136,7 @@ describe('procedural fungi forest world', () => {
       usefulRoleMatches: [
         { objectId: 'bread-mould', role: 'food' },
         { objectId: 'mushroom', role: 'medicine' },
+        { objectId: 'bread-mould', role: 'decomposer' },
       ],
       doughRise: 0.75,
       safetyDecisions: ['observe-without-touching-or-eating'],
@@ -127,13 +149,67 @@ describe('procedural fungi forest world', () => {
       sandboxMoisturePercent: 82,
     });
 
-    expect(world.targets.dough.scale.y).toBeCloseTo(1.6);
+    expect(world.targets['role-bakery'].userData.matched).toBe(true);
+    expect(world.targets['role-medicine'].userData.matched).toBe(true);
+    expect(world.targets['role-compost'].userData.matched).toBe(true);
+    expect(world.targets['role-bakery'].scale.x).toBeGreaterThan(1);
+    expect(world.targets['role-medicine'].scale.x).toBeGreaterThan(1);
+    expect(world.targets['role-compost'].scale.x).toBeGreaterThan(1);
     expect(world.targets['safety-warning'].userData.resolved).toBe(true);
     expect(world.targets['quiz-mushroom-1'].userData.correct).toBe(true);
     world.setStage('forest-circle');
     expect(isEffectivelyVisible(world.targets['completion-badge'])).toBe(true);
     expect(isEffectivelyVisible(world.targets['sandbox-temperature'])).toBe(true);
     expect(world.snapshot()).toMatchObject({ completed: true, sandboxEnabled: true });
+
+    world.dispose();
+  });
+
+  it('shows before and risen dough side by side with observably different bounds', () => {
+    const world = createFungiWorld();
+    world.setStage('fungi-at-work');
+    world.setState({ doughRisen: true });
+
+    const before = world.targets['dough-before'];
+    const after = world.targets['dough-after'];
+    expect(isEffectivelyVisible(before)).toBe(true);
+    expect(isEffectivelyVisible(after)).toBe(true);
+    const beforeBounds = new THREE.Box3().setFromObject(before).getSize(new THREE.Vector3());
+    const afterBounds = new THREE.Box3().setFromObject(after).getSize(new THREE.Vector3());
+    expect(afterBounds.y).toBeGreaterThan(beforeBounds.y * 1.35);
+    expect(after.getObjectByName('risen-dough-bubbles')).toBeDefined();
+    expect(after.position.x).toBeGreaterThan(before.position.x);
+
+    world.dispose();
+  });
+
+  it('authors visible safe and unsafe symbol geometry plus readable plaques', () => {
+    const world = createFungiWorld();
+    world.setStage('food-safety-scan');
+    const visibleMeshNames = (target: THREE.Object3D) => {
+      const names: string[] = [];
+      target.traverse(object => {
+        if (object instanceof THREE.Mesh && isEffectivelyVisible(object)
+          && (object.material as THREE.Material).visible) names.push(object.name);
+      });
+      return names;
+    };
+
+    expect(visibleMeshNames(world.targets['fresh-item'])).toEqual(expect.arrayContaining([
+      'safe-check-short-stroke',
+      'safe-check-long-stroke',
+      'safe-label-plaque',
+    ]));
+    expect(visibleMeshNames(world.targets['safety-warning'])).toEqual(expect.arrayContaining([
+      'unsafe-warning-triangle',
+      'unsafe-exclamation-stem',
+      'unsafe-exclamation-dot',
+      'unsafe-label-plaque',
+    ]));
+    expect(world.targets['fresh-item'].getObjectByName('safe-label-plaque')?.userData.text)
+      .toBe('Fresh: check before using');
+    expect(world.targets['safety-warning'].getObjectByName('unsafe-label-plaque')?.userData.text)
+      .toBe('Mouldy: do not touch or eat');
 
     world.dispose();
   });
@@ -179,6 +255,16 @@ describe('procedural fungi forest world', () => {
 
     for (const stage of FUNGI_STAGE_IDS) {
       world.setStage(stage);
+      if (stage === 'five-day-time-lens') world.setState({ currentDay: 5 });
+      if (stage === 'fungi-at-work') world.setState({
+        doughRisen: true,
+        usefulRoleMatches: [
+          { objectId: 'bread-mould', role: 'food' },
+          { objectId: 'mushroom', role: 'medicine' },
+          { objectId: 'bread-mould', role: 'decomposer' },
+        ],
+      });
+      if (stage === 'forest-circle') world.setState({ completed: true, sandboxEnabled: true });
       const metrics = world.metrics();
       expect(metrics.drawCalls, stage).toBeLessThanOrEqual(120);
       expect(metrics.visibleTriangles, stage).toBeLessThanOrEqual(250_000);
