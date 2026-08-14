@@ -167,7 +167,7 @@ A concept-rich mission addressing orbit, temperature, scale, comet behavior, and
 
 **Audience:** Class 5 - Environmental Science, Science
 
-Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -290,7 +290,7 @@ A tested circuit investigation connecting component manipulation, current flow, 
 
 **Audience:** Class 8 - Biology, Science
 
-Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -312,7 +312,7 @@ Living Mycelium Lab: Fungi and Its Development is now a canonical interactive cl
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -331,7 +331,7 @@ Living Mycelium Lab: Fungi and Its Development is now a canonical interactive cl
 
 **Audience:** Class 5 - Environmental Science
 
-A Visit of an Ancient Fort is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+A Visit of an Ancient Fort is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -372,7 +372,7 @@ A Visit of an Ancient Fort is now a canonical guided class with declared stages,
 
 **Audience:** Class 5 - Environmental Science
 
-Rock Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Rock Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -413,7 +413,7 @@ Rock Climbing is now a canonical guided class with declared stages, evidence gat
 
 **Audience:** Class 6 - Science
 
-Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -454,7 +454,7 @@ Sorting Materials According to Their Shape is now a canonical interactive class 
 
 **Audience:** Class 6 - Science, Biology
 
-Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -495,7 +495,7 @@ Sources of Vitamins and Their Deficiencies is now a canonical interactive class 
 
 **Audience:** Class 6 - Science, Biology
 
-Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -536,7 +536,7 @@ Test the Presence of Lipids is now a canonical interactive class with declared s
 
 **Audience:** Class 6 - Science, Biology
 
-The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -577,7 +577,7 @@ The Sources of Minerals in Food is now a canonical interactive class with declar
 
 **Audience:** Class 5 - Environmental Science, Science
 
-What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -640,7 +640,7 @@ A spatial language lesson in which object placement makes position words concret
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -681,7 +681,7 @@ A classification investigation with targeted feedback that separates plant, anim
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -700,7 +700,7 @@ A classification investigation with targeted feedback that separates plant, anim
 
 **Audience:** Class 5 - Environmental Science
 
-A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -763,7 +763,7 @@ An experiment-bench sequence connecting litmus, universal indicator, pH classifi
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -782,7 +782,7 @@ An experiment-bench sequence connecting litmus, universal indicator, pH classifi
 
 **Audience:** Class 5 - Environmental Science
 
-Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -823,7 +823,7 @@ Camp in the Snow is now a canonical guided class with declared stages, evidence 
 
 **Audience:** Class 6 - Environmental Science
 
-Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -864,7 +864,7 @@ Cotton Farming is now a canonical guided class with declared stages, evidence ga
 
 **Audience:** Class 5 - Environmental Science
 
-Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -905,7 +905,7 @@ Dead Sea: Salt Water and Its Effects is now a canonical guided class with declar
 
 **Audience:** Class 5 - Environmental Science
 
-Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -946,7 +946,7 @@ Diagnosis of Malaria is now a canonical guided class with declared stages, evide
 
 **Audience:** Class 5 - Environmental Science
 
-Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1009,7 +1009,7 @@ An age-appropriate progression through Indian coins, notes, value comparison, si
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -1050,7 +1050,7 @@ A ten-stage pathway investigation covering organs, movement, accessory organs, a
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -1069,7 +1069,7 @@ A ten-stage pathway investigation covering organs, movement, accessory organs, a
 
 **Audience:** Class 5 - Environmental Science
 
-Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1110,7 +1110,7 @@ Life Cycle of the Mosquito is now a canonical guided class with declared stages,
 
 **Audience:** Class 5 - Environmental Science
 
-Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1151,7 +1151,7 @@ Milk Spoilage is now a canonical guided class with declared stages, evidence gat
 
 **Audience:** Class 5 - Environmental Science
 
-Pitcher Plant - The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Pitcher Plant - The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1192,7 +1192,7 @@ Pitcher Plant - The Insect Hunter is now a canonical guided class with declared 
 
 **Audience:** Class 5 - Environmental Science
 
-River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1233,7 +1233,7 @@ River Crossing Adventure is now a canonical guided class with declared stages, e
 
 **Audience:** Class 5 - Environmental Science
 
-Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1274,7 +1274,7 @@ Seed Dispersal is now a canonical guided class with declared stages, evidence ga
 
 **Audience:** Class 5 - Environmental Science
 
-Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1337,7 +1337,7 @@ A deterministic physics investigation of starting, stopping, speeding, redirecti
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -1356,7 +1356,7 @@ A deterministic physics investigation of starting, stopping, speeding, redirecti
 
 **Audience:** Class 5 - Environmental Science
 
-The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1397,7 +1397,7 @@ The Making of Aam Papad is now a canonical guided class with declared stages, ev
 
 **Audience:** Class 6 - Science
 
-The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1438,7 +1438,7 @@ The Process of Cotton Ginning is now a canonical guided class with declared stag
 
 **Audience:** Class 5 - Environmental Science
 
-The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.
+The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
 
 | Dimension | Score | Maximum |
 |---|---:|---:|
@@ -1501,7 +1501,7 @@ An early-years recognition and memory journey with large targets, visible feedba
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
@@ -1542,7 +1542,7 @@ A six-stage physiology lesson connecting airway structure, diaphragm motion, che
 **Gaps and risks**
 
 - Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
-- Asset richness and visual clarity still need a representative low-end device review.
+- Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.
 - Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
 
 **Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.

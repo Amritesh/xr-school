@@ -16,6 +16,7 @@ import {
   validateImplementedSimulationDefinition,
   type ImplementedSimulationDefinition,
 } from "../../packages/simulation-schema/src/index";
+import { EXPECTED_RELEASED_SIMULATION_COUNT } from "../../scripts/lib/simulation-quality-data";
 
 function mutableClone(
   definition: ImplementedSimulationDefinition,
@@ -25,7 +26,7 @@ function mutableClone(
 
 describe("implemented simulation registry", () => {
   it("contains the complete released registry while preserving the 13 legacy module seeds", () => {
-    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(36);
+    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(EXPECTED_RELEASED_SIMULATION_COUNT);
     expect(SIMULATION_MODULES).toHaveLength(13);
     const implementedIds = new Set(
       IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id),

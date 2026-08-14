@@ -40,8 +40,9 @@
       },
       "assets": {
         "count": 19,
+        "visualSource": "manifest-assets",
         "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
+        "fallback": "not applicable: visuals are code-native",
         "pathValidated": true,
         "hashValidated": true
       },
@@ -85,7 +86,7 @@
           "id": "pollination:assets",
           "kind": "asset",
           "ref": "pollination-assets",
-          "finding": "19 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "finding": "19 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -149,8 +150,9 @@
       },
       "assets": {
         "count": 16,
+        "visualSource": "manifest-assets",
         "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
+        "fallback": "not applicable: visuals are code-native",
         "pathValidated": true,
         "hashValidated": true
       },
@@ -194,7 +196,7 @@
           "id": "circuit:assets",
           "kind": "asset",
           "ref": "circuit-assets",
-          "finding": "16 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "finding": "16 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -258,8 +260,9 @@
       },
       "assets": {
         "count": 7,
+        "visualSource": "manifest-assets",
         "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
+        "fallback": "not applicable: visuals are code-native",
         "pathValidated": true,
         "hashValidated": true
       },
@@ -303,7 +306,7 @@
           "id": "c9-ch01-a02-states-of-matter:assets",
           "kind": "asset",
           "ref": "states-of-matter-assets",
-          "finding": "7 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "finding": "7 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -367,10 +370,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c6-ch01-a01-sources-of-food:behavior",
@@ -409,10 +413,10 @@
           ]
         },
         {
-          "id": "c6-ch01-a01-sources-of-food:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c6-ch01-a01-sources-of-food:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/FoodSourcesSortingViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -476,10 +480,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c5-ch03-a02-introduction-of-digestive-system:behavior",
@@ -518,10 +523,10 @@
           ]
         },
         {
-          "id": "c5-ch03-a02-introduction-of-digestive-system:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c5-ch03-a02-introduction-of-digestive-system:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/DigestiveSystemViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -585,10 +590,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c7-ch10-a02-the-breathing-process-in-human:behavior",
@@ -627,10 +633,10 @@
           ]
         },
         {
-          "id": "c7-ch10-a02-the-breathing-process-in-human:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c7-ch10-a02-the-breathing-process-in-human:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/BreathingProcessViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -694,10 +700,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:behavior",
@@ -736,10 +743,10 @@
           ]
         },
         {
-          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/ForceMotionViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -803,10 +810,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:behavior",
@@ -845,10 +853,10 @@
           ]
         },
         {
-          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/AcidBaseViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -912,10 +920,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c1-art-a01-learning-of-colours:behavior",
@@ -954,10 +963,10 @@
           ]
         },
         {
-          "id": "c1-art-a01-learning-of-colours:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c1-art-a01-learning-of-colours:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/ColourAdventureViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1021,10 +1030,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c1-math-ch01-introduction-to-money:behavior",
@@ -1063,10 +1073,10 @@
           ]
         },
         {
-          "id": "c1-math-ch01-introduction-to-money:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c1-math-ch01-introduction-to-money:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/MoneyTownViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1130,10 +1140,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c2-english-ch01-prepositions:behavior",
@@ -1172,10 +1183,10 @@
           ]
         },
         {
-          "id": "c2-english-ch01-prepositions:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c2-english-ch01-prepositions:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/components/simulations/PrepositionAdventureViewer.tsx",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1239,8 +1250,9 @@
       },
       "assets": {
         "count": 9,
+        "visualSource": "manifest-assets",
         "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
+        "fallback": "not applicable: visuals are code-native",
         "pathValidated": true,
         "hashValidated": true
       },
@@ -1284,7 +1296,7 @@
           "id": "c8-10-science-solar-system:assets",
           "kind": "asset",
           "ref": "solar-system-mission-assets",
-          "finding": "9 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "finding": "9 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1350,6 +1362,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -1395,7 +1408,7 @@
           "id": "c5-ch04-a01-food-spoilage:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch04-a01-food-spoilage",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1461,6 +1474,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -1506,7 +1520,7 @@
           "id": "c5-ch04-a02-milk-spoilage:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch04-a02-milk-spoilage",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1572,6 +1586,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -1617,7 +1632,7 @@
           "id": "c5-ch04-a03-the-making-of-aam-papad:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch04-a03-the-making-of-aam-papad",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1683,6 +1698,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -1728,7 +1744,7 @@
           "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch05-a01-pitcher-plant-the-insect-hunter",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1794,6 +1810,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -1839,7 +1856,7 @@
           "id": "c5-ch05-a02-seed-dispersal:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch05-a02-seed-dispersal",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -1905,6 +1922,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -1950,7 +1968,7 @@
           "id": "c5-ch06-a01-the-storage-of-rainwater:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch06-a01-the-storage-of-rainwater",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2016,6 +2034,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2061,7 +2080,7 @@
           "id": "c5-ch06-a02-a-step-well-structure:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch06-a02-a-step-well-structure",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2127,6 +2146,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2172,7 +2192,7 @@
           "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2238,6 +2258,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2283,7 +2304,7 @@
           "id": "c5-ch08-a01-diagnosis-of-malaria:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch08-a01-diagnosis-of-malaria",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2349,6 +2370,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2394,7 +2416,7 @@
           "id": "c5-ch08-a02-life-cycle-of-the-mosquito:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch08-a02-life-cycle-of-the-mosquito",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2460,6 +2482,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2505,7 +2528,7 @@
           "id": "c5-ch09-a01-river-crossing-adventure:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch09-a01-river-crossing-adventure",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2571,6 +2594,7 @@
       },
       "assets": {
         "count": 9,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2616,7 +2640,7 @@
           "id": "c5-ch09-a02-rock-climbing:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch09-a02-rock-climbing",
-          "finding": "9 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "9 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2682,6 +2706,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2727,7 +2752,7 @@
           "id": "c5-ch09-a03-camp-in-the-snow:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch09-a03-camp-in-the-snow",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2793,6 +2818,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2838,7 +2864,7 @@
           "id": "c5-ch09-a04-snow-mountain-climbing:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch09-a04-snow-mountain-climbing",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -2904,6 +2930,7 @@
       },
       "assets": {
         "count": 9,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -2949,7 +2976,7 @@
           "id": "c5-ch10-a01-a-visit-of-ancient-fort:assets",
           "kind": "asset",
           "ref": "assets:sim-c05-ch10-a01-a-visit-of-ancient-fort",
-          "finding": "9 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "9 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3015,6 +3042,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -3060,7 +3088,7 @@
           "id": "c6-ch03-a01-cotton-farming:assets",
           "kind": "asset",
           "ref": "assets:sim-c06-ch03-a01-cotton-farming",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3126,6 +3154,7 @@
       },
       "assets": {
         "count": 1,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "shared declarative scene remains usable without panorama texture",
         "pathValidated": true,
@@ -3171,7 +3200,7 @@
           "id": "c6-ch03-a02-the-process-of-cotton-ginning:assets",
           "kind": "asset",
           "ref": "assets:sim-c06-ch03-a02-the-process-of-cotton-ginning",
-          "finding": "1 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3237,6 +3266,7 @@
       },
       "assets": {
         "count": 3,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "manifest-declared fallback asset",
         "pathValidated": true,
@@ -3282,7 +3312,7 @@
           "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:assets",
           "kind": "asset",
           "ref": "assets-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
-          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "3 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3348,6 +3378,7 @@
       },
       "assets": {
         "count": 3,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "manifest-declared fallback asset",
         "pathValidated": true,
@@ -3393,7 +3424,7 @@
           "id": "c5-ch07-a03-soluble-and-insoluble-substances:assets",
           "kind": "asset",
           "ref": "assets-c5-ch07-a03-soluble-and-insoluble-substances",
-          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "3 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3459,6 +3490,7 @@
       },
       "assets": {
         "count": 3,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "manifest-declared fallback asset",
         "pathValidated": true,
@@ -3504,7 +3536,7 @@
           "id": "c6-ch02-a03-test-the-presence-of-lipids:assets",
           "kind": "asset",
           "ref": "assets-c6-ch02-a03-test-the-presence-of-lipids",
-          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "3 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3570,6 +3602,7 @@
       },
       "assets": {
         "count": 3,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "manifest-declared fallback asset",
         "pathValidated": true,
@@ -3615,7 +3648,7 @@
           "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:assets",
           "kind": "asset",
           "ref": "assets-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
-          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "3 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3681,6 +3714,7 @@
       },
       "assets": {
         "count": 3,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "manifest-declared fallback asset",
         "pathValidated": true,
@@ -3726,7 +3760,7 @@
           "id": "c6-ch02-a05-the-sources-of-minerals-in-food:assets",
           "kind": "asset",
           "ref": "assets-c6-ch02-a05-the-sources-of-minerals-in-food",
-          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "3 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3792,6 +3826,7 @@
       },
       "assets": {
         "count": 3,
+        "visualSource": "manifest-assets",
         "provenanceComplete": false,
         "fallback": "manifest-declared fallback asset",
         "pathValidated": true,
@@ -3837,7 +3872,7 @@
           "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:assets",
           "kind": "asset",
           "ref": "assets-c6-ch04-a01-sorting-materials-according-to-their-shape",
-          "finding": "3 declared assets; path and digest validation passes. Provenance completeness: false.",
+          "finding": "3 declared assets; path, digest, and provenance validation passes.",
           "dimensions": [
             "visuals",
             "stability"
@@ -3901,10 +3936,11 @@
       },
       "assets": {
         "count": 0,
-        "provenanceComplete": true,
-        "fallback": "shared procedural scene fallback",
-        "pathValidated": true,
-        "hashValidated": true
+        "visualSource": "code-native",
+        "provenanceComplete": false,
+        "fallback": "not applicable: visuals are code-native",
+        "pathValidated": false,
+        "hashValidated": false
       },
       "tests": [
         "c8-ch02-a03-fungi-and-its-development:behavior",
@@ -3943,10 +3979,20 @@
           ]
         },
         {
-          "id": "c8-ch02-a03-fungi-and-its-development:assets",
-          "kind": "asset",
-          "ref": "shared procedural scene",
-          "finding": "0 declared assets; path and digest validation passes. Provenance completeness: true.",
+          "id": "c8-ch02-a03-fungi-and-its-development:visual-source",
+          "kind": "code-native-visual",
+          "ref": "apps/web/lib/world-builder/fungiWorld.ts",
+          "finding": "The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c8-ch02-a03-fungi-and-its-development:visual-behavior",
+          "kind": "test",
+          "ref": "tests/unit/fungi-world.test.ts",
+          "finding": "Executable visual-world tests verify authored targets, state projection, performance budgets, and disposal behavior.",
           "dimensions": [
             "visuals",
             "stability"

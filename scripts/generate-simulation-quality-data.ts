@@ -11,6 +11,7 @@ import {
   type Pr8Contribution,
 } from './lib/pr8-quality-evidence';
 import {
+  EXPECTED_RELEASED_SIMULATION_COUNT,
   QUALITY_WEIGHTS,
   qualityBand,
   qualityTotal,
@@ -20,6 +21,44 @@ import {
 } from './lib/simulation-quality-data';
 
 const ALL_DIMENSIONS = Object.keys(QUALITY_WEIGHTS) as QualityDimension[];
+
+interface CodeNativeVisualEvidence {
+  sourcePath: string;
+  behaviorTestPath?: string;
+}
+
+const CODE_NATIVE_VISUAL_EVIDENCE: Readonly<
+  Record<string, CodeNativeVisualEvidence>
+> = Object.freeze({
+  'c6-ch01-a01-sources-of-food': {
+    sourcePath: 'apps/web/components/simulations/FoodSourcesSortingViewer.tsx',
+  },
+  'c5-ch03-a02-introduction-of-digestive-system': {
+    sourcePath: 'apps/web/components/simulations/DigestiveSystemViewer.tsx',
+  },
+  'c7-ch10-a02-the-breathing-process-in-human': {
+    sourcePath: 'apps/web/components/simulations/BreathingProcessViewer.tsx',
+  },
+  'c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape': {
+    sourcePath: 'apps/web/components/simulations/ForceMotionViewer.tsx',
+  },
+  'c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test': {
+    sourcePath: 'apps/web/components/simulations/AcidBaseViewer.tsx',
+  },
+  'c1-art-a01-learning-of-colours': {
+    sourcePath: 'apps/web/components/simulations/ColourAdventureViewer.tsx',
+  },
+  'c1-math-ch01-introduction-to-money': {
+    sourcePath: 'apps/web/components/simulations/MoneyTownViewer.tsx',
+  },
+  'c2-english-ch01-prepositions': {
+    sourcePath: 'apps/web/components/simulations/PrepositionAdventureViewer.tsx',
+  },
+  'c8-ch02-a03-fungi-and-its-development': {
+    sourcePath: 'apps/web/lib/world-builder/fungiWorld.ts',
+    behaviorTestPath: 'tests/unit/fungi-world.test.ts',
+  },
+});
 
 const BASELINE_TOTALS: Readonly<Record<string, number>> = Object.freeze({
   'walls-tell-stories-ancient-fort-visit': 65,
@@ -121,7 +160,7 @@ function subjectLabel(definition: ImplementedSimulationDefinition): string {
 }
 
 function provenanceComplete(definition: ImplementedSimulationDefinition): boolean {
-  return definition.assets.assets.every(asset =>
+  return definition.assets.assets.length > 0 && definition.assets.assets.every(asset =>
     [asset.source, asset.author, asset.license].every(value => value.trim())
     && ![asset.source, asset.author, asset.license].some(value =>
       /unknown|unverified|undocumented/i.test(value),
@@ -131,6 +170,14 @@ function provenanceComplete(definition: ImplementedSimulationDefinition): boolea
 
 function packagedAudio(definition: ImplementedSimulationDefinition): number {
   return definition.narration.cues.filter(cue => cue.audioUrl).length;
+}
+
+function hasAuditableVisualEvidence(
+  definition: ImplementedSimulationDefinition,
+): boolean {
+  return definition.assets.assets.length > 0
+    ? provenanceComplete(definition)
+    : Boolean(CODE_NATIVE_VISUAL_EVIDENCE[definition.module.slug]);
 }
 
 function postScores(definition: ImplementedSimulationDefinition): QualityScores {
@@ -144,7 +191,7 @@ function postScores(definition: ImplementedSimulationDefinition): QualityScores 
       education: 19,
       integrity: 15,
       interactivity: 15,
-      visuals: provenanceComplete(definition) ? 12 : 9,
+      visuals: hasAuditableVisualEvidence(definition) ? 12 : 9,
       audio: packagedAudio(definition) > 0 ? 8 : 4,
       usability: 8,
       stability: 8,
@@ -155,7 +202,7 @@ function postScores(definition: ImplementedSimulationDefinition): QualityScores 
     education: definition.kind === 'interactive' ? 18 : 17,
     integrity: definition.kind === 'interactive' ? 14 : 13,
     interactivity: definition.kind === 'interactive' ? 14 : 13,
-    visuals: provenanceComplete(definition) ? 11 : 9,
+    visuals: hasAuditableVisualEvidence(definition) ? 11 : 9,
     audio: packagedAudio(definition) > 0 ? 8 : 4,
     usability: 8,
     stability: 8,
@@ -236,6 +283,38 @@ function evidenceRecord(definition: ImplementedSimulationDefinition) {
   const assetCount = definition.assets.assets.length;
   const provenance = provenanceComplete(definition);
   const audioCount = packagedAudio(definition);
+  const codeNativeVisual = assetCount === 0
+    ? CODE_NATIVE_VISUAL_EVIDENCE[slug]
+    : undefined;
+  if (assetCount === 0 && !codeNativeVisual) {
+    throw new Error(`Missing code-native visual evidence for ${slug}`);
+  }
+  const visualReferences: EvidenceReference[] = assetCount > 0
+    ? [{
+      id: `${slug}:assets`,
+      kind: 'asset',
+      ref: definition.assets.id,
+      finding: `${assetCount} declared assets; path, digest, and provenance validation passes.`,
+      dimensions: ['visuals', 'stability'],
+    }]
+    : [
+      {
+        id: `${slug}:visual-source`,
+        kind: 'code-native-visual',
+        ref: codeNativeVisual!.sourcePath,
+        finding: 'The visual world is authored in repository code; no file-asset path, digest, or provenance validation is claimed.',
+        dimensions: ['visuals', 'stability'],
+      },
+      ...(codeNativeVisual?.behaviorTestPath
+        ? [{
+          id: `${slug}:visual-behavior`,
+          kind: 'test' as const,
+          ref: codeNativeVisual.behaviorTestPath,
+          finding: 'Executable visual-world tests verify authored targets, state projection, performance budgets, and disposal behavior.',
+          dimensions: ['visuals', 'stability'] as QualityDimension[],
+        }]
+        : []),
+    ];
   const references: EvidenceReference[] = [
     {
       id: `${slug}:definition`,
@@ -251,13 +330,7 @@ function evidenceRecord(definition: ImplementedSimulationDefinition) {
       finding: 'Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.',
       dimensions: ['education', 'integrity', 'interactivity', 'usability', 'stability'],
     },
-    {
-      id: `${slug}:assets`,
-      kind: 'asset',
-      ref: assetCount > 0 ? definition.assets.id : 'shared procedural scene',
-      finding: `${assetCount} declared assets; path and digest validation passes. Provenance completeness: ${provenance}.`,
-      dimensions: ['visuals', 'stability'],
-    },
+    ...visualReferences,
     {
       id: `${slug}:narration`,
       kind: 'narration',
@@ -311,14 +384,15 @@ function evidenceRecord(definition: ImplementedSimulationDefinition) {
     },
     assets: {
       count: assetCount,
+      visualSource: assetCount > 0 ? 'manifest-assets' : 'code-native',
       provenanceComplete: provenance,
       fallback: definition.assets.assets.some(asset => asset.fallbackAssetId)
         ? 'manifest-declared fallback asset'
         : definition.kind === 'guided'
           ? 'shared declarative scene remains usable without panorama texture'
-          : 'shared procedural scene fallback',
-      pathValidated: true,
-      hashValidated: true,
+          : 'not applicable: visuals are code-native',
+      pathValidated: assetCount > 0,
+      hashValidated: assetCount > 0,
     },
     tests: [
       `${slug}:behavior`,
@@ -342,9 +416,14 @@ function portfolioCard(
 ) {
   const slug = definition.module.slug;
   const scores = postScores(definition);
-  const assetRisk = evidence.assets.provenanceComplete
-    ? 'Asset richness and visual clarity still need a representative low-end device review.'
-    : 'Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.';
+  const visualEvidenceIds = evidence.references
+    .filter(reference => reference.dimensions?.includes('visuals'))
+    .map(reference => reference.id);
+  const assetRisk = evidence.assets.visualSource === 'code-native'
+    ? 'Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.'
+    : evidence.assets.provenanceComplete
+      ? 'Asset richness and visual clarity still need a representative low-end device review.'
+      : 'Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.';
   const audioStrength = evidence.narration.packagedAudio > 0
     ? `${evidence.narration.packagedAudio} committed narration clips are owned by the manifest with exact captions.`
     : `${evidence.narration.captions} exact captions and a browser speech fallback preserve access, but do not count as packaged voice production.`;
@@ -364,14 +443,18 @@ function portfolioCard(
       education: [`${slug}:definition`, `${slug}:behavior`],
       integrity: [`${slug}:definition`, `${slug}:behavior`],
       interactivity: [`${slug}:behavior`, `${slug}:browser-contract`],
-      visuals: [`${slug}:assets`],
+      visuals: visualEvidenceIds,
       audio: [`${slug}:narration`],
       usability: [`${slug}:behavior`, `${slug}:narration`, `${slug}:browser-contract`],
-      stability: [`${slug}:behavior`, `${slug}:assets`, `${slug}:release-build`],
+      stability: [
+        `${slug}:behavior`,
+        ...visualEvidenceIds,
+        `${slug}:release-build`,
+      ],
       deployment: [`${slug}:release-build`],
     },
     summary: TITLE_SUMMARIES[slug]
-      ?? `${definition.module.title} is now a canonical ${definition.kind} class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.`,
+      ?? `${definition.module.title} is now a canonical ${definition.kind} class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.`,
     strengths: [
       `${definition.experience.stages.length} declared stages connect the curriculum objective to observable learner actions and evidence.`,
       `${definition.assessment.prompts.length} assessment prompts include misconception and transfer checks; completion is kept separate from mastery.`,
@@ -521,8 +604,10 @@ export function generateSimulationQualityData(): void {
   const released = IMPLEMENTED_SIMULATIONS.filter(
     definition => definition.module.publicationStatus === 'released',
   );
-  if (released.length !== 36) {
-    throw new Error(`Expected 36 released simulations before report generation; received ${released.length}`);
+  if (released.length !== EXPECTED_RELEASED_SIMULATION_COUNT) {
+    throw new Error(
+      `Expected ${EXPECTED_RELEASED_SIMULATION_COUNT} released simulations before report generation; received ${released.length}`,
+    );
   }
   const evidence = released.map(evidenceRecord);
   const cards = released

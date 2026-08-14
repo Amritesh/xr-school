@@ -122,7 +122,7 @@
         "c5-ch07-a03-soluble-and-insoluble-substances:release-build"
       ]
     },
-    "summary": "Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -304,7 +304,8 @@
         "c8-ch02-a03-fungi-and-its-development:browser-contract"
       ],
       "visuals": [
-        "c8-ch02-a03-fungi-and-its-development:assets"
+        "c8-ch02-a03-fungi-and-its-development:visual-source",
+        "c8-ch02-a03-fungi-and-its-development:visual-behavior"
       ],
       "audio": [
         "c8-ch02-a03-fungi-and-its-development:narration"
@@ -316,14 +317,15 @@
       ],
       "stability": [
         "c8-ch02-a03-fungi-and-its-development:behavior",
-        "c8-ch02-a03-fungi-and-its-development:assets",
+        "c8-ch02-a03-fungi-and-its-development:visual-source",
+        "c8-ch02-a03-fungi-and-its-development:visual-behavior",
         "c8-ch02-a03-fungi-and-its-development:release-build"
       ],
       "deployment": [
         "c8-ch02-a03-fungi-and-its-development:release-build"
       ]
     },
-    "summary": "Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "7 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -331,7 +333,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -459,7 +461,7 @@
         "c5-ch09-a02-rock-climbing:release-build"
       ]
     },
-    "summary": "Rock Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Rock Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -528,7 +530,7 @@
         "c5-ch10-a01-a-visit-of-ancient-fort:release-build"
       ]
     },
-    "summary": "A Visit of an Ancient Fort is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "A Visit of an Ancient Fort is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -597,7 +599,7 @@
         "c5-ch07-a01-a-concept-about-what-floats-what-sinks:release-build"
       ]
     },
-    "summary": "What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -666,7 +668,7 @@
         "c6-ch02-a03-test-the-presence-of-lipids:release-build"
       ]
     },
-    "summary": "Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -735,7 +737,7 @@
         "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:release-build"
       ]
     },
-    "summary": "Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -804,7 +806,7 @@
         "c6-ch02-a05-the-sources-of-minerals-in-food:release-build"
       ]
     },
-    "summary": "The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -873,7 +875,7 @@
         "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build"
       ]
     },
-    "summary": "Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -921,7 +923,7 @@
         "c2-english-ch01-prepositions:browser-contract"
       ],
       "visuals": [
-        "c2-english-ch01-prepositions:assets"
+        "c2-english-ch01-prepositions:visual-source"
       ],
       "audio": [
         "c2-english-ch01-prepositions:narration"
@@ -933,7 +935,7 @@
       ],
       "stability": [
         "c2-english-ch01-prepositions:behavior",
-        "c2-english-ch01-prepositions:assets",
+        "c2-english-ch01-prepositions:visual-source",
         "c2-english-ch01-prepositions:release-build"
       ],
       "deployment": [
@@ -948,7 +950,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -988,7 +990,7 @@
         "c6-ch01-a01-sources-of-food:browser-contract"
       ],
       "visuals": [
-        "c6-ch01-a01-sources-of-food:assets"
+        "c6-ch01-a01-sources-of-food:visual-source"
       ],
       "audio": [
         "c6-ch01-a01-sources-of-food:narration"
@@ -1000,7 +1002,7 @@
       ],
       "stability": [
         "c6-ch01-a01-sources-of-food:behavior",
-        "c6-ch01-a01-sources-of-food:assets",
+        "c6-ch01-a01-sources-of-food:visual-source",
         "c6-ch01-a01-sources-of-food:release-build"
       ],
       "deployment": [
@@ -1015,7 +1017,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -1055,7 +1057,7 @@
         "c1-math-ch01-introduction-to-money:browser-contract"
       ],
       "visuals": [
-        "c1-math-ch01-introduction-to-money:assets"
+        "c1-math-ch01-introduction-to-money:visual-source"
       ],
       "audio": [
         "c1-math-ch01-introduction-to-money:narration"
@@ -1067,7 +1069,7 @@
       ],
       "stability": [
         "c1-math-ch01-introduction-to-money:behavior",
-        "c1-math-ch01-introduction-to-money:assets",
+        "c1-math-ch01-introduction-to-money:visual-source",
         "c1-math-ch01-introduction-to-money:release-build"
       ],
       "deployment": [
@@ -1082,7 +1084,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -1122,7 +1124,7 @@
         "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:browser-contract"
       ],
       "visuals": [
-        "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:assets"
+        "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:visual-source"
       ],
       "audio": [
         "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:narration"
@@ -1134,7 +1136,7 @@
       ],
       "stability": [
         "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:behavior",
-        "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:assets",
+        "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:visual-source",
         "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:release-build"
       ],
       "deployment": [
@@ -1149,7 +1151,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -1189,7 +1191,7 @@
         "c5-ch03-a02-introduction-of-digestive-system:browser-contract"
       ],
       "visuals": [
-        "c5-ch03-a02-introduction-of-digestive-system:assets"
+        "c5-ch03-a02-introduction-of-digestive-system:visual-source"
       ],
       "audio": [
         "c5-ch03-a02-introduction-of-digestive-system:narration"
@@ -1201,7 +1203,7 @@
       ],
       "stability": [
         "c5-ch03-a02-introduction-of-digestive-system:behavior",
-        "c5-ch03-a02-introduction-of-digestive-system:assets",
+        "c5-ch03-a02-introduction-of-digestive-system:visual-source",
         "c5-ch03-a02-introduction-of-digestive-system:release-build"
       ],
       "deployment": [
@@ -1216,7 +1218,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -1277,7 +1279,7 @@
         "c5-ch04-a01-food-spoilage:release-build"
       ]
     },
-    "summary": "Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1346,7 +1348,7 @@
         "c5-ch04-a02-milk-spoilage:release-build"
       ]
     },
-    "summary": "Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1415,7 +1417,7 @@
         "c5-ch04-a03-the-making-of-aam-papad:release-build"
       ]
     },
-    "summary": "The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1484,7 +1486,7 @@
         "c5-ch05-a01-pitcher-plant-the-insect-hunter:release-build"
       ]
     },
-    "summary": "Pitcher Plant — The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Pitcher Plant — The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1553,7 +1555,7 @@
         "c5-ch05-a02-seed-dispersal:release-build"
       ]
     },
-    "summary": "Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1622,7 +1624,7 @@
         "c5-ch06-a01-the-storage-of-rainwater:release-build"
       ]
     },
-    "summary": "The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1691,7 +1693,7 @@
         "c5-ch06-a02-a-step-well-structure:release-build"
       ]
     },
-    "summary": "A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1760,7 +1762,7 @@
         "c5-ch07-a02-dead-sea-salt-water-and-its-effects:release-build"
       ]
     },
-    "summary": "Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1829,7 +1831,7 @@
         "c5-ch08-a01-diagnosis-of-malaria:release-build"
       ]
     },
-    "summary": "Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1898,7 +1900,7 @@
         "c5-ch08-a02-life-cycle-of-the-mosquito:release-build"
       ]
     },
-    "summary": "Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -1967,7 +1969,7 @@
         "c5-ch09-a01-river-crossing-adventure:release-build"
       ]
     },
-    "summary": "River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -2036,7 +2038,7 @@
         "c5-ch09-a03-camp-in-the-snow:release-build"
       ]
     },
-    "summary": "Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -2105,7 +2107,7 @@
         "c5-ch09-a04-snow-mountain-climbing:release-build"
       ]
     },
-    "summary": "Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -2174,7 +2176,7 @@
         "c6-ch03-a01-cotton-farming:release-build"
       ]
     },
-    "summary": "Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -2243,7 +2245,7 @@
         "c6-ch03-a02-the-process-of-cotton-ginning:release-build"
       ]
     },
-    "summary": "The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, assets, route ownership, and release metadata.",
+    "summary": "The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -2291,7 +2293,7 @@
         "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:browser-contract"
       ],
       "visuals": [
-        "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:assets"
+        "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:visual-source"
       ],
       "audio": [
         "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:narration"
@@ -2303,7 +2305,7 @@
       ],
       "stability": [
         "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:behavior",
-        "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:assets",
+        "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:visual-source",
         "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:release-build"
       ],
       "deployment": [
@@ -2318,7 +2320,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -2358,7 +2360,7 @@
         "c1-art-a01-learning-of-colours:browser-contract"
       ],
       "visuals": [
-        "c1-art-a01-learning-of-colours:assets"
+        "c1-art-a01-learning-of-colours:visual-source"
       ],
       "audio": [
         "c1-art-a01-learning-of-colours:narration"
@@ -2370,7 +2372,7 @@
       ],
       "stability": [
         "c1-art-a01-learning-of-colours:behavior",
-        "c1-art-a01-learning-of-colours:assets",
+        "c1-art-a01-learning-of-colours:visual-source",
         "c1-art-a01-learning-of-colours:release-build"
       ],
       "deployment": [
@@ -2385,7 +2387,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -2425,7 +2427,7 @@
         "c7-ch10-a02-the-breathing-process-in-human:browser-contract"
       ],
       "visuals": [
-        "c7-ch10-a02-the-breathing-process-in-human:assets"
+        "c7-ch10-a02-the-breathing-process-in-human:visual-source"
       ],
       "audio": [
         "c7-ch10-a02-the-breathing-process-in-human:narration"
@@ -2437,7 +2439,7 @@
       ],
       "stability": [
         "c7-ch10-a02-the-breathing-process-in-human:behavior",
-        "c7-ch10-a02-the-breathing-process-in-human:assets",
+        "c7-ch10-a02-the-breathing-process-in-human:visual-source",
         "c7-ch10-a02-the-breathing-process-in-human:release-build"
       ],
       "deployment": [
@@ -2452,7 +2454,7 @@
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."

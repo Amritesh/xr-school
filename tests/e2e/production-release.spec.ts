@@ -1,13 +1,14 @@
 import { expect, test } from '@playwright/test';
 
 import { PR8_CONTRIBUTIONS } from '../../scripts/lib/pr8-quality-evidence';
+import { EXPECTED_RELEASED_SIMULATION_COUNT } from '../../scripts/lib/simulation-quality-data';
 
 const expectedSha = process.env.XR_EXPECTED_SHA;
 
 test.describe('deployed simulation release', () => {
   test.skip(!expectedSha, 'XR_EXPECTED_SHA is required for hosted acceptance');
 
-  test('serves the expected 36-class internal-QA release', async ({ page, request }) => {
+  test(`serves the expected ${EXPECTED_RELEASED_SIMULATION_COUNT}-class internal-QA release`, async ({ page, request }) => {
     test.setTimeout(660_000);
     const deadline = Date.now() + 600_000;
     let metadata: Record<string, unknown> | undefined;
@@ -26,9 +27,9 @@ test.describe('deployed simulation release', () => {
     }
     expect(metadata).toEqual({
       commitSha: expectedSha,
-      publiclyLaunchable: 36,
+      publiclyLaunchable: EXPECTED_RELEASED_SIMULATION_COUNT,
       evidenceMaturity: {
-        internalQA: 36,
+        internalQA: EXPECTED_RELEASED_SIMULATION_COUNT,
         deviceVerified: 0,
         classroomVerified: 0,
       },

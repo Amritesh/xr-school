@@ -13,6 +13,8 @@ export const QUALITY_WEIGHTS = Object.freeze({
   deployment: 5,
 } as const);
 
+export const EXPECTED_RELEASED_SIMULATION_COUNT = 36;
+
 export type QualityDimension = keyof typeof QUALITY_WEIGHTS;
 export type QualityScores = Record<QualityDimension, number>;
 
@@ -25,6 +27,7 @@ export interface EvidenceReference {
     | 'build'
     | 'browser'
     | 'asset'
+    | 'code-native-visual'
     | 'narration'
     | 'deployment';
   ref: string;
@@ -111,7 +114,8 @@ function validateReferences(
   const references: EvidenceReference[] = [];
   const ids: string[] = [];
   const validKinds = new Set([
-    'git', 'source', 'test', 'build', 'browser', 'asset', 'narration', 'deployment',
+    'git', 'source', 'test', 'build', 'browser', 'asset', 'code-native-visual',
+    'narration', 'deployment',
   ]);
   value.forEach((item, index) => {
     const itemPath = `${path}[${index}]`;
@@ -157,8 +161,10 @@ function validateRegistry(
   const released = definitions.filter(
     definition => definition.module.publicationStatus === 'released',
   );
-  if (released.length !== 36) {
-    errors.push(`registry: expected exactly 36 released simulations, received ${released.length}`);
+  if (released.length !== EXPECTED_RELEASED_SIMULATION_COUNT) {
+    errors.push(
+      `registry: expected exactly ${EXPECTED_RELEASED_SIMULATION_COUNT} released simulations, received ${released.length}`,
+    );
   }
   const slugs = released.map(definition => definition.module.slug);
   const duplicates = slugs.filter((slug, index) => slugs.indexOf(slug) !== index);
@@ -224,8 +230,10 @@ export function validatePortfolioData({
   const cardRecords = Array.isArray(cards) ? cards : [];
   if (!Array.isArray(cards)) errors.push('cards: expected an array');
   const cardSlugs = cardRecords.map(card => isRecord(card) && hasText(card.slug) ? card.slug : '');
-  if (cardRecords.length !== 36) {
-    errors.push(`cards: expected exactly 36 records, received ${cardRecords.length}`);
+  if (cardRecords.length !== EXPECTED_RELEASED_SIMULATION_COUNT) {
+    errors.push(
+      `cards: expected exactly ${EXPECTED_RELEASED_SIMULATION_COUNT} records, received ${cardRecords.length}`,
+    );
   }
   validateExactSet('cards canonical slugs', cardSlugs, expectedSlugs, errors);
 
@@ -243,8 +251,10 @@ export function validatePortfolioData({
     errors.push('evidence.simulations: expected an array');
   }
   const evidenceSlugs = evidenceRecords.map(record => isRecord(record) && hasText(record.slug) ? record.slug : '');
-  if (evidenceRecords.length !== 36) {
-    errors.push(`evidence.simulations: expected exactly 36 records, received ${evidenceRecords.length}`);
+  if (evidenceRecords.length !== EXPECTED_RELEASED_SIMULATION_COUNT) {
+    errors.push(
+      `evidence.simulations: expected exactly ${EXPECTED_RELEASED_SIMULATION_COUNT} records, received ${evidenceRecords.length}`,
+    );
   }
   validateExactSet('evidence canonical slugs', evidenceSlugs, expectedSlugs, errors);
 
@@ -305,7 +315,8 @@ export function validatePortfolioData({
     if (assets.count !== definition.assets.assets.length) {
       errors.push(`${path}.assets.count: expected ${definition.assets.assets.length}`);
     }
-    const provenanceComplete = definition.assets.assets.every(asset =>
+    const hasManifestAssets = definition.assets.assets.length > 0;
+    const provenanceComplete = hasManifestAssets && definition.assets.assets.every(asset =>
       [asset.source, asset.author, asset.license].every(hasText)
       && ![asset.source, asset.author, asset.license].some(value =>
         /unknown|unverified|undocumented/i.test(value),
@@ -314,8 +325,15 @@ export function validatePortfolioData({
     if (assets.provenanceComplete !== provenanceComplete) {
       errors.push(`${path}.assets.provenanceComplete: expected ${provenanceComplete}`);
     }
-    if (assets.pathValidated !== true || assets.hashValidated !== true) {
-      errors.push(`${path}.assets: pathValidated and hashValidated must be true`);
+    const expectedVisualSource = hasManifestAssets ? 'manifest-assets' : 'code-native';
+    if (assets.visualSource !== expectedVisualSource) {
+      errors.push(`${path}.assets.visualSource: expected ${expectedVisualSource}`);
+    }
+    if (assets.pathValidated !== hasManifestAssets) {
+      errors.push(`${path}.assets.pathValidated: expected ${hasManifestAssets}`);
+    }
+    if (assets.hashValidated !== hasManifestAssets) {
+      errors.push(`${path}.assets.hashValidated: expected ${hasManifestAssets}`);
     }
     if (!hasText(assets.fallback)) errors.push(`${path}.assets.fallback: required`);
     if (!Array.isArray(record.tests) || record.tests.length === 0 || !record.tests.every(hasText)) {
@@ -333,7 +351,19 @@ export function validatePortfolioData({
     if (record.classroomEvidence !== 'not-run') {
       errors.push(`${path}.classroomEvidence: expected not-run`);
     }
-    validateReferences(record.references, `${path}.references`, errors);
+    const references = validateReferences(
+      record.references,
+      `${path}.references`,
+      errors,
+    );
+    const expectedVisualEvidenceKind = hasManifestAssets
+      ? 'asset'
+      : 'code-native-visual';
+    if (!references.some(reference => reference.kind === expectedVisualEvidenceKind)) {
+      errors.push(
+        `${path}.references: expected ${expectedVisualEvidenceKind} visual evidence`,
+      );
+    }
   });
 
   cardRecords.forEach((card, index) => {
@@ -403,9 +433,11 @@ export function validatePortfolioData({
   const assets = evidenceRecords.reduce((sum, record) =>
     sum + (isRecord(record) && isRecord(record.assets) ? numberAt(record.assets.count) : 0), 0);
   const expectedPortfolio: Record<string, unknown> = {
-    publiclyLaunchableSimulations: 36,
+    publiclyLaunchableSimulations: EXPECTED_RELEASED_SIMULATION_COUNT,
     evidenceMaturityDistribution: {
-      internalQA: 36,
+      internalQA: released.filter(
+        definition => definition.module.evidenceMaturity === 'internalQA',
+      ).length,
       deviceVerified: 0,
       classroomVerified: 0,
     },
@@ -486,7 +518,9 @@ export function validateBeforeAfterScorecard({
     }
     const definition = definitionBySlug.get(expected.canonicalSlug);
     if (!definition) {
-      errors.push(`${path}.canonicalSlug: not found in the 36-class registry`);
+      errors.push(
+        `${path}.canonicalSlug: not found in the ${EXPECTED_RELEASED_SIMULATION_COUNT}-class registry`,
+      );
       return;
     }
     if (definition.contribution.source !== 'pr-8') {

@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 
 import { buildApp } from '../../apps/api/src/app';
+import { EXPECTED_RELEASED_SIMULATION_COUNT } from '../../scripts/lib/simulation-quality-data';
 
 describe('simulation registry API', () => {
   let app: FastifyInstance;
@@ -14,17 +15,17 @@ describe('simulation registry API', () => {
     await app.close();
   });
 
-  it('returns all 36 canonical released modules with honest maturity', async () => {
+  it(`returns all ${EXPECTED_RELEASED_SIMULATION_COUNT} canonical released modules with honest maturity`, async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/v1/simulation-modules',
     });
     expect(response.statusCode).toBe(200);
     const body = response.json();
-    expect(body.items).toHaveLength(36);
+    expect(body.items).toHaveLength(EXPECTED_RELEASED_SIMULATION_COUNT);
     expect(body.page).toMatchObject({
-      pageSize: 36,
-      totalItems: 36,
+      pageSize: EXPECTED_RELEASED_SIMULATION_COUNT,
+      totalItems: EXPECTED_RELEASED_SIMULATION_COUNT,
       totalPages: 1,
     });
     expect(

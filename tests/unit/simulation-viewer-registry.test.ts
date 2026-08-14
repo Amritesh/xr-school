@@ -16,6 +16,7 @@ import {
   findSimulationViewer,
   getSimulationViewer,
 } from "../../apps/web/lib/simulations/viewerRegistry";
+import { EXPECTED_RELEASED_SIMULATION_COUNT } from "../../scripts/lib/simulation-quality-data";
 
 const EXPECTED_VIEWERS = {
   "acid-base": {
@@ -83,9 +84,9 @@ describe("released simulation viewer registry", () => {
     );
     const releasedKeys = released.map(({ module }) => module.viewerKey).sort();
 
-    expect(released).toHaveLength(36);
+    expect(released).toHaveLength(EXPECTED_RELEASED_SIMULATION_COUNT);
     expect([...SIMULATION_VIEWER_KEYS].sort()).toEqual(releasedKeys);
-    expect(SIMULATION_VIEWER_KEYS).toHaveLength(36);
+    expect(SIMULATION_VIEWER_KEYS).toHaveLength(EXPECTED_RELEASED_SIMULATION_COUNT);
     expect(SIMULATION_VIEWER_KEYS).toEqual(expect.arrayContaining([
       ...Object.keys(EXPECTED_VIEWERS),
       ...GUIDED_SIMULATION_DEFINITIONS.map(definition => definition.viewerKey),

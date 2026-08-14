@@ -5,6 +5,7 @@ import {
   resolveSimulationPath,
   routeForSimulation,
 } from '../../packages/simulation-content/src/implemented/registry';
+import { EXPECTED_RELEASED_SIMULATION_COUNT } from '../../scripts/lib/simulation-quality-data';
 
 const released = IMPLEMENTED_SIMULATIONS.filter(
   definition => definition.module.publicationStatus === 'released',
@@ -24,14 +25,14 @@ async function launchBrowserExperience(page: Page): Promise<void> {
 }
 
 test.describe('released simulation portfolio', () => {
-  test('has exactly 36 honest released records', () => {
-    expect(released).toHaveLength(36);
+  test(`has exactly ${EXPECTED_RELEASED_SIMULATION_COUNT} honest released records`, () => {
+    expect(released).toHaveLength(EXPECTED_RELEASED_SIMULATION_COUNT);
     expect(released.every(
       definition => definition.module.evidenceMaturity === 'internalQA',
     )).toBe(true);
   });
 
-  test('serves all 36 canonical routes with their release identity', async ({ request }) => {
+  test(`serves all ${EXPECTED_RELEASED_SIMULATION_COUNT} canonical routes with their release identity`, async ({ request }) => {
     test.setTimeout(120_000);
     for (const definition of released) {
       const response = await request.get(routeForSimulation(definition));
