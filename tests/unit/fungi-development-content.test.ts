@@ -73,10 +73,9 @@ describe("canonical fungi development content", () => {
     expect(FUNGI_DEVELOPMENT.module.instructorScript).toMatch(
       /Introduction:.*Procedure:.*Observation:.*Assessment:.*Conclusion:/s,
     );
-    expect(FUNGI_DEVELOPMENT.contribution).toEqual({
-      source: "existing",
-      contributor: "User-provided Living Mycelium Lab lesson story",
-    });
+    expect(FUNGI_DEVELOPMENT.contribution).toEqual({ source: "existing" });
+    expect(FUNGI_DEVELOPMENT.contribution).not.toHaveProperty("contributor");
+    expect(FUNGI_DEVELOPMENT.contribution).not.toHaveProperty("sourcePath");
     expect(validateImplementedSimulationDefinition(FUNGI_DEVELOPMENT)).toEqual(
       [],
     );

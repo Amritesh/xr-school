@@ -14,17 +14,17 @@ describe('simulation registry API', () => {
     await app.close();
   });
 
-  it('returns all 35 canonical released modules with honest maturity', async () => {
+  it('returns all 36 canonical released modules with honest maturity', async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/v1/simulation-modules',
     });
     expect(response.statusCode).toBe(200);
     const body = response.json();
-    expect(body.items).toHaveLength(35);
+    expect(body.items).toHaveLength(36);
     expect(body.page).toMatchObject({
-      pageSize: 35,
-      totalItems: 35,
+      pageSize: 36,
+      totalItems: 36,
       totalPages: 1,
     });
     expect(

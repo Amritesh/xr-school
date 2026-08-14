@@ -345,6 +345,5 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
   legacyPaths: [],
   contribution: {
     source: "existing",
-    contributor: "User-provided Living Mycelium Lab lesson story",
   },
 };

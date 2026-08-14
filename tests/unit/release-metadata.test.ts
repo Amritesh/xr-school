@@ -7,9 +7,9 @@ describe('release metadata', () => {
   it('exposes the deployed SHA without overstating evidence', () => {
     expect(buildReleaseMetadata('abc123', IMPLEMENTED_SIMULATIONS)).toEqual({
       commitSha: 'abc123',
-      publiclyLaunchable: 35,
+      publiclyLaunchable: 36,
       evidenceMaturity: {
-        internalQA: 35,
+        internalQA: 36,
         deviceVerified: 0,
         classroomVerified: 0,
       },
