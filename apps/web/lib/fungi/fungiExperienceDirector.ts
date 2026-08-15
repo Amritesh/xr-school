@@ -98,6 +98,19 @@ export interface DiagnoseEvidence {
   firstPrediction?: string;
   classificationAttempts: string[];
   lensCrossings: string[];
+  sequence: Array<
+    | {
+        order: number;
+        kind: "classification";
+        classification: string;
+      }
+    | {
+        order: number;
+        kind: "lens-crossing";
+        specimenId: string;
+        accepted: boolean;
+      }
+  >;
 }
 
 export interface MyceliumEvidence {
@@ -294,6 +307,41 @@ function hasCorrectSafetyClassifications(evidence: SafetyEvidence): boolean {
   );
 }
 
+function hasChronologicalDiagnosis(evidence: DiagnoseEvidence): boolean {
+  const prediction = evidence.sequence.find(
+    (event) => event.kind === "classification",
+  );
+  if (prediction === undefined) return false;
+  const crossingOrders = REQUIRED_SPECIMENS.map((specimenId) =>
+    evidence.sequence.find(
+      (event) =>
+        event.kind === "lens-crossing" &&
+        event.accepted &&
+        event.specimenId === specimenId &&
+        event.order > prediction.order,
+    ),
+  );
+  if (crossingOrders.some((event) => event === undefined)) return false;
+  const lastCrossingOrder = Math.max(
+    ...crossingOrders.map((event) => event?.order ?? Number.POSITIVE_INFINITY),
+  );
+  return evidence.sequence.some(
+    (event) =>
+      event.kind === "classification" &&
+      event.order > lastCrossingOrder &&
+      event.classification === CORRECT_DIAGNOSIS,
+  );
+}
+
+function hasCorrectedSafetyExplanation(evidence: SafetyEvidence): boolean {
+  return (
+    latest(evidence.explanationAttempts) === CORRECT_SAFETY_EXPLANATION &&
+    evidence.explanationAttempts
+      .slice(0, -1)
+      .some((explanation) => explanation !== CORRECT_SAFETY_EXPLANATION)
+  );
+}
+
 function camera(
   position: readonly [number, number, number],
   target: readonly [number, number, number],
@@ -329,9 +377,8 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     exitMode: "guided-pan",
     evidenceSatisfied: ({ evidence }) =>
       evidence.diagnose.firstPrediction !== undefined &&
-      evidence.diagnose.classificationAttempts.length >= 2 &&
       hasAll(evidence.diagnose.lensCrossings, REQUIRED_SPECIMENS) &&
-      latest(evidence.diagnose.classificationAttempts) === CORRECT_DIAGNOSIS,
+      hasChronologicalDiagnosis(evidence.diagnose),
   },
   {
     id: "mycelium",
@@ -375,7 +422,8 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     entryMode: "bounded-reposition",
     exitMode: "guided-pan",
     evidenceSatisfied: ({ evidence }) =>
-      evidence.sporeFlight.landingOutcomes.includes("dormant") &&
+      (evidence.sporeFlight.landingOutcomes.includes("missed") ||
+        evidence.sporeFlight.landingOutcomes.includes("dormant")) &&
       evidence.sporeFlight.landingOutcomes.includes("germinating"),
   },
   {
@@ -420,7 +468,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     focusBounds: bounds([4.3, 0, -3.8], [9.7, 3.1, 1.7]),
     tools: ["yeast-pipette", "role-router"],
     actions: ["useful.observe-dough", "useful.match-role"],
-    resetBoundary: "experiment",
+    resetBoundary: "mission",
     hints: [
       "Use observations to distinguish several beneficial fungal roles.",
       "Compare the yeast dough with its no-yeast control, then route all three organisms.",
@@ -454,9 +502,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     evidenceSatisfied: ({ evidence }) =>
       evidence.safety.maximumScanDepth > HIDDEN_HYPHAE_DEPTH &&
       hasCorrectSafetyClassifications(evidence.safety) &&
-      evidence.safety.explanationAttempts.length >= 2 &&
-      latest(evidence.safety.explanationAttempts) ===
-        CORRECT_SAFETY_EXPLANATION,
+      hasCorrectedSafetyExplanation(evidence.safety),
   },
   {
     id: "recommendation",
@@ -514,7 +560,7 @@ const ACTION_IDS = Object.fromEntries(
 
 function initialEvidence(): FungiDirectorEvidence {
   return {
-    diagnose: { classificationAttempts: [], lensCrossings: [] },
+    diagnose: { classificationAttempts: [], lensCrossings: [], sequence: [] },
     mycelium: { branchTraces: [], interpretationAttempts: [] },
     sporeFlight: { landingOutcomes: [] },
     growth: {
@@ -690,6 +736,11 @@ function applyAction(
       const classification = ownString(action, "value");
       state.evidence.diagnose.firstPrediction ??= classification;
       state.evidence.diagnose.classificationAttempts.push(classification);
+      state.evidence.diagnose.sequence.push({
+        order: state.observationHistory.length + 1,
+        kind: "classification",
+        classification,
+      });
       return;
     }
     case "diagnose.inspect": {
@@ -698,12 +749,19 @@ function applyAction(
         throw new Error(`unknown diagnosis specimen ID: ${specimen}`);
       }
       const position = lensPosition(action);
-      if (
+      const accepted =
+        state.evidence.diagnose.firstPrediction !== undefined &&
         crossesSpecimenBounds(
           specimen as keyof typeof SPECIMEN_BOUNDS,
           position,
-        )
-      ) {
+        );
+      state.evidence.diagnose.sequence.push({
+        order: state.observationHistory.length + 1,
+        kind: "lens-crossing",
+        specimenId: specimen,
+        accepted,
+      });
+      if (accepted) {
         addUnique(state.evidence.diagnose.lensCrossings, specimen);
         state.experiment = reduceFungiExperiment(state.experiment, {
           type: "record-observation",
@@ -892,6 +950,11 @@ function feedbackFor(
       };
     case "diagnose.inspect": {
       const specimen = ownString(action, "targetId");
+      if (state.evidence.diagnose.firstPrediction === undefined) {
+        return {
+          outcome: `Predict first; the ${specimen} lens crossing is not yet accepted as observation evidence.`,
+        };
+      }
       const crossed = crossesSpecimenBounds(
         specimen as keyof typeof SPECIMEN_BOUNDS,
         lensPosition(action),
@@ -1104,6 +1167,22 @@ export function createFungiExperienceDirector(): FungiExperienceDirector {
       ]);
     },
     resetExperiment() {
+      if (
+        state.missionId !== "spore-flight" &&
+        state.missionId !== "growth-chamber"
+      ) {
+        return snapshot();
+      }
+      if (state.missionId === "spore-flight") {
+        state = {
+          ...structuredClone(state),
+          evidence: {
+            ...structuredClone(state.evidence),
+            sporeFlight: { landingOutcomes: [] },
+          },
+        };
+        return snapshot();
+      }
       state = {
         ...structuredClone(state),
         experiment: reduceFungiExperiment(state.experiment, {

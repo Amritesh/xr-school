@@ -61,7 +61,7 @@ function diagnose(source: FungiInputSource = "mouse") {
   return director;
 }
 
-function reachGrowth(source: FungiInputSource = "mouse") {
+function reachSporeFlight(source: FungiInputSource = "mouse") {
   const director = diagnose(source);
   for (const targetId of ["branch-a", "branch-b", "branch-c"]) {
     director.dispatch(action("mycelium.trace", source, { targetId }));
@@ -71,6 +71,11 @@ function reachGrowth(source: FungiInputSource = "mouse") {
       value: "connected-feeding-network",
     }),
   );
+  return director;
+}
+
+function reachGrowth(source: FungiInputSource = "mouse") {
+  const director = reachSporeFlight(source);
   director.dispatch(
     action("spore.record-landing", source, { value: "dormant" }),
   );
@@ -78,6 +83,69 @@ function reachGrowth(source: FungiInputSource = "mouse") {
     action("spore.record-landing", source, { value: "germinating" }),
   );
   return director;
+}
+
+function reachUsefulFungi(source: FungiInputSource = "mouse") {
+  const director = reachGrowth(source);
+  director.dispatch(
+    action("growth.predict", source, { value: "rapid-growth" }),
+  );
+  director.dispatch(action("growth.run-trial", source, { input: warmTrial }));
+  director.dispatch(action("growth.save-trial", source));
+  director.dispatch(
+    action("growth.run-trial", source, {
+      input: { ...warmTrial, moisturePercent: 30 },
+    }),
+  );
+  director.dispatch(action("growth.save-trial", source));
+  director.dispatch(
+    action("growth.compare-trials", source, {
+      trialIds: ["trial-1", "trial-2"],
+    }),
+  );
+  director.dispatch(
+    action("growth.interpret", source, {
+      value: "moisture-changed-growth",
+    }),
+  );
+  return director;
+}
+
+function completeUsefulFungi(
+  director: ReturnType<typeof createFungiExperienceDirector>,
+  source: FungiInputSource = "mouse",
+) {
+  director.dispatch(
+    action("useful.observe-dough", source, {
+      value: "yeast-expanded-more-than-control",
+    }),
+  );
+  for (const [targetId, value] of [
+    ["yeast", "food"],
+    ["antibiotic-producing-fungus", "medicine"],
+    ["saprotrophic-fungus", "decomposer"],
+  ]) {
+    director.dispatch(action("useful.match-role", source, { targetId, value }));
+  }
+}
+
+function prepareSafetyEvidence(
+  director: ReturnType<typeof createFungiExperienceDirector>,
+  source: FungiInputSource = "mouse",
+) {
+  director.dispatch(action("safety.scan", source, { value: 0.8 }));
+  director.dispatch(
+    action("safety.classify", source, {
+      targetId: "fresh-item",
+      value: "check-use",
+    }),
+  );
+  director.dispatch(
+    action("safety.classify", source, {
+      targetId: "mouldy-item",
+      value: "do-not-eat",
+    }),
+  );
 }
 
 function completeJourney(source: FungiInputSource) {
@@ -194,6 +262,15 @@ describe("fungi experience director", () => {
       expect(mission.resetBoundary).toBeTruthy();
       expect(typeof mission.evidenceSatisfied).toBe("function");
     }
+    expect(
+      Object.fromEntries(
+        FUNGI_MISSIONS.map(({ id, resetBoundary }) => [id, resetBoundary]),
+      ),
+    ).toMatchObject({
+      "spore-flight": "experiment",
+      "growth-chamber": "experiment",
+      "useful-fungi": "mission",
+    });
   });
 
   it("requires a lens pose to cross all three specimen bounds before a correct revision", () => {
@@ -266,6 +343,78 @@ describe("fungi experience director", () => {
     });
   });
 
+  it("rejects pre-prediction lens evidence and requires a revision after all observations", () => {
+    const director = createFungiExperienceDirector();
+    director.dispatch(
+      action("diagnose.inspect", "mouse", {
+        targetId: "mushroom",
+        pose: { position: specimenCrossingPositions.mushroom },
+      }),
+    );
+    expect(director.snapshot()).toMatchObject({
+      missionId: "diagnose",
+      evidence: { diagnose: { lensCrossings: [] } },
+    });
+
+    director.dispatch(
+      action("diagnose.classify", "mouse", {
+        value: "mushroom-and-bread-mould",
+      }),
+    );
+    director.dispatch(
+      action("diagnose.classify", "mouse", {
+        value: "mushroom-and-bread-mould",
+      }),
+    );
+    for (const targetId of ["mushroom", "bread-mould", "green-plant"]) {
+      director.dispatch(
+        action("diagnose.inspect", "mouse", {
+          targetId,
+          pose: { position: specimenCrossingPositions[targetId] },
+        }),
+      );
+    }
+    expect(director.snapshot().missionId).toBe("diagnose");
+
+    director.dispatch(
+      action("diagnose.classify", "mouse", {
+        value: "mushroom-and-bread-mould",
+      }),
+    );
+    expect(director.snapshot()).toMatchObject({
+      missionId: "mycelium",
+      evidence: {
+        diagnose: {
+          sequence: [
+            expect.objectContaining({
+              order: 1,
+              kind: "lens-crossing",
+              accepted: false,
+            }),
+            expect.objectContaining({ order: 2, kind: "classification" }),
+            expect.objectContaining({ order: 3, kind: "classification" }),
+            expect.objectContaining({
+              order: 4,
+              kind: "lens-crossing",
+              accepted: true,
+            }),
+            expect.objectContaining({
+              order: 5,
+              kind: "lens-crossing",
+              accepted: true,
+            }),
+            expect.objectContaining({
+              order: 6,
+              kind: "lens-crossing",
+              accepted: true,
+            }),
+            expect.objectContaining({ order: 7, kind: "classification" }),
+          ],
+        },
+      },
+    });
+  });
+
   it("requires three unique branches and the correct network interpretation", () => {
     const director = diagnose();
     director.dispatch(action("mycelium.trace", "mouse", { targetId: "a" }));
@@ -329,6 +478,21 @@ describe("fungi experience director", () => {
       },
     });
   });
+
+  it.each(["missed", "dormant"])(
+    "accepts %s as the required unsuccessful outcome before advancing with germination",
+    (failedOutcome) => {
+      const director = reachSporeFlight();
+      director.dispatch(
+        action("spore.record-landing", "mouse", { value: "germinating" }),
+      );
+      expect(director.snapshot().missionId).toBe("spore-flight");
+      director.dispatch(
+        action("spore.record-landing", "mouse", { value: failedOutcome }),
+      );
+      expect(director.snapshot().missionId).toBe("growth-chamber");
+    },
+  );
 
   it("requires two trials, a fair comparison, and a correct interpretation while preserving confounded history", () => {
     const director = reachGrowth();
@@ -529,6 +693,72 @@ describe("fungi experience director", () => {
         },
       },
     });
+  });
+
+  it("preserves saved growth trials when reset is requested after leaving experimental missions", () => {
+    const director = reachUsefulFungi();
+    const savedTrials = director.snapshot().experiment.savedTrials;
+
+    expect(director.resetExperiment().experiment.savedTrials).toEqual(
+      savedTrials,
+    );
+    completeUsefulFungi(director);
+    prepareSafetyEvidence(director);
+    director.dispatch(
+      action("safety.explain", "mouse", { value: "cut-off-visible-patch" }),
+    );
+    director.dispatch(
+      action("safety.explain", "mouse", {
+        value: "hidden-hyphae-extend-beyond-visible-patch",
+      }),
+    );
+    director.dispatch(
+      action("recommendation.change-storage", "mouse", {
+        value: "cool-and-dry",
+      }),
+    );
+    director.dispatch(
+      action("recommendation.cite-evidence", "mouse", { value: "trial-2" }),
+    );
+    director.dispatch(
+      action("recommendation.distinguish", "mouse", {
+        value: "spoilage-harmful-decomposition-useful",
+      }),
+    );
+
+    expect(director.snapshot()).toMatchObject({
+      journeyComplete: true,
+      evidence: { recommendation: { citedTrialIds: ["trial-2"] } },
+    });
+  });
+
+  it("requires an incorrect safety explanation before a correct correction", () => {
+    const director = reachUsefulFungi();
+    completeUsefulFungi(director);
+    prepareSafetyEvidence(director);
+
+    director.dispatch(
+      action("safety.explain", "mouse", {
+        value: "hidden-hyphae-extend-beyond-visible-patch",
+      }),
+    );
+    director.dispatch(
+      action("safety.explain", "mouse", {
+        value: "hidden-hyphae-extend-beyond-visible-patch",
+      }),
+    );
+    expect(director.snapshot().missionId).toBe("safety");
+
+    director.dispatch(
+      action("safety.explain", "mouse", { value: "cut-off-visible-patch" }),
+    );
+    expect(director.snapshot().missionId).toBe("safety");
+    director.dispatch(
+      action("safety.explain", "mouse", {
+        value: "hidden-hyphae-extend-beyond-visible-patch",
+      }),
+    );
+    expect(director.snapshot().missionId).toBe("recommendation");
   });
 
   it("produces source-neutral snapshots for mouse, touch, keyboard, and XR", () => {
