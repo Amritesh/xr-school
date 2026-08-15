@@ -177,6 +177,36 @@ describe('evaluateFungalExperiment', () => {
       },
       'substrate must be bread, fruit, or dry-paper',
     ],
+    [
+      {
+        temperatureC: 27,
+        moisturePercent: 82,
+        substrate: new String('bread'),
+        elapsedHours: 24,
+        inoculumViability: 1,
+      },
+      'substrate must be bread, fruit, or dry-paper',
+    ],
+    [
+      {
+        temperatureC: 27,
+        moisturePercent: 82,
+        substrate: ['bread'],
+        elapsedHours: 24,
+        inoculumViability: 1,
+      },
+      'substrate must be bread, fruit, or dry-paper',
+    ],
+    [
+      {
+        temperatureC: 27,
+        moisturePercent: 82,
+        substrate: { toString: () => 'bread' },
+        elapsedHours: 24,
+        inoculumViability: 1,
+      },
+      'substrate must be bread, fruit, or dry-paper',
+    ],
   ] as const)('rejects invalid experiment input %#', (input, message) => {
     expect(() =>
       evaluateFungalExperiment(

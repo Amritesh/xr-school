@@ -136,7 +136,10 @@ export function evaluateFungalExperiment(
     FUNGAL_EXPERIMENT_BOUNDS.inoculumViability.minimum,
     FUNGAL_EXPERIMENT_BOUNDS.inoculumViability.maximum,
   );
-  if (!Object.hasOwn(SUBSTRATE_FACTORS, input.substrate)) {
+  if (
+    typeof input.substrate !== 'string' ||
+    !Object.hasOwn(SUBSTRATE_FACTORS, input.substrate)
+  ) {
     throw new Error('substrate must be bread, fruit, or dry-paper');
   }
   const substrate = SUBSTRATE_FACTORS[input.substrate];
