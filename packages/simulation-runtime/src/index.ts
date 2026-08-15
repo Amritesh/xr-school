@@ -189,6 +189,21 @@ export type {
   FungiDevelopmentAction,
   FungiDevelopmentState,
 } from './models/fungiDevelopmentModel.js';
+export {
+  FUNGAL_EXPERIMENT_BOUNDS,
+  calculateLitterDecomposition,
+  calculateYeastDoughResponse,
+  evaluateFungalExperiment,
+} from './models/fungalGrowthExperiment.js';
+export type {
+  FungalExperimentInput,
+  FungalExperimentOutput,
+  FungalSubstrate,
+  LitterDecompositionInput,
+  LitterDecompositionOutput,
+  YeastDoughInput,
+  YeastDoughOutput,
+} from './models/fungalGrowthExperiment.js';
 export { createLessonSession } from './experience/lessonSession.js';
 export type {
   LessonSession,
