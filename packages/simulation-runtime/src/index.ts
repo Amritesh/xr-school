@@ -204,6 +204,19 @@ export type {
   YeastDoughInput,
   YeastDoughOutput,
 } from './models/fungalGrowthExperiment.js';
+export {
+  createFungiExperimentSession,
+  reduceFungiExperiment,
+} from './models/fungiExperimentSession.js';
+export type {
+  CurrentFungalTrial,
+  FungalExperimentVariable,
+  FungalTrialComparison,
+  FungalTrialPrediction,
+  FungiExperimentAction,
+  FungiExperimentSession,
+  SavedFungalTrial,
+} from './models/fungiExperimentSession.js';
 export { createLessonSession } from './experience/lessonSession.js';
 export type {
   LessonSession,
