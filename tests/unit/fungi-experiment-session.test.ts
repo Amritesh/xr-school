@@ -273,11 +273,90 @@ describe('fungi experiment session', () => {
     expect(changed.savedTrials).toHaveLength(1);
   });
 
+  it('leaves experiment state untouched when a camera reset fans out', () => {
+    const state = saveTrial(createFungiExperimentSession(), warmMoistBread);
+
+    const afterCameraReset = reduceFungiExperiment(state, {
+      type: 'reset-camera',
+    });
+
+    expect(afterCameraReset).toBe(state);
+  });
+
+  it('deeply freezes initial, running, saved, and compared session state', () => {
+    const initial = createFungiExperimentSession();
+    const running = dispatch(initial, {
+      type: 'run-trial',
+      input: warmMoistBread,
+    });
+    const first = dispatch(running, { type: 'save-current-trial' });
+    const second = saveTrial(first, {
+      ...warmMoistBread,
+      moisturePercent: 30,
+    });
+    const compared = dispatch(second, {
+      type: 'compare-trials',
+      trialIds: ['trial-1', 'trial-2'],
+    });
+    const snapshot = structuredClone(compared);
+
+    expect(Object.isFrozen(initial)).toBe(true);
+    expect(Object.isFrozen(initial.currentInput)).toBe(true);
+    expect(Object.isFrozen(initial.currentOutput)).toBe(true);
+    expect(Object.isFrozen(initial.savedTrials)).toBe(true);
+    expect(Object.isFrozen(initial.observations)).toBe(true);
+
+    expect(Object.isFrozen(running.currentTrial)).toBe(true);
+    expect(Object.isFrozen(running.currentTrial?.input)).toBe(true);
+    expect(Object.isFrozen(running.currentTrial?.output)).toBe(true);
+
+    expect(Object.isFrozen(compared.savedTrials)).toBe(true);
+    for (const trial of compared.savedTrials) {
+      expect(Object.isFrozen(trial)).toBe(true);
+      expect(Object.isFrozen(trial.input)).toBe(true);
+      expect(Object.isFrozen(trial.output)).toBe(true);
+    }
+    expect(Object.isFrozen(compared.comparison)).toBe(true);
+    expect(Object.isFrozen(compared.comparison?.trialIds)).toBe(true);
+    expect(Object.isFrozen(compared.comparison?.changedVariables)).toBe(true);
+
+    expect(Reflect.set(initial.currentInput, 'temperatureC', 8)).toBe(false);
+    expect(Reflect.set(initial.currentOutput, 'surfaceCoverage', 1)).toBe(
+      false,
+    );
+    expect(Reflect.set(running.currentTrial!, 'prediction', 'changed')).toBe(
+      false,
+    );
+    expect(Reflect.set(running.currentTrial!.input, 'temperatureC', 8)).toBe(
+      false,
+    );
+    expect(
+      Reflect.set(running.currentTrial!.output, 'surfaceCoverage', 1),
+    ).toBe(false);
+    expect(Reflect.set(compared.savedTrials, 'length', 0)).toBe(false);
+    expect(Reflect.set(compared.savedTrials[0]!, 'id', 'trial-99')).toBe(false);
+    expect(Reflect.set(compared.savedTrials[0]!.input, 'temperatureC', 8)).toBe(
+      false,
+    );
+    expect(
+      Reflect.set(compared.savedTrials[0]!.output, 'surfaceCoverage', 1),
+    ).toBe(false);
+    expect(Reflect.set(compared.comparison!, 'quality', 'confounded')).toBe(
+      false,
+    );
+    expect(Reflect.set(compared.comparison!.trialIds, 0, 'trial-99')).toBe(
+      false,
+    );
+    expect(
+      Reflect.set(compared.comparison!.changedVariables, 0, 'temperatureC'),
+    ).toBe(false);
+    expect(compared).toEqual(snapshot);
+  });
+
   it.each([
     [{ type: 'constructor' }],
     [{ type: 'toString' }],
     [{ type: '__proto__' }],
-    [{ type: 'reset-camera' }],
     [{ type: 42 }],
     [null],
     [{ type: 'predict-trial', prediction: new String('rapid-growth') }],

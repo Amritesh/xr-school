@@ -57,6 +57,7 @@ export type FungiExperimentAction =
       readonly type: 'record-observation';
       readonly observation: string;
     }
+  | { readonly type: 'reset-camera' }
   | { readonly type: 'reset-experiment' }
   | { readonly type: 'restart-journey' };
 
@@ -354,6 +355,9 @@ export function reduceFungiExperiment(
           : [...state.observations, observation],
       });
     }
+
+    case 'reset-camera':
+      return state;
 
     case 'reset-experiment': {
       const reset = createFungiExperimentSession();
