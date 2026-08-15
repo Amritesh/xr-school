@@ -120,6 +120,7 @@ export interface MyceliumEvidence {
 
 export interface SporeFlightEvidence {
   landingOutcomes: string[];
+  currentLandingOutcome?: string;
 }
 
 export interface GrowthEvidence {
@@ -189,6 +190,7 @@ export interface FungiDirectorSnapshot {
   hintLevel: 0 | 1 | 2 | 3;
   currentHint?: string;
   cameraRequestId: number;
+  experimentResetRequestId: number;
   experiment: FungiExperimentSession;
   evidence: FungiDirectorEvidence;
   observationHistory: FungiObservationRecord[];
@@ -596,6 +598,7 @@ function initialState(): FungiDirectorSnapshot {
     journeyComplete: false,
     hintLevel: 0,
     cameraRequestId: 0,
+    experimentResetRequestId: 0,
     experiment: createFungiExperimentSession(),
     evidence: initialEvidence(),
     observationHistory: [],
@@ -791,6 +794,7 @@ function applyAction(
         throw new Error(`unknown spore landing outcome: ${outcome}`);
       }
       state.evidence.sporeFlight.landingOutcomes.push(outcome);
+      state.evidence.sporeFlight.currentLandingOutcome = outcome;
       state.experiment = reduceFungiExperiment(state.experiment, {
         type: "record-observation",
         observation: `spore-landing:${outcome}`,
@@ -1174,17 +1178,15 @@ export function createFungiExperienceDirector(): FungiExperienceDirector {
         return snapshot();
       }
       if (state.missionId === "spore-flight") {
-        state = {
-          ...structuredClone(state),
-          evidence: {
-            ...structuredClone(state.evidence),
-            sporeFlight: { landingOutcomes: [] },
-          },
-        };
+        const draft = structuredClone(state);
+        draft.experimentResetRequestId += 1;
+        delete draft.evidence.sporeFlight.currentLandingOutcome;
+        state = draft;
         return snapshot();
       }
       state = {
         ...structuredClone(state),
+        experimentResetRequestId: state.experimentResetRequestId + 1,
         experiment: reduceFungiExperiment(state.experiment, {
           type: "reset-experiment",
         }),

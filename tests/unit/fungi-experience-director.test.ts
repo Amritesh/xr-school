@@ -494,6 +494,41 @@ describe("fungi experience director", () => {
     },
   );
 
+  it("preserves failed spore evidence while resetting only transient apparatus state", () => {
+    const director = reachSporeFlight();
+    director.dispatch(
+      action("spore.record-landing", "mouse", { value: "missed" }),
+    );
+    const beforeReset = director.snapshot();
+
+    expect(beforeReset.evidence.sporeFlight).toMatchObject({
+      landingOutcomes: ["missed"],
+      currentLandingOutcome: "missed",
+    });
+    const reset = director.resetExperiment();
+    expect(reset.experimentResetRequestId).toBe(
+      beforeReset.experimentResetRequestId + 1,
+    );
+    expect(reset.evidence.sporeFlight.landingOutcomes).toEqual(["missed"]);
+    expect(reset.evidence.sporeFlight).not.toHaveProperty(
+      "currentLandingOutcome",
+    );
+    expect(reset.observationHistory).toEqual(beforeReset.observationHistory);
+
+    director.dispatch(
+      action("spore.record-landing", "mouse", { value: "germinating" }),
+    );
+    expect(director.snapshot()).toMatchObject({
+      missionId: "growth-chamber",
+      evidence: {
+        sporeFlight: {
+          landingOutcomes: ["missed", "germinating"],
+          currentLandingOutcome: "germinating",
+        },
+      },
+    });
+  });
+
   it("requires two trials, a fair comparison, and a correct interpretation while preserving confounded history", () => {
     const director = reachGrowth();
     director.dispatch(
