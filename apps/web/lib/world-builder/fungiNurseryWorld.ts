@@ -125,7 +125,8 @@ const HIDDEN_HYPHAE_CAPACITY = 40;
 const NUTRIENT_CAPACITY = 36;
 const BUBBLE_CAPACITY = 28;
 
-const BASE_DOUGH_VOLUME_ML = 240;
+/** Unrisen dough volume the yeast model starts every vessel from. */
+const BASE_DOUGH_VOLUME_ML = 100;
 const GRAMS_PER_NUTRIENT_MARKER = 1.6;
 
 const LANDMARK_ORIGIN: Record<FungiLandmarkId, [number, number, number]> = {
