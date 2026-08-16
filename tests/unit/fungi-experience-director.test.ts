@@ -311,6 +311,7 @@ describe("fungi experience director", () => {
     expect(director.snapshot().evidence.diagnose.lensCrossings).toEqual([]);
 
     for (const targetId of ["mushroom", "bread-mould", "green-plant"]) {
+      expect(director.snapshot().missionId).toBe("diagnose");
       director.dispatch(
         action("diagnose.inspect", "mouse", {
           targetId,
@@ -318,13 +319,16 @@ describe("fungi experience director", () => {
         }),
       );
     }
-    expect(director.snapshot().missionId).toBe("diagnose");
 
+    // The latest classification is still the wrong one, so the mission holds
+    // until the learner revises it against what they just observed.
+    expect(director.snapshot().missionId).toBe("diagnose");
     director.dispatch(
       action("diagnose.classify", "mouse", {
         value: "mushroom-and-bread-mould",
       }),
     );
+
     expect(director.snapshot()).toMatchObject({
       missionId: "mycelium",
       visitedMissionIds: ["diagnose", "mycelium"],
@@ -343,7 +347,7 @@ describe("fungi experience director", () => {
     });
   });
 
-  it("rejects pre-prediction lens evidence and requires a revision after all observations", () => {
+  it("rejects pre-prediction lens evidence and completes once every specimen is inspected", () => {
     const director = createFungiExperienceDirector();
     director.dispatch(
       action("diagnose.inspect", "mouse", {
@@ -367,6 +371,7 @@ describe("fungi experience director", () => {
       }),
     );
     for (const targetId of ["mushroom", "bread-mould", "green-plant"]) {
+      expect(director.snapshot().missionId).toBe("diagnose");
       director.dispatch(
         action("diagnose.inspect", "mouse", {
           targetId,
@@ -374,13 +379,9 @@ describe("fungi experience director", () => {
         }),
       );
     }
-    expect(director.snapshot().missionId).toBe("diagnose");
 
-    director.dispatch(
-      action("diagnose.classify", "mouse", {
-        value: "mushroom-and-bread-mould",
-      }),
-    );
+    // Inspecting all three while already holding the correct classification is
+    // enough: a learner who was right first time is never left stuck.
     expect(director.snapshot()).toMatchObject({
       missionId: "mycelium",
       evidence: {
@@ -408,7 +409,6 @@ describe("fungi experience director", () => {
               kind: "lens-crossing",
               accepted: true,
             }),
-            expect.objectContaining({ order: 7, kind: "classification" }),
           ],
         },
       },
@@ -767,33 +767,36 @@ describe("fungi experience director", () => {
     });
   });
 
-  it("requires an incorrect safety explanation before a correct correction", () => {
-    const director = reachUsefulFungi();
-    completeUsefulFungi(director);
-    prepareSafetyEvidence(director);
-
-    director.dispatch(
+  it("accepts a correct safety explanation whether or not it was revised", () => {
+    // Right first time must finish the mission — demanding a wrong answer
+    // first left a learner who understood it immediately unable to continue.
+    const immediate = reachUsefulFungi();
+    completeUsefulFungi(immediate);
+    prepareSafetyEvidence(immediate);
+    immediate.dispatch(
       action("safety.explain", "mouse", {
         value: "hidden-hyphae-extend-beyond-visible-patch",
       }),
     );
-    director.dispatch(
-      action("safety.explain", "mouse", {
-        value: "hidden-hyphae-extend-beyond-visible-patch",
-      }),
-    );
-    expect(director.snapshot().missionId).toBe("safety");
+    expect(immediate.snapshot().missionId).toBe("recommendation");
 
-    director.dispatch(
+    // A wrong attempt still blocks until it is corrected, and is kept.
+    const revised = reachUsefulFungi();
+    completeUsefulFungi(revised);
+    prepareSafetyEvidence(revised);
+    revised.dispatch(
       action("safety.explain", "mouse", { value: "cut-off-visible-patch" }),
     );
-    expect(director.snapshot().missionId).toBe("safety");
-    director.dispatch(
+    expect(revised.snapshot().missionId).toBe("safety");
+    revised.dispatch(
       action("safety.explain", "mouse", {
         value: "hidden-hyphae-extend-beyond-visible-patch",
       }),
     );
-    expect(director.snapshot().missionId).toBe("recommendation");
+    expect(revised.snapshot().missionId).toBe("recommendation");
+    expect(
+      revised.snapshot().evidence.safety.explanationAttempts,
+    ).toEqual(["cut-off-visible-patch", "hidden-hyphae-extend-beyond-visible-patch"]);
   });
 
   it("produces source-neutral snapshots for mouse, touch, keyboard, and XR", () => {

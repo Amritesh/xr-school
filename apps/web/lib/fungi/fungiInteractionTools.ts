@@ -38,6 +38,9 @@ export type FungiManipulation =
   | { type: 'role-drop'; actorId: FungalUsefulActorId; role: FungalUsefulRole }
   | { type: 'pipette-drop'; vesselId: 'yeast' | 'control' }
   | { type: 'scanner-set'; depth: number }
+  /** Direct picks: the learner clicked the thing itself, in the world. */
+  | { type: 'inspect-specimen'; specimenId: FungiSpecimenId }
+  | { type: 'trace-branch'; branchId: string }
   | { type: 'manipulation-cancel' };
 
 export interface FungiToolSnapshot {
@@ -141,7 +144,11 @@ const USEFUL_ACTORS = new Set<string>([
   'saprotrophic-fungus',
 ]);
 const USEFUL_ROLES = new Set<string>(['food', 'medicine', 'decomposer']);
+const BRANCH_IDS = new Set<string>(BRANCH_LAYERS.map((layer) => layer.id));
+
 const MANIPULATION_TYPES = new Set<string>([
+  'inspect-specimen',
+  'trace-branch',
   'lens-move',
   'focus-set',
   'fan-set',
@@ -271,6 +278,19 @@ function validate(manipulation: unknown, source: FungiInputSource): FungiManipul
         throw new Error(`unknown useful fungi role: ${String(record.role)}`);
       }
       break;
+    case 'inspect-specimen':
+      if (
+        typeof record.specimenId !== 'string' ||
+        !Object.hasOwn(SPECIMEN_BOUNDS, record.specimenId)
+      ) {
+        throw new Error(`unknown specimen: ${String(record.specimenId)}`);
+      }
+      break;
+    case 'trace-branch':
+      if (typeof record.branchId !== 'string' || !BRANCH_IDS.has(record.branchId)) {
+        throw new Error(`unknown hyphal branch: ${String(record.branchId)}`);
+      }
+      break;
     default:
       break;
   }
@@ -378,6 +398,36 @@ export function createFungiInteractionTools(
             { targetId: entered, pose: { position: [...lensWorld] } },
             source,
           );
+        }
+        break;
+      }
+
+      case 'inspect-specimen': {
+        // Clicking the specimen is the observation: move the lens onto it and
+        // record the crossing the geometry already proves.
+        const [normalizedX, normalizedY] = SPECIMEN_LENS_TARGETS[validated.specimenId];
+        lensNormalizedX = normalizedX;
+        lensNormalizedY = normalizedY;
+        lensWorld = [
+          LENS_MIN_X + normalizedX * LENS_SPAN_X,
+          LENS_TOP_Y - normalizedY * LENS_SPAN_Y,
+          0,
+        ];
+        insideSpecimenId = validated.specimenId;
+        dispatchIfAvailable(
+          'diagnose.inspect',
+          { targetId: validated.specimenId, pose: { position: [...lensWorld] } },
+          source,
+        );
+        break;
+      }
+
+      case 'trace-branch': {
+        const layer = BRANCH_LAYERS.find((entry) => entry.id === validated.branchId)!;
+        focusDepth = layer.depth;
+        if (!tracedBranchIds.includes(layer.id)) {
+          tracedBranchIds.push(layer.id);
+          dispatchIfAvailable('mycelium.trace', { targetId: layer.id }, source);
         }
         break;
       }

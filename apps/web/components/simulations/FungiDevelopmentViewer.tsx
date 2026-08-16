@@ -156,6 +156,7 @@ export default function FungiDevelopmentViewer() {
   const [started, setStarted] = useState(false);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
   const [view, setView] = useState<FungiViewerSnapshot | null>(null);
+  const [nextStep, setNextStep] = useState('');
   const [lesson, setLesson] = useState<LessonSnapshot>(lessonRef.current.snapshot());
   const [evidence, setEvidence] = useState<string[]>([]);
   // Narrow viewports have no free room, so the tools begin as a closed sheet.
@@ -222,6 +223,7 @@ export default function FungiDevelopmentViewer() {
   const publish = useCallback(
     (snapshot: FungiViewerSnapshot) => {
       setView(snapshot);
+      setNextStep(controllerRef.current?.nextStep() ?? '');
       syncLesson(snapshot);
     },
     [syncLesson],
@@ -254,6 +256,30 @@ export default function FungiDevelopmentViewer() {
       try {
         publish(controller.manipulate(manipulation, BROWSER_SOURCE));
         setRuntimeError('');
+      } catch (error) {
+        setRuntimeError(error instanceof Error ? error.message : String(error));
+      }
+    },
+    [publish],
+  );
+
+  /**
+   * A click on the apparatus is the interaction. The learner points at the
+   * mushroom, the thread, the jar — no translating an intention into a slider.
+   */
+  const handleCanvasClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const controller = controllerRef.current;
+      const mount = mountRef.current;
+      if (!controller || !mount) return;
+      const bounds = mount.getBoundingClientRect();
+      if (bounds.width <= 0 || bounds.height <= 0) return;
+      try {
+        const pickId = controller.pickAt(
+          (event.clientX - bounds.left) / bounds.width,
+          (event.clientY - bounds.top) / bounds.height,
+        );
+        if (pickId) publish(controller.interactWith(pickId, BROWSER_SOURCE));
       } catch (error) {
         setRuntimeError(error instanceof Error ? error.message : String(error));
       }
@@ -323,6 +349,7 @@ export default function FungiDevelopmentViewer() {
       observer = new ResizeObserver(() => syncViewport());
       observer.observe(mount);
       setView(controller.snapshot());
+      setNextStep(controller.nextStep());
     } catch (error) {
       setRuntimeError(error instanceof Error ? error.message : String(error));
     }
@@ -365,6 +392,7 @@ export default function FungiDevelopmentViewer() {
     setEvidence([]);
     setRuntimeError('');
     setView(controller.restartJourney());
+    setNextStep(controller.nextStep());
   }, []);
 
   const promptId = view ? MISSION_PROMPT[view.director.missionId] : undefined;
@@ -820,7 +848,7 @@ export default function FungiDevelopmentViewer() {
           : undefined
       }
     >
-      <div className="fungi-lab">
+      <div className="fungi-lab" onClick={handleCanvasClick}>
         <SimulationCanvasHost
           ariaLabel="Forest nursery outbreak investigation"
           className="fungi-lab__canvas"
@@ -845,6 +873,9 @@ export default function FungiDevelopmentViewer() {
               );
             })}
           </ol>
+          <p className="fungi-lab__nextstep" data-testid="fungi-next-step" aria-live="polite">
+            {nextStep}
+          </p>
           <p className="fungi-lab__objective">
             <span data-testid="fungi-current-mission">
               {view ? MISSION_TITLE[view.director.missionId] : ''}

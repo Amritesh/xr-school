@@ -91,6 +91,8 @@ export interface FungiNurseryWorldMetrics {
 export interface FungiNurseryWorld {
   root: THREE.Group;
   landmarks: Record<FungiLandmarkId, THREE.Object3D>;
+  /** Objects a learner can click directly, keyed by what they mean. */
+  pickTargets: Record<string, THREE.Object3D>;
   project(projection: Readonly<FungiNurseryWorldProjection>): void;
   update(deltaSeconds: number, elapsedSeconds: number): void;
   setReducedMotion(reduced: boolean): void;
@@ -318,6 +320,16 @@ export function createFungiNurseryWorld(
       }),
     ),
     warning: ownMaterial(new THREE.MeshStandardMaterial({ color: PALETTE.warning, roughness: 0.8 })),
+    // Nearly invisible, but solid to a raycast: generous click targets so a
+    // learner never has to hit a thin slice of bread precisely.
+    hit: ownMaterial(
+      new THREE.MeshBasicMaterial({
+        transparent: true,
+        opacity: 0.004,
+        depthWrite: false,
+        color: 0xffffff,
+      }),
+    ),
     glass: ownMaterial(
       new THREE.MeshPhysicalMaterial({
         color: PALETTE.glass,
@@ -392,6 +404,29 @@ export function createFungiNurseryWorld(
     return mesh;
   };
 
+  const pickTargets: Record<string, THREE.Group> = {};
+  /** A pickable is a named group so any part of it resolves to one meaning. */
+  const addPickable = (
+    parent: THREE.Object3D,
+    id: string,
+    hit?: { size: [number, number, number]; position: [number, number, number] },
+  ) => {
+    const group = new THREE.Group();
+    group.name = `pick-${id}`;
+    parent.add(group);
+    pickTargets[id] = group;
+    if (hit) {
+      const volume = new THREE.Mesh(geometry.box, material.hit);
+      volume.name = `hit-${id}`;
+      volume.castShadow = false;
+      volume.receiveShadow = false;
+      volume.scale.set(...hit.size);
+      volume.position.set(...hit.position);
+      group.add(volume);
+    }
+    return group;
+  };
+
   const landmarks = {} as Record<FungiLandmarkId, THREE.Group>;
   for (const id of FUNGI_NURSERY_LANDMARK_IDS) {
     const group = new THREE.Group();
@@ -421,29 +456,32 @@ export function createFungiNurseryWorld(
       }
     }
 
-    const mushroomStem = addMesh(parent, geometry.cylinder, material.cream, 'specimen-mushroom-stem');
+    const mushroom = addPickable(parent, 'mushroom', { size: [1.1, 1.2, 1], position: [-2, 1.3, 0] });
+    const mushroomStem = addMesh(mushroom, geometry.cylinder, material.cream, 'specimen-mushroom-stem');
     mushroomStem.scale.set(0.12, 0.5, 0.12);
     mushroomStem.position.set(-2, 1.21, 0);
-    const mushroomCap = addMesh(parent, geometry.cap, material.cap, 'specimen-mushroom-cap');
+    const mushroomCap = addMesh(mushroom, geometry.cap, material.cap, 'specimen-mushroom-cap');
     mushroomCap.scale.set(0.42, 0.3, 0.42);
     mushroomCap.position.set(-2, 1.44, 0);
 
-    const breadSlice = addMesh(parent, geometry.box, material.cream, 'specimen-bread');
+    const bread = addPickable(parent, 'bread-mould', { size: [1.1, 0.9, 1.1], position: [0, 1.25, 0] });
+    const breadSlice = addMesh(bread, geometry.box, material.cream, 'specimen-bread');
     breadSlice.scale.set(0.62, 0.14, 0.62);
     breadSlice.position.set(0, 1.03, 0);
-    const mouldPatch = addMesh(parent, geometry.disc, material.mycelium, 'specimen-bread-mould');
+    const mouldPatch = addMesh(bread, geometry.disc, material.mycelium, 'specimen-bread-mould');
     mouldPatch.rotation.x = -Math.PI / 2;
     mouldPatch.scale.setScalar(0.22);
     mouldPatch.position.set(0, 1.11, 0);
 
-    const pot = addMesh(parent, geometry.cylinder, material.bark, 'specimen-plant-pot');
+    const plant = addPickable(parent, 'green-plant', { size: [1.1, 1.2, 1], position: [2, 1.35, 0] });
+    const pot = addMesh(plant, geometry.cylinder, material.bark, 'specimen-plant-pot');
     pot.scale.set(0.26, 0.26, 0.26);
     pot.position.set(2, 1.09, 0);
-    const stalk = addMesh(parent, geometry.cylinder, material.leaf, 'specimen-plant-stalk');
+    const stalk = addMesh(plant, geometry.cylinder, material.leaf, 'specimen-plant-stalk');
     stalk.scale.set(0.035, 0.5, 0.035);
     stalk.position.set(2, 1.45, 0);
     for (let index = 0; index < 3; index += 1) {
-      const leafMesh = addMesh(parent, geometry.cap, material.leaf, 'specimen-plant-leaf');
+      const leafMesh = addMesh(plant, geometry.cap, material.leaf, 'specimen-plant-leaf');
       leafMesh.scale.set(0.2, 0.04, 0.1);
       leafMesh.position.set(2 + Math.cos(index * 2.1) * 0.16, 1.55 + index * 0.08, Math.sin(index * 2.1) * 0.16);
       leafMesh.rotation.z = 0.5;
@@ -464,6 +502,17 @@ export function createFungiNurseryWorld(
     const scopeBase = addMesh(parent, geometry.box, material.steel, 'log-microscope-base');
     scopeBase.scale.set(0.34, 0.06, 0.28);
     scopeBase.position.set(0.9, 0.75, 0.5);
+
+    const branchIds = ['log-branch-near', 'log-branch-middle', 'log-branch-far'];
+    branchIds.forEach((branchId, index) => {
+      const tuft = addPickable(parent, branchId, {
+        size: [0.7, 0.7, 0.7],
+        position: [(index - 1) * 0.9, 0.8, 0.34],
+      });
+      const knob = addMesh(tuft, geometry.lowSphere, material.mycelium, branchId);
+      knob.scale.setScalar(0.16);
+      knob.position.set((index - 1) * 0.9, 0.78, 0.34);
+    });
 
     return addInstanced(
       parent,
@@ -582,10 +631,10 @@ export function createFungiNurseryWorld(
     controlJar.position.set(0.05, 1.18, 0.1);
     controlJar.castShadow = false;
 
-    const yeastDough = addMesh(parent, geometry.sphere, material.dough, 'yeast-dough');
+    const yeastDough = addMesh(addPickable(parent, 'yeast-jar', { size: [0.6, 1, 0.6], position: [-0.75, 1.2, 0.1] }), geometry.sphere, material.dough, 'yeast-dough');
     yeastDough.position.set(-0.75, 1.06, 0.1);
     yeastDough.scale.setScalar(0.24);
-    const controlDough = addMesh(parent, geometry.sphere, material.dough, 'control-dough');
+    const controlDough = addMesh(addPickable(parent, 'control-jar', { size: [0.6, 1, 0.6], position: [0.05, 1.2, 0.1] }), geometry.sphere, material.dough, 'control-dough');
     controlDough.position.set(0.05, 1.06, 0.1);
     controlDough.scale.setScalar(0.24);
 
@@ -644,14 +693,15 @@ export function createFungiNurseryWorld(
       leg.position.set(x, 0.45, 0);
     }
 
-    const freshItem = addMesh(parent, geometry.box, material.cream, 'fresh-item');
+    const freshItem = addMesh(addPickable(parent, 'fresh-item', { size: [0.9, 0.7, 0.8], position: [-0.7, 1.2, 0] }), geometry.box, material.cream, 'fresh-item');
     freshItem.scale.set(0.6, 0.22, 0.5);
     freshItem.position.set(-0.7, 1.07, 0);
 
-    const mouldyItem = addMesh(parent, geometry.box, material.cream, 'mouldy-item');
+    const mouldyGroup = addPickable(parent, 'mouldy-item', { size: [0.9, 0.7, 0.8], position: [0.7, 1.2, 0] });
+    const mouldyItem = addMesh(mouldyGroup, geometry.box, material.cream, 'mouldy-item');
     mouldyItem.scale.set(0.6, 0.22, 0.5);
     mouldyItem.position.set(0.7, 1.07, 0);
-    const visiblePatch = addMesh(parent, geometry.disc, material.warning, 'visible-mould-patch');
+    const visiblePatch = addMesh(mouldyGroup, geometry.disc, material.warning, 'visible-mould-patch');
     visiblePatch.rotation.x = -Math.PI / 2;
     visiblePatch.scale.setScalar(0.12);
     visiblePatch.position.set(0.7, 1.185, 0);
@@ -907,6 +957,7 @@ export function createFungiNurseryWorld(
   return {
     root,
     landmarks,
+    pickTargets,
     project,
     update,
     setReducedMotion,

@@ -309,13 +309,19 @@ function hasCorrectSafetyClassifications(evidence: SafetyEvidence): boolean {
   );
 }
 
+/**
+ * The learner must predict before inspecting, look at all three specimens, and
+ * end on the correct classification. Being right the first time is allowed:
+ * requiring a second answer left a learner who never changed their mind stuck
+ * with no way forward. Revision is still recorded when it happens.
+ */
 function hasChronologicalDiagnosis(evidence: DiagnoseEvidence): boolean {
   const prediction = evidence.sequence.find(
     (event) => event.kind === "classification",
   );
   if (prediction === undefined) return false;
-  const crossingOrders = REQUIRED_SPECIMENS.map((specimenId) =>
-    evidence.sequence.find(
+  const inspectedAfterPredicting = REQUIRED_SPECIMENS.every((specimenId) =>
+    evidence.sequence.some(
       (event) =>
         event.kind === "lens-crossing" &&
         event.accepted &&
@@ -323,25 +329,19 @@ function hasChronologicalDiagnosis(evidence: DiagnoseEvidence): boolean {
         event.order > prediction.order,
     ),
   );
-  if (crossingOrders.some((event) => event === undefined)) return false;
-  const lastCrossingOrder = Math.max(
-    ...crossingOrders.map((event) => event?.order ?? Number.POSITIVE_INFINITY),
-  );
-  return evidence.sequence.some(
-    (event) =>
-      event.kind === "classification" &&
-      event.order > lastCrossingOrder &&
-      event.classification === CORRECT_DIAGNOSIS,
+  return (
+    inspectedAfterPredicting &&
+    latest(evidence.classificationAttempts) === CORRECT_DIAGNOSIS
   );
 }
 
+/**
+ * Ending on the correct explanation is what counts. Demanding a wrong answer
+ * first made the mission impossible to finish for a learner who understood it
+ * immediately.
+ */
 function hasCorrectedSafetyExplanation(evidence: SafetyEvidence): boolean {
-  return (
-    latest(evidence.explanationAttempts) === CORRECT_SAFETY_EXPLANATION &&
-    evidence.explanationAttempts
-      .slice(0, -1)
-      .some((explanation) => explanation !== CORRECT_SAFETY_EXPLANATION)
-  );
+  return latest(evidence.explanationAttempts) === CORRECT_SAFETY_EXPLANATION;
 }
 
 function camera(
