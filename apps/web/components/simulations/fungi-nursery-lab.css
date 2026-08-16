@@ -1,0 +1,308 @@
+/*
+ * The apparatus is the lesson. Every surface here is sized so the learner can
+ * always see the thing they are being asked to observe: the strip and drawer
+ * are measured at runtime and handed to the camera as safe insets, and no
+ * surface is allowed to grow over the middle of the canvas.
+ */
+
+.fungi-lab {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 30rem;
+}
+
+.fungi-lab__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * The shell's own HUD owns the top bar and the bottom-left stage card. These
+ * surfaces are placed in what the HUD leaves free, never on top of it.
+ */
+.fungi-lab__strip {
+  position: absolute;
+  top: 4.75rem;
+  left: 0;
+  right: 21rem;
+  max-height: 4.5rem;
+  overflow: hidden;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: linear-gradient(to bottom, rgba(12, 20, 14, 0.92), rgba(12, 20, 14, 0));
+  color: #eef3ea;
+  font-size: 0.86rem;
+  pointer-events: none;
+}
+
+.fungi-lab__missions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fungi-lab__mission {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(238, 243, 234, 0.28);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.fungi-lab__mission[data-state='complete'] {
+  background: rgba(122, 168, 92, 0.32);
+  border-color: rgba(168, 205, 133, 0.7);
+}
+
+.fungi-lab__mission[data-state='current'] {
+  background: rgba(233, 226, 203, 0.9);
+  border-color: rgba(233, 226, 203, 1);
+  color: #1a2418;
+  font-weight: 650;
+}
+
+.fungi-lab__objective {
+  flex: 1 1 18rem;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/*
+ * Feedback sits below the controls and is height-clamped: a longer sentence
+ * must never shift a slider the learner is already reaching for.
+ */
+.fungi-lab__caption {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  height: 3.4rem;
+  overflow: hidden;
+  color: #dbe6d3;
+}
+
+.fungi-lab__hint {
+  display: block;
+  margin-top: 0.25rem;
+  color: #d8c9a6;
+  font-size: 0.8rem;
+}
+
+/* ── Tool drawer: the only surface that owns pointer events at rest ── */
+.fungi-lab__drawer {
+  position: absolute;
+  top: 4.75rem;
+  right: 0.75rem;
+  width: 20rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem 0.7rem;
+  max-height: 55%;
+  overflow-y: auto;
+  /*
+   * The document opts into smooth scrolling; a dense tool panel must not.
+   * Reaching a control should be instant, not an animation to wait out.
+   */
+  scroll-behavior: auto;
+  border-radius: 0.7rem;
+  background: rgba(12, 20, 14, 0.94);
+  color: #eef3ea;
+  border: 1px solid rgba(238, 243, 234, 0.18);
+}
+
+.fungi-lab__drawer[data-collapsed='true'] {
+  max-height: max-content;
+  padding-bottom: 0.5rem;
+}
+
+.fungi-lab__drawer[data-collapsed='true'] .fungi-lab__drawer-body {
+  display: none;
+}
+
+.fungi-lab__drawer-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fungi-lab__drawer-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
+.fungi-lab__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  /* Full width so a changing readout can never re-wrap the controls. */
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.fungi-lab__group legend {
+  padding: 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b9c8ad;
+}
+
+.fungi-lab__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.fungi-lab__slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.fungi-lab__slider input {
+  flex: 0 0 8rem;
+  width: 8rem;
+}
+
+/* Fixed-width, tabular readout: the row never reflows as the value changes. */
+.fungi-lab__value {
+  display: inline-block;
+  width: 3.2rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.fungi-lab button,
+.fungi-lab select {
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.6rem;
+  min-height: 2.1rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(238, 243, 234, 0.35);
+  background: rgba(238, 243, 234, 0.08);
+  color: #eef3ea;
+  cursor: pointer;
+}
+
+.fungi-lab button:hover:not(:disabled) {
+  background: rgba(238, 243, 234, 0.18);
+}
+
+.fungi-lab button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.fungi-lab button:focus-visible,
+.fungi-lab select:focus-visible,
+.fungi-lab input:focus-visible {
+  outline: 2px solid #d8c9a6;
+  outline-offset: 2px;
+}
+
+.fungi-lab__notebook {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  color: #cddac2;
+}
+
+.fungi-lab__notebook li {
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(238, 243, 234, 0.1);
+}
+
+/*
+ * Tablet and phone: the drawer becomes a bottom sheet that starts collapsed,
+ * so the apparatus keeps the bulk of a short viewport.
+ */
+/*
+ * Narrow viewports: the shell HUD owns both the top and the bottom, so the
+ * tools live in the free band between them and start collapsed. Expanding
+ * them is a deliberate act that may temporarily overlay the HUD.
+ */
+@media (max-width: 820px) {
+  .fungi-lab__strip {
+    top: 30%;
+    right: 0;
+    max-height: 3.4rem;
+  }
+
+  .fungi-lab__drawer {
+    top: calc(30% + 3.4rem);
+    bottom: auto;
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    max-height: 26%;
+    z-index: 40;
+    border-radius: 0.8rem;
+  }
+
+  .fungi-lab__drawer[data-collapsed='false'] {
+    max-height: 58%;
+  }
+
+  .fungi-lab__group {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .fungi-lab__strip {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .fungi-lab__objective {
+    flex-basis: 100%;
+  }
+
+  .fungi-lab__drawer {
+    max-height: 42%;
+    padding: 0.5rem 0.6rem 0.6rem;
+  }
+
+  .fungi-lab__drawer-body {
+    gap: 0.5rem;
+  }
+
+  .fungi-lab__slider input {
+    width: 100%;
+    min-width: 6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fungi-lab * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
