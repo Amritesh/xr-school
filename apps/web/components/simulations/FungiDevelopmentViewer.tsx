@@ -214,16 +214,28 @@ export default function FungiDevelopmentViewer() {
     if (!mount || !controller) return;
     const bounds = mount.getBoundingClientRect();
     if (bounds.width <= 0 || bounds.height <= 0) return;
-    const strip = stripRef.current?.getBoundingClientRect();
-    const drawer = drawerRef.current?.getBoundingClientRect();
-    const insets = { top: 0, right: 12, bottom: 0, left: 12 };
-    if (strip) insets.top = Math.max(insets.top, strip.bottom - bounds.top);
-    if (drawer) {
-      // A narrow drawer sits beside the apparatus; a wide one sits beneath it.
-      if (drawer.width < bounds.width * 0.6) {
-        insets.right = Math.max(insets.right, bounds.right - drawer.left);
+    const panel = drawerRef.current?.getBoundingClientRect();
+    // The shell paints its own top bar and caption band, and a stage card in
+    // the lower left. Measure both so the apparatus is composed in the clear
+    // band between them rather than hidden behind either.
+    const insets = { top: 150, right: 24, bottom: 24, left: 24 };
+    const shellCaption = document
+      .querySelector('.simulation-experience__caption')
+      ?.getBoundingClientRect();
+    if (shellCaption) {
+      insets.top = Math.max(insets.top, shellCaption.bottom - bounds.top + 16);
+    }
+    const dock = document
+      .querySelector('.simulation-experience__mission-dock')
+      ?.getBoundingClientRect();
+    if (dock) {
+      insets.bottom = Math.max(insets.bottom, bounds.bottom - dock.top + 16);
+    }
+    if (panel) {
+      if (panel.width < bounds.width * 0.6) {
+        insets.right = Math.max(insets.right, bounds.right - panel.left + 12);
       } else {
-        insets.bottom = Math.max(insets.bottom, bounds.bottom - drawer.top);
+        insets.bottom = Math.max(insets.bottom, bounds.bottom - panel.top + 12);
       }
     }
     controller.setViewport(bounds.width, bounds.height, insets);
@@ -394,15 +406,21 @@ export default function FungiDevelopmentViewer() {
     if (!mount || !started) return;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0c140e);
-    scene.fog = new THREE.Fog(0x0c140e, 18, 46);
+    scene.background = new THREE.Color(0x16241a);
+    scene.fog = new THREE.Fog(0x16241a, 22, 60);
     const camera = new THREE.PerspectiveCamera(55, 16 / 9, 0.1, 200);
 
-    const key = new THREE.DirectionalLight(0xffe8c4, 2.1);
+    // Dappled forest light: a warm key through the canopy, a cool sky fill,
+    // and a soft rim so the apparatus separates from the background.
+    const key = new THREE.DirectionalLight(0xfff0d2, 3.1);
     key.position.set(6, 12, 8);
     key.castShadow = true;
     scene.add(key);
-    scene.add(new THREE.HemisphereLight(0xbcd6c0, 0x1d2618, 1.35));
+    const rim = new THREE.DirectionalLight(0xcfe3ff, 1.1);
+    rim.position.set(-7, 6, -5);
+    scene.add(rim);
+    scene.add(new THREE.HemisphereLight(0xd8ecd2, 0x2c3a26, 2.1));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
     let controller: FungiViewerController | undefined;
     let runtime: WebSimulationRuntime | undefined;
@@ -454,6 +472,12 @@ export default function FungiDevelopmentViewer() {
   }, [preferences.reducedMotion]);
 
   const missionIndex = view?.director.missionIndex ?? 0;
+  /**
+   * The shell paints one caption band. It carries the scene's story; the
+   * moment-to-moment feedback lives beside the tools, so no two texts ever
+   * share a position.
+   */
+  const sceneCaption = view ? SCENE_NARRATION[view.director.missionId] : '';
   const caption =
     FUNGI_DEVELOPMENT_NARRATION.cues[missionIndex]?.caption ??
     EXPERIENCE.stages[missionIndex]?.cue ??
@@ -928,8 +952,7 @@ export default function FungiDevelopmentViewer() {
       onNext={() => undefined}
       evidence={evidence}
       completed={lesson.lessonComplete}
-      caption={preferences.subtitles ? caption : undefined}
-      feedback={view?.director.feedback?.outcome}
+      caption={preferences.subtitles ? sceneCaption : undefined}
       onReplayNarration={replayNarration}
       onRestart={restart}
       error={runtimeError || undefined}
@@ -954,43 +977,26 @@ export default function FungiDevelopmentViewer() {
           ref={mountRef}
         />
 
-        <div className="fungi-lab__strip" ref={stripRef} data-testid="fungi-mission-strip">
-          <ol className="fungi-lab__missions">
-            {FUNGI_MISSIONS.map((mission) => {
-              const completed = view?.director.completedMissionIds.includes(mission.id);
-              const current = view?.director.missionId === mission.id;
-              return (
-                <li
-                  key={mission.id}
-                  className="fungi-lab__mission"
-                  data-state={current ? 'current' : completed ? 'complete' : 'pending'}
-                  data-complete={completed ? 'true' : 'false'}
-                  aria-current={current ? 'step' : undefined}
-                >
-                  {MISSION_TITLE[mission.id]}
-                </li>
-              );
-            })}
-          </ol>
-          <p className="fungi-lab__nextstep" data-testid="fungi-next-step" aria-live="polite">
-            {nextStep}
-          </p>
-          <p className="fungi-lab__objective">
-            <span data-testid="fungi-current-mission">
-              {view ? MISSION_TITLE[view.director.missionId] : ''}
-            </span>
-          </p>
-        </div>
-
-        <div
-          className="fungi-lab__drawer"
+        {/* One panel. Everything the learner needs, nothing floating loose. */}
+        <section
+          className="fungi-lab__panel"
           ref={drawerRef}
           data-testid="fungi-tool-drawer"
           data-collapsed={drawerCollapsed}
+          aria-label="Fungi lab controls"
         >
-          <div className="fungi-lab__drawer-head">
+          <header className="fungi-lab__panel-head" ref={stripRef}>
+            <p className="fungi-lab__scene">
+              <span className="fungi-lab__scene-count">
+                Scene {missionIndex + 1} of {FUNGI_MISSIONS.length}
+              </span>
+              <span className="fungi-lab__scene-name" data-testid="fungi-current-mission">
+                {view ? MISSION_TITLE[view.director.missionId] : ''}
+              </span>
+            </p>
             <button
               type="button"
+              className="fungi-lab__collapse"
               data-testid="fungi-toggle-drawer"
               aria-expanded={!drawerCollapsed}
               onClick={() => {
@@ -998,70 +1004,72 @@ export default function FungiDevelopmentViewer() {
                 window.requestAnimationFrame(syncViewport);
               }}
             >
-              {drawerCollapsed ? 'Show tools' : 'Hide tools'}
+              {drawerCollapsed ? 'Show' : 'Hide'}
             </button>
-            <div className="fungi-lab__row">
-              <button
-                type="button"
-                data-testid="fungi-request-hint"
-                onClick={() => act('director.request-hint')}
-              >
-                Hint
-              </button>
-              <button
-                type="button"
-                data-testid="fungi-focus-specimen"
-                onClick={() => controllerRef.current?.focusSpecimen()}
-              >
-                Focus apparatus
-              </button>
-              <button
-                type="button"
-                data-testid="fungi-reset-camera"
-                onClick={() => {
-                  const next = controllerRef.current?.resetCamera();
-                  if (next) setView(next);
-                }}
-              >
-                Reset view
-              </button>
-              <button
-                type="button"
-                data-testid="fungi-reset-experiment"
-                onClick={() => {
-                  const next = controllerRef.current?.resetExperiment();
-                  if (next) setView(next);
-                }}
-              >
-                Reset experiment
-              </button>
-              <button type="button" data-testid="fungi-restart-journey" onClick={restart}>
-                Restart investigation
-              </button>
-            </div>
+          </header>
+
+          <ol className="fungi-lab__dots" aria-label="Scene progress">
+            {FUNGI_MISSIONS.map((mission) => {
+              const completed = view?.director.completedMissionIds.includes(mission.id);
+              const current = view?.director.missionId === mission.id;
+              return (
+                <li
+                  key={mission.id}
+                  className="fungi-lab__dot"
+                  data-state={current ? 'current' : completed ? 'complete' : 'pending'}
+                  data-complete={completed ? 'true' : 'false'}
+                  aria-current={current ? 'step' : undefined}
+                >
+                  <span className="sr-only">{MISSION_TITLE[mission.id]}</span>
+                </li>
+              );
+            })}
+          </ol>
+
+          <p className="fungi-lab__nextstep" data-testid="fungi-next-step" aria-live="polite">
+            {nextStep}
+          </p>
+
+          <div className="fungi-lab__panel-body">
+            {renderMissionTools()}
+
+            <p className="fungi-lab__caption" data-testid="fungi-caption" aria-live="polite">
+              {view?.director.feedback?.outcome ?? ''}
+            </p>
           </div>
 
-          <p className="fungi-lab__story" data-testid="fungi-narration">
-            {view ? SCENE_NARRATION[view.director.missionId] : ''}
-          </p>
-
-          <div className="fungi-lab__drawer-body">{renderMissionTools()}</div>
-
-          <p className="fungi-lab__caption" data-testid="fungi-caption" aria-live="polite">
-            {view?.director.feedback?.outcome ?? caption}
-            {view?.director.currentHint ? (
-              <span className="fungi-lab__hint">{view.director.currentHint}</span>
-            ) : null}
-          </p>
-
-          <ul className="fungi-lab__notebook" data-testid="fungi-evidence-notebook">
-            {evidence.length === 0 ? (
-              <li>No evidence recorded yet</li>
-            ) : (
-              evidence.map((entry) => <li key={entry}>{entry}</li>)
-            )}
-          </ul>
-        </div>
+          <footer className="fungi-lab__panel-foot">
+            <button type="button" data-testid="fungi-request-hint" onClick={() => act('director.request-hint')}>
+              Hint
+            </button>
+            <button
+              type="button"
+              data-testid="fungi-reset-camera"
+              onClick={() => {
+                const next = controllerRef.current?.resetCamera();
+                if (next) setView(next);
+              }}
+            >
+              Reset view
+            </button>
+            <button
+              type="button"
+              data-testid="fungi-reset-experiment"
+              onClick={() => {
+                const next = controllerRef.current?.resetExperiment();
+                if (next) setView(next);
+              }}
+            >
+              Reset step
+            </button>
+            <button type="button" data-testid="fungi-restart-journey" onClick={restart}>
+              Restart
+            </button>
+            <span className="sr-only" data-testid="fungi-evidence-notebook">
+              {evidence.length === 0 ? 'No evidence recorded yet' : evidence.join(', ')}
+            </span>
+          </footer>
+        </section>
       </div>
     </SimulationExperienceShell>
   );
