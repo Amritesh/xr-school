@@ -72,8 +72,11 @@ const DEFAULTS = {
 
 /** Fraction of the framed distance the learner may dolly in to. */
 const MIN_FRAMED_FRACTION = 0.45;
-/** Breathing room left around the bounding sphere when fitting. */
-const FIT_PADDING = 1.08;
+/**
+ * Breathing room around the bounding sphere. Kept just under 1 so the
+ * apparatus fills the frame — the lesson is the thing being looked at.
+ */
+const FIT_PADDING = 0.82;
 
 function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
