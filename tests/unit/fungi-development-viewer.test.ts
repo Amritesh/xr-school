@@ -250,9 +250,11 @@ describe('FungiDevelopmentViewer composition', () => {
     expect(source).not.toContain('vrPromptForStage');
   });
 
-  it('exposes one accessible mission strip, tool drawer, and caption region', () => {
-    expect(source).toContain('data-testid="fungi-mission-strip"');
+  it('presents a single control panel rather than competing floating surfaces', () => {
+    // Four overlapping surfaces were the problem; there is now one panel.
     expect(source).toContain('data-testid="fungi-tool-drawer"');
+    expect(source).toContain('data-testid="fungi-current-mission"');
+    expect(source).toContain('data-testid="fungi-next-step"');
     expect(source).toContain('data-testid="fungi-caption"');
     expect(source).toContain('data-testid="fungi-evidence-notebook"');
     expect(source).toContain('data-testid="fungi-reset-experiment"');
