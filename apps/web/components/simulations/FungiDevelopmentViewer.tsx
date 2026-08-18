@@ -109,6 +109,40 @@ const PROMPT_ACTION: Readonly<
   },
 };
 
+/** The story the class hears, scene by scene, straight from the script. */
+const SCENE_NARRATION: Readonly<Record<FungiMissionId, string>> = {
+  diagnose:
+    'Welcome, young explorers! Today you will enter the hidden world of fungi. Look around carefully. Fungi are living organisms, but they are not plants — they do not make their own food.',
+  mycelium:
+    'Inside the mushroom are tiny thread-like structures called hyphae. Many hyphae together form a mycelium. Notice how the threads spread through the soil and wood — this helps fungi absorb nutrients.',
+  'spore-flight':
+    'These tiny particles are called spores. They are the reproductive units of fungi. When a spore lands on a warm, moist place, it begins to grow.',
+  'growth-chamber':
+    'Watch the complete development of a fungus: a spore lands on the bread, a hypha grows, mycelium spreads, spore-producing structures develop, and new spores are released.',
+  'useful-fungi':
+    'Fungi are very useful. Yeast helps make bread and cakes, some fungi help make medicines such as antibiotics, and fungi decompose dead matter to recycle nutrients in nature.',
+  safety:
+    'Not all fungi are beneficial. Some cause diseases in plants and humans, and some spoil our food.',
+  recommendation:
+    'You have completed your journey through the fungal kingdom! Fungi grow through hyphae, develop from spores, help nature by decomposition, and can be both useful and harmful.',
+};
+
+/** Day 1 to Day 5 across the model's 0-120 hour window. */
+const TIMELAPSE_HOURS = 120;
+const TIMELAPSE_SECONDS = 8;
+
+function dayLabel(elapsedHours: number): string {
+  const day = Math.min(5, Math.floor((elapsedHours / TIMELAPSE_HOURS) * 5) + 1);
+  const caption = [
+    'No visible growth',
+    'Tiny white threads appear',
+    'Cotton-like growth spreads',
+    'Black spots form',
+    'New spores are released',
+  ][day - 1];
+  return `Day ${day} — ${caption}`;
+}
+
 const STAGE_EVIDENCE = Object.fromEntries(
   EXPERIENCE.stages.map((stage) => [stage.id, stage.completionEvidenceIds[0]]),
 ) as Readonly<Record<string, string>>;
@@ -167,6 +201,8 @@ export default function FungiDevelopmentViewer() {
     () => typeof window !== 'undefined' && window.innerWidth <= 820,
   );
   const [runtimeError, setRuntimeError] = useState('');
+  const [timelapsePlaying, setTimelapsePlaying] = useState(false);
+  const timelapseRef = useRef<number | null>(null);
 
   /**
    * Hands the camera the region no interface surface covers, measured from the
@@ -261,6 +297,55 @@ export default function FungiDevelopmentViewer() {
       }
     },
     [publish],
+  );
+
+  /**
+   * The five-day time-lapse: a real loop that drives the biological model
+   * forward hour by hour so the class watches the mould actually grow.
+   */
+  const playTimelapse = useCallback(() => {
+    const controller = controllerRef.current;
+    if (!controller || timelapseRef.current !== null) return;
+    setTimelapsePlaying(true);
+    let startedAt: number | null = null;
+
+    const step = (now: number) => {
+      startedAt ??= now;
+      let progress = Math.min(1, (now - startedAt) / (TIMELAPSE_SECONDS * 1000));
+      try {
+        publish(
+          controller.manipulate(
+            {
+              type: 'growth-input-set',
+              field: 'elapsedHours',
+              value: progress * TIMELAPSE_HOURS,
+            },
+            BROWSER_SOURCE,
+          ),
+        );
+      } catch (error) {
+        setRuntimeError(error instanceof Error ? error.message : String(error));
+        progress = 1;
+      }
+      if (progress < 1) {
+        timelapseRef.current = window.requestAnimationFrame(step);
+        return;
+      }
+      timelapseRef.current = null;
+      setTimelapsePlaying(false);
+    };
+
+    timelapseRef.current = window.requestAnimationFrame(step);
+  }, [publish]);
+
+  useEffect(
+    () => () => {
+      if (timelapseRef.current !== null) {
+        window.cancelAnimationFrame(timelapseRef.current);
+        timelapseRef.current = null;
+      }
+    },
+    [],
   );
 
   /**
@@ -542,6 +627,20 @@ export default function FungiDevelopmentViewer() {
       case 'growth-chamber':
         return (
           <>
+            <fieldset className="fungi-lab__group">
+              <legend>Five-day time lapse</legend>
+              <p className="fungi-lab__day" data-testid="fungi-day-readout">
+                {dayLabel(tools.growthInput.elapsedHours)}
+              </p>
+              <button
+                type="button"
+                data-testid="fungi-play-timelapse"
+                disabled={timelapsePlaying}
+                onClick={playTimelapse}
+              >
+                {timelapsePlaying ? 'Growing…' : '▶ Watch 5 days pass'}
+              </button>
+            </fieldset>
             <fieldset className="fungi-lab__group">
               <legend>Chamber controls</legend>
               <label className="fungi-lab__slider">
@@ -880,7 +979,6 @@ export default function FungiDevelopmentViewer() {
             <span data-testid="fungi-current-mission">
               {view ? MISSION_TITLE[view.director.missionId] : ''}
             </span>
-            {view ? ` — ${view.mission.objective}` : ''}
           </p>
         </div>
 
@@ -942,6 +1040,10 @@ export default function FungiDevelopmentViewer() {
               </button>
             </div>
           </div>
+
+          <p className="fungi-lab__story" data-testid="fungi-narration">
+            {view ? SCENE_NARRATION[view.director.missionId] : ''}
+          </p>
 
           <div className="fungi-lab__drawer-body">{renderMissionTools()}</div>
 

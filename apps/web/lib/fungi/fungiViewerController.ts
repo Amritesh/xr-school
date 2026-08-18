@@ -50,6 +50,8 @@ export interface FungiViewerController {
   interactWith(pickId: string, source: FungiInputSource): FungiViewerSnapshot;
   /** One plain sentence naming the very next thing to do. */
   nextStep(): string;
+  /** Which object the arrow is currently pointing at, if any. */
+  attentionTarget(): string | undefined;
   manipulate(
     manipulation: FungiManipulation,
     source: FungiInputSource,
@@ -132,9 +134,43 @@ export function createFungiViewerController(
     cameraController.focusBounds(boundsOf(mission), poseOf(mission), { animate });
   };
 
+  /**
+   * The single object the learner should click next. Driving the in-world
+   * arrow from real evidence means the pointer is never stale or wrong.
+   */
+  function attentionTarget(): string | undefined {
+    const state = director.snapshot();
+    const evidence = state.evidence;
+    switch (state.missionId) {
+      case 'diagnose': {
+        if (evidence.diagnose.firstPrediction === undefined) return undefined;
+        return SPECIMEN_ORDER.find(
+          (id) => !evidence.diagnose.lensCrossings.includes(id),
+        );
+      }
+      case 'mycelium':
+        return ['log-branch-near', 'log-branch-middle', 'log-branch-far'].find(
+          (id) => !evidence.mycelium.branchTraces.includes(id),
+        );
+      case 'useful-fungi':
+        return evidence.usefulFungi.doughObservations.length === 0
+          ? 'yeast-jar'
+          : undefined;
+      case 'safety': {
+        if (evidence.safety.maximumScanDepth <= 0.5) return undefined;
+        return ['mouldy-item', 'fresh-item'].find(
+          (id) => evidence.safety.classificationByItem[id] === undefined,
+        );
+      }
+      default:
+        return undefined;
+    }
+  }
+
   const settle = (): FungiViewerSnapshot => {
     projectWorld();
     frameMission(true);
+    world.setAttention(attentionTarget());
     return snapshot();
   };
 
@@ -195,6 +231,7 @@ export function createFungiViewerController(
     framedMissionId = undefined;
     projectWorld();
     frameMission(true);
+    world.setAttention(attentionTarget());
     return snapshot();
   }
 
@@ -332,6 +369,7 @@ export function createFungiViewerController(
 
   projectWorld();
   frameMission(false);
+  world.setAttention(attentionTarget());
 
   return {
     root: world.root,
@@ -339,6 +377,7 @@ export function createFungiViewerController(
     pickAt,
     interactWith,
     nextStep,
+    attentionTarget,
     manipulate,
     act,
     setViewport,

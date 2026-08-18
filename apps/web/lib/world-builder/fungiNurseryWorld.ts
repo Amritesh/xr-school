@@ -72,6 +72,7 @@ export interface FungiNurseryWorldSnapshot {
     litterMeshScale: number;
   };
   safety: { revealDepth: number; revealedHyphae: number };
+  attentionPickId?: string;
   spore: {
     released: boolean;
     position: [number, number, number];
@@ -93,6 +94,8 @@ export interface FungiNurseryWorld {
   landmarks: Record<FungiLandmarkId, THREE.Object3D>;
   /** Objects a learner can click directly, keyed by what they mean. */
   pickTargets: Record<string, THREE.Object3D>;
+  /** Points the bobbing arrow at the thing to click next, or hides it. */
+  setAttention(pickId: string | undefined): void;
   project(projection: Readonly<FungiNurseryWorldProjection>): void;
   update(deltaSeconds: number, elapsedSeconds: number): void;
   setReducedMotion(reduced: boolean): void;
@@ -116,6 +119,7 @@ const PALETTE = {
   steel: 0x6b7780,
   nutrient: 0xc7a03c,
   warning: 0xc4632f,
+  attention: 0xffd166,
 } as const;
 
 /** Instance capacities — the ceiling the frame budget is proven against. */
@@ -330,6 +334,14 @@ export function createFungiNurseryWorld(
         color: 0xffffff,
       }),
     ),
+    attention: ownMaterial(
+      new THREE.MeshStandardMaterial({
+        color: PALETTE.attention,
+        emissive: 0xffb703,
+        emissiveIntensity: 1.4,
+        roughness: 0.35,
+      }),
+    ),
     glass: ownMaterial(
       new THREE.MeshPhysicalMaterial({
         color: PALETTE.glass,
@@ -350,6 +362,8 @@ export function createFungiNurseryWorld(
     cone: ownGeometry(new THREE.ConeGeometry(1, 1, 12)),
     filament: ownGeometry(new THREE.CylinderGeometry(0.012, 0.02, 1, 5)),
     disc: ownGeometry(new THREE.CircleGeometry(1, 24)),
+    ring: ownGeometry(new THREE.TorusGeometry(1, 0.09, 10, 28)),
+    arrow: ownGeometry(new THREE.ConeGeometry(1, 1.6, 10)),
   };
 
   const addMesh = (
@@ -745,6 +759,62 @@ export function createFungiNurseryWorld(
     board.position.set(0, 1.3, -0.2);
   }
 
+  // ── Attention pointer: an unmissable "click here" marker ──
+  const attention = new THREE.Group();
+  attention.name = 'attention-pointer';
+  attention.visible = false;
+  root.add(attention);
+
+  const attentionArrow = new THREE.Mesh(geometry.arrow, material.attention);
+  attentionArrow.name = 'attention-arrow';
+  attentionArrow.rotation.x = Math.PI;
+  attentionArrow.scale.set(0.2, 0.4, 0.2);
+  attentionArrow.position.y = 0.78;
+  attentionArrow.castShadow = false;
+  attention.add(attentionArrow);
+
+  const attentionRing = new THREE.Mesh(geometry.ring, material.attention);
+  attentionRing.name = 'attention-ring';
+  attentionRing.rotation.x = -Math.PI / 2;
+  attentionRing.scale.setScalar(0.55);
+  attentionRing.position.y = 0.06;
+  attentionRing.castShadow = false;
+  attention.add(attentionRing);
+
+  const attentionBox = new THREE.Box3();
+  const attentionCentre = new THREE.Vector3();
+  let attentionPickId: string | undefined;
+
+  function setAttention(pickId: string | undefined): void {
+    if (disposed) return;
+    attentionPickId = undefined;
+    attention.visible = false;
+    if (pickId === undefined) {
+      delete state.attentionPickId;
+      return;
+    }
+    const target = pickTargets[pickId];
+    if (target === undefined) {
+      delete state.attentionPickId;
+      return;
+    }
+    target.updateMatrixWorld(true);
+    attentionBox.setFromObject(target);
+    if (attentionBox.isEmpty()) {
+      delete state.attentionPickId;
+      return;
+    }
+    attentionBox.getCenter(attentionCentre);
+    attention.position.set(
+      attentionCentre.x,
+      attentionBox.max.y + 0.05,
+      attentionCentre.z,
+    );
+    attention.visible = true;
+    attentionPickId = pickId;
+    state.attentionPickId = pickId;
+  }
+
   const state: FungiNurseryWorldSnapshot = {
     missionId: 'diagnose',
     colony: {
@@ -901,6 +971,14 @@ export function createFungiNurseryWorld(
     // instanced field costs no allocation and creates no new objects.
     sporeField.rotation.y = state.airflow.directionRadians + elapsedSeconds * 0.05 * state.airflow.strength;
     sporeField.position.y = Math.sin(elapsedSeconds * 0.6) * 0.03;
+
+    // The pointer bobs and its ring breathes, so it reads as "click me" even
+    // to a learner who is not reading any text.
+    if (attentionPickId !== undefined) {
+      attentionArrow.position.y = 0.78 + Math.sin(elapsedSeconds * 3.4) * 0.13;
+      attentionRing.rotation.z = elapsedSeconds * 1.3;
+      attentionRing.scale.setScalar(0.55 + Math.sin(elapsedSeconds * 3.4) * 0.09);
+    }
   }
 
   function setReducedMotion(reduced: boolean): void {
@@ -958,6 +1036,7 @@ export function createFungiNurseryWorld(
     root,
     landmarks,
     pickTargets,
+    setAttention,
     project,
     update,
     setReducedMotion,
