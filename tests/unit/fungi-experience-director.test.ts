@@ -108,6 +108,17 @@ function reachUsefulFungi(source: FungiInputSource = "mouse") {
       value: "moisture-changed-growth",
     }),
   );
+  director.dispatch(
+    action("growth.order-stages", source, {
+      value: [
+        "spore-lands",
+        "hypha-grows",
+        "mycelium-spreads",
+        "structures-form",
+        "spores-release",
+      ],
+    }),
+  );
   return director;
 }
 
@@ -169,6 +180,17 @@ function completeJourney(source: FungiInputSource) {
   director.dispatch(
     action("growth.interpret", source, {
       value: "moisture-changed-growth",
+    }),
+  );
+  director.dispatch(
+    action("growth.order-stages", source, {
+      value: [
+        "spore-lands",
+        "hypha-grows",
+        "mycelium-spreads",
+        "structures-form",
+        "spores-release",
+      ],
     }),
   );
 
@@ -572,6 +594,21 @@ describe("fungi experience director", () => {
       }),
     );
 
+    // Trials still record honest evidence; the scene now advances on the
+    // script's ordering challenge.
+    expect(director.snapshot().missionId).toBe("growth-chamber");
+    director.dispatch(
+      action("growth.order-stages", "mouse", {
+        value: [
+          "spore-lands",
+          "hypha-grows",
+          "mycelium-spreads",
+          "structures-form",
+          "spores-release",
+        ],
+      }),
+    );
+
     expect(director.snapshot()).toMatchObject({
       missionId: "useful-fungi",
       evidence: {
@@ -615,6 +652,17 @@ describe("fungi experience director", () => {
     director.dispatch(
       action("growth.interpret", "mouse", {
         value: "moisture-changed-growth",
+      }),
+    );
+    director.dispatch(
+      action("growth.order-stages", "mouse", {
+        value: [
+          "spore-lands",
+          "hypha-grows",
+          "mycelium-spreads",
+          "structures-form",
+          "spores-release",
+        ],
       }),
     );
 

@@ -208,6 +208,46 @@
   outline-offset: 2px;
 }
 
+/* ── Scene 4: the stage-ordering challenge ── */
+.fungi-lab__order {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.76rem;
+}
+
+.fungi-lab__order li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.45rem;
+  border-radius: 0.4rem;
+  background: rgba(255, 209, 102, 0.16);
+  color: #f2e7cc;
+}
+
+.fungi-lab__order-index {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #ffd166;
+  color: #1a2418;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.fungi-lab__order-empty {
+  background: none;
+  color: #93a888;
+  font-style: italic;
+}
+
 /* Feedback sits with the tools, height-clamped so nothing below it jumps. */
 .fungi-lab__caption {
   margin: 0;

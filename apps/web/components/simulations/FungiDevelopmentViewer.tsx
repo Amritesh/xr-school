@@ -26,7 +26,9 @@ import {
   type FungiViewerSnapshot,
 } from '@/lib/fungi/fungiViewerController';
 import {
+  FUNGAL_DEVELOPMENT_STAGES,
   FUNGI_MISSIONS,
+  type FungalDevelopmentStage,
   type FungiInputSource,
   type FungiMissionId,
 } from '@/lib/fungi/fungiExperienceDirector';
@@ -170,6 +172,15 @@ const USEFUL_ROLES: ReadonlyArray<{ id: FungalUsefulRole; label: string }> = [
 
 const SUBSTRATES = ['bread', 'fruit', 'dry-paper'] as const;
 
+/** The script's five stages, in the words a child sees on each chip. */
+const STAGE_LABEL: Readonly<Record<FungalDevelopmentStage, string>> = {
+  'spore-lands': 'A spore lands on the bread',
+  'hypha-grows': 'A hypha grows',
+  'mycelium-spreads': 'Mycelium spreads',
+  'structures-form': 'Spore structures form',
+  'spores-release': 'New spores are released',
+};
+
 const BROWSER_SOURCE: FungiInputSource = 'mouse';
 
 function optionLabel(optionId: string): string {
@@ -194,9 +205,7 @@ export default function FungiDevelopmentViewer() {
   const [lesson, setLesson] = useState<LessonSnapshot>(lessonRef.current.snapshot());
   const [evidence, setEvidence] = useState<string[]>([]);
   // Narrow viewports have no free room, so the tools begin as a closed sheet.
-  const [growthInterpretation, setGrowthInterpretation] = useState(
-    'temperature-changed-growth',
-  );
+  const [stageOrder, setStageOrder] = useState<FungalDevelopmentStage[]>([]);
   const [drawerCollapsed, setDrawerCollapsed] = useState(
     () => typeof window !== 'undefined' && window.innerWidth <= 820,
   );
@@ -742,56 +751,48 @@ export default function FungiDevelopmentViewer() {
               </label>
             </fieldset>
             <fieldset className="fungi-lab__group">
-              <legend>Trial notebook</legend>
+              <legend>Put the days in order</legend>
+              <ol className="fungi-lab__order" data-testid="fungi-stage-order">
+                {stageOrder.map((stage, index) => (
+                  <li key={stage}>
+                    <span className="fungi-lab__order-index">{index + 1}</span>
+                    {STAGE_LABEL[stage]}
+                  </li>
+                ))}
+                {stageOrder.length === 0 ? <li className="fungi-lab__order-empty">Tap the stages below in the order they happen</li> : null}
+              </ol>
               <div className="fungi-lab__row">
-                <button
-                  type="button"
-                  data-testid="fungi-save-trial"
-                  onClick={() => act('growth.save-trial')}
-                >
-                  Save trial
-                </button>
-                <button
-                  type="button"
-                  data-testid="fungi-compare-trials"
-                  disabled={savedTrials.length < 2}
-                  onClick={() =>
-                    act('growth.compare-trials', {
-                      trialIds: [
-                        savedTrials.at(-2)?.id ?? '',
-                        savedTrials.at(-1)?.id ?? '',
-                      ],
-                    })
-                  }
-                >
-                  Compare last two
-                </button>
+                {FUNGAL_DEVELOPMENT_STAGES.filter((stage) => !stageOrder.includes(stage)).map(
+                  (stage) => (
+                    <button
+                      key={stage}
+                      type="button"
+                      data-testid={`fungi-stage-${stage}`}
+                      onClick={() => {
+                        const next = [...stageOrder, stage];
+                        setStageOrder(next);
+                        if (next.length === FUNGAL_DEVELOPMENT_STAGES.length) {
+                          act('growth.order-stages', { value: next });
+                          setStageOrder([]);
+                        }
+                      }}
+                    >
+                      {STAGE_LABEL[stage]}
+                    </button>
+                  ),
+                )}
               </div>
-              <div className="fungi-lab__row">
-                <select
-                  data-testid="fungi-growth-interpretation"
-                  value={growthInterpretation}
-                  onChange={(event) => setGrowthInterpretation(event.target.value)}
-                >
-                  {[
-                    'temperature-changed-growth',
-                    'moisture-changed-growth',
-                    'substrate-changed-growth',
-                    'time-changed-growth',
-                  ].map((value) => (
-                    <option key={value} value={value}>
-                      {optionLabel(value)}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  type="button"
-                  data-testid="fungi-record-interpretation"
-                  onClick={() => act('growth.interpret', { value: growthInterpretation })}
-                >
-                  Record
-                </button>
-              </div>
+              {stageOrder.length > 0 ? (
+                <div className="fungi-lab__row">
+                  <button
+                    type="button"
+                    data-testid="fungi-stage-clear"
+                    onClick={() => setStageOrder([])}
+                  >
+                    Start again
+                  </button>
+                </div>
+              ) : null}
             </fieldset>
           </>
         );

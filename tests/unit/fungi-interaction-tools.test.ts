@@ -121,6 +121,17 @@ function advanceTo({ director, tools }: Harness, missionId: FungiMissionId): voi
     source,
     value: 'temperature-changed-growth',
   });
+  director.dispatch({
+    actionId: 'growth.order-stages',
+    source,
+    value: [
+      'spore-lands',
+      'hypha-grows',
+      'mycelium-spreads',
+      'structures-form',
+      'spores-release',
+    ],
+  });
   if (reached()) return;
 
   director.dispatch({

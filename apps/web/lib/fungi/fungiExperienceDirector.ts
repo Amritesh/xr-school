@@ -56,6 +56,7 @@ export const FUNGI_ACTION_IDS = [
   "growth.save-trial",
   "growth.compare-trials",
   "growth.interpret",
+  "growth.order-stages",
   "useful.observe-dough",
   "useful.match-role",
   "safety.scan",
@@ -123,7 +124,21 @@ export interface SporeFlightEvidence {
   currentLandingOutcome?: string;
 }
 
+/** The five development stages the script asks learners to sequence. */
+export const FUNGAL_DEVELOPMENT_STAGES = [
+  "spore-lands",
+  "hypha-grows",
+  "mycelium-spreads",
+  "structures-form",
+  "spores-release",
+] as const;
+
+export type FungalDevelopmentStage =
+  (typeof FUNGAL_DEVELOPMENT_STAGES)[number];
+
 export interface GrowthEvidence {
+  orderAttempts: string[][];
+  correctOrderObserved: boolean;
   comparisonHistory: FungalTrialComparison[];
   interpretationAttempts: string[];
   correctInterpretationObserved: boolean;
@@ -443,6 +458,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
       "growth.save-trial",
       "growth.compare-trials",
       "growth.interpret",
+  "growth.order-stages",
     ],
     resetBoundary: "experiment",
     hints: [
@@ -452,13 +468,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     ],
     entryMode: "guided-pan",
     exitMode: "guided-pan",
-    evidenceSatisfied: ({ evidence, experiment }) =>
-      experiment.savedTrials.length >= 2 &&
-      evidence.growth.comparisonHistory.some(
-        ({ quality, changedVariables }) =>
-          quality === "fair" && changedVariables.length === 1,
-      ) &&
-      evidence.growth.correctInterpretationObserved,
+    evidenceSatisfied: ({ evidence }) => evidence.growth.correctOrderObserved,
   },
   {
     id: "useful-fungi",
@@ -569,6 +579,8 @@ function initialEvidence(): FungiDirectorEvidence {
       comparisonHistory: [],
       interpretationAttempts: [],
       correctInterpretationObserved: false,
+      orderAttempts: [],
+      correctOrderObserved: false,
     },
     usefulFungi: {
       doughObservations: [],
@@ -840,6 +852,32 @@ function applyAction(
       return;
     }
 
+    case "growth.order-stages": {
+      const ordered = ownValue(action, "value");
+      if (
+        !Array.isArray(ordered) ||
+        ordered.length !== FUNGAL_DEVELOPMENT_STAGES.length ||
+        ordered.some((stage) => typeof stage !== "string")
+      ) {
+        throw new Error(
+          `fungal development order must list all ${FUNGAL_DEVELOPMENT_STAGES.length} stages`,
+        );
+      }
+      const attempt = ordered as string[];
+      if (new Set(attempt).size !== attempt.length) {
+        throw new Error("fungal development order must not repeat a stage");
+      }
+      for (const stage of attempt) {
+        if (!FUNGAL_DEVELOPMENT_STAGES.includes(stage as never)) {
+          throw new Error(`unknown fungal development stage: ${stage}`);
+        }
+      }
+      state.evidence.growth.orderAttempts.push([...attempt]);
+      state.evidence.growth.correctOrderObserved ||=
+        attempt.every((stage, index) => stage === FUNGAL_DEVELOPMENT_STAGES[index]);
+      return;
+    }
+
     case "useful.observe-dough": {
       const observation = ownString(action, "value");
       state.evidence.usefulFungi.doughObservations.push(observation);
@@ -1022,6 +1060,20 @@ function feedbackFor(
           ? "The interpretation matches the single variable changed in the fair comparison."
           : "The interpretation does not identify a single changed variable in a fair comparison.",
       };
+    case "growth.order-stages": {
+      const ordered = ownValue(action, "value") as string[];
+      const correct = ordered.every(
+        (stage, index) => stage === FUNGAL_DEVELOPMENT_STAGES[index],
+      );
+      const firstWrong = ordered.findIndex(
+        (stage, index) => stage !== FUNGAL_DEVELOPMENT_STAGES[index],
+      );
+      return {
+        outcome: correct
+          ? "That is the order a bread mould really develops in."
+          : `Not yet — step ${firstWrong + 1} does not come next. Watch the time-lapse again.`,
+      };
+    }
     case "useful.observe-dough": {
       const observation = ownString(action, "value");
       return {
