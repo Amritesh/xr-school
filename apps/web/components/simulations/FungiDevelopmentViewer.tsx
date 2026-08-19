@@ -172,6 +172,13 @@ const USEFUL_ROLES: ReadonlyArray<{ id: FungalUsefulRole; label: string }> = [
 
 const SUBSTRATES = ['bread', 'fruit', 'dry-paper'] as const;
 
+/** The three workplaces of the script, and the role each one stands for. */
+const WORKPLACES: ReadonlyArray<{ id: string; label: string; role: FungalUsefulRole }> = [
+  { id: 'bakery', label: '🥖 Bakery', role: 'food' },
+  { id: 'laboratory', label: '🧪 Laboratory', role: 'medicine' },
+  { id: 'compost-pit', label: '🍂 Compost pit', role: 'decomposer' },
+];
+
 /** The script's five stages, in the words a child sees on each chip. */
 const STAGE_LABEL: Readonly<Record<FungalDevelopmentStage, string>> = {
   'spore-lands': 'A spore lands on the bread',
@@ -492,12 +499,34 @@ export default function FungiDevelopmentViewer() {
     EXPERIENCE.stages[missionIndex]?.cue ??
     '';
 
-  const replayNarration = useCallback(() => {
+  /**
+   * The script is a spoken story, so each scene narrates itself on arrival.
+   * Honours the audio preference and never speaks over itself.
+   */
+  const spokenSceneRef = useRef<FungiMissionId | undefined>(undefined);
+  useEffect(() => {
+    if (!started || !view) return;
+    const missionId = view.director.missionId;
+    if (spokenSceneRef.current === missionId) return;
+    spokenSceneRef.current = missionId;
     stopSimulationNarration();
     if (!preferences.audio) return;
-    const cue = FUNGI_DEVELOPMENT_NARRATION.cues[missionIndex];
-    if (cue) void playSimulationNarration(cue.text, missionIndex);
-  }, [missionIndex, preferences.audio]);
+    void playSimulationNarration(
+      SCENE_NARRATION[missionId],
+      view.director.missionIndex,
+    );
+  }, [started, view, preferences.audio]);
+
+  useEffect(() => () => stopSimulationNarration(), []);
+
+  const replayNarration = useCallback(() => {
+    stopSimulationNarration();
+    if (!preferences.audio || !view) return;
+    void playSimulationNarration(
+      SCENE_NARRATION[view.director.missionId],
+      missionIndex,
+    );
+  }, [missionIndex, preferences.audio, view]);
 
   const restart = useCallback(() => {
     const controller = controllerRef.current;
@@ -838,25 +867,44 @@ export default function FungiDevelopmentViewer() {
               </label>
             </fieldset>
             <fieldset className="fungi-lab__group">
-              <legend>Role router</legend>
-              {USEFUL_ACTORS.map((actor) => (
-                <div className="fungi-lab__row" key={actor.id}>
-                  <span>{actor.label}</span>
-                  {USEFUL_ROLES.map((role) => (
-                    <button
-                      key={role.id}
-                      type="button"
-                      data-testid={`fungi-role-${actor.id}-${role.id}`}
-                      onClick={() => {
-                        manipulate({ type: 'token-grab', actorId: actor.id });
-                        manipulate({ type: 'role-drop', actorId: actor.id, role: role.id });
-                      }}
-                    >
-                      {role.label}
-                    </button>
-                  ))}
-                </div>
-              ))}
+              <legend>Pick up a fungus, then click where it works</legend>
+              <div className="fungi-lab__row">
+                {USEFUL_ACTORS.map((actor) => (
+                  <button
+                    key={actor.id}
+                    type="button"
+                    data-testid={`fungi-carry-${actor.id}`}
+                    aria-pressed={tools.grabbedActorId === actor.id}
+                    onClick={() => manipulate({ type: 'token-grab', actorId: actor.id })}
+                  >
+                    {actor.label}
+                  </button>
+                ))}
+              </div>
+              <div className="fungi-lab__row">
+                {WORKPLACES.map((place) => (
+                  <button
+                    key={place.id}
+                    type="button"
+                    data-testid={`fungi-place-${place.id}`}
+                    disabled={tools.grabbedActorId === undefined}
+                    onClick={() => {
+                      const carried = tools.grabbedActorId;
+                      if (carried === undefined) return;
+                      manipulate({ type: 'role-drop', actorId: carried, role: place.role });
+                    }}
+                  >
+                    {place.label}
+                  </button>
+                ))}
+              </div>
+              <p className="fungi-lab__carry" data-testid="fungi-carrying">
+                {tools.grabbedActorId
+                  ? `Carrying ${
+                      USEFUL_ACTORS.find((actor) => actor.id === tools.grabbedActorId)?.label
+                    } — now click the bakery, the laboratory or the compost pit.`
+                  : 'Pick one up to carry it.'}
+              </p>
             </fieldset>
           </>
         );
@@ -977,6 +1025,20 @@ export default function FungiDevelopmentViewer() {
           className="fungi-lab__canvas"
           ref={mountRef}
         />
+
+        {view?.director.journeyComplete ? (
+          <div className="fungi-lab__complete" data-testid="fungi-mission-complete" role="status">
+            <p className="fungi-lab__complete-badge">🍄</p>
+            <h2>Mission Complete: Fungi Explorer</h2>
+            <p>
+              You found the fungi, traced a mycelium, flew a spore, watched five
+              days of growth, put fungi to work, and kept your food safe.
+            </p>
+            <button type="button" data-testid="fungi-complete-restart" onClick={restart}>
+              Explore again
+            </button>
+          </div>
+        ) : null}
 
         {/* One panel. Everything the learner needs, nothing floating loose. */}
         <section

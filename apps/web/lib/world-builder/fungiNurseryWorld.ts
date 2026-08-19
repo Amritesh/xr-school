@@ -638,6 +638,17 @@ export function createFungiNurseryWorld(
       }
     }
 
+    const bakery = addPickable(parent, 'bakery', {
+      size: [1.4, 1.3, 1],
+      position: [-0.5, 1.3, 0.1],
+    });
+    const oven = addMesh(bakery, geometry.box, material.bark, 'bakery-oven');
+    oven.scale.set(1.1, 0.75, 0.5);
+    oven.position.set(-0.45, 1.35, -0.3);
+    const ovenMouth = addMesh(bakery, geometry.box, material.soil, 'bakery-oven-mouth');
+    ovenMouth.scale.set(0.75, 0.42, 0.08);
+    ovenMouth.position.set(-0.45, 1.3, -0.06);
+
     const yeastJar = addMesh(parent, geometry.cylinder, material.glass, 'yeast-jar');
     yeastJar.scale.set(0.3, 0.44, 0.3);
     yeastJar.position.set(-0.75, 1.18, 0.1);
@@ -668,16 +679,43 @@ export function createFungiNurseryWorld(
       },
     );
 
-    const medicineDish = addMesh(parent, geometry.cylinder, material.cream, 'medicine-dish');
-    medicineDish.scale.set(0.28, 0.05, 0.28);
-    medicineDish.position.set(0.85, 0.99, 0.1);
-    const inhibitionRing = addMesh(parent, geometry.disc, material.mycelium, 'inhibition-zone');
+    // ── Laboratory: where a fungus is grown into medicine ──
+    const lab = addPickable(parent, 'laboratory', {
+      size: [1, 1.3, 1],
+      position: [0.95, 1.3, 0.1],
+    });
+    const labCounter = addMesh(lab, geometry.box, material.steel, 'lab-counter');
+    labCounter.scale.set(0.8, 0.06, 0.6);
+    labCounter.position.set(0.95, 0.99, 0.1);
+    const labCabinet = addMesh(lab, geometry.box, material.steel, 'lab-cabinet');
+    labCabinet.scale.set(0.75, 0.7, 0.12);
+    labCabinet.position.set(0.95, 1.35, -0.16);
+    const flask = addMesh(lab, geometry.cone, material.glass, 'lab-flask');
+    flask.scale.set(0.15, 0.3, 0.15);
+    flask.position.set(0.78, 1.16, 0.16);
+    flask.castShadow = false;
+    const medicineDish = addMesh(lab, geometry.cylinder, material.cream, 'medicine-dish');
+    medicineDish.scale.set(0.2, 0.04, 0.2);
+    medicineDish.position.set(1.14, 1.03, 0.18);
+    const inhibitionRing = addMesh(lab, geometry.disc, material.mycelium, 'inhibition-zone');
     inhibitionRing.rotation.x = -Math.PI / 2;
-    inhibitionRing.scale.setScalar(0.16);
-    inhibitionRing.position.set(0.85, 1.025, 0.1);
+    inhibitionRing.scale.setScalar(0.12);
+    inhibitionRing.position.set(1.14, 1.055, 0.18);
 
-    const litter = addMesh(parent, geometry.cap, material.leaf, 'litter-pile');
-    litter.position.set(0, 0.96, -1.3);
+    // ── Compost pit: a dug hollow where litter is recycled ──
+    const compost = addPickable(parent, 'compost-pit', {
+      size: [1.5, 0.9, 1.5],
+      position: [0, 1, -1.3],
+    });
+    const pitRim = addMesh(compost, geometry.cylinder, material.bark, 'compost-rim');
+    pitRim.scale.set(0.85, 0.16, 0.85);
+    pitRim.position.set(0, 0.72, -1.3);
+    const pitFloor = addMesh(compost, geometry.cylinder, material.soil, 'compost-floor');
+    pitFloor.scale.set(0.75, 0.05, 0.75);
+    pitFloor.position.set(0, 0.66, -1.3);
+
+    const litter = addMesh(compost, geometry.cap, material.leaf, 'litter-pile');
+    litter.position.set(0, 0.78, -1.3);
     litter.scale.set(0.6, 0.34, 0.6);
 
     const nutrients = addInstanced(

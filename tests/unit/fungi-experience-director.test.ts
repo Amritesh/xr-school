@@ -257,6 +257,59 @@ function completeJourney(source: FungiInputSource) {
 }
 
 describe("fungi experience director", () => {
+  it("can be completed end to end, with no gate that cannot be satisfied", () => {
+    // Every scene has stranded a class at least once. This walks the whole
+    // journey through the script's own gates so a dead end cannot come back.
+    const director = createFungiExperienceDirector();
+    const send = (actionId: string, extra: Record<string, unknown> = {}) =>
+      director.dispatch(action(actionId as never, "mouse", extra));
+
+    send("diagnose.classify", { value: "mushroom-and-bread-mould" });
+    for (const [targetId, position] of [
+      ["mushroom", [-2, 1, 0]],
+      ["bread-mould", [0, 1, 0]],
+      ["green-plant", [2, 1, 0]],
+    ] as const) {
+      send("diagnose.inspect", { targetId, pose: { position } });
+    }
+    for (const targetId of ["a", "b", "c"]) send("mycelium.trace", { targetId });
+    send("mycelium.interpret", { value: "connected-feeding-network" });
+    send("spore.record-landing", { value: "missed" });
+    send("spore.record-landing", { value: "germinating" });
+    send("growth.order-stages", {
+      value: [
+        "spore-lands",
+        "hypha-grows",
+        "mycelium-spreads",
+        "structures-form",
+        "spores-release",
+      ],
+    });
+    send("useful.observe-dough", { value: "yeast-expanded-more-than-control" });
+    for (const [targetId, value] of [
+      ["yeast", "food"],
+      ["antibiotic-producing-fungus", "medicine"],
+      ["saprotrophic-fungus", "decomposer"],
+    ] as const) {
+      send("useful.match-role", { targetId, value });
+    }
+    send("safety.scan", { value: 0.9 });
+    send("safety.classify", { targetId: "fresh-item", value: "check-use" });
+    send("safety.classify", { targetId: "mouldy-item", value: "do-not-eat" });
+    send("safety.explain", {
+      value: "hidden-hyphae-extend-beyond-visible-patch",
+    });
+    expect(director.snapshot().missionId).toBe("recommendation");
+
+    send("recommendation.change-storage", { value: "cool-and-dry" });
+    send("recommendation.distinguish", {
+      value: "spoilage-harmful-decomposition-useful",
+    });
+
+    expect(director.snapshot().journeyComplete).toBe(true);
+    expect(director.snapshot().completedMissionIds).toHaveLength(7);
+  });
+
   it("declares seven complete mission descriptors in journey order", () => {
     expect(FUNGI_MISSIONS.map(({ id }) => id)).toEqual([
       "diagnose",

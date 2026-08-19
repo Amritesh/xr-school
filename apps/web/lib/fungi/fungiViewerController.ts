@@ -19,6 +19,7 @@ import {
   type FungiMissionId,
   type FungiInputSource,
 } from './fungiExperienceDirector';
+import type { FungalUsefulRole } from '@xr-school/simulation-runtime';
 import {
   createFungiInteractionTools,
   type FungiInteractionTools,
@@ -75,6 +76,12 @@ const POINTER_HEADROOM = 1.1;
 
 const SPECIMEN_PICKS = new Set(['mushroom', 'bread-mould', 'green-plant']);
 const SAFETY_PICKS = new Set(['fresh-item', 'mouldy-item']);
+/** The script's three workplaces, and the role each one stands for. */
+const ROLE_BY_PLACE: Record<string, FungalUsefulRole> = {
+  bakery: 'food',
+  laboratory: 'medicine',
+  'compost-pit': 'decomposer',
+};
 const SPECIMEN_ORDER = ['mushroom', 'bread-mould', 'green-plant'] as const;
 const SPECIMEN_LABEL: Record<string, string> = {
   mushroom: 'mushroom',
@@ -199,10 +206,14 @@ export function createFungiViewerController(
         return ['log-branch-near', 'log-branch-middle', 'log-branch-far'].find(
           (id) => !evidence.mycelium.branchTraces.includes(id),
         );
-      case 'useful-fungi':
-        return evidence.usefulFungi.doughObservations.length === 0
-          ? 'yeast-jar'
-          : undefined;
+      case 'useful-fungi': {
+        if (evidence.usefulFungi.doughObservations.length === 0) return 'yeast-jar';
+        const carried = tools.snapshot().grabbedActorId;
+        if (carried === 'yeast') return 'bakery';
+        if (carried === 'antibiotic-producing-fungus') return 'laboratory';
+        if (carried === 'saprotrophic-fungus') return 'compost-pit';
+        return undefined;
+      }
       case 'safety': {
         if (evidence.safety.maximumScanDepth <= 0.5) return undefined;
         return ['mouldy-item', 'fresh-item'].find(
@@ -316,6 +327,16 @@ export function createFungiViewerController(
       tools.apply({ type: 'pipette-drop', vesselId: 'yeast' }, source);
     } else if (missionId === 'useful-fungi' && pickId === 'control-jar') {
       tools.apply({ type: 'pipette-drop', vesselId: 'control' }, source);
+    } else if (missionId === 'useful-fungi' && ROLE_BY_PLACE[pickId] !== undefined) {
+      // Carrying an organism to a workplace is the answer: the bakery means
+      // food, the laboratory medicine, the compost pit decomposition.
+      const carried = tools.snapshot().grabbedActorId;
+      if (carried !== undefined) {
+        tools.apply(
+          { type: 'role-drop', actorId: carried, role: ROLE_BY_PLACE[pickId]! },
+          source,
+        );
+      }
     } else if (missionId === 'safety' && SAFETY_PICKS.has(pickId)) {
       director.dispatch({
         actionId: 'safety.classify',

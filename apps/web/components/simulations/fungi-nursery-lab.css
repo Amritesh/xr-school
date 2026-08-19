@@ -19,6 +19,49 @@
   height: 100%;
 }
 
+/* ── Mission Complete: the script's closing beat ── */
+.fungi-lab__complete {
+  position: absolute;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(30rem, calc(100% - 3rem));
+  padding: 1.6rem 1.8rem;
+  text-align: center;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(255, 209, 102, 0.5);
+  background: linear-gradient(180deg, rgba(20, 32, 22, 0.98), rgba(12, 20, 14, 0.98));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  color: #eef3ea;
+}
+
+.fungi-lab__complete-badge {
+  margin: 0 0 0.4rem;
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.fungi-lab__complete h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.35rem;
+  color: #ffd166;
+}
+
+.fungi-lab__complete p {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #cddac2;
+}
+
+.fungi-lab__carry {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: #b9c8ad;
+}
+
 /* ── The single control panel ── */
 .fungi-lab__panel {
   position: absolute;

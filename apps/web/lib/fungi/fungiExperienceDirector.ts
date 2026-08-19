@@ -538,12 +538,14 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     ],
     entryMode: "guided-pan",
     exitMode: "hold-position",
-    evidenceSatisfied: ({ evidence, experiment }) =>
+    /**
+     * The script closes on a recall quiz, not on citing lab trials. Requiring
+     * a saved trial here stranded any class that never opened the notebook.
+     * Citations are still recorded when a learner makes one.
+     */
+    evidenceSatisfied: ({ evidence }) =>
       latest(evidence.recommendation.storageChanges) ===
         CORRECT_STORAGE_CHANGE &&
-      evidence.recommendation.citedTrialIds.some((trialId) =>
-        experiment.savedTrials.some(({ id }) => id === trialId),
-      ) &&
       latest(evidence.recommendation.distinctionAttempts) ===
         CORRECT_DISTINCTION,
   },
