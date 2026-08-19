@@ -68,6 +68,11 @@ export interface FungiViewerController {
   dispose(): void;
 }
 
+/** How far above the object the eye sits, as a fraction of the shot distance. */
+const CLOSE_UP_RISE = 0.42;
+/** World units of sky kept above a pickable so its arrow stays in shot. */
+const POINTER_HEADROOM = 1.1;
+
 const SPECIMEN_PICKS = new Set(['mushroom', 'bread-mould', 'green-plant']);
 const SAFETY_PICKS = new Set(['fresh-item', 'mouldy-item']);
 const SPECIMEN_ORDER = ['mushroom', 'bread-mould', 'green-plant'] as const;
@@ -115,6 +120,7 @@ export function createFungiViewerController(
   );
 
   let framedMissionId: FungiMissionId | undefined;
+  let framedPickId: string | undefined;
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
 
@@ -126,11 +132,52 @@ export function createFungiViewerController(
     world.project(tools.worldProjection());
   };
 
-  /** Re-frames only when the journey genuinely moved to another mission. */
+  /**
+   * A close, slightly-above-eye-level shot of one object, approached from the
+   * mission's authored side. Children are shown the thing itself rather than
+   * the whole bench it happens to sit on.
+   */
+  function closeUpPose(mission: FungiMissionDescriptor, box: THREE.Box3) {
+    const centre = box.getCenter(new THREE.Vector3());
+    const away = new THREE.Vector3(
+      mission.cameraPose.position[0] - mission.cameraPose.target[0],
+      0,
+      mission.cameraPose.position[2] - mission.cameraPose.target[2],
+    );
+    if (away.lengthSq() < 1e-6) away.set(0, 0, 1);
+    away.normalize();
+
+    const radius = Math.max(box.getBoundingSphere(new THREE.Sphere()).radius, 0.25);
+    const distance = radius * 4.2;
+    return {
+      position: [
+        centre.x + away.x * distance,
+        centre.y + distance * CLOSE_UP_RISE,
+        centre.z + away.z * distance,
+      ] as [number, number, number],
+      target: [centre.x, centre.y, centre.z] as [number, number, number],
+    };
+  }
+
+  /**
+   * Re-frames when the journey moves on, and also when the arrow moves to a
+   * different object — the camera looks at whatever the learner must click.
+   */
   const frameMission = (animate: boolean) => {
     const mission = director.descriptor();
-    if (mission.id === framedMissionId) return;
+    const pickId = attentionTarget();
+    if (mission.id === framedMissionId && pickId === framedPickId) return;
     framedMissionId = mission.id;
+    framedPickId = pickId;
+
+    const box = pickId === undefined ? undefined : world.pickBounds(pickId);
+    if (box !== undefined) {
+      // The pointer hovers above the object, so frame the room it needs too —
+      // otherwise the very arrow telling a child where to look is cropped off.
+      box.max.y += POINTER_HEADROOM;
+      cameraController.focusBounds(box, closeUpPose(mission, box), { animate });
+      return;
+    }
     cameraController.focusBounds(boundsOf(mission), poseOf(mission), { animate });
   };
 
@@ -169,8 +216,8 @@ export function createFungiViewerController(
 
   const settle = (): FungiViewerSnapshot => {
     projectWorld();
-    frameMission(true);
     world.setAttention(attentionTarget());
+    frameMission(true);
     return snapshot();
   };
 
@@ -229,9 +276,10 @@ export function createFungiViewerController(
     director.restartJourney();
     tools.reset('mission');
     framedMissionId = undefined;
+    framedPickId = undefined;
     projectWorld();
-    frameMission(true);
     world.setAttention(attentionTarget());
+    frameMission(true);
     return snapshot();
   }
 
@@ -368,8 +416,8 @@ export function createFungiViewerController(
   }
 
   projectWorld();
-  frameMission(false);
   world.setAttention(attentionTarget());
+  frameMission(false);
 
   return {
     root: world.root,

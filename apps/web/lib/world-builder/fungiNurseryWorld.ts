@@ -96,6 +96,8 @@ export interface FungiNurseryWorld {
   pickTargets: Record<string, THREE.Object3D>;
   /** Points the bobbing arrow at the thing to click next, or hides it. */
   setAttention(pickId: string | undefined): void;
+  /** World bounds of a pickable, so the camera can frame it closely. */
+  pickBounds(pickId: string): THREE.Box3 | undefined;
   project(projection: Readonly<FungiNurseryWorldProjection>): void;
   update(deltaSeconds: number, elapsedSeconds: number): void;
   setReducedMotion(reduced: boolean): void;
@@ -759,6 +761,45 @@ export function createFungiNurseryWorld(
     board.position.set(0, 1.3, -0.2);
   }
 
+  // ── Surrounding forest: conifers ringing the clearing give the scene depth
+  //    and somewhere for the light to fall, at two draw calls.
+  {
+    const TREE_COUNT = 34;
+    const treeRandom = seededRandom(seed ^ 0x5eed);
+    const trunks = new THREE.InstancedMesh(geometry.cylinder, material.bark, TREE_COUNT);
+    const crowns = new THREE.InstancedMesh(geometry.cone, material.leaf, TREE_COUNT);
+    trunks.name = 'forest-trunks';
+    crowns.name = 'forest-crowns';
+    trunks.castShadow = false;
+    crowns.castShadow = false;
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const quaternion = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    for (let index = 0; index < TREE_COUNT; index += 1) {
+      const angle = (index / TREE_COUNT) * Math.PI * 2 + treeRandom() * 0.16;
+      const radius = 15 + treeRandom() * 6;
+      const x = 1 + Math.cos(angle) * radius;
+      const z = -6 + Math.sin(angle) * radius;
+      const height = 4.5 + treeRandom() * 3.5;
+
+      position.set(x, height * 0.3, z);
+      scale.set(0.22, height * 0.6, 0.22);
+      matrix.compose(position, quaternion, scale);
+      trunks.setMatrixAt(index, matrix);
+
+      position.set(x, height * 0.78, z);
+      scale.set(1.5 + treeRandom() * 0.6, height * 0.95, 1.5 + treeRandom() * 0.6);
+      matrix.compose(position, quaternion, scale);
+      crowns.setMatrixAt(index, matrix);
+    }
+    trunks.instanceMatrix.needsUpdate = true;
+    crowns.instanceMatrix.needsUpdate = true;
+    root.add(trunks);
+    root.add(crowns);
+  }
+
   // ── Attention pointer: an unmissable "click here" marker ──
   const attention = new THREE.Group();
   attention.name = 'attention-pointer';
@@ -785,6 +826,16 @@ export function createFungiNurseryWorld(
   const attentionCentre = new THREE.Vector3();
   let attentionPickId: string | undefined;
 
+  function pickBounds(pickId: string): THREE.Box3 | undefined {
+    const target = pickTargets[pickId];
+    if (target === undefined) return undefined;
+    // Refresh from the root: a landmark's own transform is otherwise stale
+    // before the renderer's first frame, giving local instead of world bounds.
+    root.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(target);
+    return box.isEmpty() ? undefined : box;
+  }
+
   function setAttention(pickId: string | undefined): void {
     if (disposed) return;
     attentionPickId = undefined;
@@ -798,7 +849,7 @@ export function createFungiNurseryWorld(
       delete state.attentionPickId;
       return;
     }
-    target.updateMatrixWorld(true);
+    root.updateMatrixWorld(true);
     attentionBox.setFromObject(target);
     if (attentionBox.isEmpty()) {
       delete state.attentionPickId;
@@ -1037,6 +1088,7 @@ export function createFungiNurseryWorld(
     landmarks,
     pickTargets,
     setAttention,
+    pickBounds,
     project,
     update,
     setReducedMotion,

@@ -88,7 +88,7 @@ describe('createFungiViewerController', () => {
     controller.dispose();
   });
 
-  it('frames the new mission when the journey actually advances', () => {
+  it('frames the object the arrow points at, not the whole bench', () => {
     const { controller } = createController();
     const before = controller.snapshot().camera;
 
@@ -98,11 +98,17 @@ describe('createFungiViewerController', () => {
 
     expect(after.director.missionId).toBe('mycelium');
     expect(after.world.missionId).toBe('mycelium');
-    const authored = FUNGI_MISSIONS[1]!.cameraPose.target;
-    expect(after.camera.target[0]).toBeCloseTo(authored[0], 5);
-    expect(after.camera.target[1]).toBeCloseTo(authored[1], 5);
-    expect(after.camera.target[2]).toBeCloseTo(authored[2], 5);
+
+    // The camera sits on the hyphal thread the learner must click next.
+    const pointedAt = after.world.attentionPickId;
+    expect(pointedAt).toBe('log-branch-near');
     expect(after.camera.target).not.toEqual(before.target);
+
+    // The shot is centred on that thread, not on the mission's wide bench pose.
+    const authored = FUNGI_MISSIONS[1]!.cameraPose.target;
+    expect(after.camera.target[0]).not.toBeCloseTo(authored[0], 1);
+    expect(after.camera.target[0]).toBeCloseTo(-5.3, 1);
+    expect(after.camera.target[2]).toBeCloseTo(-0.26, 1);
     controller.dispose();
   });
 
