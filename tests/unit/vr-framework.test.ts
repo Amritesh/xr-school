@@ -277,6 +277,7 @@ describe('shared VR HUD panel', () => {
     const fillText = vi.fn();
     const context = {
       clearRect: draw, fillRect: draw, strokeRect: draw, fillText,
+      save: draw, restore: draw, beginPath: draw, rect: draw, clip: draw,
       measureText: (text: string) => ({ width: text.length * 12 }),
       fillStyle: '', strokeStyle: '', lineWidth: 1, font: '', textAlign: '', textBaseline: '',
     };

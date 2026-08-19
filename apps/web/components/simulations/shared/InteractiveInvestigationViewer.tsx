@@ -261,19 +261,7 @@ export default function InteractiveInvestigationViewer({
         {ready && !assessment && visibleChoices.length > 1 && (
           <div
             aria-label="Investigation choices"
-            style={{
-              position: 'absolute',
-              left: 18,
-              top: 18,
-              zIndex: 4,
-              display: 'grid',
-              gap: 8,
-              width: 'min(340px, calc(100vw - 36px))',
-              padding: 12,
-              border: '1px solid rgba(125,211,252,.3)',
-              borderRadius: 14,
-              background: 'rgba(2,10,22,.9)',
-            }}
+            className="simulation-experience__investigation-choices"
           >
             {visibleChoices.map(choice => (
               <button

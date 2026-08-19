@@ -125,10 +125,17 @@ function createHostHarness() {
     observe: vi.fn(),
     disconnect: vi.fn(),
   };
+  const cameraControls = {
+    enabled: true,
+    target: new THREE.Vector3(),
+    update: vi.fn(),
+    dispose: vi.fn(),
+  };
   const stopVisibilityObserver = vi.fn();
   const dependencies: SimulationHostDependencies = {
     createRenderer: () => renderer,
     createPresentation: () => presentation,
+    createCameraControls: () => cameraControls,
     createNarration: () => narration,
     createInput: config => {
       currentInputSnapshot = config.currentSnapshot;
@@ -150,6 +157,7 @@ function createHostHarness() {
     input,
     narration,
     presentation,
+    cameraControls,
     renderer,
     xrControllers,
     resizeObserver,
@@ -162,6 +170,7 @@ function createHostHarness() {
       return currentInputSnapshot();
     },
     emitXr(type: 'sessionstart' | 'sessionend') {
+      (renderer.xr as { isPresenting: boolean }).isPresenting = type === 'sessionstart';
       for (const listener of xrListeners.get(type) ?? []) listener();
     },
     emitVisibility(hidden: boolean) {
@@ -292,7 +301,7 @@ describe('createSimulationHost', () => {
     await host.dispose();
   });
 
-  it('does not synthesize continuous camera movement between frames', async () => {
+  it('updates browser orbit controls without synthesizing camera translation', async () => {
     const harness = createHostHarness();
     let context: SimulationSceneContext | undefined;
     const host = createSimulationHost({
@@ -309,12 +318,104 @@ describe('createSimulationHost', () => {
     }, harness.dependencies);
 
     await host.initialize();
+    harness.cameraControls.update.mockClear();
     context!.camera.position.set(1, 2, 3);
     harness.runFrame(0);
     harness.runFrame(1_000);
 
     expect(context!.camera.position.toArray()).toEqual([1, 2, 3]);
+    expect(harness.cameraControls.update).toHaveBeenCalledTimes(2);
     await host.dispose();
+  });
+
+  it('targets the active scene object for orbiting and panning', async () => {
+    const harness = createHostHarness();
+    const openingFocus = new THREE.Object3D();
+    openingFocus.position.set(0.8, 1.2, -0.6);
+    const nextFocus = new THREE.Object3D();
+    nextFocus.position.set(-0.4, 1.6, 0.2);
+    let focus = openingFocus;
+    const host = createSimulationHost({
+      mount: createMount(),
+      adapter: {
+        id: 'camera-focus-adapter',
+        create: () => ({
+          applySnapshot: () => {
+            focus = nextFocus;
+          },
+          focusTarget: () => focus,
+          dispose: vi.fn(),
+        }),
+      },
+      preferences: PREFERENCES,
+      narration: NARRATION,
+    }, harness.dependencies);
+
+    await host.initialize();
+    expect(harness.cameraControls.target.toArray()).toEqual([0.8, 1.2, -0.6]);
+
+    host.applySnapshot(SNAPSHOT);
+    expect(harness.cameraControls.target.toArray()).toEqual([-0.4, 1.6, 0.2]);
+    await host.dispose();
+  });
+
+  it('preserves a learner-panned target while the active focus object is unchanged', async () => {
+    const harness = createHostHarness();
+    const focus = new THREE.Object3D();
+    focus.position.set(0, 1, 0);
+    const host = createSimulationHost({
+      mount: createMount(),
+      adapter: {
+        id: 'stable-camera-focus-adapter',
+        create: () => ({
+          applySnapshot: vi.fn(),
+          focusTarget: () => focus,
+          dispose: vi.fn(),
+        }),
+      },
+      preferences: PREFERENCES,
+      narration: NARRATION,
+    }, harness.dependencies);
+
+    await host.initialize();
+    harness.cameraControls.target.set(0.5, 1.4, -0.2);
+    host.applySnapshot(SNAPSHOT);
+
+    expect(harness.cameraControls.target.toArray()).toEqual([0.5, 1.4, -0.2]);
+    await host.dispose();
+  });
+
+  it('disables desktop camera controls in WebXR and restores them afterwards', async () => {
+    const harness = createHostHarness();
+    let context: SimulationSceneContext | undefined;
+    const host = createSimulationHost({
+      mount: createMount(),
+      adapter: {
+        id: 'xr-camera-boundary-adapter',
+        create: value => {
+          context = value;
+          return { applySnapshot: vi.fn(), dispose: vi.fn() };
+        },
+      },
+      preferences: PREFERENCES,
+      narration: NARRATION,
+    }, harness.dependencies);
+
+    await host.initialize();
+    context!.camera.position.set(2, 3, 4);
+    harness.cameraControls.target.set(0.5, 1, -0.5);
+
+    harness.emitXr('sessionstart');
+    expect(harness.cameraControls.enabled).toBe(false);
+    expect(context!.camera.position.toArray()).toEqual([0, 0, 0]);
+
+    harness.emitXr('sessionend');
+    expect(harness.cameraControls.enabled).toBe(true);
+    expect(context!.camera.position.toArray()).toEqual([2, 3, 4]);
+    expect(harness.cameraControls.target.toArray()).toEqual([0.5, 1, -0.5]);
+
+    await host.dispose();
+    expect(harness.cameraControls.dispose).toHaveBeenCalledOnce();
   });
 
   it('forwards fixed and render updates through the owned animation loop', async () => {

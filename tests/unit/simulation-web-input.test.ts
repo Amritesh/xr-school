@@ -8,6 +8,7 @@ import type {
 import { createWebInputRouter } from '../../packages/simulation-web/src/input/createWebInputRouter';
 
 type PointerLikeEvent = {
+  button: number;
   clientX: number;
   clientY: number;
   pointerId: number;
@@ -31,6 +32,7 @@ function createFakeDomElement() {
     },
     dispatch(type: string, event: Partial<PointerLikeEvent> = {}) {
       const complete = {
+        button: 0,
         clientX: 50,
         clientY: 50,
         pointerId: 1,
@@ -198,6 +200,17 @@ describe('createWebInputRouter', () => {
     harness.dom.dispatch('pointerup', { clientX: 57, clientY: 50, pointerId: 2 });
 
     expect(harness.actions).toHaveLength(1);
+    harness.router.dispose();
+  });
+
+  it('reserves non-primary mouse buttons for OrbitControls panning', () => {
+    const harness = createHarness();
+    registerTarget(harness, createMesh());
+
+    harness.dom.dispatch('pointerdown', { button: 2 });
+    harness.dom.dispatch('pointerup', { button: 2 });
+
+    expect(harness.actions).toEqual([]);
     harness.router.dispose();
   });
 

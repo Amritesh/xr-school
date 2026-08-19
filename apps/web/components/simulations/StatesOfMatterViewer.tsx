@@ -9,6 +9,7 @@ import SimulationCanvasHost from '@/components/simulation-experience/SimulationC
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createScreenSafePanelFollower, drawFittedText } from '@/lib/vr/screenSafeTextPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
 import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
 import {
@@ -108,32 +109,20 @@ function drawCueCard(canvas: HTMLCanvasElement, stage: Stage, heat: number) {
   ctx.fillStyle = '#38bdf8';
   ctx.font = 'bold 22px sans-serif';
   ctx.fillText('States of Matter Particle Lab', 26, 46);
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 38px sans-serif';
-  ctx.fillText(stage.title, 26, 98);
-  ctx.fillStyle = '#d1d5db';
-  ctx.font = '24px sans-serif';
-  wrapText(ctx, stage.cue, 26, 138, w - 52, 32);
-  ctx.fillStyle = '#fbbf24';
-  ctx.font = 'bold 22px monospace';
-  ctx.fillText(`Heat energy: ${Math.round(heat * 100)}%`, 26, h - 34);
-}
-
-function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
-  const words = text.split(' ');
-  let line = '';
-  let currentY = y;
-  for (const word of words) {
-    const testLine = `${line}${word} `;
-    if (ctx.measureText(testLine).width > maxWidth && line) {
-      ctx.fillText(line.trimEnd(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  if (line.trim()) ctx.fillText(line.trimEnd(), x, currentY);
+  drawFittedText(ctx, stage.title, {
+    x: 26, y: 62, width: w - 52, height: 58,
+    color: '#ffffff', fontWeight: 800, maxFontSize: 38, minFontSize: 24,
+    maxLines: 2, verticalAlign: 'middle',
+  });
+  drawFittedText(ctx, stage.cue, {
+    x: 26, y: 132, width: w - 52, height: 154,
+    color: '#d1d5db', maxFontSize: 24, minFontSize: 16, maxLines: 6,
+  });
+  drawFittedText(ctx, `Heat energy: ${Math.round(heat * 100)}%`, {
+    x: 26, y: h - 48, width: w - 52, height: 28,
+    color: '#fbbf24', fontFamily: 'monospace', fontWeight: 800,
+    maxFontSize: 22, minFontSize: 16, maxLines: 1, verticalAlign: 'middle',
+  });
 }
 
 function makeStageButtonLabelTexture(label: string, color: string) {
@@ -343,6 +332,10 @@ export default function StatesOfMatterViewer() {
     const cueMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 0.92), new THREE.MeshBasicMaterial({ map: cueTexture, transparent: true }));
     cueMesh.position.set(-2.35, 1.75, -0.9);
     scene.add(cueMesh);
+    const cueFollower = createScreenSafePanelFollower(cueMesh, {
+      panelWidth: 1.8,
+      panelHeight: 0.92,
+    });
 
     const stageButtons: THREE.Mesh[] = [];
     STAGES.forEach((item, index) => {
@@ -498,7 +491,7 @@ export default function StatesOfMatterViewer() {
 
       heater.scale.setScalar(0.85 + activeHeat * 0.22);
       const activeCamera = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
-      cueMesh.lookAt(activeCamera.position);
+      if (!renderer.xr.isPresenting) cueFollower.update(activeCamera, frameDeltaSeconds);
       stageButtons.forEach(button => button.lookAt(activeCamera.position));
     };
 
