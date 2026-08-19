@@ -71,6 +71,17 @@
         margin: 16px 0 6px;
         font-size: 20px;
       }
+      .voice-meta {
+        display: inline-flex;
+        margin-top: 10px;
+        border: 1px solid rgba(103, 232, 249, 0.22);
+        border-radius: 999px;
+        padding: 4px 9px;
+        color: #a5f3fc;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
       article p {
         min-height: 42px;
         margin: 0 0 18px;
@@ -125,12 +136,13 @@
       <h1>Choose a more natural Indian teacher voice</h1>
       <p class="intro">
         These upgraded Indian-English neural voices use warmer pacing, natural
-        pauses, and classroom-style delivery. Listen to all five, then tell Codex
+        pauses, and classroom-style delivery. Listen to all eleven, then tell Codex
         the number you prefer. The simulation narration will not change until you choose.
       </p>
-      <section class="voices" aria-label="Five Indian teacher voice options">
+      <section class="voices" aria-label="Eleven Indian teacher voice options">
         <article>
           <span class="number">1</span>
+          <span class="voice-meta">Female · Warm</span>
           <h2>Neerja Expressive — Warm Teacher</h2>
           <p>Warm Indian-English female teacher with an expressive, engaging delivery.</p>
           <audio id="voice-1" preload="metadata" src="/voice-previews/1-neerja-expressive-teacher.mp3"></audio>
@@ -142,6 +154,7 @@
         </article>
         <article>
           <span class="number">2</span>
+          <span class="voice-meta">Female · Calm</span>
           <h2>Neerja — Calm Classroom</h2>
           <p>Clear Indian-English female teacher with a calm, steady teaching rhythm.</p>
           <audio id="voice-2" preload="metadata" src="/voice-previews/2-neerja-calm-teacher.mp3"></audio>
@@ -153,6 +166,7 @@
         </article>
         <article>
           <span class="number">3</span>
+          <span class="voice-meta">Male · Clear</span>
           <h2>Prabhat — Classroom Teacher</h2>
           <p>Natural Indian-English male teacher at a clear, balanced classroom pace.</p>
           <audio id="voice-3" preload="metadata" src="/voice-previews/3-prabhat-classroom.mp3"></audio>
@@ -164,6 +178,7 @@
         </article>
         <article>
           <span class="number">4</span>
+          <span class="voice-meta">Female · Storytelling</span>
           <h2>Neerja Expressive — Storyteller</h2>
           <p>A softer, slower female voice for friendly storytelling and younger learners.</p>
           <audio id="voice-4" preload="metadata" src="/voice-previews/4-neerja-storyteller.mp3"></audio>
@@ -175,6 +190,7 @@
         </article>
         <article>
           <span class="number">5</span>
+          <span class="voice-meta">Male · Gentle</span>
           <h2>Prabhat — Gentle Guide</h2>
           <p>A slower, warmer male voice for guided observation and careful explanation.</p>
           <audio id="voice-5" preload="metadata" src="/voice-previews/5-prabhat-gentle.mp3"></audio>
@@ -184,9 +200,81 @@
             <span class="status" id="voice-5-status" aria-live="polite">Ready to play</span>
           </div>
         </article>
+        <article>
+          <span class="number">6</span>
+          <span class="voice-meta">Female · Playful</span>
+          <h2>Neerja — Playful Story Teacher</h2>
+          <p>A bright, curious Indian-English female voice that keeps young learners engaged.</p>
+          <audio id="voice-6" preload="metadata" src="/voice-previews/6-neerja-playful-storyteller.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-6">▶ Play voice 6</button>
+            <a class="audio-link" href="/voice-previews/6-neerja-playful-storyteller.mp3">Open audio</a>
+            <span class="status" id="voice-6-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">7</span>
+          <span class="voice-meta">Female · Dramatic</span>
+          <h2>Neerja — Dramatic Narrator</h2>
+          <p>A slower, expressive Indian-English female voice for suspense and memorable story moments.</p>
+          <audio id="voice-7" preload="metadata" src="/voice-previews/7-neerja-dramatic-narrator.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-7">▶ Play voice 7</button>
+            <a class="audio-link" href="/voice-previews/7-neerja-dramatic-narrator.mp3">Open audio</a>
+            <span class="status" id="voice-7-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">8</span>
+          <span class="voice-meta">Female · Gentle</span>
+          <h2>Neerja — Gentle Mentor</h2>
+          <p>A soft, reassuring Indian-English female teacher for reflective stories and early learners.</p>
+          <audio id="voice-8" preload="metadata" src="/voice-previews/8-neerja-gentle-mentor.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-8">▶ Play voice 8</button>
+            <a class="audio-link" href="/voice-previews/8-neerja-gentle-mentor.mp3">Open audio</a>
+            <span class="status" id="voice-8-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">9</span>
+          <span class="voice-meta">Male · Animated</span>
+          <h2>Prabhat — Animated Story Teacher</h2>
+          <p>An energetic Indian-English male voice for lively characters, discovery, and classroom stories.</p>
+          <audio id="voice-9" preload="metadata" src="/voice-previews/9-prabhat-animated-storyteller.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-9">▶ Play voice 9</button>
+            <a class="audio-link" href="/voice-previews/9-prabhat-animated-storyteller.mp3">Open audio</a>
+            <span class="status" id="voice-9-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">10</span>
+          <span class="voice-meta">Male · Wise</span>
+          <h2>Prabhat — Wise Narrator</h2>
+          <p>A deeper, measured Indian-English male teacher for history, folklore, and thoughtful narration.</p>
+          <audio id="voice-10" preload="metadata" src="/voice-previews/10-prabhat-wise-narrator.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-10">▶ Play voice 10</button>
+            <a class="audio-link" href="/voice-previews/10-prabhat-wise-narrator.mp3">Open audio</a>
+            <span class="status" id="voice-10-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">11</span>
+          <span class="voice-meta">Male · Adventure</span>
+          <h2>Prabhat — Adventure Guide</h2>
+          <p>A warm, confident Indian-English male voice for journeys, science adventures, and discovery.</p>
+          <audio id="voice-11" preload="metadata" src="/voice-previews/11-prabhat-adventure-guide.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-11">▶ Play voice 11</button>
+            <a class="audio-link" href="/voice-previews/11-prabhat-adventure-guide.mp3">Open audio</a>
+            <span class="status" id="voice-11-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
       </section>
       <p class="choice">
-        Reply with: <strong>Choose voice 1, 2, 3, 4, or 5.</strong><br>
+        Reply with: <strong>Choose voice 1 through 11.</strong><br>
         These are generated neural voices. For a genuinely human voice texture,
         send me a teacher's voice recording and I can use that directly.
       </p>
