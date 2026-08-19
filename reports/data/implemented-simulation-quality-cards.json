@@ -83,12 +83,12 @@
       "integrity": 15,
       "interactivity": 15,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
     },
-    "band": "Promising internal QA",
+    "band": "Pilot candidate",
     "dimensionEvidence": {
       "education": [
         "c5-ch07-a03-soluble-and-insoluble-substances:definition",
@@ -126,7 +126,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -193,7 +193,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -284,7 +284,7 @@
       "integrity": 14,
       "interactivity": 14,
       "visuals": 11,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -329,7 +329,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "7 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -560,7 +560,7 @@
       "integrity": 14,
       "interactivity": 14,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -603,7 +603,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -629,7 +629,7 @@
       "integrity": 14,
       "interactivity": 14,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -672,7 +672,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -698,7 +698,7 @@
       "integrity": 14,
       "interactivity": 14,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -741,7 +741,7 @@
     "strengths": [
       "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "4 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -767,7 +767,7 @@
       "integrity": 14,
       "interactivity": 14,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -810,7 +810,7 @@
     "strengths": [
       "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "4 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -836,7 +836,7 @@
       "integrity": 14,
       "interactivity": 14,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -879,7 +879,7 @@
     "strengths": [
       "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "4 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -946,7 +946,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1080,7 +1080,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1147,7 +1147,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1214,7 +1214,7 @@
     "strengths": [
       "10 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "10 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "10 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1240,7 +1240,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1283,7 +1283,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1309,7 +1309,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1352,7 +1352,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1378,7 +1378,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1421,7 +1421,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1447,7 +1447,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1490,7 +1490,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1516,7 +1516,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1559,7 +1559,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1585,7 +1585,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1628,7 +1628,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1654,7 +1654,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1697,7 +1697,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1723,7 +1723,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1766,7 +1766,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1792,7 +1792,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1835,7 +1835,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1861,7 +1861,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1904,7 +1904,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1930,7 +1930,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -1973,7 +1973,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1999,7 +1999,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -2042,7 +2042,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2068,7 +2068,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -2111,7 +2111,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2137,7 +2137,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -2180,7 +2180,7 @@
     "strengths": [
       "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2206,7 +2206,7 @@
       "integrity": 13,
       "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -2249,7 +2249,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2316,7 +2316,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2383,7 +2383,7 @@
     "strengths": [
       "14 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "14 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "14 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2450,7 +2450,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",

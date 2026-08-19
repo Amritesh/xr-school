@@ -4,6 +4,7 @@ import type {
   SimulationModuleRecord,
   SimulationNarrationManifest,
 } from '@xr-school/simulation-schema';
+import { withPackagedNarration } from '../narrationAssets.js';
 
 type CommonModuleFields =
   | 'applicableBoards'
@@ -42,7 +43,10 @@ export function captionedNarration(
 ): SimulationNarrationManifest {
   return {
     id: `narration-${slug}`,
-    cues: cues.map(cue => ({ ...cue, caption: cue.text })),
+    cues: cues.map(cue => withPackagedNarration({
+      ...cue,
+      caption: cue.text,
+    })),
     fallback: 'browserTts',
   };
 }

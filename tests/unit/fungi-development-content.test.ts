@@ -96,7 +96,7 @@ describe("canonical fungi development content", () => {
     }
   });
 
-  it("provides one stable en-IN captioned narration cue per stage without invented audio", () => {
+  it("provides one stable recorded en-IN narration cue per stage", () => {
     expect(FUNGI_DEVELOPMENT_NARRATION).toMatchObject({
       locale: "en-IN",
       speaker: expect.any(String),
@@ -110,7 +110,9 @@ describe("canonical fungi development content", () => {
       FUNGI_DEVELOPMENT_NARRATION.cues.every((cue) => cue.caption === cue.text),
     ).toBe(true);
     expect(
-      FUNGI_DEVELOPMENT_NARRATION.cues.every((cue) => !("audioUrl" in cue)),
+      FUNGI_DEVELOPMENT_NARRATION.cues.every((cue) =>
+        cue.audioUrl?.startsWith("/narration/") && cue.audioUrl.endsWith(".mp3"),
+      ),
     ).toBe(true);
     expect(
       FUNGI_DEVELOPMENT_NARRATION.cues.map((cue) => cue.text).join(" "),

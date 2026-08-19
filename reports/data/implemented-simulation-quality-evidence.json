@@ -8,7 +8,7 @@
       "classroomVerified": 0
     },
     "narrationCues": 240,
-    "packagedNarrationClips": 36,
+    "packagedNarrationClips": 240,
     "missingNarrationFiles": 0,
     "assets": 102,
     "signedQuestAcceptanceRuns": 0,
@@ -473,9 +473,9 @@
       "narration": {
         "cues": 10,
         "captions": 10,
-        "packagedAudio": 0,
+        "packagedAudio": 10,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 10,
         "fallback": "browserTts"
       },
       "assets": {
@@ -536,7 +536,7 @@
           "id": "c5-ch03-a02-introduction-of-digestive-system:narration",
           "kind": "narration",
           "ref": "digestive-system-narration",
-          "finding": "10 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "10 exact captions; 10 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -583,9 +583,9 @@
       "narration": {
         "cues": 6,
         "captions": 6,
-        "packagedAudio": 0,
+        "packagedAudio": 6,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 6,
         "fallback": "browserTts"
       },
       "assets": {
@@ -646,7 +646,7 @@
           "id": "c7-ch10-a02-the-breathing-process-in-human:narration",
           "kind": "narration",
           "ref": "breathing-process-narration",
-          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "6 exact captions; 6 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -693,9 +693,9 @@
       "narration": {
         "cues": 6,
         "captions": 6,
-        "packagedAudio": 0,
+        "packagedAudio": 6,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 6,
         "fallback": "browserTts"
       },
       "assets": {
@@ -756,7 +756,7 @@
           "id": "c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape:narration",
           "kind": "narration",
           "ref": "force-motion-narration",
-          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "6 exact captions; 6 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -803,9 +803,9 @@
       "narration": {
         "cues": 5,
         "captions": 5,
-        "packagedAudio": 0,
+        "packagedAudio": 5,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 5,
         "fallback": "browserTts"
       },
       "assets": {
@@ -866,7 +866,7 @@
           "id": "c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test:narration",
           "kind": "narration",
           "ref": "acid-base-narration",
-          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "5 exact captions; 5 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -913,9 +913,9 @@
       "narration": {
         "cues": 14,
         "captions": 14,
-        "packagedAudio": 0,
+        "packagedAudio": 14,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 14,
         "fallback": "browserTts"
       },
       "assets": {
@@ -976,7 +976,7 @@
           "id": "c1-art-a01-learning-of-colours:narration",
           "kind": "narration",
           "ref": "colour-adventure-narration",
-          "finding": "14 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "14 exact captions; 14 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1023,9 +1023,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1086,7 +1086,7 @@
           "id": "c1-math-ch01-introduction-to-money:narration",
           "kind": "narration",
           "ref": "money-town-narration",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1133,9 +1133,9 @@
       "narration": {
         "cues": 5,
         "captions": 5,
-        "packagedAudio": 0,
+        "packagedAudio": 5,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 5,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1196,7 +1196,7 @@
           "id": "c2-english-ch01-prepositions:narration",
           "kind": "narration",
           "ref": "preposition-adventure-narration",
-          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "5 exact captions; 5 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1243,9 +1243,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1306,7 +1306,7 @@
           "id": "c8-10-science-solar-system:narration",
           "kind": "narration",
           "ref": "solar-system-mission-narration",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1355,9 +1355,9 @@
       "narration": {
         "cues": 6,
         "captions": 6,
-        "packagedAudio": 0,
+        "packagedAudio": 6,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 6,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1418,7 +1418,7 @@
           "id": "c5-ch04-a01-food-spoilage:narration",
           "kind": "narration",
           "ref": "narration:guided-food-spoilage",
-          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "6 exact captions; 6 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1467,9 +1467,9 @@
       "narration": {
         "cues": 6,
         "captions": 6,
-        "packagedAudio": 0,
+        "packagedAudio": 6,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 6,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1530,7 +1530,7 @@
           "id": "c5-ch04-a02-milk-spoilage:narration",
           "kind": "narration",
           "ref": "narration:guided-milk-spoilage",
-          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "6 exact captions; 6 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1579,9 +1579,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1642,7 +1642,7 @@
           "id": "c5-ch04-a03-the-making-of-aam-papad:narration",
           "kind": "narration",
           "ref": "narration:guided-aam-papad",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1691,9 +1691,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1754,7 +1754,7 @@
           "id": "c5-ch05-a01-pitcher-plant-the-insect-hunter:narration",
           "kind": "narration",
           "ref": "narration:guided-pitcher-plant",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1803,9 +1803,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1866,7 +1866,7 @@
           "id": "c5-ch05-a02-seed-dispersal:narration",
           "kind": "narration",
           "ref": "narration:guided-seed-dispersal",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -1915,9 +1915,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -1978,7 +1978,7 @@
           "id": "c5-ch06-a01-the-storage-of-rainwater:narration",
           "kind": "narration",
           "ref": "narration:guided-rainwater-storage",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2027,9 +2027,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2090,7 +2090,7 @@
           "id": "c5-ch06-a02-a-step-well-structure:narration",
           "kind": "narration",
           "ref": "narration:guided-stepwell-structure",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2139,9 +2139,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2202,7 +2202,7 @@
           "id": "c5-ch07-a02-dead-sea-salt-water-and-its-effects:narration",
           "kind": "narration",
           "ref": "narration:guided-dead-sea-salt-water",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2251,9 +2251,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2314,7 +2314,7 @@
           "id": "c5-ch08-a01-diagnosis-of-malaria:narration",
           "kind": "narration",
           "ref": "narration:guided-malaria-diagnosis",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2363,9 +2363,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2426,7 +2426,7 @@
           "id": "c5-ch08-a02-life-cycle-of-the-mosquito:narration",
           "kind": "narration",
           "ref": "narration:guided-mosquito-life-cycle",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2475,9 +2475,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2538,7 +2538,7 @@
           "id": "c5-ch09-a01-river-crossing-adventure:narration",
           "kind": "narration",
           "ref": "narration:guided-river-crossing",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2699,9 +2699,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2762,7 +2762,7 @@
           "id": "c5-ch09-a03-camp-in-the-snow:narration",
           "kind": "narration",
           "ref": "narration:guided-camp-in-snow",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -2811,9 +2811,9 @@
       "narration": {
         "cues": 8,
         "captions": 8,
-        "packagedAudio": 0,
+        "packagedAudio": 8,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 8,
         "fallback": "browserTts"
       },
       "assets": {
@@ -2874,7 +2874,7 @@
           "id": "c5-ch09-a04-snow-mountain-climbing:narration",
           "kind": "narration",
           "ref": "narration:guided-snow-mountain-climbing",
-          "finding": "8 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "8 exact captions; 8 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3035,9 +3035,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3098,7 +3098,7 @@
           "id": "c6-ch03-a01-cotton-farming:narration",
           "kind": "narration",
           "ref": "narration:guided-cotton-farming",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3147,9 +3147,9 @@
       "narration": {
         "cues": 6,
         "captions": 6,
-        "packagedAudio": 0,
+        "packagedAudio": 6,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 6,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3210,7 +3210,7 @@
           "id": "c6-ch03-a02-the-process-of-cotton-ginning:narration",
           "kind": "narration",
           "ref": "narration:guided-cotton-ginning",
-          "finding": "6 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "6 exact captions; 6 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3259,9 +3259,9 @@
       "narration": {
         "cues": 5,
         "captions": 5,
-        "packagedAudio": 0,
+        "packagedAudio": 5,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 5,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3322,7 +3322,7 @@
           "id": "c5-ch07-a01-a-concept-about-what-floats-what-sinks:narration",
           "kind": "narration",
           "ref": "narration-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
-          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "5 exact captions; 5 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3371,9 +3371,9 @@
       "narration": {
         "cues": 5,
         "captions": 5,
-        "packagedAudio": 0,
+        "packagedAudio": 5,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 5,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3434,7 +3434,7 @@
           "id": "c5-ch07-a03-soluble-and-insoluble-substances:narration",
           "kind": "narration",
           "ref": "narration-c5-ch07-a03-soluble-and-insoluble-substances",
-          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "5 exact captions; 5 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3483,9 +3483,9 @@
       "narration": {
         "cues": 5,
         "captions": 5,
-        "packagedAudio": 0,
+        "packagedAudio": 5,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 5,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3546,7 +3546,7 @@
           "id": "c6-ch02-a03-test-the-presence-of-lipids:narration",
           "kind": "narration",
           "ref": "narration-c6-ch02-a03-test-the-presence-of-lipids",
-          "finding": "5 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "5 exact captions; 5 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3595,9 +3595,9 @@
       "narration": {
         "cues": 4,
         "captions": 4,
-        "packagedAudio": 0,
+        "packagedAudio": 4,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 4,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3658,7 +3658,7 @@
           "id": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:narration",
           "kind": "narration",
           "ref": "narration-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
-          "finding": "4 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3707,9 +3707,9 @@
       "narration": {
         "cues": 4,
         "captions": 4,
-        "packagedAudio": 0,
+        "packagedAudio": 4,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 4,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3770,7 +3770,7 @@
           "id": "c6-ch02-a05-the-sources-of-minerals-in-food:narration",
           "kind": "narration",
           "ref": "narration-c6-ch02-a05-the-sources-of-minerals-in-food",
-          "finding": "4 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3819,9 +3819,9 @@
       "narration": {
         "cues": 4,
         "captions": 4,
-        "packagedAudio": 0,
+        "packagedAudio": 4,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 4,
         "fallback": "browserTts"
       },
       "assets": {
@@ -3882,7 +3882,7 @@
           "id": "c6-ch04-a01-sorting-materials-according-to-their-shape:narration",
           "kind": "narration",
           "ref": "narration-c6-ch04-a01-sorting-materials-according-to-their-shape",
-          "finding": "4 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"
@@ -3929,9 +3929,9 @@
       "narration": {
         "cues": 7,
         "captions": 7,
-        "packagedAudio": 0,
+        "packagedAudio": 7,
         "missingFiles": 0,
-        "hashValidated": 0,
+        "hashValidated": 7,
         "fallback": "browserTts"
       },
       "assets": {
@@ -4002,7 +4002,7 @@
           "id": "c8-ch02-a03-fungi-and-its-development:narration",
           "kind": "narration",
           "ref": "narration-fungi-development",
-          "finding": "7 exact captions; 0 packaged clips; fallback browserTts.",
+          "finding": "7 exact captions; 7 packaged clips; fallback browserTts.",
           "dimensions": [
             "audio",
             "usability"

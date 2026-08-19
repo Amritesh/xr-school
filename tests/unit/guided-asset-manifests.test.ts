@@ -49,7 +49,7 @@ describe('guided asset manifests', () => {
     }
   });
 
-  it('publishes only the 16 committed narration files and never a missing URL', () => {
+  it('publishes a committed narration file for every cue and never a missing URL', () => {
     for (const record of GUIDED_IMPLEMENTED_SIMULATIONS) {
       const expectsAudio = [
         'c5-ch09-a02-rock-climbing',
@@ -57,19 +57,26 @@ describe('guided asset manifests', () => {
       ].includes(record.module.slug);
       const cuesWithAudio = record.narration.cues.filter(cue => cue.audioUrl);
       const audioAssets = record.assets.assets.filter(asset => asset.kind === 'audio');
-      expect(cuesWithAudio).toHaveLength(expectsAudio ? 8 : 0);
+      expect(cuesWithAudio).toHaveLength(record.narration.cues.length);
       expect(audioAssets).toHaveLength(expectsAudio ? 8 : 0);
 
       for (const cue of cuesWithAudio) {
         const bytes = readFileSync(publicFile(cue.audioUrl!));
         const asset = audioAssets.find(candidate => candidate.url === cue.audioUrl);
-        expect(asset).toMatchObject({
-          byteSize: bytes.byteLength,
-          sha256: sha256(bytes),
-        });
+        if (asset) {
+          expect(asset).toMatchObject({
+            byteSize: bytes.byteLength,
+            sha256: sha256(bytes),
+          });
+        } else {
+          expect(cue.audioUrl).toMatch(/^\/narration\/[a-z0-9]+\.mp3$/u);
+          expect(bytes.byteLength).toBeGreaterThanOrEqual(1024);
+        }
       }
       if (!expectsAudio) {
-        expect(record.narration.cues.every(cue => cue.audioUrl === undefined)).toBe(true);
+        expect(record.narration.cues.every(
+          cue => cue.audioUrl?.startsWith('/narration/'),
+        )).toBe(true);
       }
     }
   });

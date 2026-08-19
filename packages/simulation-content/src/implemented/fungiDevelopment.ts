@@ -2,8 +2,10 @@ import type {
   AssessmentSequence,
   ExperienceDefinition,
   ImplementedSimulationDefinition,
+  NarrationCueDefinition,
   SimulationNarrationManifest,
 } from "@xr-school/simulation-schema";
+import { withPackagedNarration } from "./narrationAssets.js";
 
 const slug = "c8-ch02-a03-fungi-and-its-development";
 
@@ -64,7 +66,6 @@ export const FUNGI_DEVELOPMENT_EXPERIENCE: ExperienceDefinition = {
     },
   ],
 };
-
 const assessment: AssessmentSequence = {
   id: "assessment-fungi-development",
   objectiveId: FUNGI_DEVELOPMENT_EXPERIENCE.id,
@@ -221,7 +222,7 @@ export const FUNGI_DEVELOPMENT_NARRATION: SimulationNarrationManifest & {
   locale: "en-IN",
   speaker: "Living Mycelium Lab guide",
   fallback: "browserTts",
-  cues: [
+  cues: ([
     {
       id: "fungi-narration-fungal-forensics",
       stageId: "fungal-forensics",
@@ -271,7 +272,7 @@ export const FUNGI_DEVELOPMENT_NARRATION: SimulationNarrationManifest & {
       caption:
         "In conclusion, fungi are spore-forming absorbers with hyphae and mycelium. In a forest they decompose dead matter and return nutrients to the living circle.",
     },
-  ],
+  ] satisfies NarrationCueDefinition[]).map(withPackagedNarration),
 };
 
 export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
