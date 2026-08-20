@@ -257,7 +257,11 @@ export default function FungiDevelopmentViewer() {
     controller.setViewport(bounds.width, bounds.height, insets);
   }, []);
 
-  /** Advances the authored lesson whenever a mission is genuinely completed. */
+  /**
+   * Mirrors completed scenes into the authored lesson ledger. The ledger is
+   * bookkeeping: it must never be able to stop the science. Previously a
+   * desync here threw and paused the whole experience mid-lesson.
+   */
   const syncLesson = useCallback((snapshot: FungiViewerSnapshot) => {
     for (const missionId of snapshot.director.completedMissionIds) {
       if (recordedMissionsRef.current.has(missionId)) continue;
@@ -265,8 +269,18 @@ export default function FungiDevelopmentViewer() {
       try {
         const stageId = MISSION_STAGE[missionId];
         let next = lessonRef.current.snapshot();
-        if (!next.performedActionIds.includes(MISSION_ACTION[missionId])) {
-          next = lessonRef.current.performAction(MISSION_ACTION[missionId]);
+
+        // Walk the ledger to the stage this scene closes before recording
+        // against it — actions are only valid on their own stage.
+        let guard = 0;
+        while (next.stageId !== stageId && guard < next.stageCount) {
+          next = lessonRef.current.next();
+          guard += 1;
+        }
+
+        const actionId = MISSION_ACTION[missionId];
+        if (next.stageId === stageId && !next.performedActionIds.includes(actionId)) {
+          next = lessonRef.current.performAction(actionId);
         }
         const evidenceId = STAGE_EVIDENCE[stageId];
         if (evidenceId && !next.recordedEvidenceIds.includes(evidenceId)) {
@@ -278,8 +292,14 @@ export default function FungiDevelopmentViewer() {
             ? items
             : [...items, MISSION_TITLE[missionId]],
         );
-      } catch (error) {
-        setRuntimeError(error instanceof Error ? error.message : String(error));
+      } catch {
+        // A ledger mismatch is not a reason to end the lesson. The scene the
+        // learner completed still stands.
+        setEvidence((items) =>
+          items.includes(MISSION_TITLE[missionId])
+            ? items
+            : [...items, MISSION_TITLE[missionId]],
+        );
       }
     }
   }, []);
