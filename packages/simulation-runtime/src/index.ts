@@ -205,6 +205,23 @@ export type {
   YeastDoughOutput,
 } from './models/fungalGrowthExperiment.js';
 export {
+  CHALLENGE_FOODS,
+  SPOILAGE_COVERAGE,
+  VILLAGE_STORE_BRIEF,
+  evaluateStorageChallenge,
+  respectsBrief,
+  scoreStoragePrediction,
+} from './models/foodStorageChallenge.js';
+export type {
+  StorageBrief,
+  StorageChallengeResult,
+  StorageConditions,
+  StorageDayReading,
+  StoragePredictionScore,
+  StoredFood,
+  StoredFoodOutcome,
+} from './models/foodStorageChallenge.js';
+export {
   createFungiExperimentSession,
   reduceFungiExperiment,
 } from './models/fungiExperimentSession.js';
