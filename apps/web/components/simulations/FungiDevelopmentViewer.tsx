@@ -33,7 +33,19 @@ import {
   type FungiMissionId,
 } from '@/lib/fungi/fungiExperienceDirector';
 import type { FungalUsefulActorId, FungalUsefulRole } from '@xr-school/simulation-runtime';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
+import { resolveFocusGuide } from '@/lib/world-builder/focusGuidance';
+import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
+import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
+import type { FocusGuideDirection } from '@/components/simulation-experience/ExperienceFocusGuide';
 import './fungi-nursery-lab.css';
+
+/** Where a headset learner stands when the forest opens, facing the table. */
+const VR_SPAWN = {
+  position: new THREE.Vector3(0, 0, 6.5),
+  lookAt: new THREE.Vector3(0, 1.1, 0),
+};
 
 const EXPERIENCE = FUNGI_DEVELOPMENT.experience;
 const CLASS_CONTEXT = 'Class 8 · Microorganisms · Fungi and its development';
@@ -217,6 +229,47 @@ export default function FungiDevelopmentViewer() {
     () => typeof window !== 'undefined' && window.innerWidth <= 820,
   );
   const [runtimeError, setRuntimeError] = useState('');
+  const [vrSupported, setVrSupported] = useState(false);
+  const [focusGuide, setFocusGuide] = useState<{
+    direction: FocusGuideDirection;
+    visible: boolean;
+    label: string;
+  }>({ direction: 'forward', visible: false, label: '' });
+
+  const interactionRef = useRef<ReturnType<typeof createInteractionSystem> | null>(null);
+  const hudRef = useRef<ReturnType<typeof createVrHudPanel> | null>(null);
+  const playerRigRef = useRef<THREE.Object3D | null>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
+  const replayRef = useRef<() => void>(() => {});
+  const focusPointRef = useRef(new THREE.Vector3());
+
+  /**
+   * The shared edge guide, per the guided-VR language: silent while the target
+   * is in the middle of the view, and only pointing from the edge once the
+   * learner has looked away from it.
+   */
+  const publishFocusGuide = useCallback((pickId: string | undefined) => {
+    const controller = controllerRef.current;
+    const mount = mountRef.current;
+    if (!controller || !mount || pickId === undefined) {
+      setFocusGuide((current) => (current.visible ? { ...current, visible: false } : current));
+      return;
+    }
+    const bounds = controller.pickBounds(pickId);
+    const camera = controller.camera;
+    if (!bounds || !camera) return;
+    bounds.getCenter(focusPointRef.current).project(camera);
+    const resolved = resolveFocusGuide({
+      x: focusPointRef.current.x,
+      y: focusPointRef.current.y,
+      z: focusPointRef.current.z,
+    });
+    setFocusGuide((current) =>
+      current.visible === resolved.visible && current.direction === resolved.direction
+        ? current
+        : { ...resolved, label: 'Look here' },
+    );
+  }, []);
   const [timelapsePlaying, setTimelapsePlaying] = useState(false);
   const timelapseRef = useRef<number | null>(null);
 
@@ -396,30 +449,6 @@ export default function FungiDevelopmentViewer() {
     [],
   );
 
-  /**
-   * A click on the apparatus is the interaction. The learner points at the
-   * mushroom, the thread, the jar — no translating an intention into a slider.
-   */
-  const handleCanvasClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      const controller = controllerRef.current;
-      const mount = mountRef.current;
-      if (!controller || !mount) return;
-      const bounds = mount.getBoundingClientRect();
-      if (bounds.width <= 0 || bounds.height <= 0) return;
-      try {
-        const pickId = controller.pickAt(
-          (event.clientX - bounds.left) / bounds.width,
-          (event.clientY - bounds.top) / bounds.height,
-        );
-        if (pickId) publish(controller.interactWith(pickId, BROWSER_SOURCE));
-      } catch (error) {
-        setRuntimeError(error instanceof Error ? error.message : String(error));
-      }
-    },
-    [publish],
-  );
-
   /** Records the authored assessment answer alongside the scientific action. */
   const answerPrompt = useCallback(
     (promptId: string, optionId: string) => {
@@ -478,11 +507,73 @@ export default function FungiDevelopmentViewer() {
         updates: {
           renderUpdate({ frameDeltaSeconds, elapsedSeconds }) {
             controller?.update(frameDeltaSeconds, elapsedSeconds);
+            const attention = controller?.attentionTarget();
+            interaction?.setSuggested(attention);
+            publishFocusGuide(attention);
           },
         },
       });
       runtimeRef.current = runtime;
       void runtime.initialize();
+
+      // ── One set of targets, reachable by mouse and by controller ray ──
+      const vrRig = createVrPlayerRig({
+        renderer: runtime.renderer,
+        scene,
+        camera,
+        spawn: VR_SPAWN,
+        rayColor: '#ffd166',
+      });
+      playerRigRef.current = vrRig.rig;
+
+      const hud = createVrHudPanel({ scene });
+      hudRef.current = hud;
+
+      const interaction = createInteractionSystem({
+        camera,
+        domElement: runtime.renderer.domElement,
+        xrControllers: vrRig.controllers,
+        onSelect: (id, _object, source) => {
+          const hudButton = hud.buttonIdFor(id);
+          if (hudButton) {
+            if (hudButton === 'replay') replayRef.current();
+            if (hudButton === 'exit') void runtime?.renderer.xr.getSession()?.end();
+            return;
+          }
+          const live = controllerRef.current;
+          if (!live) return;
+          try {
+            publish(live.interactWith(id, source === 'xr-controller' ? 'xr-controller' : 'mouse'));
+            setRuntimeError('');
+          } catch (error) {
+            setRuntimeError(error instanceof Error ? error.message : String(error));
+          }
+        },
+      });
+      interactionRef.current = interaction;
+
+      for (const mesh of Object.values(hud.buttons)) {
+        interaction.register(mesh.name, mesh);
+      }
+      for (const [pickId, target] of Object.entries(controller.pickTargets)) {
+        interaction.register(pickId, target, { highlightColor: '#ffd166' });
+      }
+
+      const locomotion = createVrLocomotion({
+        renderer: runtime.renderer,
+        rig: vrRig.rig,
+        reducedMotion: preferences.reducedMotion,
+        onBack: () => {
+          void runtime?.renderer.xr.getSession()?.end();
+        },
+      });
+
+      cleanupRef.current = () => {
+        locomotion.dispose();
+        interaction.dispose();
+        hud.dispose();
+        vrRig.dispose();
+      };
 
       syncViewport();
       observer = new ResizeObserver(() => syncViewport());
@@ -496,16 +587,52 @@ export default function FungiDevelopmentViewer() {
     return () => {
       observer?.disconnect();
       stopSimulationNarration();
+      cleanupRef.current?.();
+      cleanupRef.current = null;
       controller?.dispose();
       controllerRef.current = null;
+      interactionRef.current = null;
+      hudRef.current = null;
       void runtime?.dispose();
       runtimeRef.current = null;
     };
-  }, [started, preferences.reducedMotion, syncViewport]);
+  }, [started, preferences.reducedMotion, syncViewport, publish, publishFocusGuide]);
 
   useEffect(() => {
     controllerRef.current?.setReducedMotion(preferences.reducedMotion);
   }, [preferences.reducedMotion]);
+
+  useEffect(() => {
+    if (!('xr' in navigator)) return;
+    void (navigator as Navigator & {
+      xr: { isSessionSupported(mode: string): Promise<boolean> };
+    }).xr
+      .isSessionSupported('immersive-vr')
+      .then(setVrSupported)
+      .catch(() => setVrSupported(false));
+  }, []);
+
+  /** The same lesson, entered from a headset instead of a browser tab. */
+  const enterVr = useCallback(async () => {
+    const renderer = runtimeRef.current?.renderer;
+    if (!renderer) return;
+    try {
+      const session = await (
+        navigator as Navigator & {
+          xr: { requestSession(mode: string, options: XRSessionInit): Promise<XRSession> };
+        }
+      ).xr.requestSession('immersive-vr', {
+        requiredFeatures: ['local-floor'],
+        optionalFeatures: ['bounded-floor', 'hand-tracking'],
+      });
+      await renderer.xr.setSession(session);
+      setStarted(true);
+    } catch (error) {
+      setRuntimeError(
+        error instanceof Error ? error.message : 'The headset could not start immersive mode.',
+      );
+    }
+  }, []);
 
   const missionIndex = view?.director.missionIndex ?? 0;
   /**
@@ -1022,6 +1149,8 @@ export default function FungiDevelopmentViewer() {
       evidence={evidence}
       completed={lesson.lessonComplete}
       caption={preferences.subtitles ? sceneCaption : undefined}
+      onEnterVr={vrSupported ? () => void enterVr() : undefined}
+      focusGuide={focusGuide}
       onReplayNarration={replayNarration}
       onRestart={restart}
       error={runtimeError || undefined}
@@ -1039,7 +1168,7 @@ export default function FungiDevelopmentViewer() {
           : undefined
       }
     >
-      <div className="fungi-lab" onClick={handleCanvasClick}>
+      <div className="fungi-lab">
         <SimulationCanvasHost
           ariaLabel="Forest nursery outbreak investigation"
           className="fungi-lab__canvas"
