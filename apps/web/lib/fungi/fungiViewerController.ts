@@ -45,6 +45,12 @@ export interface FungiViewerSnapshot {
 export interface FungiViewerController {
   root: THREE.Group;
   tools: FungiInteractionTools;
+  /** The camera this controller drives, for projecting guidance. */
+  camera: THREE.PerspectiveCamera;
+  /** Named objects a learner can select, by mouse or by controller ray. */
+  pickTargets: Record<string, THREE.Object3D>;
+  /** World bounds of a pickable, for framing and for the edge guide. */
+  pickBounds(pickId: string): THREE.Box3 | undefined;
   /** What the learner clicked in the world, or undefined for empty space. */
   pickAt(normalizedX: number, normalizedY: number): string | undefined;
   /** Acts on a picked object in the way the current mission expects. */
@@ -443,6 +449,9 @@ export function createFungiViewerController(
   return {
     root: world.root,
     tools,
+    camera,
+    pickTargets: world.pickTargets,
+    pickBounds: (pickId: string) => world.pickBounds(pickId),
     pickAt,
     interactWith,
     nextStep,
