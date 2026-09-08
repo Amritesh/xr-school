@@ -5,6 +5,7 @@ export * from './compat/createWebSimulationRuntime.js';
 export * from './device/detectDeviceProfile.js';
 export * from './environment/createEnvironment.js';
 export * from './host/createSimulationHost.js';
+export * from './input/createOrbitCameraControls.js';
 export * from './input/createWebInputRouter.js';
 export * from './presentation/createPresentationPipeline.js';
 export * from './scene/types.js';

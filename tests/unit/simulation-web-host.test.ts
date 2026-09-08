@@ -126,6 +126,15 @@ function createHostHarness() {
     disconnect: vi.fn(),
   };
   const stopVisibilityObserver = vi.fn();
+  const orbitControls = {
+    setTarget: vi.fn(),
+    target: () => new THREE.Vector3(),
+    sync: vi.fn(),
+    interacted: () => false,
+    enabled: () => true,
+    setEnabled: vi.fn(),
+    dispose: vi.fn(),
+  };
   const dependencies: SimulationHostDependencies = {
     createRenderer: () => renderer,
     createPresentation: () => presentation,
@@ -134,6 +143,9 @@ function createHostHarness() {
       currentInputSnapshot = config.currentSnapshot;
       return input;
     },
+    // Orbit behaviour has its own coverage in orbit-camera-controls.test.ts.
+    // Here it only needs to exist, so the fake canvas stays a bare object.
+    createOrbitControls: () => orbitControls,
     createResizeObserver: () => resizeObserver,
     observeVisibility(listener) {
       visibilityListener = listener;
