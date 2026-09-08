@@ -10,23 +10,35 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: "22"
+  PYTHON_VERSION: "3.12"
+
 jobs:
-  verify:
-    name: Verify contracts, runtime, and web
+  # ---------------------------------------------------------------------------
+  # Fast feedback. No browsers, no Next.js build. Target: under 3 minutes.
+  # Everything here previously sat in front of e2e in a single `&&` chain, so a
+  # type error took ~16 min to surface. Now it surfaces here.
+  # ---------------------------------------------------------------------------
+  checks:
+    name: Contracts, types, unit tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+          cache-dependency-path: requirements-report.txt
 
       - name: Install dependencies
         run: npm ci
@@ -37,11 +49,52 @@ jobs:
       - name: Install Poppler
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      # Each stage is its own step so the GitHub UI attributes time correctly.
+      # Order preserves the dependency chain of the original `npm run verify`.
+      - name: Env check
+        run: npm run env:check
 
-      - name: Run strict verification
-        run: npm run verify
+      - name: Compile contracts
+        run: npm run contract:compile
+
+      - name: Spec drift
+        run: npm run spec:drift
+
+      - name: Build packages
+        run: npm run build:packages
+
+      - name: Unit tests (vitest)
+        run: npm run test
+
+      - name: Type-check packages
+        run: npm run type-check:packages
+
+      - name: Validate simulation catalog
+        run: npm run catalog:validate
+
+      - name: Generate web catalog
+        run: npm run web-catalog:generate
+
+      - name: Validate simulations
+        run: npm run simulations:validate
+
+      - name: Validate narration manifests
+        run: npm run narration:validate:manifests
+
+      - name: Validate reports
+        run: npm run reports:validate
+
+      - name: API tests
+        run: npm run api:test
+
+      - name: API build
+        run: npm run api:build
+
+      - name: Reporting tests (python)
+        run: npm run reports:test
+
+      - name: Reports check
+        run: npm run reports:check
 
       - name: Verify generated sources are current
         run: |
@@ -60,9 +113,148 @@ jobs:
             output/pdf/aditya-contribution-improvement-report.md \
             output/pdf/aditya-contribution-improvement-report.pdf
 
+  # ---------------------------------------------------------------------------
+  # Web type-check + production build. Runs in parallel with `checks`.
+  # ---------------------------------------------------------------------------
+  web:
+    name: Web type-check and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: apps/web/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nextjs-${{ runner.os }}-
+
+      - name: Compile contracts
+        run: npm run contract:compile
+
+      - name: Build packages
+        run: npm run build:packages
+
+      - name: Generate web catalog
+        run: npm run web-catalog:generate
+
+      - name: Web type-check
+        run: npm --workspace apps/web run type-check
+
+      - name: Web build
+        run: npm --workspace apps/web run build
+
+  # ---------------------------------------------------------------------------
+  # Browser acceptance, sharded across runners.
+  #
+  # These specs drive real WebGL simulations and wait on real animation time,
+  # so they cannot be meaningfully sped up in-process: `workers: 1` and
+  # `fullyParallel: false` are deliberate (GPU context loss). Sharding gives
+  # parallelism across *machines* instead, which sidesteps that constraint.
+  # ---------------------------------------------------------------------------
+  e2e:
+    name: E2E shard ${{ matrix.shard }}/4
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: apps/web/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nextjs-${{ runner.os }}-
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Compile contracts
+        run: npm run contract:compile
+
+      - name: Build packages
+        run: npm run build:packages
+
+      - name: Generate web catalog
+        run: npm run web-catalog:generate
+
+      - name: Web build
+        run: npm --workspace apps/web run build
+
+      - name: Run e2e shard
+        run: npx playwright test --config playwright.config.ts --shard=${{ matrix.shard }}/4
+
+      - name: Upload shard report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-shard-${{ matrix.shard }}
+          path: |
+            playwright-report
+            tmp/playwright-results
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------------------
+  # Single aggregate status to point branch protection at, so the shard count
+  # can change without editing required checks.
+  # ---------------------------------------------------------------------------
+  quality-gate:
+    name: Quality gate
+    runs-on: ubuntu-latest
+    needs: [checks, web, e2e]
+    if: ${{ always() }}
+    steps:
+      - name: Fail if any upstream job failed
+        run: |
+          echo "checks=${{ needs.checks.result }}"
+          echo "web=${{ needs.web.result }}"
+          echo "e2e=${{ needs.e2e.result }}"
+          if [ "${{ needs.checks.result }}" != "success" ] \
+            || [ "${{ needs.web.result }}" != "success" ] \
+            || [ "${{ needs.e2e.result }}" != "success" ]; then
+            echo "::error::One or more quality jobs failed."
+            exit 1
+          fi
+          echo "All quality jobs passed."
+
   drift-check:
     name: Spec Drift Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
@@ -72,7 +264,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Get changed files
         run: |

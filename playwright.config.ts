@@ -24,7 +24,11 @@ export default defineConfig({
     viewport: { width: 1440, height: 900 },
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    // `retain-on-failure` still records every test and discards it on pass.
+    // Capturing a 1440x900 WebGL canvas costs real time on each of these
+    // long-running simulation journeys, so CI keeps the trace (which is the
+    // artifact that actually gets debugged) and skips video.
+    video: process.env.CI ? 'off' : 'retain-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
 });
