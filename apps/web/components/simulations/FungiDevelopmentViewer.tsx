@@ -1220,7 +1220,11 @@ export default function FungiDevelopmentViewer() {
             </button>
           </header>
 
-          <ol className="fungi-lab__dots" aria-label="Scene progress">
+          <ol
+            className="fungi-lab__dots"
+            aria-label="Scene progress"
+            data-testid="fungi-mission-strip"
+          >
             {FUNGI_MISSIONS.map((mission) => {
               const completed = view?.director.completedMissionIds.includes(mission.id);
               const current = view?.director.missionId === mission.id;
