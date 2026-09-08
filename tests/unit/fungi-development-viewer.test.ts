@@ -288,6 +288,9 @@ describe('FungiDevelopmentViewer composition', () => {
   it('presents a single control panel rather than competing floating surfaces', () => {
     // Four overlapping surfaces were the problem; there is now one panel.
     expect(source).toContain('data-testid="fungi-tool-drawer"');
+    // The scene-progress strip lives inside that one panel. Browser acceptance
+    // measures it by this hook, so losing it silently breaks the e2e suite.
+    expect(source).toContain('data-testid="fungi-mission-strip"');
     expect(source).toContain('data-testid="fungi-current-mission"');
     expect(source).toContain('data-testid="fungi-next-step"');
     expect(source).toContain('data-testid="fungi-caption"');

@@ -161,7 +161,29 @@ async function completeSafety(page: Page) {
 }
 
 test.describe('forest nursery investigation', () => {
-  test('completes the whole adjustable journey on desktop', async ({ page }) => {
+  // This full-journey walkthrough still drives an earlier design of three
+  // missions, and cannot pass until it is rewritten against the current one.
+  // Nine controls it clicks no longer exist anywhere in the app:
+  //
+  //   growth-chamber  fungi-save-trial, fungi-compare-trials,
+  //                   fungi-growth-interpretation, fungi-record-interpretation
+  //   useful-fungi    fungi-role-yeast-food,
+  //                   fungi-role-antibiotic-producing-fungus-medicine,
+  //                   fungi-role-saprotrophic-fungus-decomposer
+  //   safety          fungi-cite-trial-1,
+  //                   fungi-distinguish-spoilage-harmful-decomposition-useful
+  //
+  // growth-chamber, for example, was rebuilt around a five-day time lapse
+  // (`fungi.run-five-day-timeline`, testids fungi-play-timelapse /
+  // fungi-day-readout / fungi-stage-order) instead of a save-trial and
+  // compare-trials fair test. Rewriting this requires deciding what the
+  // correct answer now is for each mission's prompt, which is a content
+  // question rather than a test-wiring one.
+  //
+  // The other five tests in this file cover launch, layout at three
+  // viewports, control independence, and keyboard-only operation, and they
+  // pass. Kept as fixme rather than deleted so the coverage gap stays visible.
+  test.fixme('completes the whole adjustable journey on desktop', async ({ page }) => {
     test.setTimeout(process.env.CI ? 180_000 : 120_000);
     await launch(page, { width: 1280, height: 720 });
 
@@ -202,11 +224,18 @@ test.describe('forest nursery investigation', () => {
         requiredBox(page.getByTestId('fungi-tool-drawer')),
       ]);
 
-      // The two interface surfaces never sit on top of each other.
-      expect(intersectionArea(stripBox, drawerBox)).toBe(0);
+      // The interface is one consolidated panel: the scene-progress strip sits
+      // inside the tool drawer rather than floating as a separate surface. It
+      // used to be its own surface, and this asserted the two never overlapped.
+      expect(intersectionArea(stripBox, drawerBox)).toBeCloseTo(
+        stripBox.width * stripBox.height,
+        0,
+      );
 
-      const covered =
-        intersectionArea(canvasBox, stripBox) + intersectionArea(canvasBox, drawerBox);
+      // The drawer encloses the strip, so the drawer alone accounts for how
+      // much of the apparatus the controls cover. Adding the strip separately
+      // would double-count that region.
+      const covered = intersectionArea(canvasBox, drawerBox);
       const visibleRatio = (canvasBox.width * canvasBox.height - covered) /
         (canvasBox.width * canvasBox.height);
       expect(visibleRatio).toBeGreaterThanOrEqual(viewport.minVisible);
@@ -225,7 +254,11 @@ test.describe('forest nursery investigation', () => {
   }
 
   test('keeps camera reset, experiment reset, and restart independent', async ({ page }) => {
-    test.setTimeout(process.env.CI ? 180_000 : 120_000);
+    // 300s in CI to match every other WebGL journey in tests/e2e. This one was
+    // the outlier at 180s and timed out waiting on the spore-flight apparatus:
+    // it completes locally in ~90s, but CI renders through software WebGL and
+    // the mission takes correspondingly longer to reach a clickable state.
+    test.setTimeout(process.env.CI ? 300_000 : 120_000);
     await launch(page, { width: 1280, height: 720 });
     await completeDiagnose(page);
     await completeMycelium(page);
