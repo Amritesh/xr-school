@@ -26,6 +26,10 @@ import {
   createWebInputRouter,
   type WebInputRouter as SimulationInputRouter,
 } from '../input/createWebInputRouter.js';
+import {
+  createOrbitCameraControls,
+  type OrbitCameraControls,
+} from '../input/createOrbitCameraControls.js';
 import { detectDeviceProfile } from '../device/detectDeviceProfile.js';
 import { createPresentationPipeline } from '../presentation/createPresentationPipeline.js';
 import { createVrLocomotion } from '../vr/vrLocomotion.js';
@@ -83,6 +87,11 @@ export interface SimulationHostDependencies {
     xrControllers: THREE.XRTargetRaySpace[];
     now(): number;
   }): SimulationInputRouter;
+  createOrbitControls(config: {
+    domElement: HTMLElement;
+    camera: THREE.PerspectiveCamera;
+    isPresenting(): boolean;
+  }): OrbitCameraControls;
   createResizeObserver(callback: () => void): {
     observe(target: Element): void;
     disconnect(): void;
@@ -114,6 +123,7 @@ export function createBrowserSimulationHostDependencies(): SimulationHostDepende
     createPresentation: createPresentationPipeline,
     createNarration: createNarrationController,
     createInput: createWebInputRouter,
+    createOrbitControls: createOrbitCameraControls,
     createResizeObserver(callback) {
       if (typeof ResizeObserver === 'undefined') {
         throw new Error('ResizeObserver is unavailable in this browser');
@@ -176,6 +186,7 @@ export function createSimulationHost(
   let presentation!: SimulationPresentation;
   let narration!: SimulationNarrationController;
   let input!: SimulationInputRouter;
+  let orbit: OrbitCameraControls | undefined;
   let resizeObserver!: ReturnType<SimulationHostDependencies['createResizeObserver']>;
   let onSessionStart = () => {};
   let onSessionEnd = () => {};
@@ -312,6 +323,14 @@ export function createSimulationHost(
       now: resolvedDependencies.now,
     });
     constructionResources.push({ id: 'input', dispose: () => input.dispose() });
+    // Flat-screen camera control. Locomotion only moves the rig inside an
+    // immersive session, so without this a browser learner cannot look around.
+    orbit = resolvedDependencies.createOrbitControls({
+      domElement: renderer.domElement,
+      camera,
+      isPresenting: () => renderer.xr.isPresenting,
+    });
+    constructionResources.push({ id: 'orbit', dispose: () => orbit?.dispose() });
     resizeObserver = resolvedDependencies.createResizeObserver(resize);
     constructionResources.push({
       id: 'resize-observer',
@@ -326,11 +345,46 @@ export function createSimulationHost(
     });
 
     onSessionStart = () => setProfile('questBaseline');
-    onSessionEnd = () => setProfile(browserProfileId);
+    onSessionEnd = () => {
+      setProfile(browserProfileId);
+      // The player rig restores the pre-session desktop pose, so re-read it
+      // and continue orbiting from there instead of snapping back.
+      orbit?.sync();
+    };
     renderer.xr.addEventListener('sessionstart', onSessionStart);
     renderer.xr.addEventListener('sessionend', onSessionEnd);
   } catch (error) {
     rollbackConstruction(error);
+  }
+
+  /**
+   * Aims the browser orbit at whatever the lesson is currently highlighting.
+   *
+   * Guided scenes only know their focus once a snapshot names a cue, so this
+   * runs again on each snapshot — but never after the learner has moved the
+   * camera themselves, so a stage change cannot yank the view out of their
+   * hands.
+   */
+  function refocusOrbit() {
+    if (!orbit || orbit.interacted()) return;
+    const focus = sceneHandle?.focusTarget?.();
+    if (!focus) return;
+    orbit.setTarget(focus.getWorldPosition(new THREE_RUNTIME.Vector3()));
+  }
+
+  /**
+   * The starting pivot, used before any cue names a focus.
+   *
+   * Picks a point along the camera's forward axis rather than the centre of
+   * the scene's bounding box, because an environment dome or ground plane
+   * would drag that centre far away from the authored subject.
+   */
+  function initialOrbitTarget(): THREE.Vector3 {
+    camera.updateWorldMatrix(true, false);
+    const forward = camera.getWorldDirection(new THREE_RUNTIME.Vector3());
+    return camera
+      .getWorldPosition(new THREE_RUNTIME.Vector3())
+      .add(forward.multiplyScalar(3));
   }
 
   const releaseRegisteredResources: (() => void)[] = [];
@@ -360,6 +414,8 @@ export function createSimulationHost(
           dispatch,
           recordEvidence,
         });
+        orbit?.setTarget(initialOrbitTarget());
+        refocusOrbit();
       },
       fixedUpdate(context) {
         sceneHandle?.fixedUpdate?.(context);
@@ -415,6 +471,7 @@ export function createSimulationHost(
       if (!sceneHandle) throw new Error('Initialize the simulation host before applying a snapshot');
       snapshot = nextSnapshot;
       sceneHandle.applySnapshot(nextSnapshot);
+      refocusOrbit();
     },
     async enterVr() {
       if (disposed) throw new Error('Simulation host is disposed');
