@@ -31,16 +31,16 @@ const webVercelConfig = JSON.parse(
   outputDirectory?: string;
 };
 
-describe('web build workflows', () => {
-  it.each([
-    ['deploy', deployWorkflow],
-    ['quality', qualityWorkflow],
-  ])('%s installs workspace dependencies from the repository root', (_name, workflow) => {
-    expect(workflow).toMatch(/- name: Install (?:web )?dependencies\n\s+run: npm ci\n(?!\s+working-directory: apps\/web)/);
-  });
+/** Stage names in `npm run verify`, in order, e.g. ['env:check', ...]. */
+const verifyStages = (rootPackage.scripts?.verify ?? '')
+  .split('&&')
+  .map((part) => part.trim())
+  .map((part) => /^npm run ([\w:-]+)$/.exec(part)?.[1])
+  .filter((name): name is string => Boolean(name));
 
-  it('deploy runs the root strict verification gate', () => {
-    expect(deployWorkflow).toContain('run: npm run verify');
+describe('web build workflows', () => {
+  it('quality installs workspace dependencies from the repository root', () => {
+    expect(qualityWorkflow).toMatch(/- name: Install (?:web )?dependencies\n\s+run: npm ci\n(?!\s+working-directory: apps\/web)/);
   });
 
   it('uploads the prebuilt Vercel artifact as one compressed archive', () => {
@@ -49,8 +49,41 @@ describe('web build workflows', () => {
     );
   });
 
-  it('quality runs the root strict verification gate', () => {
-    expect(qualityWorkflow).toContain('run: npm run verify');
+  // Normal deployments intentionally skip tests so pushes ship fast. The full
+  // gate is run on demand (`gh workflow run quality.yml`) or locally
+  // (`npm run verify`). These assertions pin that decision down so it is not
+  // silently reversed in either direction.
+  it('deploy ships without running the test gate', () => {
+    expect(deployWorkflow).not.toContain('needs: verify');
+    expect(deployWorkflow).not.toContain('run: npm run verify');
+    expect(deployWorkflow).not.toContain('test:e2e');
+  });
+
+  it('deploy documents where the full gate actually lives', () => {
+    expect(deployWorkflow).toContain('quality.yml');
+    expect(deployWorkflow).toContain('npm run verify');
+  });
+
+  it('quality is runnable on demand and does not gate every push', () => {
+    expect(qualityWorkflow).toContain('workflow_dispatch:');
+    expect(qualityWorkflow).not.toMatch(/\non:\n\s+push:/);
+  });
+
+  // Replaces the old `toContain('run: npm run verify')` assertion. quality.yml
+  // now runs the stages as individual steps, to get per-stage timing in the UI
+  // and to fail fast, so the invariant worth guarding is that no stage of the
+  // canonical gate is silently dropped from CI.
+  it('quality runs every stage of the root verification gate', () => {
+    expect(verifyStages.length).toBeGreaterThan(10);
+    const workflowStages = new Set(
+      [...qualityWorkflow.matchAll(/run: npm run ([\w:-]+)/g)].map((match) => match[1]),
+    );
+    // e2e is sharded, so it appears as an `npx playwright test --shard=` step.
+    expect(qualityWorkflow).toContain('--shard=');
+    for (const stage of verifyStages) {
+      if (stage === 'test:e2e') continue;
+      expect(workflowStages, `quality.yml is missing verify stage ${stage}`).toContain(stage);
+    }
   });
 
   it('documents the same strict verification gate used by CI', () => {
@@ -88,10 +121,10 @@ describe('web build workflows', () => {
     expect(rootPackage.scripts?.verify).toContain(
       'npm --workspace apps/web run build',
     );
-    expect(qualityWorkflow).toContain('run: npm run verify');
+    expect(qualityWorkflow).toContain('npm --workspace apps/web run type-check');
+    expect(qualityWorkflow).toContain('npm --workspace apps/web run build');
     expect(qualityWorkflow).toContain('git diff --exit-code --');
     expect(qualityWorkflow).not.toContain('continue-on-error: true');
-    expect(deployWorkflow).toContain('needs: verify');
   });
 
   it('gates report data, PDFs, APIs, packages, narration, and browser acceptance', () => {
@@ -115,17 +148,19 @@ describe('web build workflows', () => {
     expect(rootPackage.scripts?.verify).not.toContain('narration:author');
   });
 
-  it.each([
-    ['quality', qualityWorkflow],
-    ['deploy verify', deployWorkflow.split('  deploy:')[0]],
-  ])('%s installs the report and browser verification runtime', (_name, workflow) => {
-    expect(workflow).toContain('actions/setup-python@v5');
-    expect(workflow).toContain('python-version: "3.12"');
-    expect(workflow).toContain('python -m pip install -r requirements-report.txt');
-    expect(workflow).toContain('sudo apt-get install -y poppler-utils');
-    expect(workflow).toContain('npx playwright install --with-deps chromium');
-    expect(workflow).toContain('run: npm run verify');
-    expect(workflow).not.toMatch(/edge_tts|requirements-narration\.txt|pip install --user|narration:author/);
+  it('quality installs the report and browser verification runtime', () => {
+    expect(qualityWorkflow).toContain('actions/setup-python@v5');
+    expect(qualityWorkflow).toContain('python-version: "3.12"');
+    expect(qualityWorkflow).toContain('python -m pip install -r requirements-report.txt');
+    expect(qualityWorkflow).toContain('sudo apt-get install -y poppler-utils');
+    expect(qualityWorkflow).toContain('npx playwright install --with-deps chromium');
+    expect(qualityWorkflow).not.toMatch(/edge_tts|requirements-narration\.txt|pip install --user|narration:author/);
+  });
+
+  it('deploy carries no verification runtime it no longer needs', () => {
+    expect(deployWorkflow).not.toContain('actions/setup-python@v5');
+    expect(deployWorkflow).not.toContain('npx playwright install');
+    expect(deployWorkflow).not.toContain('poppler-utils');
   });
 
   it('checks every generated simulation report and audited dataset for drift', () => {
@@ -141,8 +176,9 @@ describe('web build workflows', () => {
       'output/pdf/aditya-contribution-improvement-report.md',
       'output/pdf/aditya-contribution-improvement-report.pdf',
     ]) {
+      // Drift is checked by the quality gate only. deploy.yml no longer runs
+      // it, because nothing in the deploy path regenerates these files.
       expect(qualityWorkflow).toContain(path);
-      expect(deployWorkflow).toContain(path);
     }
   });
 

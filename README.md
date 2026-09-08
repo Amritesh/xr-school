@@ -66,6 +66,24 @@ assets, all unit/package/API tests, package and production builds, report
 freshness, and Chromium acceptance for every released simulation and legacy
 route.
 
+### When CI runs it
+
+Deployments are deliberately fast: **a push to `main` builds and ships without
+running tests.** The full gate is not on the push path.
+
+| What you want | Command |
+| --- | --- |
+| Full gate in CI | `gh workflow run quality.yml` |
+| Everything except browser tests | `gh workflow run quality.yml -f skip_e2e=true` |
+| Full gate locally | `npm run verify` |
+
+It also runs automatically on every pull request, which is where a broken
+change should be caught before it reaches `main`.
+
+The trade-off is explicit: on the direct-push-to-`main` path nothing stops a
+broken commit from reaching production. Open a PR, or run the gate on demand,
+when that matters.
+
 If you change TypeSpec contracts or generated catalog inputs, also confirm generated sources are current:
 
 ```powershell

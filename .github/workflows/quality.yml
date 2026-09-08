@@ -1,18 +1,28 @@
 name: Quality
 
+# The full gate. Deliberately NOT on push: normal deployments skip tests so
+# changes ship fast (see deploy.yml). Run this explicitly instead:
+#
+#     gh workflow run quality.yml            # full suite in CI
+#     gh workflow run quality.yml -f skip_e2e=true   # everything but browsers
+#     npm run verify                         # full suite locally
+#
+# It still runs automatically on pull requests, which is where a broken change
+# should be caught before it reaches main.
+
 on:
-  push:
-    branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      skip_e2e:
+        description: "Skip browser acceptance (fast: contracts, types, unit tests only)"
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
-env:
-  NODE_VERSION: "22"
-  PYTHON_VERSION: "3.12"
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -30,13 +40,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "22"
           cache: "npm"
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: "3.12"
           cache: "pip"
           cache-dependency-path: requirements-report.txt
 
@@ -126,7 +136,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -168,6 +178,7 @@ jobs:
     name: E2E shard ${{ matrix.shard }}/4
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    if: ${{ inputs.skip_e2e != true }}
     strategy:
       fail-fast: false
       matrix:
@@ -178,7 +189,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -244,12 +255,18 @@ jobs:
           echo "web=${{ needs.web.result }}"
           echo "e2e=${{ needs.e2e.result }}"
           if [ "${{ needs.checks.result }}" != "success" ] \
-            || [ "${{ needs.web.result }}" != "success" ] \
-            || [ "${{ needs.e2e.result }}" != "success" ]; then
+            || [ "${{ needs.web.result }}" != "success" ]; then
             echo "::error::One or more quality jobs failed."
             exit 1
           fi
-          echo "All quality jobs passed."
+          # e2e is allowed to be "skipped" only via the skip_e2e dispatch input.
+          if [ "${{ needs.e2e.result }}" = "skipped" ]; then
+            echo "::warning::Browser acceptance was skipped for this run."
+          elif [ "${{ needs.e2e.result }}" != "success" ]; then
+            echo "::error::Browser acceptance failed."
+            exit 1
+          fi
+          echo "Quality gate satisfied."
 
   drift-check:
     name: Spec Drift Check
@@ -261,14 +278,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Intentionally dependency-free: this job installs nothing, so the drift
+      # check stays fast. `tests/unit/ci-workflow.test.ts` enforces that.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
+          node-version: "22"
 
       - name: Get changed files
         run: |

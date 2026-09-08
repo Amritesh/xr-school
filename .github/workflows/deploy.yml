@@ -1,67 +1,29 @@
 name: Deploy to Vercel
 
+# Normal deployments do NOT run tests. A push to main builds and ships.
+#
+# The full gate lives in quality.yml and is run on demand:
+#     gh workflow run quality.yml
+# or locally:
+#     npm run verify
+#
+# Trade-off, stated plainly: nothing blocks a broken commit from reaching
+# production on this path. That is deliberate, to keep pushes fast.
+
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
-    name: Verify release candidate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install report dependencies
-        run: python -m pip install -r requirements-report.txt
-
-      - name: Install Poppler
-        run: sudo apt-get update && sudo apt-get install -y poppler-utils
-
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-
-      - name: Run strict verification
-        run: npm run verify
-
-      - name: Verify generated sources are current
-        run: |
-          git diff --exit-code -- \
-            generated/openapi/openapi.json \
-            apps/web/lib/scienceCatalog.generated.ts \
-            apps/web/lib/curriculumSearch.generated.ts \
-            reports/data/implemented-simulation-quality-cards.json \
-            reports/data/implemented-simulation-quality-evidence.json \
-            reports/data/new-simulation-before-after-scorecard.json \
-            reports/data/simulation-quality-pdf-visual-qa.json \
-            output/pdf/xr-school-implemented-simulations-quality-report.md \
-            output/pdf/xr-school-implemented-simulations-quality-report.pdf \
-            output/pdf/xr-school-new-simulations-top-10-mistakes.md \
-            output/pdf/xr-school-new-simulations-top-10-mistakes.pdf \
-            output/pdf/aditya-contribution-improvement-report.md \
-            output/pdf/aditya-contribution-improvement-report.pdf
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: verify
+    timeout-minutes: 20
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}
