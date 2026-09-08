@@ -6,6 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createQuestVrControls } from "./questVrControls";
 import { playNarration, stopNarration, unlockNarration } from "./narrationAudio";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import { createScreenSafePanelFollower, drawFittedText } from "@/lib/vr/screenSafeTextPanel";
 
 type ShapeGroup = "Sphere" | "Cylinder" | "Cuboid" | "Cone";
 
@@ -45,20 +46,6 @@ function speakText(text: string) {
   playNarration(text);
 }
 
-function wrapText(context: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, lineHeight: number) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const candidate = `${line}${word} `;
-    if (line && context.measureText(candidate).width > width) {
-      context.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else line = candidate;
-  }
-  if (line) context.fillText(line.trim(), x, currentY);
-}
-
 function drawCard(canvas: HTMLCanvasElement, objectIndex: number, feedback: string) {
   const context = canvas.getContext("2d");
   if (!context) return;
@@ -71,24 +58,33 @@ function drawCard(canvas: HTMLCanvasElement, objectIndex: number, feedback: stri
   context.font = "bold 21px sans-serif";
   context.fillText(`Activity 1  •  Object ${Math.min(objectIndex + 1, OBJECTS.length)}/${OBJECTS.length}`, 24, 38);
   if (objectIndex >= OBJECTS.length) {
-    context.fillStyle = "#ffffff";
-    context.font = "bold 31px sans-serif";
-    context.fillText("Sorting complete!", 24, 86);
-    context.fillStyle = "#d1fae5";
-    context.font = "20px sans-serif";
-    wrapText(context, "Different materials can share the same shape. Shape is one useful property for grouping objects.", 24, 126, canvas.width - 48, 28);
+    drawFittedText(context, "Sorting complete!", {
+      x: 24, y: 55, width: canvas.width - 48, height: 51,
+      color: "#ffffff", fontWeight: 800, maxFontSize: 31, minFontSize: 22,
+      maxLines: 2, verticalAlign: "middle",
+    });
+    drawFittedText(context, "Different materials can share the same shape. Shape is one useful property for grouping objects.", {
+      x: 24, y: 119, width: canvas.width - 48, height: 104,
+      color: "#d1fae5", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+    });
     return;
   }
   const item = OBJECTS[objectIndex];
-  context.fillStyle = "#ffffff";
-  context.font = "bold 31px sans-serif";
-  context.fillText(`Sort: ${item.name}`, 24, 82);
-  context.fillStyle = "#d1fae5";
-  context.font = "20px sans-serif";
-  wrapText(context, `${item.material} • ${item.clue}`, 24, 122, canvas.width - 48, 27);
-  context.fillStyle = feedback.startsWith("Try") ? "#fca5a5" : "#bbf7d0";
-  context.font = "bold 19px sans-serif";
-  context.fillText(feedback || "Choose: sphere, cylinder, cuboid, or cone", 24, 234);
+  drawFittedText(context, `Sort: ${item.name}`, {
+    x: 24, y: 54, width: canvas.width - 48, height: 48,
+    color: "#ffffff", fontWeight: 800, maxFontSize: 31, minFontSize: 22,
+    maxLines: 2, verticalAlign: "middle",
+  });
+  drawFittedText(context, `${item.material} • ${item.clue}`, {
+    x: 24, y: 112, width: canvas.width - 48, height: 91,
+    color: "#d1fae5", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+  });
+  drawFittedText(context, feedback || "Choose: sphere, cylinder, cuboid, or cone", {
+    x: 24, y: 215, width: canvas.width - 48, height: 40,
+    color: feedback.startsWith("Try") ? "#fca5a5" : "#bbf7d0",
+    fontWeight: 800, maxFontSize: 19, minFontSize: 13, maxLines: 2,
+    verticalAlign: "middle",
+  });
 }
 
 function makeObject(item: (typeof OBJECTS)[number], index: number) {
@@ -247,6 +243,10 @@ export default function ShapeSortingViewer() {
     const card = new THREE.Mesh(new THREE.PlaneGeometry(2.8, 1.09), new THREE.MeshBasicMaterial({ map: cardTexture }));
     card.position.set(0, 2.65, -1.55);
     scene.add(card);
+    const cardFollower = createScreenSafePanelFollower(card, {
+      panelWidth: 2.8,
+      panelHeight: 1.09,
+    });
 
     const raycaster = new THREE.Raycaster();
     const onControllerSelect = (event: Event) => {
@@ -305,7 +305,7 @@ export default function ShapeSortingViewer() {
         cardNeedsUpdateRef.current = false;
       }
       const activeCamera = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
-      card.lookAt(activeCamera.position);
+      cardFollower.update(activeCamera);
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);
     });

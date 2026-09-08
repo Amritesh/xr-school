@@ -5,6 +5,7 @@ import type {
   SimulationSceneContext,
 } from '@xr-school/simulation-web';
 import type { ProjectableSceneAdapter } from './types';
+import { drawFittedText } from '../../vr/screenSafeTextPanel';
 
 const INPUT_SOURCES = [
   'mouse',
@@ -78,29 +79,19 @@ function textureForLabel(
   drawing.strokeStyle = 'rgba(255,255,255,.55)';
   drawing.lineWidth = 6;
   drawing.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
-  drawing.fillStyle = '#ffffff';
-  drawing.font = '600 31px system-ui, sans-serif';
-  drawing.textAlign = 'center';
-  drawing.textBaseline = 'middle';
-  const words = label.split(/\s+/);
-  const lines: string[] = [];
-  let current = '';
-  for (const word of words) {
-    const candidate = current ? `${current} ${word}` : word;
-    if (drawing.measureText(candidate).width > 460 && current) {
-      lines.push(current);
-      current = word;
-    } else {
-      current = candidate;
-    }
-  }
-  if (current) lines.push(current);
-  const shown = lines.slice(0, 3);
-  const lineHeight = 38;
-  const startY = canvas.height / 2 - ((shown.length - 1) * lineHeight) / 2;
-  shown.forEach((line, index) =>
-    drawing.fillText(line, canvas.width / 2, startY + index * lineHeight),
-  );
+  drawFittedText(drawing, label, {
+    x: 24,
+    y: 18,
+    width: canvas.width - 48,
+    height: canvas.height - 36,
+    color: '#ffffff',
+    fontWeight: 650,
+    maxFontSize: 31,
+    minFontSize: 16,
+    maxLines: 3,
+    align: 'center',
+    verticalAlign: 'middle',
+  });
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.needsUpdate = true;

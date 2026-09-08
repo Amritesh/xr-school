@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { drawFittedText } from './screenSafeTextPanel';
 
 /**
  * In-scene instruction/completion card for VR.
@@ -60,26 +61,6 @@ const BUTTON_GAP = 0.03;
 const FOLLOW_DISTANCE = 1.7;
 const CONTROLS_FOOTER = 'Trigger: select · Right stick: turn · Left stick: move · B: back';
 
-function wrapLines(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  maxWidth: number,
-): string[] {
-  const lines: string[] = [];
-  let line = '';
-  for (const word of text.split(' ')) {
-    const candidate = line ? `${line} ${word}` : word;
-    if (ctx.measureText(candidate).width > maxWidth && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = candidate;
-    }
-  }
-  if (line) lines.push(line);
-  return lines;
-}
-
 function makeButtonTexture(id: VrHudButtonId) {
   const canvas = document.createElement('canvas');
   canvas.width = 384;
@@ -122,6 +103,8 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
     map: texture,
     transparent: true,
     depthTest: false,
+    depthWrite: false,
+    side: THREE.DoubleSide,
   });
   const panel = new THREE.Mesh(
     new THREE.PlaneGeometry(PANEL_WIDTH, PANEL_HEIGHT),
@@ -139,6 +122,8 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
       map: buttonTexture,
       transparent: true,
       depthTest: false,
+      depthWrite: false,
+      side: THREE.DoubleSide,
     });
     const geometry = new THREE.PlaneGeometry(BUTTON_WIDTH, BUTTON_HEIGHT);
     const mesh = new THREE.Mesh(geometry, material);
@@ -163,81 +148,68 @@ export function createVrHudPanel(config: VrHudPanelConfig) {
     ctx.strokeStyle = '#38bdf8';
     ctx.lineWidth = 6;
     ctx.strokeRect(6, 6, w - 12, h - 12);
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
+    drawFittedText(ctx, content.eyebrow, {
+      x: 40, y: 34, width: w - 80, height: 34,
+      color: '#7dd3fc', fontWeight: 800, maxFontSize: 26, minFontSize: 19,
+      maxLines: 1,
+    });
+    drawFittedText(ctx, content.title, {
+      x: 40, y: 79, width: w - 80, height: 104,
+      color: '#f8fafc', fontWeight: 800, maxFontSize: 46, minFontSize: 28,
+      maxLines: 2, verticalAlign: 'middle',
+    });
+    drawFittedText(ctx, content.body, {
+      x: 40, y: 196, width: w - 80, height: 137,
+      color: '#d1d5db', maxFontSize: 29, minFontSize: 18,
+      maxLines: 5,
+    });
 
-    ctx.fillStyle = '#7dd3fc';
-    ctx.font = 'bold 26px sans-serif';
-    ctx.fillText(content.eyebrow, 40, 62);
-
-    ctx.fillStyle = '#f8fafc';
-    ctx.font = 'bold 46px sans-serif';
-    let cursorY = 122;
-    for (const line of wrapLines(ctx, content.title, w - 80).slice(0, 2)) {
-      ctx.fillText(line, 40, cursorY);
-      cursorY += 54;
-    }
-    cursorY += 8;
-
-    ctx.fillStyle = '#d1d5db';
-    ctx.font = '29px sans-serif';
-    for (const line of wrapLines(ctx, content.body, w - 80).slice(0, 4)) {
-      ctx.fillText(line, 40, cursorY);
-      cursorY += 39;
-    }
-
+    const detailTop = 346;
+    const detailBottom = content.hint ? 532 : 580;
+    const detailHeight = detailBottom - detailTop;
     if (content.choices?.length) {
-      cursorY += 8;
-      ctx.fillStyle = '#bae6fd';
       const authoredChoices = content.choices.slice(0, 3);
-      const bottom = content.hint ? h - 122 : h - 66;
-      const availableHeight = Math.max(48, bottom - cursorY);
-      let fontSize = 25;
-      let choiceLines: string[][] = [];
-      while (fontSize >= 13) {
-        ctx.font = `bold ${fontSize}px sans-serif`;
-        choiceLines = authoredChoices.map((choice, index) =>
-          wrapLines(ctx, `${String.fromCharCode(65 + index)}. ${choice.label}`, w - 96));
-        const lineHeight = fontSize + 8;
-        const requiredHeight = choiceLines.reduce((sum, lines) => sum + lines.length * lineHeight + 5, 0);
-        if (requiredHeight <= availableHeight || fontSize === 13) break;
-        fontSize -= 1;
-      }
-      const lineHeight = Math.min(fontSize + 8, availableHeight / Math.max(1, choiceLines.reduce((sum, lines) => sum + lines.length, 0)));
-      for (const lines of choiceLines) {
-        for (const line of lines) {
-          ctx.fillText(line, 48, cursorY);
-          cursorY += lineHeight;
-        }
-        cursorY += 5;
-      }
-    }
-
-    if (content.bullets?.length) {
-      cursorY += 10;
-      ctx.fillStyle = '#fde68a';
-      ctx.font = '28px sans-serif';
-      for (const bullet of content.bullets.slice(0, 6)) {
-        const lines = wrapLines(ctx, bullet, w - 130);
-        ctx.fillText(`• ${lines[0]}`, 48, cursorY);
-        cursorY += 37;
-        for (const line of lines.slice(1)) {
-          ctx.fillText(line, 78, cursorY);
-          cursorY += 37;
-        }
-        if (cursorY > h - 110) break;
-      }
+      const gap = 6;
+      const rowHeight = Math.max(
+        44,
+        (detailHeight - gap * Math.max(0, authoredChoices.length - 1))
+          / Math.max(1, authoredChoices.length),
+      );
+      authoredChoices.forEach((choice, index) => {
+        drawFittedText(ctx, `${String.fromCharCode(65 + index)}. ${choice.label}`, {
+          x: 48,
+          y: detailTop + index * (rowHeight + gap),
+          width: w - 96,
+          height: rowHeight,
+          color: '#bae6fd',
+          fontWeight: 750,
+          maxFontSize: 25,
+          minFontSize: 14,
+          maxLines: 3,
+          verticalAlign: 'middle',
+        });
+      });
+    } else if (content.bullets?.length) {
+      drawFittedText(ctx, content.bullets.slice(0, 6).map(item => `• ${item}`).join('\n'), {
+        x: 48, y: detailTop, width: w - 96, height: detailHeight,
+        color: '#fde68a', maxFontSize: 27, minFontSize: 15,
+        maxLines: 8, lineHeightRatio: 1.2,
+      });
     }
 
     if (content.hint) {
-      ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 30px sans-serif';
-      ctx.fillText(wrapLines(ctx, content.hint, w - 80)[0] ?? '', 40, h - 84);
+      drawFittedText(ctx, content.hint, {
+        x: 40, y: 538, width: w - 80, height: 48,
+        color: '#fbbf24', fontWeight: 800, maxFontSize: 29, minFontSize: 17,
+        maxLines: 2, verticalAlign: 'middle',
+      });
     }
 
-    ctx.fillStyle = '#64748b';
-    ctx.font = '22px sans-serif';
-    ctx.fillText(CONTROLS_FOOTER, 40, h - 32);
+    drawFittedText(ctx, CONTROLS_FOOTER, {
+      x: 40, y: 602, width: w - 80, height: 24,
+      color: '#94a3b8', maxFontSize: 21, minFontSize: 16,
+      maxLines: 1, verticalAlign: 'middle',
+    });
     texture.needsUpdate = true;
   }
 

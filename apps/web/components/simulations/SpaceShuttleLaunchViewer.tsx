@@ -10,6 +10,7 @@ import {
 } from "./narrationAudio";
 import { createQuestVrControls } from "./questVrControls";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import { createScreenSafePanelFollower, drawFittedText } from "@/lib/vr/screenSafeTextPanel";
 
 type EnvironmentName = "control" | "launchpad" | "ascent" | "orbit";
 
@@ -134,27 +135,6 @@ const NARRATIONS = [
   "Mission accomplished! We are in low Earth orbit above India and the Indian Ocean. The orbiter and everything inside are falling around Earth together, creating the feeling of microgravity. Astronauts are not beyond Earth's gravity. Later, a Space Shuttle re-entered the atmosphere and landed on a runway like a glider. You have completed the full launch sequence.",
 ];
 
-function wrapText(
-  context: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  width: number,
-  lineHeight: number,
-) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const candidate = `${line}${word} `;
-    if (line && context.measureText(candidate).width > width) {
-      context.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else line = candidate;
-  }
-  if (line) context.fillText(line.trim(), x, currentY);
-}
-
 function makePanel(
   title: string,
   subtitle: string,
@@ -172,14 +152,16 @@ function makePanel(
     context.strokeStyle = accent;
     context.lineWidth = 12;
     context.strokeRect(7, 7, canvas.width - 14, canvas.height - 14);
-    context.fillStyle = accent;
-    context.font = "bold 42px sans-serif";
-    context.textAlign = "center";
-    context.fillText(title, canvas.width / 2, 112);
-    context.fillStyle = "#e0f2fe";
-    context.font = "27px sans-serif";
-    context.textAlign = "left";
-    wrapText(context, subtitle, 48, 177, canvas.width - 96, 38);
+    drawFittedText(context, title, {
+      x: 48, y: 52, width: canvas.width - 96, height: 94,
+      color: accent, fontWeight: 800, maxFontSize: 42, minFontSize: 24,
+      maxLines: 2, align: "center", verticalAlign: "middle",
+    });
+    drawFittedText(context, subtitle, {
+      x: 48, y: 161, width: canvas.width - 96, height: 112,
+      color: "#e0f2fe", maxFontSize: 27, minFontSize: 17, maxLines: 4,
+      verticalAlign: "middle",
+    });
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -213,20 +195,24 @@ function drawMissionCard(
     25,
     40,
   );
-  context.fillStyle = "#ffffff";
-  context.font = "bold 31px sans-serif";
-  context.fillText(info.title, 25, 85);
-  context.fillStyle = "#dbeafe";
-  context.font = "20px sans-serif";
-  wrapText(context, info.cue, 25, 124, canvas.width - 50, 28);
-  context.fillStyle = completed ? "#86efac" : "#fde68a";
-  context.font = "bold 19px sans-serif";
-  context.fillText(
-    completed
-      ? "✓ COMPLETE — PRESS A AGAIN TO CONTINUE"
-      : `ACTION: ${info.action}`,
-    25,
-    245,
+  drawFittedText(context, info.title, {
+    x: 25, y: 53, width: canvas.width - 50, height: 50,
+    color: "#ffffff", fontWeight: 800, maxFontSize: 31, minFontSize: 21,
+    maxLines: 2, verticalAlign: "middle",
+  });
+  drawFittedText(context, info.cue, {
+    x: 25, y: 112, width: canvas.width - 50, height: 88,
+    color: "#dbeafe", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+  });
+  drawFittedText(
+    context,
+    completed ? "✓ COMPLETE — PRESS A AGAIN TO CONTINUE" : `ACTION: ${info.action}`,
+    {
+      x: 25, y: 211, width: canvas.width - 50, height: 47,
+      color: completed ? "#86efac" : "#fde68a",
+      fontWeight: 800, maxFontSize: 19, minFontSize: 13, maxLines: 2,
+      verticalAlign: "middle",
+    },
   );
 }
 
@@ -744,6 +730,10 @@ export default function SpaceShuttleLaunchViewer() {
     );
     card.position.set(-1.65, 2.7, 0.7);
     scene.add(card);
+    const cardFollower = createScreenSafePanelFollower(card, {
+      panelWidth: 2.95,
+      panelHeight: 0.99,
+    });
 
     const makeButton = (name: string, color: number, x: number) => {
       const button = new THREE.Mesh(
@@ -833,6 +823,10 @@ export default function SpaceShuttleLaunchViewer() {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 1.45, 0);
     controls.enableDamping = true;
+    controls.enableRotate = true;
+    controls.enablePan = true;
+    controls.screenSpacePanning = true;
+    controls.enableZoom = true;
     controls.minDistance = 2.25;
     controls.maxDistance = 9;
     controls.maxPolarAngle = Math.PI / 2 - 0.02;
@@ -1000,7 +994,7 @@ export default function SpaceShuttleLaunchViewer() {
       const activeCamera = renderer.xr.isPresenting
         ? renderer.xr.getCamera()
         : camera;
-      card.lookAt(activeCamera.position);
+      cardFollower.update(activeCamera);
       buttonInteractables.forEach((button) =>
         button.lookAt(activeCamera.position),
       );

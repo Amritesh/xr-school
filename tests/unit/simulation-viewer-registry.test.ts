@@ -1,4 +1,6 @@
 import { isValidElement } from "react";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -161,6 +163,49 @@ describe("released simulation viewer registry", () => {
       expect(registration.sourcePath).toMatch(
         /^apps\/web\/lib\/simulations\/interactive\/.+\.scene\.ts$/,
       );
+    }
+  });
+
+  it("routes every released simulation through a tested orbit-and-pan camera layer", () => {
+    const hostSource = readFileSync(
+      resolve(process.cwd(), "packages/simulation-web/src/host/createSimulationHost.ts"),
+      "utf8",
+    );
+    const guidedCameraSource = readFileSync(
+      resolve(process.cwd(), "apps/web/lib/world-builder/guidedCamera.ts"),
+      "utf8",
+    );
+    expect(hostSource).toContain("new OrbitControls(camera, domElement)");
+    expect(hostSource).toContain("controls.enablePan = true");
+    expect(guidedCameraSource).toContain("new OrbitControls(camera, domElement)");
+    expect(guidedCameraSource).toContain("controls.enablePan = true");
+
+    for (const viewerKey of SIMULATION_VIEWER_KEYS) {
+      const registration = getSimulationViewer(viewerKey);
+      if (registration.sourcePath.includes("/simulations/guided/")
+        || registration.sourcePath.includes("/simulations/interactive/")) {
+        continue;
+      }
+      const source = readFileSync(resolve(process.cwd(), registration.sourcePath), "utf8");
+      if (viewerKey === "fungi-development") {
+        expect(source, viewerKey).toContain("createFungiViewerController");
+        continue;
+      }
+      expect(source, viewerKey).toContain("createGuidedCamera");
+    }
+  });
+
+  it("keeps the two additional PR #9 routes on explicit OrbitControls", () => {
+    for (const path of [
+      "apps/web/components/simulations/SecretGardenKitchenViewer.tsx",
+      "apps/web/components/simulations/SpaceShuttleLaunchViewer.tsx",
+    ]) {
+      const source = readFileSync(resolve(process.cwd(), path), "utf8");
+      expect(source, path).toContain(
+        'from "three/addons/controls/OrbitControls.js"',
+      );
+      expect(source, path).toContain("controls.enablePan = true");
+      expect(source, path).toContain("controls.screenSpacePanning = true");
     }
   });
 

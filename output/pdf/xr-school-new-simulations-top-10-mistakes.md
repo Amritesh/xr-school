@@ -2,7 +2,7 @@
 
 **Review scope:** 23 PR #8 contributions at immutable head `621dfb61b39a4c49e8abb46ce60c54ea3d044479`
 
-**Before/after indicator:** 55.4/100 baseline to 76.3/100 integrated internal QA
+**Before/after indicator:** 55.4/100 baseline to 79.9/100 integrated internal QA
 
 This is a neutral portfolio-learning report. It identifies repeatable system and authoring mistakes so future classes can preserve useful curriculum ideas while meeting a consistent library contract.
 

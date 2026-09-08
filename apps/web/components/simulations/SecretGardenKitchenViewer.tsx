@@ -10,6 +10,7 @@ import {
 } from "./narrationAudio";
 import { createQuestVrControls } from "./questVrControls";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import { createScreenSafePanelFollower, drawFittedText } from "@/lib/vr/screenSafeTextPanel";
 
 type EnvironmentName = "garden" | "roots" | "xylem" | "leaf";
 
@@ -150,27 +151,6 @@ const CORRECT_INGREDIENTS = CHALLENGE_ITEMS.filter((item) => item.correct).map(
   (item) => item.name,
 );
 
-function wrapText(
-  context: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  width: number,
-  lineHeight: number,
-) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const candidate = `${line}${word} `;
-    if (line && context.measureText(candidate).width > width) {
-      context.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else line = candidate;
-  }
-  if (line) context.fillText(line.trim(), x, currentY);
-}
-
 function drawCard(
   canvas: HTMLCanvasElement,
   stage: number,
@@ -192,21 +172,27 @@ function drawCard(
     25,
     40,
   );
-  context.fillStyle = "#ffffff";
-  context.font = "bold 31px sans-serif";
-  context.fillText(info.title, 25, 86);
-  context.fillStyle = "#dcfce7";
-  context.font = "20px sans-serif";
-  wrapText(context, info.cue, 25, 125, canvas.width - 50, 28);
-  context.fillStyle = completed ? "#fde68a" : "#bbf7d0";
-  context.font = "bold 19px sans-serif";
+  drawFittedText(context, info.title, {
+    x: 25, y: 53, width: canvas.width - 50, height: 51,
+    color: "#ffffff", fontWeight: 800, maxFontSize: 31, minFontSize: 21,
+    maxLines: 2, verticalAlign: "middle",
+  });
+  drawFittedText(context, info.cue, {
+    x: 25, y: 113, width: canvas.width - 50, height: 88,
+    color: "#dcfce7", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+  });
   const status =
     stage === 9 && !completed
       ? `INGREDIENTS FOUND: ${ingredients}/4`
       : completed
         ? "✓ DISCOVERY COMPLETE — PRESS A AGAIN TO CONTINUE"
         : `ACTION: ${info.action}`;
-  context.fillText(status, 25, 244);
+  drawFittedText(context, status, {
+    x: 25, y: 211, width: canvas.width - 50, height: 47,
+    color: completed ? "#fde68a" : "#bbf7d0",
+    fontWeight: 800, maxFontSize: 19, minFontSize: 13, maxLines: 2,
+    verticalAlign: "middle",
+  });
 }
 
 function makePanel(
@@ -226,14 +212,16 @@ function makePanel(
     context.strokeStyle = color;
     context.lineWidth = 12;
     context.strokeRect(7, 7, canvas.width - 14, canvas.height - 14);
-    context.fillStyle = color;
-    context.font = "bold 39px sans-serif";
-    context.textAlign = "center";
-    context.fillText(title, canvas.width / 2, 96);
-    context.fillStyle = "#ecfdf5";
-    context.font = "27px sans-serif";
-    context.textAlign = "left";
-    wrapText(context, subtitle, 48, 160, canvas.width - 96, 37);
+    drawFittedText(context, title, {
+      x: 48, y: 42, width: canvas.width - 96, height: 78,
+      color, fontWeight: 800, maxFontSize: 39, minFontSize: 24,
+      maxLines: 2, align: "center", verticalAlign: "middle",
+    });
+    drawFittedText(context, subtitle, {
+      x: 48, y: 142, width: canvas.width - 96, height: 112,
+      color: "#ecfdf5", maxFontSize: 27, minFontSize: 17, maxLines: 4,
+      verticalAlign: "middle",
+    });
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -1106,6 +1094,10 @@ export default function SecretGardenKitchenViewer() {
     );
     card.position.set(-1.5, 2.58, 0.5);
     scene.add(card);
+    const cardFollower = createScreenSafePanelFollower(card, {
+      panelWidth: 2.95,
+      panelHeight: 0.99,
+    });
 
     const makeButton = (name: string, color: number, x: number) => {
       const button = new THREE.Mesh(
@@ -1204,6 +1196,10 @@ export default function SecretGardenKitchenViewer() {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 1.12, 0);
     controls.enableDamping = true;
+    controls.enableRotate = true;
+    controls.enablePan = true;
+    controls.screenSpacePanning = true;
+    controls.enableZoom = true;
     controls.minDistance = 2.05;
     controls.maxDistance = 8;
     controls.maxPolarAngle = Math.PI / 2 - 0.02;
@@ -1433,7 +1429,7 @@ export default function SecretGardenKitchenViewer() {
       const activeCamera = renderer.xr.isPresenting
         ? renderer.xr.getCamera()
         : camera;
-      card.lookAt(activeCamera.position);
+      cardFollower.update(activeCamera);
       buttonInteractables.forEach((button) =>
         button.lookAt(activeCamera.position),
       );

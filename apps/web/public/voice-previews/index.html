@@ -45,6 +45,115 @@
         font-size: 17px;
         line-height: 1.65;
       }
+      .yourvoic-lab {
+        margin: 0 0 32px;
+        border: 1px solid rgba(103, 232, 249, 0.34);
+        border-radius: 22px;
+        background: linear-gradient(145deg, rgba(14, 116, 144, 0.25), rgba(8, 37, 49, 0.9));
+        padding: clamp(20px, 4vw, 30px);
+        box-shadow: 0 20px 52px rgba(0, 0, 0, 0.22);
+      }
+      .yourvoic-lab h2 { margin-top: 0; }
+      .yourvoic-lab > p {
+        max-width: 720px;
+        min-height: 0;
+        margin: 0 0 18px;
+        color: #b9d8e4;
+        line-height: 1.55;
+      }
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 12px;
+        border-radius: 999px;
+        background: rgba(34, 211, 238, 0.13);
+        padding: 6px 10px;
+        color: #a5f3fc;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .live-badge::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22d3ee;
+        content: "";
+        box-shadow: 0 0 14px #22d3ee;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #d7f7ff;
+        font-size: 14px;
+        font-weight: 750;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 104px;
+        resize: vertical;
+        border: 1px solid rgba(125, 211, 252, 0.28);
+        border-radius: 14px;
+        background: rgba(3, 20, 28, 0.72);
+        color: #ecfeff;
+        font: inherit;
+        line-height: 1.5;
+        padding: 14px;
+      }
+      textarea:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 2px;
+      }
+      .role-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .role-button {
+        appearance: none;
+        border: 1px solid rgba(103, 232, 249, 0.44);
+        border-radius: 999px;
+        background: #0e7490;
+        color: white;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+        padding: 12px 18px;
+      }
+      .role-button.student { background: #155e75; }
+      .role-button:hover { background: #0891b2; }
+      .role-button:disabled { cursor: wait; opacity: 0.65; }
+      .role-button:focus-visible {
+        outline: 3px solid #67e8f9;
+        outline-offset: 3px;
+      }
+      .generated-player {
+        display: none;
+        width: 100%;
+        margin-top: 18px;
+      }
+      .generated-player.visible { display: block; }
+      .generated-player audio {
+        display: block;
+        width: min(100%, 560px);
+      }
+      .generated-status {
+        min-height: 22px;
+        margin: 12px 0 0;
+        color: #a9cbd8;
+        font-size: 14px;
+      }
+      .privacy-note {
+        display: block;
+        margin-top: 12px;
+        color: #8eb7c7;
+        font-size: 12px;
+        line-height: 1.45;
+      }
       .voices {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -70,6 +179,17 @@
       h2 {
         margin: 16px 0 6px;
         font-size: 20px;
+      }
+      .voice-meta {
+        display: inline-flex;
+        margin-top: 10px;
+        border: 1px solid rgba(103, 232, 249, 0.22);
+        border-radius: 999px;
+        padding: 4px 9px;
+        color: #a5f3fc;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
       }
       article p {
         min-height: 42px;
@@ -122,15 +242,34 @@
   <body>
     <main>
       <p class="eyebrow">XR School narration test</p>
-      <h1>Choose a more natural Indian teacher voice</h1>
+      <h1>Choose an Indian classroom voice</h1>
       <p class="intro">
-        These upgraded Indian-English neural voices use warmer pacing, natural
-        pauses, and classroom-style delivery. Listen to all five, then tell Codex
-        the number you prefer. The simulation narration will not change until you choose.
+        Try a live Indian-English teacher or student accent through YourVoic,
+        or compare the eleven built-in classroom and storytelling voices below.
       </p>
-      <section class="voices" aria-label="Five Indian teacher voice options">
+      <section class="yourvoic-lab" aria-labelledby="yourvoic-title">
+        <span class="live-badge">YourVoic live accent</span>
+        <h2 id="yourvoic-title">Teacher and student voice studio</h2>
+        <p>
+          Type a short classroom line, then hear it as a warm teacher or an
+          energetic student. Both use Indian English and can be adjusted from the server settings.
+        </p>
+        <label for="yourvoic-text">Classroom text</label>
+        <textarea id="yourvoic-text" maxlength="600">Today, we will follow a tiny seed on its journey from the soil towards the sunlight. What do you think it needs to grow?</textarea>
+        <div class="role-actions">
+          <button class="role-button" type="button" data-role="teacher">▶ Generate teacher accent</button>
+          <button class="role-button student" type="button" data-role="student">▶ Generate student accent</button>
+        </div>
+        <div class="generated-player" id="generated-player">
+          <audio id="yourvoic-audio" controls preload="none"></audio>
+        </div>
+        <p class="generated-status" id="yourvoic-status" aria-live="polite">Ready to generate a voice.</p>
+        <small class="privacy-note">The text entered here is sent securely to YourVoic for speech generation. The private API key stays on the XR School server.</small>
+      </section>
+      <section class="voices" aria-label="Eleven Indian teacher voice options">
         <article>
           <span class="number">1</span>
+          <span class="voice-meta">Female · Warm</span>
           <h2>Neerja Expressive — Warm Teacher</h2>
           <p>Warm Indian-English female teacher with an expressive, engaging delivery.</p>
           <audio id="voice-1" preload="metadata" src="/voice-previews/1-neerja-expressive-teacher.mp3"></audio>
@@ -142,6 +281,7 @@
         </article>
         <article>
           <span class="number">2</span>
+          <span class="voice-meta">Female · Calm</span>
           <h2>Neerja — Calm Classroom</h2>
           <p>Clear Indian-English female teacher with a calm, steady teaching rhythm.</p>
           <audio id="voice-2" preload="metadata" src="/voice-previews/2-neerja-calm-teacher.mp3"></audio>
@@ -153,6 +293,7 @@
         </article>
         <article>
           <span class="number">3</span>
+          <span class="voice-meta">Male · Clear</span>
           <h2>Prabhat — Classroom Teacher</h2>
           <p>Natural Indian-English male teacher at a clear, balanced classroom pace.</p>
           <audio id="voice-3" preload="metadata" src="/voice-previews/3-prabhat-classroom.mp3"></audio>
@@ -164,6 +305,7 @@
         </article>
         <article>
           <span class="number">4</span>
+          <span class="voice-meta">Female · Storytelling</span>
           <h2>Neerja Expressive — Storyteller</h2>
           <p>A softer, slower female voice for friendly storytelling and younger learners.</p>
           <audio id="voice-4" preload="metadata" src="/voice-previews/4-neerja-storyteller.mp3"></audio>
@@ -175,6 +317,7 @@
         </article>
         <article>
           <span class="number">5</span>
+          <span class="voice-meta">Male · Gentle</span>
           <h2>Prabhat — Gentle Guide</h2>
           <p>A slower, warmer male voice for guided observation and careful explanation.</p>
           <audio id="voice-5" preload="metadata" src="/voice-previews/5-prabhat-gentle.mp3"></audio>
@@ -184,14 +327,134 @@
             <span class="status" id="voice-5-status" aria-live="polite">Ready to play</span>
           </div>
         </article>
+        <article>
+          <span class="number">6</span>
+          <span class="voice-meta">Female · Playful</span>
+          <h2>Neerja — Playful Story Teacher</h2>
+          <p>A bright, curious Indian-English female voice that keeps young learners engaged.</p>
+          <audio id="voice-6" preload="metadata" src="/voice-previews/6-neerja-playful-storyteller.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-6">▶ Play voice 6</button>
+            <a class="audio-link" href="/voice-previews/6-neerja-playful-storyteller.mp3">Open audio</a>
+            <span class="status" id="voice-6-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">7</span>
+          <span class="voice-meta">Female · Dramatic</span>
+          <h2>Neerja — Dramatic Narrator</h2>
+          <p>A slower, expressive Indian-English female voice for suspense and memorable story moments.</p>
+          <audio id="voice-7" preload="metadata" src="/voice-previews/7-neerja-dramatic-narrator.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-7">▶ Play voice 7</button>
+            <a class="audio-link" href="/voice-previews/7-neerja-dramatic-narrator.mp3">Open audio</a>
+            <span class="status" id="voice-7-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">8</span>
+          <span class="voice-meta">Female · Gentle</span>
+          <h2>Neerja — Gentle Mentor</h2>
+          <p>A soft, reassuring Indian-English female teacher for reflective stories and early learners.</p>
+          <audio id="voice-8" preload="metadata" src="/voice-previews/8-neerja-gentle-mentor.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-8">▶ Play voice 8</button>
+            <a class="audio-link" href="/voice-previews/8-neerja-gentle-mentor.mp3">Open audio</a>
+            <span class="status" id="voice-8-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">9</span>
+          <span class="voice-meta">Male · Animated</span>
+          <h2>Prabhat — Animated Story Teacher</h2>
+          <p>An energetic Indian-English male voice for lively characters, discovery, and classroom stories.</p>
+          <audio id="voice-9" preload="metadata" src="/voice-previews/9-prabhat-animated-storyteller.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-9">▶ Play voice 9</button>
+            <a class="audio-link" href="/voice-previews/9-prabhat-animated-storyteller.mp3">Open audio</a>
+            <span class="status" id="voice-9-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">10</span>
+          <span class="voice-meta">Male · Wise</span>
+          <h2>Prabhat — Wise Narrator</h2>
+          <p>A deeper, measured Indian-English male teacher for history, folklore, and thoughtful narration.</p>
+          <audio id="voice-10" preload="metadata" src="/voice-previews/10-prabhat-wise-narrator.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-10">▶ Play voice 10</button>
+            <a class="audio-link" href="/voice-previews/10-prabhat-wise-narrator.mp3">Open audio</a>
+            <span class="status" id="voice-10-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
+        <article>
+          <span class="number">11</span>
+          <span class="voice-meta">Male · Adventure</span>
+          <h2>Prabhat — Adventure Guide</h2>
+          <p>A warm, confident Indian-English male voice for journeys, science adventures, and discovery.</p>
+          <audio id="voice-11" preload="metadata" src="/voice-previews/11-prabhat-adventure-guide.mp3"></audio>
+          <div class="player">
+            <button class="play-button" type="button" data-audio="voice-11">▶ Play voice 11</button>
+            <a class="audio-link" href="/voice-previews/11-prabhat-adventure-guide.mp3">Open audio</a>
+            <span class="status" id="voice-11-status" aria-live="polite">Ready to play</span>
+          </div>
+        </article>
       </section>
       <p class="choice">
-        Reply with: <strong>Choose voice 1, 2, 3, 4, or 5.</strong><br>
+        Reply with: <strong>Choose voice 1 through 11.</strong><br>
         These are generated neural voices. For a genuinely human voice texture,
         send me a teacher's voice recording and I can use that directly.
       </p>
     </main>
     <script>
+      const roleButtons = [...document.querySelectorAll(".role-button")];
+      const yourVoicText = document.getElementById("yourvoic-text");
+      const yourVoicAudio = document.getElementById("yourvoic-audio");
+      const yourVoicStatus = document.getElementById("yourvoic-status");
+      const generatedPlayer = document.getElementById("generated-player");
+
+      async function generateYourVoic(role) {
+        const text = yourVoicText.value.trim();
+        if (text.length < 2) {
+          yourVoicStatus.textContent = "Enter a short classroom sentence first.";
+          yourVoicText.focus();
+          return;
+        }
+
+        for (const button of roleButtons) button.disabled = true;
+        generatedPlayer.classList.remove("visible");
+        yourVoicStatus.textContent = `Generating the ${role} voice with an Indian-English accent…`;
+
+        try {
+          const response = await fetch("/api/voice-previews/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role, text }),
+          });
+          const payload = await response.json();
+          if (!response.ok) throw new Error(payload.error || "Voice generation failed.");
+
+          yourVoicAudio.src = payload.audioUrl;
+          generatedPlayer.classList.add("visible");
+          yourVoicStatus.textContent = `${role === "teacher" ? "Teacher" : "Student"} voice ready: ${payload.voice}, ${payload.language}.`;
+          try {
+            await yourVoicAudio.play();
+          } catch {
+            yourVoicStatus.textContent += " Select play to listen.";
+          }
+        } catch (error) {
+          yourVoicStatus.textContent = error instanceof Error
+            ? error.message
+            : "Voice generation failed. Please try again.";
+        } finally {
+          for (const button of roleButtons) button.disabled = false;
+        }
+      }
+
+      for (const button of roleButtons) {
+        button.addEventListener("click", () => generateYourVoic(button.dataset.role));
+      }
+
       const players = [...document.querySelectorAll(".play-button")];
       let activeAudio = null;
       let activeButton = null;

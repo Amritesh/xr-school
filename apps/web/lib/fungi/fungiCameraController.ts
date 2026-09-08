@@ -51,6 +51,7 @@ export interface FungiCameraController {
   beginManipulation(): void;
   endManipulation(): void;
   orbitBy(deltaX: number, deltaY: number): void;
+  panBy(deltaX: number, deltaY: number): void;
   zoomBy(delta: number): void;
   focusSpecimen(): void;
   resetView(): void;
@@ -148,6 +149,9 @@ export function createFungiCameraController(
   // Scratch — reused so update() never allocates.
   const scratchOffset = new THREE.Vector3();
   const scratchSphere = new THREE.Sphere();
+  const scratchRight = new THREE.Vector3();
+  const scratchUp = new THREE.Vector3();
+  const scratchPanOffset = new THREE.Vector3();
 
   function clampAzimuth(value: number): number {
     return THREE.MathUtils.clamp(
@@ -312,6 +316,25 @@ export function createFungiCameraController(
     applyPose();
   }
 
+  function panBy(deltaX: number, deltaY: number): void {
+    if (!Number.isFinite(deltaX) || !Number.isFinite(deltaY) || !posedOnce) return;
+    const worldUnitsPerPixel = (
+      2 * distance * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)
+    ) / Math.max(1, viewportHeight);
+    scratchRight.set(1, 0, 0).applyQuaternion(camera.quaternion);
+    scratchUp.set(0, 1, 0).applyQuaternion(camera.quaternion);
+    target
+      .addScaledVector(scratchRight, -deltaX * worldUnitsPerPixel)
+      .addScaledVector(scratchUp, deltaY * worldUnitsPerPixel);
+    scratchPanOffset.copy(target).sub(authoredTarget);
+    const maxPanDistance = Math.max(boundsRadius * 0.9, 0.25);
+    if (scratchPanOffset.length() > maxPanDistance) {
+      scratchPanOffset.setLength(maxPanDistance);
+      target.copy(authoredTarget).add(scratchPanOffset);
+    }
+    applyPose();
+  }
+
   function zoomBy(delta: number): void {
     if (!Number.isFinite(delta)) return;
     distance = clampDistance(distance + delta * zoomSpeed * framedDistance);
@@ -362,14 +385,15 @@ export function createFungiCameraController(
   // ── Pointer input: drag orbits, wheel dollies, both bounded ──
   let pressed = false;
   let dragging = false;
+  let panning = false;
   let lastX = 0;
   let lastY = 0;
 
   const onPointerDown = (event: PointerEvent) => {
-    // Arm, but do not capture. Capturing here would swallow the pointerup and
-    // every click on a specimen would be eaten by the orbit handler.
+    // Arm without capturing so specimen clicks still reach pointerup.
     pressed = true;
     dragging = false;
+    panning = event.button === 2 || event.shiftKey || event.ctrlKey || event.metaKey;
     lastX = event.clientX;
     lastY = event.clientY;
   };
@@ -387,7 +411,10 @@ export function createFungiCameraController(
       beginManipulation();
       domElement.setPointerCapture?.(event.pointerId);
     }
-    orbitBy(event.clientX - lastX, event.clientY - lastY);
+    const deltaX = event.clientX - lastX;
+    const deltaY = event.clientY - lastY;
+    if (panning) panBy(deltaX, deltaY);
+    else orbitBy(deltaX, deltaY);
     lastX = event.clientX;
     lastY = event.clientY;
   };
@@ -395,6 +422,7 @@ export function createFungiCameraController(
     pressed = false;
     if (!dragging) return;
     dragging = false;
+    panning = false;
     endManipulation();
     if (domElement.hasPointerCapture?.(event.pointerId)) {
       domElement.releasePointerCapture?.(event.pointerId);
@@ -406,12 +434,14 @@ export function createFungiCameraController(
     zoomBy(event.deltaY);
     endManipulation();
   };
+  const onContextMenu = (event: Event) => event.preventDefault();
 
   domElement.addEventListener('pointerdown', onPointerDown as EventListener);
   domElement.addEventListener('pointermove', onPointerMove as EventListener);
   domElement.addEventListener('pointerup', onPointerUp as EventListener);
   domElement.addEventListener('pointercancel', onPointerUp as EventListener);
   domElement.addEventListener('wheel', onWheel as EventListener);
+  domElement.addEventListener('contextmenu', onContextMenu);
 
   let disposed = false;
   function dispose(): void {
@@ -422,6 +452,7 @@ export function createFungiCameraController(
     domElement.removeEventListener('pointerup', onPointerUp as EventListener);
     domElement.removeEventListener('pointercancel', onPointerUp as EventListener);
     domElement.removeEventListener('wheel', onWheel as EventListener);
+    domElement.removeEventListener('contextmenu', onContextMenu);
   }
 
   return {
@@ -430,6 +461,7 @@ export function createFungiCameraController(
     beginManipulation,
     endManipulation,
     orbitBy,
+    panBy,
     zoomBy,
     focusSpecimen,
     resetView,
