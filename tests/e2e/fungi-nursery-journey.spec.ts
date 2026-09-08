@@ -254,7 +254,11 @@ test.describe('forest nursery investigation', () => {
   }
 
   test('keeps camera reset, experiment reset, and restart independent', async ({ page }) => {
-    test.setTimeout(process.env.CI ? 180_000 : 120_000);
+    // 300s in CI to match every other WebGL journey in tests/e2e. This one was
+    // the outlier at 180s and timed out waiting on the spore-flight apparatus:
+    // it completes locally in ~90s, but CI renders through software WebGL and
+    // the mission takes correspondingly longer to reach a clickable state.
+    test.setTimeout(process.env.CI ? 300_000 : 120_000);
     await launch(page, { width: 1280, height: 720 });
     await completeDiagnose(page);
     await completeMycelium(page);
