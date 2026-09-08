@@ -88,7 +88,7 @@ describe('createFungiViewerController', () => {
     controller.dispose();
   });
 
-  it('frames the new mission when the journey actually advances', () => {
+  it('frames the object the arrow points at, not the whole bench', () => {
     const { controller } = createController();
     const before = controller.snapshot().camera;
 
@@ -98,11 +98,17 @@ describe('createFungiViewerController', () => {
 
     expect(after.director.missionId).toBe('mycelium');
     expect(after.world.missionId).toBe('mycelium');
-    const authored = FUNGI_MISSIONS[1]!.cameraPose.target;
-    expect(after.camera.target[0]).toBeCloseTo(authored[0], 5);
-    expect(after.camera.target[1]).toBeCloseTo(authored[1], 5);
-    expect(after.camera.target[2]).toBeCloseTo(authored[2], 5);
+
+    // The camera sits on the hyphal thread the learner must click next.
+    const pointedAt = after.world.attentionPickId;
+    expect(pointedAt).toBe('log-branch-near');
     expect(after.camera.target).not.toEqual(before.target);
+
+    // The shot is centred on that thread, not on the mission's wide bench pose.
+    const authored = FUNGI_MISSIONS[1]!.cameraPose.target;
+    expect(after.camera.target[0]).not.toBeCloseTo(authored[0], 1);
+    expect(after.camera.target[0]).toBeCloseTo(-5.3, 1);
+    expect(after.camera.target[2]).toBeCloseTo(-0.26, 1);
     controller.dispose();
   });
 
@@ -250,9 +256,40 @@ describe('FungiDevelopmentViewer composition', () => {
     expect(source).not.toContain('vrPromptForStage');
   });
 
-  it('exposes one accessible mission strip, tool drawer, and caption region', () => {
-    expect(source).toContain('data-testid="fungi-mission-strip"');
+  it('follows the guided-VR language: one lesson, browser and headset together', () => {
+    // The spec requires the same named targets to be reachable by mouse and by
+    // controller ray, a shared edge guide, and no HTML Continue inside VR.
+    expect(source).toContain('createInteractionSystem');
+    expect(source).toContain('xrControllers');
+    expect(source).toContain('createVrPlayerRig');
+    expect(source).toContain('createVrLocomotion');
+    expect(source).toContain('createVrHudPanel');
+    expect(source).toContain('resolveFocusGuide');
+    expect(source).toContain('immersive-vr');
+    expect(source).toContain('onEnterVr');
+    expect(source).toContain('focusGuide');
+    // Picking belongs to the shared system, not a hand-rolled raycast.
+    expect(source).not.toContain('handleCanvasClick');
+  });
+
+  it('narrates every scene in the words of the script', () => {
+    for (const line of [
+      'Welcome, young explorers',
+      'thread-like structures called hyphae',
+      'reproductive units of fungi',
+      'Yeast helps make bread',
+      'Not all fungi are beneficial',
+    ]) {
+      expect(source).toContain(line);
+    }
+    expect(source).toContain('playSimulationNarration');
+  });
+
+  it('presents a single control panel rather than competing floating surfaces', () => {
+    // Four overlapping surfaces were the problem; there is now one panel.
     expect(source).toContain('data-testid="fungi-tool-drawer"');
+    expect(source).toContain('data-testid="fungi-current-mission"');
+    expect(source).toContain('data-testid="fungi-next-step"');
     expect(source).toContain('data-testid="fungi-caption"');
     expect(source).toContain('data-testid="fungi-evidence-notebook"');
     expect(source).toContain('data-testid="fungi-reset-experiment"');

@@ -347,6 +347,39 @@ describe('createFungiCameraController', () => {
     reduced.controller.dispose();
   });
 
+  it('lets a click through instead of swallowing it as an orbit', () => {
+    // Capturing the pointer on press stole every click on a specimen: the
+    // canvas never saw the pointerup, so selection never completed.
+    const captured: number[] = [];
+    const { dom, controller } = createController();
+    (dom as unknown as { setPointerCapture(id: number): void }).setPointerCapture = (id) =>
+      captured.push(id);
+    controller.setViewport(1280, 720, DESKTOP_INSETS);
+    controller.focusBounds(
+      boxFor(FUNGI_MISSIONS[0]!.focusBounds),
+      mutablePose(FUNGI_MISSIONS[0]!.cameraPose),
+      { animate: false },
+    );
+    const before = controller.snapshot();
+
+    // A click: press, a pixel of jitter, release.
+    dom.dispatch('pointerdown', { clientX: 100, clientY: 100 });
+    dom.dispatch('pointermove', { clientX: 101, clientY: 100 });
+    dom.dispatch('pointerup', {});
+
+    expect(captured).toHaveLength(0);
+    expect(controller.snapshot().azimuth).toBeCloseTo(before.azimuth, 9);
+
+    // A drag: past the threshold, the camera takes the pointer and orbits.
+    dom.dispatch('pointerdown', { clientX: 100, clientY: 100 });
+    dom.dispatch('pointermove', { clientX: 160, clientY: 108 });
+    dom.dispatch('pointerup', {});
+
+    expect(captured).toHaveLength(1);
+    expect(controller.snapshot().azimuth).not.toBeCloseTo(before.azimuth, 6);
+    controller.dispose();
+  });
+
   it('rejects invalid framing requests before touching the camera', () => {
     const { camera, controller } = createController();
     controller.setViewport(1280, 720, DESKTOP_INSETS);

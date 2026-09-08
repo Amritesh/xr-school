@@ -72,6 +72,7 @@ export interface FungiNurseryWorldSnapshot {
     litterMeshScale: number;
   };
   safety: { revealDepth: number; revealedHyphae: number };
+  attentionPickId?: string;
   spore: {
     released: boolean;
     position: [number, number, number];
@@ -93,6 +94,10 @@ export interface FungiNurseryWorld {
   landmarks: Record<FungiLandmarkId, THREE.Object3D>;
   /** Objects a learner can click directly, keyed by what they mean. */
   pickTargets: Record<string, THREE.Object3D>;
+  /** Points the bobbing arrow at the thing to click next, or hides it. */
+  setAttention(pickId: string | undefined): void;
+  /** World bounds of a pickable, so the camera can frame it closely. */
+  pickBounds(pickId: string): THREE.Box3 | undefined;
   project(projection: Readonly<FungiNurseryWorldProjection>): void;
   update(deltaSeconds: number, elapsedSeconds: number): void;
   setReducedMotion(reduced: boolean): void;
@@ -116,6 +121,7 @@ const PALETTE = {
   steel: 0x6b7780,
   nutrient: 0xc7a03c,
   warning: 0xc4632f,
+  attention: 0xffd166,
 } as const;
 
 /** Instance capacities — the ceiling the frame budget is proven against. */
@@ -330,6 +336,14 @@ export function createFungiNurseryWorld(
         color: 0xffffff,
       }),
     ),
+    attention: ownMaterial(
+      new THREE.MeshStandardMaterial({
+        color: PALETTE.attention,
+        emissive: 0xffb703,
+        emissiveIntensity: 1.4,
+        roughness: 0.35,
+      }),
+    ),
     glass: ownMaterial(
       new THREE.MeshPhysicalMaterial({
         color: PALETTE.glass,
@@ -350,6 +364,8 @@ export function createFungiNurseryWorld(
     cone: ownGeometry(new THREE.ConeGeometry(1, 1, 12)),
     filament: ownGeometry(new THREE.CylinderGeometry(0.012, 0.02, 1, 5)),
     disc: ownGeometry(new THREE.CircleGeometry(1, 24)),
+    ring: ownGeometry(new THREE.TorusGeometry(1, 0.09, 10, 28)),
+    arrow: ownGeometry(new THREE.ConeGeometry(1, 1.6, 10)),
   };
 
   const addMesh = (
@@ -622,6 +638,17 @@ export function createFungiNurseryWorld(
       }
     }
 
+    const bakery = addPickable(parent, 'bakery', {
+      size: [1.4, 1.3, 1],
+      position: [-0.5, 1.3, 0.1],
+    });
+    const oven = addMesh(bakery, geometry.box, material.bark, 'bakery-oven');
+    oven.scale.set(1.1, 0.75, 0.5);
+    oven.position.set(-0.45, 1.35, -0.3);
+    const ovenMouth = addMesh(bakery, geometry.box, material.soil, 'bakery-oven-mouth');
+    ovenMouth.scale.set(0.75, 0.42, 0.08);
+    ovenMouth.position.set(-0.45, 1.3, -0.06);
+
     const yeastJar = addMesh(parent, geometry.cylinder, material.glass, 'yeast-jar');
     yeastJar.scale.set(0.3, 0.44, 0.3);
     yeastJar.position.set(-0.75, 1.18, 0.1);
@@ -652,16 +679,43 @@ export function createFungiNurseryWorld(
       },
     );
 
-    const medicineDish = addMesh(parent, geometry.cylinder, material.cream, 'medicine-dish');
-    medicineDish.scale.set(0.28, 0.05, 0.28);
-    medicineDish.position.set(0.85, 0.99, 0.1);
-    const inhibitionRing = addMesh(parent, geometry.disc, material.mycelium, 'inhibition-zone');
+    // ── Laboratory: where a fungus is grown into medicine ──
+    const lab = addPickable(parent, 'laboratory', {
+      size: [1, 1.3, 1],
+      position: [0.95, 1.3, 0.1],
+    });
+    const labCounter = addMesh(lab, geometry.box, material.steel, 'lab-counter');
+    labCounter.scale.set(0.8, 0.06, 0.6);
+    labCounter.position.set(0.95, 0.99, 0.1);
+    const labCabinet = addMesh(lab, geometry.box, material.steel, 'lab-cabinet');
+    labCabinet.scale.set(0.75, 0.7, 0.12);
+    labCabinet.position.set(0.95, 1.35, -0.16);
+    const flask = addMesh(lab, geometry.cone, material.glass, 'lab-flask');
+    flask.scale.set(0.15, 0.3, 0.15);
+    flask.position.set(0.78, 1.16, 0.16);
+    flask.castShadow = false;
+    const medicineDish = addMesh(lab, geometry.cylinder, material.cream, 'medicine-dish');
+    medicineDish.scale.set(0.2, 0.04, 0.2);
+    medicineDish.position.set(1.14, 1.03, 0.18);
+    const inhibitionRing = addMesh(lab, geometry.disc, material.mycelium, 'inhibition-zone');
     inhibitionRing.rotation.x = -Math.PI / 2;
-    inhibitionRing.scale.setScalar(0.16);
-    inhibitionRing.position.set(0.85, 1.025, 0.1);
+    inhibitionRing.scale.setScalar(0.12);
+    inhibitionRing.position.set(1.14, 1.055, 0.18);
 
-    const litter = addMesh(parent, geometry.cap, material.leaf, 'litter-pile');
-    litter.position.set(0, 0.96, -1.3);
+    // ── Compost pit: a dug hollow where litter is recycled ──
+    const compost = addPickable(parent, 'compost-pit', {
+      size: [1.5, 0.9, 1.5],
+      position: [0, 1, -1.3],
+    });
+    const pitRim = addMesh(compost, geometry.cylinder, material.bark, 'compost-rim');
+    pitRim.scale.set(0.85, 0.16, 0.85);
+    pitRim.position.set(0, 0.72, -1.3);
+    const pitFloor = addMesh(compost, geometry.cylinder, material.soil, 'compost-floor');
+    pitFloor.scale.set(0.75, 0.05, 0.75);
+    pitFloor.position.set(0, 0.66, -1.3);
+
+    const litter = addMesh(compost, geometry.cap, material.leaf, 'litter-pile');
+    litter.position.set(0, 0.78, -1.3);
     litter.scale.set(0.6, 0.34, 0.6);
 
     const nutrients = addInstanced(
@@ -743,6 +797,111 @@ export function createFungiNurseryWorld(
     const board = addMesh(parent, geometry.box, material.cream, 'evidence-board');
     board.scale.set(1.9, 1.1, 0.06);
     board.position.set(0, 1.3, -0.2);
+  }
+
+  // ── Surrounding forest: conifers ringing the clearing give the scene depth
+  //    and somewhere for the light to fall, at two draw calls.
+  {
+    const TREE_COUNT = 34;
+    const treeRandom = seededRandom(seed ^ 0x5eed);
+    const trunks = new THREE.InstancedMesh(geometry.cylinder, material.bark, TREE_COUNT);
+    const crowns = new THREE.InstancedMesh(geometry.cone, material.leaf, TREE_COUNT);
+    trunks.name = 'forest-trunks';
+    crowns.name = 'forest-crowns';
+    trunks.castShadow = false;
+    crowns.castShadow = false;
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const quaternion = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    for (let index = 0; index < TREE_COUNT; index += 1) {
+      const angle = (index / TREE_COUNT) * Math.PI * 2 + treeRandom() * 0.16;
+      const radius = 15 + treeRandom() * 6;
+      const x = 1 + Math.cos(angle) * radius;
+      const z = -6 + Math.sin(angle) * radius;
+      const height = 4.5 + treeRandom() * 3.5;
+
+      position.set(x, height * 0.3, z);
+      scale.set(0.22, height * 0.6, 0.22);
+      matrix.compose(position, quaternion, scale);
+      trunks.setMatrixAt(index, matrix);
+
+      position.set(x, height * 0.78, z);
+      scale.set(1.5 + treeRandom() * 0.6, height * 0.95, 1.5 + treeRandom() * 0.6);
+      matrix.compose(position, quaternion, scale);
+      crowns.setMatrixAt(index, matrix);
+    }
+    trunks.instanceMatrix.needsUpdate = true;
+    crowns.instanceMatrix.needsUpdate = true;
+    root.add(trunks);
+    root.add(crowns);
+  }
+
+  // ── Attention pointer: an unmissable "click here" marker ──
+  const attention = new THREE.Group();
+  attention.name = 'attention-pointer';
+  attention.visible = false;
+  root.add(attention);
+
+  const attentionArrow = new THREE.Mesh(geometry.arrow, material.attention);
+  attentionArrow.name = 'attention-arrow';
+  attentionArrow.rotation.x = Math.PI;
+  attentionArrow.scale.set(0.2, 0.4, 0.2);
+  attentionArrow.position.y = 0.78;
+  attentionArrow.castShadow = false;
+  attention.add(attentionArrow);
+
+  const attentionRing = new THREE.Mesh(geometry.ring, material.attention);
+  attentionRing.name = 'attention-ring';
+  attentionRing.rotation.x = -Math.PI / 2;
+  attentionRing.scale.setScalar(0.55);
+  attentionRing.position.y = 0.06;
+  attentionRing.castShadow = false;
+  attention.add(attentionRing);
+
+  const attentionBox = new THREE.Box3();
+  const attentionCentre = new THREE.Vector3();
+  let attentionPickId: string | undefined;
+
+  function pickBounds(pickId: string): THREE.Box3 | undefined {
+    const target = pickTargets[pickId];
+    if (target === undefined) return undefined;
+    // Refresh from the root: a landmark's own transform is otherwise stale
+    // before the renderer's first frame, giving local instead of world bounds.
+    root.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(target);
+    return box.isEmpty() ? undefined : box;
+  }
+
+  function setAttention(pickId: string | undefined): void {
+    if (disposed) return;
+    attentionPickId = undefined;
+    attention.visible = false;
+    if (pickId === undefined) {
+      delete state.attentionPickId;
+      return;
+    }
+    const target = pickTargets[pickId];
+    if (target === undefined) {
+      delete state.attentionPickId;
+      return;
+    }
+    root.updateMatrixWorld(true);
+    attentionBox.setFromObject(target);
+    if (attentionBox.isEmpty()) {
+      delete state.attentionPickId;
+      return;
+    }
+    attentionBox.getCenter(attentionCentre);
+    attention.position.set(
+      attentionCentre.x,
+      attentionBox.max.y + 0.05,
+      attentionCentre.z,
+    );
+    attention.visible = true;
+    attentionPickId = pickId;
+    state.attentionPickId = pickId;
   }
 
   const state: FungiNurseryWorldSnapshot = {
@@ -901,6 +1060,14 @@ export function createFungiNurseryWorld(
     // instanced field costs no allocation and creates no new objects.
     sporeField.rotation.y = state.airflow.directionRadians + elapsedSeconds * 0.05 * state.airflow.strength;
     sporeField.position.y = Math.sin(elapsedSeconds * 0.6) * 0.03;
+
+    // The pointer bobs and its ring breathes, so it reads as "click me" even
+    // to a learner who is not reading any text.
+    if (attentionPickId !== undefined) {
+      attentionArrow.position.y = 0.78 + Math.sin(elapsedSeconds * 3.4) * 0.13;
+      attentionRing.rotation.z = elapsedSeconds * 1.3;
+      attentionRing.scale.setScalar(0.55 + Math.sin(elapsedSeconds * 3.4) * 0.09);
+    }
   }
 
   function setReducedMotion(reduced: boolean): void {
@@ -958,6 +1125,8 @@ export function createFungiNurseryWorld(
     root,
     landmarks,
     pickTargets,
+    setAttention,
+    pickBounds,
     project,
     update,
     setReducedMotion,

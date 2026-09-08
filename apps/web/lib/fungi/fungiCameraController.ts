@@ -71,10 +71,16 @@ const DEFAULTS = {
   reducedMotion: false,
 } as const;
 
+/** Pointer travel before a press becomes an orbit rather than a click. */
+const DRAG_THRESHOLD_PIXELS = 5;
+
 /** Fraction of the framed distance the learner may dolly in to. */
 const MIN_FRAMED_FRACTION = 0.45;
-/** Breathing room left around the bounding sphere when fitting. */
-const FIT_PADDING = 1.08;
+/**
+ * Breathing room around the bounding sphere. Kept just under 1 so the
+ * apparatus fills the frame — the lesson is the thing being looked at.
+ */
+const FIT_PADDING = 0.82;
 
 function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
@@ -377,21 +383,34 @@ export function createFungiCameraController(
   }
 
   // ── Pointer input: drag orbits, wheel dollies, both bounded ──
+  let pressed = false;
   let dragging = false;
   let panning = false;
   let lastX = 0;
   let lastY = 0;
 
   const onPointerDown = (event: PointerEvent) => {
-    dragging = true;
+    // Arm without capturing so specimen clicks still reach pointerup.
+    pressed = true;
+    dragging = false;
     panning = event.button === 2 || event.shiftKey || event.ctrlKey || event.metaKey;
     lastX = event.clientX;
     lastY = event.clientY;
-    beginManipulation();
-    domElement.setPointerCapture?.(event.pointerId);
   };
   const onPointerMove = (event: PointerEvent) => {
-    if (!dragging) return;
+    if (!pressed) return;
+    if (!dragging) {
+      // Only a real drag takes the pointer; a click stays a click.
+      if (
+        Math.abs(event.clientX - lastX) + Math.abs(event.clientY - lastY) <
+        DRAG_THRESHOLD_PIXELS
+      ) {
+        return;
+      }
+      dragging = true;
+      beginManipulation();
+      domElement.setPointerCapture?.(event.pointerId);
+    }
     const deltaX = event.clientX - lastX;
     const deltaY = event.clientY - lastY;
     if (panning) panBy(deltaX, deltaY);
@@ -400,6 +419,7 @@ export function createFungiCameraController(
     lastY = event.clientY;
   };
   const onPointerUp = (event: PointerEvent) => {
+    pressed = false;
     if (!dragging) return;
     dragging = false;
     panning = false;

@@ -6,7 +6,7 @@
 
 **Contribution outcome:** 22 contributions became new canonical released classes; 1 contribution improved the existing Solubility class.
 
-**Portfolio indicator movement:** 55.4/100 baseline to 76.3/100 integrated internal QA.
+**Portfolio indicator movement:** 55.4/100 baseline to 79.9/100 integrated internal QA.
 
 This assessment credits the curriculum, scene, narration, and panorama work supported by evidence. It explains what the integration system changed and what future classes should do from the start. It is a contribution-improvement assessment, not a performance review.
 
@@ -84,9 +84,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 52/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +23
+**Score delta:** +27
 
 ### Baseline strengths
 
@@ -135,9 +135,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 51/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +24
+**Score delta:** +28
 
 ### Baseline strengths
 
@@ -237,9 +237,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 52/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +23
+**Score delta:** +27
 
 ### Baseline strengths
 
@@ -288,9 +288,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 57/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +18
+**Score delta:** +22
 
 ### Baseline strengths
 
@@ -339,9 +339,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 57/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +18
+**Score delta:** +22
 
 ### Baseline strengths
 
@@ -390,9 +390,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 64/100
 
-**Integrated score:** 78/100
+**Integrated score:** 82/100
 
-**Score delta:** +14
+**Score delta:** +18
 
 ### Baseline strengths
 
@@ -441,9 +441,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 56/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +19
+**Score delta:** +23
 
 ### Baseline strengths
 
@@ -492,9 +492,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 63/100
 
-**Integrated score:** 81/100
+**Integrated score:** 85/100
 
-**Score delta:** +18
+**Score delta:** +22
 
 ### Baseline strengths
 
@@ -544,9 +544,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 54/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +21
+**Score delta:** +25
 
 ### Baseline strengths
 
@@ -595,9 +595,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 52/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +23
+**Score delta:** +27
 
 ### Baseline strengths
 
@@ -646,9 +646,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 54/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +21
+**Score delta:** +25
 
 ### Baseline strengths
 
@@ -697,9 +697,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 54/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +21
+**Score delta:** +25
 
 ### Baseline strengths
 
@@ -748,9 +748,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 50/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +25
+**Score delta:** +29
 
 ### Baseline strengths
 
@@ -799,9 +799,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 50/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +25
+**Score delta:** +29
 
 ### Baseline strengths
 
@@ -850,9 +850,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 50/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +25
+**Score delta:** +29
 
 ### Baseline strengths
 
@@ -901,9 +901,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 51/100
 
-**Integrated score:** 78/100
+**Integrated score:** 82/100
 
-**Score delta:** +27
+**Score delta:** +31
 
 ### Baseline strengths
 
@@ -952,9 +952,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 52/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +23
+**Score delta:** +27
 
 ### Baseline strengths
 
@@ -1003,9 +1003,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 52/100
 
-**Integrated score:** 75/100
+**Integrated score:** 79/100
 
-**Score delta:** +23
+**Score delta:** +27
 
 ### Baseline strengths
 
@@ -1054,9 +1054,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 58/100
 
-**Integrated score:** 78/100
+**Integrated score:** 82/100
 
-**Score delta:** +20
+**Score delta:** +24
 
 ### Baseline strengths
 
@@ -1105,9 +1105,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 58/100
 
-**Integrated score:** 78/100
+**Integrated score:** 82/100
 
-**Score delta:** +20
+**Score delta:** +24
 
 ### Baseline strengths
 
@@ -1156,9 +1156,9 @@ Run the published reviewer checklist on a representative browser and headset, th
 
 **Baseline score:** 62/100
 
-**Integrated score:** 78/100
+**Integrated score:** 82/100
 
-**Score delta:** +16
+**Score delta:** +20
 
 ### Baseline strengths
 

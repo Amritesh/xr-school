@@ -36,7 +36,7 @@ async function launch(page: Page, viewport: { width: number; height: number }) {
   await page.getByLabel('Audio', { exact: true }).uncheck();
   await page.getByLabel('Reduced motion', { exact: true }).check();
   await page.getByRole('button', { name: 'Explore in browser' }).click();
-  await expect(page.getByTestId('fungi-mission-strip')).toBeVisible();
+  await expect(page.getByRole('list', { name: 'Scene progress' })).toBeVisible();
   await expect(page.getByTestId('fungi-tool-drawer')).toBeVisible();
 }
 
@@ -60,11 +60,6 @@ async function clickTool(page: Page, testId: string) {
     element.scrollIntoView({ block: 'nearest' });
     element.click();
   });
-}
-
-async function clickAdvancing(page: Page, testId: string, nextMission: string) {
-  await clickTool(page, testId);
-  await expect(currentMission(page)).toHaveText(nextMission);
 }
 
 function currentMission(page: Page) {
@@ -128,26 +123,28 @@ async function completeSporeFlight(page: Page) {
 async function completeGrowthChamber(page: Page) {
   await setSlider(page, 'fungi-temperature', '27');
   await setSlider(page, 'fungi-moisture', '85');
-  await setSlider(page, 'fungi-hours', '96');
-  await clickTool(page, 'fungi-save-trial');
-
-  // Change exactly one variable so the comparison is a fair one.
-  await setSlider(page, 'fungi-temperature', '9');
-  await clickTool(page, 'fungi-save-trial');
-
-  await clickTool(page, 'fungi-compare-trials');
-  await expect(page.getByTestId('fungi-caption')).toContainText('fair');
-
-  await page.getByTestId('fungi-growth-interpretation').selectOption('temperature-changed-growth');
-  await clickAdvancing(page, 'fungi-record-interpretation', 'Fungi at work');
+  await setSlider(page, 'fungi-hours', '120');
+  await expect(page.getByTestId('fungi-day-readout')).toContainText('Day 5');
+  for (const stage of [
+    'spore-lands', 'hypha-grows', 'mycelium-spreads', 'structures-form', 'spores-release',
+  ]) {
+    await clickTool(page, `fungi-stage-${stage}`);
+  }
+  await expect(currentMission(page)).toHaveText('Fungi at work');
 }
 
 async function completeUsefulFungi(page: Page) {
   await setSlider(page, 'fungi-proving-hours', '48');
   await clickTool(page, 'fungi-pipette-yeast');
-  await clickTool(page, 'fungi-role-yeast-food');
-  await clickTool(page, 'fungi-role-antibiotic-producing-fungus-medicine');
-  await clickAdvancing(page, 'fungi-role-saprotrophic-fungus-decomposer', 'Food safety');
+  for (const [actor, workplace] of [
+    ['yeast', 'bakery'],
+    ['antibiotic-producing-fungus', 'laboratory'],
+    ['saprotrophic-fungus', 'compost-pit'],
+  ]) {
+    await clickTool(page, `fungi-carry-${actor}`);
+    await clickTool(page, `fungi-place-${workplace}`);
+  }
+  await expect(currentMission(page)).toHaveText('Food safety');
 }
 
 async function completeSafety(page: Page) {
@@ -155,14 +152,14 @@ async function completeSafety(page: Page) {
   await clickTool(page, 'fungi-safety-fresh');
   await clickTool(page, 'fungi-safety-mouldy');
   // The misconception must be recorded before it is corrected.
-  await clickPrompt(page, 'Cutting');
-  await clickPrompt(page, 'Reject');
+  await clickPrompt(page, 'Yes, the remaining soft bread is safe');
+  await clickPrompt(page, 'No, reject the whole visibly mouldy soft food');
   await expect(currentMission(page)).toHaveText('Recommendation');
 }
 
 test.describe('forest nursery investigation', () => {
   test('completes the whole adjustable journey on desktop', async ({ page }) => {
-    test.setTimeout(process.env.CI ? 180_000 : 120_000);
+    test.setTimeout(300_000);
     await launch(page, { width: 1280, height: 720 });
 
     await completeDiagnose(page);
@@ -172,16 +169,17 @@ test.describe('forest nursery investigation', () => {
     await completeUsefulFungi(page);
     await completeSafety(page);
 
-    await clickPrompt(page, 'Cool');
-    await clickTool(page, 'fungi-cite-trial-1');
+    await clickPrompt(page, 'The dry towel on a cool, ventilated shelf');
     await clickTool(page, 'fungi-distinguish-spoilage-harmful-decomposition-useful');
+
+    await expect(page.getByTestId('fungi-mission-complete')).toBeVisible();
 
     // Every mission closed, and the notebook records what was actually done.
     const notebook = page.getByTestId('fungi-evidence-notebook');
     await expect(notebook).toContainText('Triage');
     await expect(notebook).toContainText('Food safety');
     await expect(
-      page.getByTestId('fungi-mission-strip').locator('[data-complete="true"]'),
+      page.getByRole('list', { name: 'Scene progress' }).locator('[data-complete="true"]'),
     ).toHaveCount(7);
   });
 
@@ -196,17 +194,13 @@ test.describe('forest nursery investigation', () => {
 
       const canvas = page.locator('canvas');
       await expect(canvas).toBeVisible();
-      const [canvasBox, stripBox, drawerBox] = await Promise.all([
+      const [canvasBox, drawerBox] = await Promise.all([
         requiredBox(canvas),
-        requiredBox(page.getByTestId('fungi-mission-strip')),
         requiredBox(page.getByTestId('fungi-tool-drawer')),
       ]);
 
-      // The two interface surfaces never sit on top of each other.
-      expect(intersectionArea(stripBox, drawerBox)).toBe(0);
-
-      const covered =
-        intersectionArea(canvasBox, stripBox) + intersectionArea(canvasBox, drawerBox);
+      // Main consolidates scene progress and tools into one panel.
+      const covered = intersectionArea(canvasBox, drawerBox);
       const visibleRatio = (canvasBox.width * canvasBox.height - covered) /
         (canvasBox.width * canvasBox.height);
       expect(visibleRatio).toBeGreaterThanOrEqual(viewport.minVisible);

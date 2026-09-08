@@ -11,7 +11,7 @@
         14,
         28
       ],
-      "sha256": "1c4a6753508b7d2e101138b8495310f9d41c4815a07ea7ba8b8e3ede5b5f6c4e",
+      "sha256": "7afc10146668e0d8db5d585fa7aa7d78a4359b8f455cc8c0eb39cde651d66b43",
       "checks": [
         "no clipping",
         "readable hierarchy",
@@ -28,7 +28,7 @@
         22,
         44
       ],
-      "sha256": "11c641490b1f0cfc05896a20f64096b761452cd03d6a157a8e23fb9ad3c23240",
+      "sha256": "48de4637ae34d4dca06631c123aefa89ad3c930193c2b7c0029c7b6d032e908a",
       "checks": [
         "no clipping",
         "readable hierarchy",
@@ -45,7 +45,7 @@
         6,
         12
       ],
-      "sha256": "bd59619e1978c05a66699ce78a0ac35495a652d5fc076fe1bbb6901c624e0e6e",
+      "sha256": "78ba2dff9693f9e57f10b40db04d400164c006a6aff1d0ca1e75e39c78a73428",
       "checks": [
         "no clipping",
         "readable hierarchy",
