@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export interface CameraFrame {
   position: THREE.Vector3;
@@ -64,41 +65,20 @@ export function computeFocusFrame(
 
 export interface GuidedCameraOptions {
   transitionSeconds?: number;
-  /** Radians of rotation per pixel of drag. */
-  lookSpeed?: number;
-  /** How far up/down the learner can look, in radians from level. */
-  maxPitch?: number;
+  minDistance?: number;
+  maxDistance?: number;
 }
-
-const UP = new THREE.Vector3(0, 1, 0);
-const RIGHT = new THREE.Vector3(1, 0, 0);
 
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 }
 
-function yawPitchFromDirection(direction: THREE.Vector3) {
-  return {
-    yaw: Math.atan2(-direction.x, -direction.z),
-    pitch: Math.asin(THREE.MathUtils.clamp(direction.y, -1, 1)),
-  };
-}
-
-function shortestDelta(from: number, to: number) {
-  const twoPi = Math.PI * 2;
-  let delta = (to - from) % twoPi;
-  if (delta > Math.PI) delta -= twoPi;
-  if (delta < -Math.PI) delta += twoPi;
-  return delta;
-}
-
 /**
- * A first-person look-around camera: rotation always pivots on the camera's
- * own eye position (like turning your head), never on a distant orbit
- * target, and is never locked out — the learner can look anywhere at any
- * time, including mid-transition. Only the eye *position* is driven by
- * guided "shots" (a simulation stage, or a focused object), eased in with
- * computeFocusFrame() rather than hand-authored per-object cameras.
+ * A guided browser camera backed by Three.js OrbitControls. Authored focus
+ * frames still provide clear stage-to-stage shots, while learners can orbit,
+ * pan, and dolly around the current target with mouse, touch, or trackpad.
+ * WebXR movement remains owned by the shared Quest rig, so viewers disable
+ * this controller while an immersive session is presenting.
  */
 export function createGuidedCamera(
   camera: THREE.PerspectiveCamera,
@@ -106,51 +86,48 @@ export function createGuidedCamera(
   options: GuidedCameraOptions = {},
 ) {
   const transitionSeconds = options.transitionSeconds ?? 0.65;
-  const lookSpeed = options.lookSpeed ?? 0.006;
-  const maxPitch = options.maxPitch ?? 1.4;
+  const controls = new OrbitControls(camera, domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enableRotate = true;
+  controls.enablePan = true;
+  controls.screenSpacePanning = true;
+  controls.enableZoom = true;
+  controls.minDistance = options.minDistance ?? 0.35;
+  controls.maxDistance = options.maxDistance ?? 80;
+  controls.minPolarAngle = 0.04;
+  controls.maxPolarAngle = Math.PI - 0.04;
 
-  const initialDirection = new THREE.Vector3();
-  camera.getWorldDirection(initialDirection);
-  let { yaw, pitch } = yawPitchFromDirection(initialDirection);
+  const initialDirection = camera.getWorldDirection(new THREE.Vector3());
+  controls.target.copy(camera.position).add(initialDirection);
+  controls.update();
 
   const fromPosition = new THREE.Vector3().copy(camera.position);
   const toPosition = new THREE.Vector3().copy(camera.position);
-  let fromYaw = yaw;
-  let fromPitch = pitch;
-  let toYaw = yaw;
-  let toPitch = pitch;
+  const fromTarget = new THREE.Vector3().copy(controls.target);
+  const toTarget = new THREE.Vector3().copy(controls.target);
   let elapsed = transitionSeconds;
-  let orientationLocked = false;
 
-  function applyLook() {
-    pitch = THREE.MathUtils.clamp(pitch, -maxPitch, maxPitch);
-    const quatYaw = new THREE.Quaternion().setFromAxisAngle(UP, yaw);
-    const quatPitch = new THREE.Quaternion().setFromAxisAngle(RIGHT, pitch);
-    camera.quaternion.copy(quatYaw).multiply(quatPitch);
-  }
-  applyLook();
+  const cancelTransition = () => {
+    elapsed = transitionSeconds;
+  };
+  controls.addEventListener('start', cancelTransition);
 
   function focusOn(frame: CameraFrame, focusOptions: { animate?: boolean } = {}) {
     const animate = focusOptions.animate ?? true;
-    const direction = frame.target.clone().sub(frame.position).normalize();
-    const { yaw: targetYaw, pitch: targetPitch } = yawPitchFromDirection(direction);
-    orientationLocked = false;
 
     if (!animate) {
       camera.position.copy(frame.position);
-      yaw = targetYaw;
-      pitch = targetPitch;
-      applyLook();
+      controls.target.copy(frame.target);
+      controls.update();
       elapsed = transitionSeconds;
       return;
     }
 
     fromPosition.copy(camera.position);
     toPosition.copy(frame.position);
-    fromYaw = yaw;
-    fromPitch = pitch;
-    toYaw = yaw + shortestDelta(yaw, targetYaw);
-    toPitch = targetPitch;
+    fromTarget.copy(controls.target);
+    toTarget.copy(frame.target);
     elapsed = 0;
   }
 
@@ -159,60 +136,27 @@ export function createGuidedCamera(
       elapsed = Math.min(transitionSeconds, elapsed + deltaSeconds);
       const t = easeInOutCubic(elapsed / transitionSeconds);
       camera.position.lerpVectors(fromPosition, toPosition, t);
-      if (!orientationLocked) {
-        yaw = THREE.MathUtils.lerp(fromYaw, toYaw, t);
-        pitch = THREE.MathUtils.lerp(fromPitch, toPitch, t);
-        applyLook();
-      }
+      controls.target.lerpVectors(fromTarget, toTarget, t);
+      controls.update(deltaSeconds);
       if (elapsed >= transitionSeconds) {
         camera.position.copy(toPosition);
+        controls.target.copy(toTarget);
       }
+      return;
     }
+    controls.update(deltaSeconds);
   }
 
   function isTransitioning() {
     return elapsed < transitionSeconds;
   }
 
-  // ── Drag-to-look input: always live, never locked, pivots on the eye ──
-  let dragging = false;
-  let lastX = 0;
-  let lastY = 0;
-
-  const onPointerDown = (event: PointerEvent) => {
-    dragging = true;
-    orientationLocked = true;
-    lastX = event.clientX;
-    lastY = event.clientY;
-    domElement.setPointerCapture(event.pointerId);
-  };
-  const onPointerMove = (event: PointerEvent) => {
-    if (!dragging) return;
-    const dx = event.clientX - lastX;
-    const dy = event.clientY - lastY;
-    lastX = event.clientX;
-    lastY = event.clientY;
-    yaw -= dx * lookSpeed;
-    pitch -= dy * lookSpeed;
-    applyLook();
-  };
-  const onPointerUp = (event: PointerEvent) => {
-    dragging = false;
-    if (domElement.hasPointerCapture(event.pointerId)) {
-      domElement.releasePointerCapture(event.pointerId);
-    }
-  };
-  domElement.addEventListener('pointerdown', onPointerDown);
-  domElement.addEventListener('pointermove', onPointerMove);
-  domElement.addEventListener('pointerup', onPointerUp);
-
   function dispose() {
-    domElement.removeEventListener('pointerdown', onPointerDown);
-    domElement.removeEventListener('pointermove', onPointerMove);
-    domElement.removeEventListener('pointerup', onPointerUp);
+    controls.removeEventListener('start', cancelTransition);
+    controls.dispose();
   }
 
-  return { focusOn, update, isTransitioning, dispose };
+  return { controls, focusOn, update, isTransitioning, dispose };
 }
 
 export type GuidedCamera = ReturnType<typeof createGuidedCamera>;

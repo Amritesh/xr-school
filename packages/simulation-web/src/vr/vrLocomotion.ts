@@ -67,16 +67,17 @@ function updateButtonLatch(isDown: boolean, latched: boolean) {
   return { pressed: !latched, latched: true };
 }
 
-function isQuestBackPressed(
-  buttons: ReadonlyArray<{ pressed: boolean }>,
+export type QuestControllerAction = 'primary' | 'exit' | 'narrate' | 'back';
+
+export function questControllerAction(
   handedness: string,
-) {
-  const buttonIndex = handedness === 'left'
-    ? 4
-    : handedness === 'right'
-      ? 5
-      : -1;
-  return buttonIndex >= 0 && buttons[buttonIndex]?.pressed === true;
+  buttonIndex: number,
+): QuestControllerAction | undefined {
+  if (handedness === 'right' && buttonIndex === 4) return 'primary';
+  if (handedness === 'right' && (buttonIndex === 5 || buttonIndex === 6)) return 'exit';
+  if (handedness === 'left' && buttonIndex === 4) return 'narrate';
+  if (handedness === 'left' && (buttonIndex === 5 || buttonIndex === 6)) return 'back';
+  return undefined;
 }
 
 export interface VrLocomotionConfig {
@@ -92,7 +93,10 @@ export interface VrLocomotionConfig {
   moveEnabled?: boolean;
   /** @deprecated Continuous translation is intentionally unsupported. */
   moveSpeed?: number;
+  onPrimary?(): void;
   onBack?(): void;
+  onNarrate?(): void;
+  onExit?(): void;
 }
 
 /**
@@ -100,7 +104,7 @@ export interface VrLocomotionConfig {
  * one head-relative step per left-stick deflection and never permits free glide.
  */
 export function createVrLocomotion(config: VrLocomotionConfig) {
-  const backLatches = new Map<XRInputSource, boolean>();
+  const buttonLatches = new Map<string, boolean>();
   const turnLatches = new Map<XRInputSource, boolean>();
   const teleportLatches = new Map<XRInputSource, boolean>();
   const headWorld = new THREE.Vector3();
@@ -198,12 +202,28 @@ export function createVrLocomotion(config: VrLocomotionConfig) {
         teleportLatches.set(inputSource, latched);
       }
 
-      const back = updateButtonLatch(
-        isQuestBackPressed(gamepad.buttons, inputSource.handedness),
-        backLatches.get(inputSource) ?? false,
-      );
-      backLatches.set(inputSource, back.latched);
-      if (back.pressed) config.onBack?.();
+      const faceButtonActions: QuestControllerAction[] = inputSource.handedness === 'right'
+        ? ['primary', 'exit']
+        : inputSource.handedness === 'left'
+          ? ['narrate', 'back']
+          : [];
+      for (const action of faceButtonActions) {
+        const latchKey = `${inputSource.handedness}-${action}`;
+        const button = updateButtonLatch(
+          [4, 5, 6].some(buttonIndex => (
+            questControllerAction(inputSource.handedness, buttonIndex) === action
+            && gamepad.buttons[buttonIndex]?.pressed === true
+          )),
+          buttonLatches.get(latchKey) ?? false,
+        );
+        buttonLatches.set(latchKey, button.latched);
+        if (!button.pressed) continue;
+        if (action === 'primary') config.onPrimary?.();
+        else if (action === 'back') config.onBack?.();
+        else if (action === 'narrate') config.onNarrate?.();
+        else if (config.onExit) config.onExit();
+        else void session.end();
+      }
     }
   }
 
@@ -216,7 +236,7 @@ export function createVrLocomotion(config: VrLocomotionConfig) {
     dispose() {
       if (disposed) return;
       disposed = true;
-      backLatches.clear();
+      buttonLatches.clear();
       turnLatches.clear();
       teleportLatches.clear();
     },

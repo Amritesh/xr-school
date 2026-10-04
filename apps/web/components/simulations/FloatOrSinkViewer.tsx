@@ -6,6 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { playNarration, stopNarration, unlockNarration } from "./narrationAudio";
 import { createQuestVrControls } from "./questVrControls";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import { createScreenSafePanelFollower, drawFittedText } from "@/lib/vr/screenSafeTextPanel";
 
 type Outcome = "float" | "sink";
 
@@ -95,20 +96,6 @@ const NARRATIONS = [
   "The solid glass marble sinks. Glass is denser than water, and the marble contains no trapped air.",
 ];
 
-function wrapText(context: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, lineHeight: number) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const candidate = `${line}${word} `;
-    if (line && context.measureText(candidate).width > width) {
-      context.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else line = candidate;
-  }
-  if (line) context.fillText(line.trim(), x, currentY);
-}
-
 function drawCard(
   canvas: HTMLCanvasElement,
   stage: number,
@@ -126,16 +113,22 @@ function drawCard(
   context.fillStyle = "#7dd3fc";
   context.font = "bold 21px sans-serif";
   context.fillText(`Activity 1  •  Stage ${stage + 1}/${STAGES.length}`, 24, 38);
-  context.fillStyle = "#ffffff";
-  context.font = "bold 30px sans-serif";
-  context.fillText(STAGES[stage].title, 24, 82);
-  context.fillStyle = "#e0f2fe";
-  context.font = "20px sans-serif";
-  wrapText(context, STAGES[stage].cue, 24, 120, canvas.width - 48, 27);
-  context.fillStyle = tested ? "#86efac" : prediction ? "#fde68a" : "#bae6fd";
-  context.font = "bold 19px sans-serif";
+  drawFittedText(context, STAGES[stage].title, {
+    x: 24, y: 54, width: canvas.width - 48, height: 48,
+    color: "#ffffff", fontWeight: 800, maxFontSize: 30, minFontSize: 21,
+    maxLines: 2, verticalAlign: "middle",
+  });
+  drawFittedText(context, STAGES[stage].cue, {
+    x: 24, y: 111, width: canvas.width - 48, height: 88,
+    color: "#e0f2fe", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+  });
   const status = feedback || (prediction ? `Prediction: ${prediction.toUpperCase()} • Now test it` : stage > 0 && stage < 7 ? "Choose FLOAT or SINK, then test" : STAGES[stage].action);
-  context.fillText(status, 24, 245);
+  drawFittedText(context, status, {
+    x: 24, y: 211, width: canvas.width - 48, height: 45,
+    color: tested ? "#86efac" : prediction ? "#fde68a" : "#bae6fd",
+    fontWeight: 800, maxFontSize: 19, minFontSize: 13, maxLines: 2,
+    verticalAlign: "middle",
+  });
 }
 
 function makeTrialObject(index: number) {
@@ -454,6 +447,10 @@ export default function FloatOrSinkViewer() {
     const card = new THREE.Mesh(new THREE.PlaneGeometry(2.85, 1.11), new THREE.MeshBasicMaterial({ map: cardTexture }));
     card.position.set(-1.38, 2.72, -1.92);
     scene.add(card);
+    const cardFollower = createScreenSafePanelFollower(card, {
+      panelWidth: 2.85,
+      panelHeight: 1.11,
+    });
 
     const makeButton = (name: string, color: number, x: number, width = 0.66) => {
       const button = new THREE.Mesh(
@@ -566,7 +563,7 @@ export default function FloatOrSinkViewer() {
       testMaterial.color.setHex(testedRef.current ? 0x16a34a : 0x0284c7);
       testMaterial.emissive.setHex(testedRef.current ? 0x16a34a : 0x0284c7);
       const activeCamera = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
-      card.lookAt(activeCamera.position);
+      cardFollower.update(activeCamera);
       interactables.forEach((button) => button.lookAt(activeCamera.position));
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);

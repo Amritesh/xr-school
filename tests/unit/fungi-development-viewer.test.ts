@@ -1,17 +1,17 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import * as THREE from 'three';
-import { describe, expect, it } from 'vitest';
-import { FUNGI_MISSIONS } from '../../apps/web/lib/fungi/fungiExperienceDirector';
-import { SPECIMEN_LENS_TARGETS } from '../../apps/web/lib/fungi/fungiInteractionTools';
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import * as THREE from "three";
+import { describe, expect, it } from "vitest";
+import { FUNGI_MISSIONS } from "../../apps/web/lib/fungi/fungiExperienceDirector";
+import { SPECIMEN_LENS_TARGETS } from "../../apps/web/lib/fungi/fungiInteractionTools";
 import {
   createFungiViewerController,
   type FungiViewerController,
-} from '../../apps/web/lib/fungi/fungiViewerController';
+} from "../../apps/web/lib/fungi/fungiViewerController";
 
 const viewerPath = resolve(
   process.cwd(),
-  'apps/web/components/simulations/FungiDevelopmentViewer.tsx',
+  "apps/web/components/simulations/FungiDevelopmentViewer.tsx",
 );
 
 function createFakeDomElement() {
@@ -58,32 +58,38 @@ function createController(options: { reducedMotion?: boolean } = {}) {
 /** Drives the diagnose mission to completion through real manipulations. */
 function completeDiagnose(controller: FungiViewerController) {
   controller.act({
-    actionId: 'diagnose.classify',
-    source: 'mouse',
-    value: 'only-the-green-plant',
+    actionId: "diagnose.classify",
+    source: "mouse",
+    value: "only-the-green-plant",
   });
-  for (const specimen of ['mushroom', 'bread-mould', 'green-plant'] as const) {
-    controller.manipulate({ type: 'lens-move', normalizedX: 0.5, normalizedY: 0.98 }, 'mouse');
+  for (const specimen of ["mushroom", "bread-mould", "green-plant"] as const) {
+    controller.manipulate(
+      { type: "lens-move", normalizedX: 0.5, normalizedY: 0.98 },
+      "mouse",
+    );
     const [normalizedX, normalizedY] = SPECIMEN_LENS_TARGETS[specimen];
-    controller.manipulate({ type: 'lens-move', normalizedX, normalizedY }, 'mouse');
+    controller.manipulate(
+      { type: "lens-move", normalizedX, normalizedY },
+      "mouse",
+    );
   }
   controller.act({
-    actionId: 'diagnose.classify',
-    source: 'mouse',
-    value: 'mushroom-and-bread-mould',
+    actionId: "diagnose.classify",
+    source: "mouse",
+    value: "mushroom-and-bread-mould",
   });
 }
 
-describe('createFungiViewerController', () => {
-  it('owns exactly one runtime, world, director, camera, and tool set', () => {
+describe("createFungiViewerController", () => {
+  it("owns exactly one runtime, world, director, camera, and tool set", () => {
     const { controller } = createController();
     const snapshot = controller.snapshot();
 
-    expect(controller.root.name).toBe('fungi-forest-nursery');
-    expect(snapshot.director.missionId).toBe('diagnose');
-    expect(snapshot.mission.id).toBe('diagnose');
-    expect(snapshot.world.missionId).toBe('diagnose');
-    expect(snapshot.tools.growthInput.substrate).toBe('bread');
+    expect(controller.root.name).toBe("secret-life-of-fungi-lab");
+    expect(snapshot.director.missionId).toBe("diagnose");
+    expect(snapshot.mission.id).toBe("diagnose");
+    expect(snapshot.world.missionId).toBe("diagnose");
+    expect(snapshot.tools.growthInput.substrate).toBe("bread");
     expect(snapshot.camera.transitioning).toBe(false);
     controller.dispose();
   });
@@ -112,40 +118,43 @@ describe('createFungiViewerController', () => {
     controller.dispose();
   });
 
-  it('routes manipulations into both the director and the rendered world', () => {
+  it("routes manipulations into both the director and the rendered world", () => {
     const { controller } = createController();
     completeDiagnose(controller);
     controller.act({
-      actionId: 'mycelium.interpret',
-      source: 'mouse',
-      value: 'connected-feeding-network',
+      actionId: "mycelium.interpret",
+      source: "mouse",
+      value: "connected-feeding-network",
     });
 
     // Three traced branches were required to leave the mycelium mission.
-    expect(controller.snapshot().director.missionId).toBe('mycelium');
+    expect(controller.snapshot().director.missionId).toBe("mycelium");
     for (const [depth, normalizedX] of [
       [0.2, 0.15],
       [0.5, 0.5],
       [0.8, 0.85],
     ] as const) {
-      controller.manipulate({ type: 'focus-set', depth }, 'mouse');
-      controller.manipulate({ type: 'lens-move', normalizedX, normalizedY: 0.5 }, 'mouse');
+      controller.manipulate({ type: "focus-set", depth }, "mouse");
+      controller.manipulate(
+        { type: "lens-move", normalizedX, normalizedY: 0.5 },
+        "mouse",
+      );
     }
     // The interpretation already stood; the third trace completes the gate.
-    expect(controller.snapshot().director.missionId).toBe('spore-flight');
+    expect(controller.snapshot().director.missionId).toBe("spore-flight");
 
-    const settings = controller.tools.findLandingSettings('germinating')!;
-    controller.manipulate({ type: 'fan-set', ...settings }, 'mouse');
-    controller.manipulate({ type: 'spore-release' }, 'mouse');
+    const settings = controller.tools.findLandingSettings("germinating")!;
+    controller.manipulate({ type: "fan-set", ...settings }, "mouse");
+    controller.manipulate({ type: "spore-release" }, "mouse");
 
     const snapshot = controller.snapshot();
     expect(snapshot.world.spore.released).toBe(true);
-    expect(snapshot.world.spore.outcome).toBe('germinating');
+    expect(snapshot.world.spore.outcome).toBe("germinating");
     expect(snapshot.world.airflow.strength).toBeCloseTo(settings.strength, 6);
     controller.dispose();
   });
 
-  it('keeps the camera reset independent of experiment state', () => {
+  it("keeps the camera reset independent of experiment state", () => {
     const { controller } = createController();
     completeDiagnose(controller);
     const before = controller.snapshot();
@@ -154,7 +163,9 @@ describe('createFungiViewerController', () => {
     controller.update(5, 5);
     const after = controller.snapshot();
 
-    expect(after.director.cameraRequestId).toBe(before.director.cameraRequestId + 1);
+    expect(after.director.cameraRequestId).toBe(
+      before.director.cameraRequestId + 1,
+    );
     expect(after.director.experiment).toEqual(before.director.experiment);
     expect(after.director.evidence).toEqual(before.director.evidence);
     expect(after.director.missionId).toBe(before.director.missionId);
@@ -162,11 +173,14 @@ describe('createFungiViewerController', () => {
     controller.dispose();
   });
 
-  it('keeps mission evidence when only the experiment is reset', () => {
+  it("keeps mission evidence when only the experiment is reset", () => {
     const { controller } = createController();
     completeDiagnose(controller);
-    controller.manipulate({ type: 'focus-set', depth: 0.2 }, 'mouse');
-    controller.manipulate({ type: 'lens-move', normalizedX: 0.15, normalizedY: 0.5 }, 'mouse');
+    controller.manipulate({ type: "focus-set", depth: 0.2 }, "mouse");
+    controller.manipulate(
+      { type: "lens-move", normalizedX: 0.15, normalizedY: 0.5 },
+      "mouse",
+    );
     const before = controller.snapshot();
     expect(before.director.evidence.mycelium.branchTraces).toHaveLength(1);
 
@@ -174,36 +188,41 @@ describe('createFungiViewerController', () => {
     const after = controller.snapshot();
 
     expect(after.director.missionId).toBe(before.director.missionId);
-    expect(after.director.evidence.diagnose).toEqual(before.director.evidence.diagnose);
-    expect(after.director.evidence.mycelium).toEqual(before.director.evidence.mycelium);
+    expect(after.director.evidence.diagnose).toEqual(
+      before.director.evidence.diagnose,
+    );
+    expect(after.director.evidence.mycelium).toEqual(
+      before.director.evidence.mycelium,
+    );
     expect(after.tools.spore.released).toBe(false);
     controller.dispose();
   });
 
-  it('clears the whole journey on restart', () => {
+  it("clears the whole journey on restart", () => {
     const { controller } = createController();
     completeDiagnose(controller);
-    controller.manipulate({ type: 'scanner-set', depth: 0.6 }, 'mouse');
-    expect(controller.snapshot().director.missionId).toBe('mycelium');
+    controller.manipulate({ type: "scanner-set", depth: 0.6 }, "mouse");
+    expect(controller.snapshot().director.missionId).toBe("mycelium");
 
     controller.restartJourney();
     controller.update(5, 5);
     const after = controller.snapshot();
 
-    expect(after.director.missionId).toBe('diagnose');
+    expect(after.director.missionId).toBe("diagnose");
     expect(after.director.evidence.diagnose.lensCrossings).toEqual([]);
     expect(after.director.observationHistory).toEqual([]);
     expect(after.tools.scannerDepth).toBe(0);
     expect(after.tools.tracedBranchIds).toEqual([]);
-    expect(after.world.missionId).toBe('diagnose');
+    expect(after.world.missionId).toBe("diagnose");
     controller.dispose();
   });
 
-  it('reaches the same framing with reduced motion, without tweening', () => {
+  it("reaches the same framing with reduced motion, without tweening", () => {
     const animated = createController();
     const reduced = createController({ reducedMotion: true });
 
-    for (const { controller } of [animated, reduced]) completeDiagnose(controller);
+    for (const { controller } of [animated, reduced])
+      completeDiagnose(controller);
     expect(reduced.controller.snapshot().camera.transitioning).toBe(false);
 
     animated.controller.update(5, 5);
@@ -217,7 +236,7 @@ describe('createFungiViewerController', () => {
     reduced.controller.dispose();
   });
 
-  it('disposes every owner idempotently and refuses further work', () => {
+  it("disposes every owner idempotently and refuses further work", () => {
     const { domElement, controller } = createController();
     expect(domElement.listenerCount()).toBeGreaterThan(0);
 
@@ -227,15 +246,20 @@ describe('createFungiViewerController', () => {
     expect(domElement.listenerCount()).toBe(0);
     expect(controller.root.children).toHaveLength(0);
     expect(() =>
-      controller.manipulate({ type: 'scanner-set', depth: 0.4 }, 'mouse'),
+      controller.manipulate({ type: "scanner-set", depth: 0.4 }, "mouse"),
     ).toThrow(/disposed/i);
   });
 
-  it('re-frames the apparatus when the interface takes more of the canvas', () => {
+  it("re-frames the apparatus when the interface takes more of the canvas", () => {
     const { controller } = createController();
     const roomy = controller.snapshot().camera.distance;
 
-    controller.setViewport(390, 844, { top: 64, right: 12, bottom: 320, left: 12 });
+    controller.setViewport(390, 844, {
+      top: 64,
+      right: 12,
+      bottom: 320,
+      left: 12,
+    });
     const cramped = controller.snapshot().camera.distance;
 
     expect(cramped).toBeGreaterThan(roomy);
@@ -243,17 +267,17 @@ describe('createFungiViewerController', () => {
   });
 });
 
-describe('FungiDevelopmentViewer composition', () => {
-  const source = readFileSync(viewerPath, 'utf8');
+describe("FungiDevelopmentViewer composition", () => {
+  const source = readFileSync(viewerPath, "utf8");
 
-  it('composes the controller instead of re-implementing the journey', () => {
-    expect(source).toContain('createFungiViewerController');
-    expect(source).toContain('fungi-nursery-lab.css');
+  it("composes the controller instead of re-implementing the journey", () => {
+    expect(source).toContain("createFungiViewerController");
+    expect(source).toContain("fungi-nursery-lab.css");
     // The seven-stage switch, duplicated rail, and click-to-complete world
     // actions the rewrite removed must not come back.
-    expect(source).not.toContain('coordinateFungiAction');
-    expect(source).not.toContain('createFungiWorld');
-    expect(source).not.toContain('vrPromptForStage');
+    expect(source).not.toContain("coordinateFungiAction");
+    expect(source).not.toContain("createFungiWorld");
+    expect(source).not.toContain("vrPromptForStage");
   });
 
   it('follows the guided-VR language: one lesson, browser and headset together', () => {
@@ -298,6 +322,19 @@ describe('FungiDevelopmentViewer composition', () => {
     expect(source).toContain('data-testid="fungi-reset-experiment"');
     expect(source).toContain('data-testid="fungi-reset-camera"');
     expect(source).toContain('data-testid="fungi-restart-journey"');
-    expect(source).toContain('aria-live');
+    expect(source).toContain("aria-live");
+  });
+
+  it("loads the realistic 360 lab and exposes the authored experiments", () => {
+    expect(source).toContain("EquirectangularReflectionMapping");
+    expect(source).toContain("environment-v2.webp");
+    expect(source).toContain("Five-day time lapse");
+    expect(source).toContain('data-testid="fungi-play-timelapse"');
+    expect(source).toContain("Put the days in order");
+    expect(source).toContain("data-testid={`fungi-stage-${stage}`}");
+    expect(source).toContain("Pick up a fungus, then click where it works");
+    for (const workplace of ["bakery", "laboratory", "compost-pit"]) {
+      expect(source).toContain(`id: '${workplace}'`);
+    }
   });
 });

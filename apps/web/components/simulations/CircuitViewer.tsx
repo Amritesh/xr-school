@@ -485,9 +485,12 @@ export default function CircuitViewer() {
     const locomotion = createVrLocomotion({
       renderer,
       rig: vrRig.rig,
+      locomotion: 'boundedTeleport',
+      movementBounds: new THREE.Box3(new THREE.Vector3(-4, -1, -4), new THREE.Vector3(4, 3, 4)),
+      onPrimary: () => moveToCircuitStage(stageRef.current + 1),
+      onNarrate: () => playNarration(stageRef.current),
       onBack: () => {
-        if (stageRef.current > 0) moveToCircuitStage(stageRef.current - 1);
-        else void renderer.xr.getSession()?.end();
+        moveToCircuitStage(stageRef.current - 1);
       },
     });
 

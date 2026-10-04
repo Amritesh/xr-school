@@ -216,6 +216,26 @@ describe('createFungiCameraController', () => {
     controller.dispose();
   });
 
+  it('pans the orbit target with a bounded right-button drag', () => {
+    const mission = FUNGI_MISSIONS[1]!;
+    const { dom, controller } = createController();
+    controller.setViewport(1280, 720, DESKTOP_INSETS);
+    controller.focusBounds(boxFor(mission.focusBounds), mutablePose(mission.cameraPose), {
+      animate: false,
+    });
+    const before = controller.snapshot();
+
+    dom.dispatch('pointerdown', { button: 2, clientX: 200, clientY: 200 });
+    dom.dispatch('pointermove', { button: 2, clientX: 280, clientY: 240 });
+    dom.dispatch('pointerup', { button: 2 });
+    const after = controller.snapshot();
+
+    expect(after.target).not.toEqual(before.target);
+    expect(after.distance).toBeCloseTo(before.distance, 6);
+    expect(after.azimuth).toBeCloseTo(before.azimuth, 6);
+    controller.dispose();
+  });
+
   it('clamps wheel and pinch zoom between the collision radius and the framed distance', () => {
     const mission = FUNGI_MISSIONS[3]!;
     const box = boxFor(mission.focusBounds);

@@ -1,0 +1,506 @@
+.root {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 620px;
+  overflow: hidden;
+  background: #18362d;
+  color: #f8faf5;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.launch {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(90deg, rgba(7, 24, 20, .88), rgba(7, 24, 20, .48) 56%, rgba(7, 24, 20, .72)),
+    url("/simulations/c7-ch03-a01-shearing-and-scouring-of-wool/environment.webp") center / cover no-repeat;
+}
+
+.launchCard {
+  width: min(680px, 100%);
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid rgba(255, 238, 178, .42);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(12, 39, 31, .95), rgba(26, 61, 45, .92));
+  box-shadow: 0 28px 90px rgba(1, 10, 7, .46);
+  backdrop-filter: blur(18px);
+}
+
+.eyebrow,
+.stageEyebrow {
+  color: #f6d77c;
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.launchTitle {
+  max-width: 580px;
+  margin: 12px 0 14px;
+  color: #fffdf5;
+  font-size: clamp(2.4rem, 7vw, 4.7rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+
+.launchCopy {
+  max-width: 600px;
+  margin: 0;
+  color: #e6f4e9;
+  font-size: clamp(.96rem, 2vw, 1.08rem);
+  line-height: 1.72;
+}
+
+.launchFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 0;
+}
+
+.launchFacts span,
+.star {
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 238, 178, .25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .07);
+  color: #fff5cc;
+  font-size: .75rem;
+  font-weight: 800;
+}
+
+.launchActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primary,
+.secondary,
+.choice,
+.navButton,
+.iconButton {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+
+.primary:hover,
+.secondary:hover,
+.choice:hover,
+.navButton:hover,
+.iconButton:hover {
+  transform: translateY(-1px);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible,
+.choice:focus-visible,
+.navButton:focus-visible,
+.iconButton:focus-visible {
+  outline: 3px solid #fde68a;
+  outline-offset: 3px;
+}
+
+.primary {
+  min-height: 48px;
+  padding: 12px 18px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #e6b64c, #c77a25);
+  color: #17241b;
+  font-weight: 900;
+  box-shadow: 0 10px 28px rgba(172, 99, 23, .28);
+}
+
+.secondary {
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .09);
+  color: #f7fff7;
+  font-weight: 850;
+}
+
+.hud {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.topbar {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.missionName {
+  max-width: min(620px, 62vw);
+  padding: 11px 15px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 14px;
+  background: rgba(8, 29, 23, .78);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+  backdrop-filter: blur(14px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.missionName strong {
+  color: #fff9df;
+  font-size: .9rem;
+}
+
+.missionName span {
+  margin-left: 8px;
+  color: #bfe3c8;
+  font-size: .76rem;
+}
+
+.topActions {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.iconButton {
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 12px;
+  background: rgba(8, 29, 23, .82);
+  color: #effaf1;
+  font-size: .76rem;
+  font-weight: 850;
+  backdrop-filter: blur(12px);
+}
+
+.panel {
+  position: absolute;
+  top: 70px;
+  right: 16px;
+  bottom: 16px;
+  width: min(390px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 238, 178, .32);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(8, 31, 25, .96), rgba(21, 54, 39, .94));
+  box-shadow: 0 22px 70px rgba(1, 12, 8, .38);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.panelProgress {
+  height: 5px;
+  background: rgba(255, 255, 255, .1);
+}
+
+.panelProgress span {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #7bcf83, #f6d77c);
+  transition: width 350ms ease;
+}
+
+.panelScroll {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 18px 12px;
+  overscroll-behavior: contain;
+}
+
+.stageTitle {
+  margin: 8px 0 7px;
+  color: #fffdf5;
+  font-size: clamp(1.24rem, 3vw, 1.55rem);
+  line-height: 1.18;
+}
+
+.cue,
+.detail,
+.feedback,
+.hint {
+  font-size: .84rem;
+  line-height: 1.55;
+}
+
+.cue {
+  margin: 0 0 11px;
+  color: #e7f4e8;
+}
+
+.detail {
+  margin: 0 0 14px;
+  padding: 11px 12px;
+  border: 1px solid rgba(132, 205, 144, .2);
+  border-radius: 12px;
+  background: rgba(126, 187, 133, .09);
+  color: #cfe9d3;
+}
+
+.feedback {
+  margin: 0 0 13px;
+  padding: 10px 12px;
+  border-left: 3px solid #f1c75b;
+  border-radius: 8px;
+  background: rgba(241, 199, 91, .1);
+  color: #fff1bd;
+}
+
+.choiceGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.choice {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .07);
+  color: #f5fbf5;
+  text-align: left;
+  font-size: .8rem;
+  font-weight: 760;
+}
+
+.choice[data-selected="true"] {
+  border-color: rgba(246, 215, 124, .72);
+  background: rgba(246, 215, 124, .16);
+  color: #fff5c9;
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: .68;
+}
+
+.progressCard {
+  display: grid;
+  gap: 8px;
+  margin: 11px 0;
+}
+
+.progressTrack {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .1);
+}
+
+.progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #5fb7df, #71d383, #f0bf59);
+  transition: width 300ms ease;
+}
+
+.stepList {
+  display: grid;
+  gap: 5px;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stepList li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .055);
+  color: #cbe1cf;
+  font-size: .76rem;
+}
+
+.stepList li[data-done="true"] {
+  background: rgba(100, 205, 126, .13);
+  color: #e5ffe9;
+}
+
+.stars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.star[data-earned="false"] {
+  filter: grayscale(1);
+  opacity: .4;
+}
+
+.panelFooter {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 9px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(4, 20, 15, .34);
+}
+
+.navButton {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .07);
+  color: #eef8ef;
+  font-size: .78rem;
+  font-weight: 850;
+}
+
+.navButton:disabled,
+.primary:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+  transform: none;
+}
+
+.primaryAction {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.controllerHint {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  max-width: min(560px, calc(100vw - 440px));
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 12px;
+  background: rgba(8, 29, 23, .75);
+  color: #d7ebda;
+  font-size: .69rem;
+  font-weight: 750;
+  line-height: 1.4;
+  backdrop-filter: blur(12px);
+}
+
+.complete {
+  padding: 14px;
+  border: 1px solid rgba(246, 215, 124, .4);
+  border-radius: 15px;
+  background: linear-gradient(145deg, rgba(246, 215, 124, .15), rgba(115, 203, 127, .12));
+  text-align: center;
+}
+
+.complete strong {
+  display: block;
+  margin: 5px 0;
+  color: #fff2b8;
+  font-size: 1.08rem;
+}
+
+.complete span {
+  color: #d7ebda;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .root {
+    min-height: 540px;
+  }
+
+  .topbar {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .missionName {
+    max-width: calc(100vw - 118px);
+    padding: 8px 10px;
+  }
+
+  .missionName span,
+  .iconButton span {
+    display: none;
+  }
+
+  .iconButton {
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+
+  .panel {
+    top: auto;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    width: auto;
+    max-height: 47dvh;
+    border-radius: 18px;
+  }
+
+  .panelScroll {
+    padding: 14px 14px 9px;
+  }
+
+  .panelFooter {
+    padding: 9px 12px 12px;
+  }
+
+  .controllerHint {
+    display: none;
+  }
+
+  .launch {
+    padding: 14px;
+  }
+
+  .launchCard {
+    max-height: calc(100dvh - 28px);
+    overflow-y: auto;
+    padding: 24px;
+    border-radius: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary,
+  .secondary,
+  .choice,
+  .navButton,
+  .iconButton,
+  .panelProgress span,
+  .progressTrack span {
+    transition: none;
+  }
+}

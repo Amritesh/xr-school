@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import * as THREE from 'three';
 import type { NormalizedAction } from '@xr-school/simulation-schema';
 import type {
   InteractiveInvestigationSession,
@@ -20,6 +21,10 @@ import type {
   InteractiveChoice,
   ProjectableSceneAdapter,
 } from '@/lib/simulations/interactive/types';
+import {
+  createManagedVrHud,
+  type ManagedVrHud,
+} from './createManagedVrHud';
 
 const DEFAULT_PREFERENCES: ExperiencePreferences = {
   audio: true,
@@ -62,6 +67,7 @@ export default function InteractiveInvestigationViewer({
   const definition = registration.definition;
   const mountRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<SimulationHost | undefined>(undefined);
+  const hudRef = useRef<ManagedVrHud | undefined>(undefined);
   const sessionRef = useRef<InteractiveInvestigationSession<unknown>>(
     registration.createSession(),
   );
@@ -77,6 +83,8 @@ export default function InteractiveInvestigationViewer({
   const [view, setView] = useState<InteractiveInvestigationSnapshot<unknown>>(
     sessionRef.current.snapshot(),
   );
+  const viewRef = useRef(view);
+  const primaryChoiceRef = useRef<InteractiveChoice | undefined>(undefined);
 
   useEffect(() => {
     preferencesRef.current = preferences;
@@ -84,6 +92,8 @@ export default function InteractiveInvestigationViewer({
   }, [preferences]);
 
   useEffect(() => () => {
+    hudRef.current?.dispose();
+    hudRef.current = undefined;
     const host = hostRef.current;
     hostRef.current = undefined;
     adapterRef.current = undefined;
@@ -105,6 +115,7 @@ export default function InteractiveInvestigationViewer({
   }, [cueForStage]);
 
   const applyView = useCallback((next: InteractiveInvestigationSnapshot<unknown>) => {
+    viewRef.current = next;
     adapterRef.current?.projectDomain(next.domain as Readonly<unknown>);
     hostRef.current?.applySnapshot(next.lesson);
     setView(next);
@@ -136,8 +147,30 @@ export default function InteractiveInvestigationViewer({
         preferences: {
           reducedMotion: launchPreferences.reducedMotion,
           seatedMode: launchPreferences.seated,
-          locomotion: 'stationary',
+          locomotion: 'boundedTeleport',
           turnMode: launchPreferences.comfort ? 'snap' : 'none',
+        },
+        navigation: {
+          movementBounds: new THREE.Box3(
+            new THREE.Vector3(-4, -1, -4),
+            new THREE.Vector3(4, 3, 4),
+          ),
+          teleportStepMeters: 0.7,
+        },
+        controllerActions: {
+          onPrimary() {
+            const current = viewRef.current;
+            const choice = primaryChoiceRef.current;
+            if (choice) dispatch(actionForChoice(choice, current.lesson.stageId));
+          },
+          onBack() {
+            const previous = sessionRef.current.previous();
+            applyView(previous);
+            void playStageNarration(previous.lesson.stageId);
+          },
+          onNarrate() {
+            void playStageNarration(viewRef.current.lesson.stageId);
+          },
         },
         onAction: dispatch,
       });
@@ -145,6 +178,7 @@ export default function InteractiveInvestigationViewer({
       await host.initialize();
       const initial = sessionRef.current.snapshot();
       applyView(initial);
+      hudRef.current = createManagedVrHud(host);
       setReady(true);
       void playStageNarration(initial.lesson.stageId);
       if (enterVr) await host.enterVr();
@@ -152,6 +186,8 @@ export default function InteractiveInvestigationViewer({
       setError(reason instanceof Error ? reason.message : String(reason));
       hostRef.current = undefined;
       adapterRef.current = undefined;
+      hudRef.current?.dispose();
+      hudRef.current = undefined;
       if (host) await host.dispose();
     } finally {
       launchingRef.current = false;
@@ -161,9 +197,11 @@ export default function InteractiveInvestigationViewer({
   const choices = registration.choices(view);
   const visibleChoices = firstChoiceGroup(choices);
   const currentStage = definition.experience.stages[view.lesson.stageIndex];
-  const assessment = definition.assessment.prompts.find(
-    prompt => prompt.stageId === view.lesson.stageId,
-  );
+  // Observation questions must not replace the experiment actions that earn
+  // their evidence (for example, the two solubility rate comparisons).
+  const assessment = choices.length === 0
+    ? definition.assessment.prompts.find(prompt => prompt.stageId === view.lesson.stageId)
+    : undefined;
   const currentCue = cueForStage(view.lesson.stageId);
 
   const choose = useCallback((choice: InteractiveChoice) => {
@@ -202,6 +240,7 @@ export default function InteractiveInvestigationViewer({
   }, [applyView, playStageNarration]);
 
   const primaryChoice = registration.primaryAction?.(view) ?? visibleChoices[0];
+  primaryChoiceRef.current = assessment ? undefined : primaryChoice;
   const classContext = useMemo(() => {
     const grade = definition.module.slug.match(/^c(\d+)-/)?.[1];
     return `${grade ? `Class ${grade}` : 'School'} ${definition.module.subjects
@@ -210,6 +249,58 @@ export default function InteractiveInvestigationViewer({
         : `${subject[0].toUpperCase()}${subject.slice(1)}`)
       .join(' / ')}`;
   }, [definition.module.slug, definition.module.subjects]);
+
+  useEffect(() => {
+    const hud = hudRef.current;
+    if (!hud) return;
+    const assessmentOptions = assessment?.options ?? [];
+    const hudChoices = assessment
+      ? assessmentOptions.slice(0, 3).map(option => ({ label: option.label }))
+      : visibleChoices.slice(0, 3).map(choice => ({ label: choice.label }));
+    hud.setContent({
+      eyebrow: `Stage ${view.lesson.stageIndex + 1} of ${definition.experience.stages.length}`,
+      title: currentStage.title,
+      body: currentCue?.caption ?? currentStage.cue,
+      hint: view.feedback?.message ?? (primaryChoice ? `Next: ${primaryChoice.label}` : undefined),
+      choices: hudChoices,
+      buttons: [
+        ...(view.lesson.stageIndex > 0 ? ['previous' as const] : []),
+        'replay',
+        'restart',
+        'exit',
+        ...(!assessment && !view.lesson.lessonComplete ? ['next' as const] : []),
+      ],
+    }, {
+      previous: goPrevious,
+      next: goNext,
+      replay: () => { void playStageNarration(view.lesson.stageId); },
+      restart,
+      exit: () => { void hostRef.current?.exitVr(); },
+      'choice-a': () => assessment
+        ? assessmentOptions[0] && answer(assessment.id, assessmentOptions[0].id)
+        : visibleChoices[0] && choose(visibleChoices[0]),
+      'choice-b': () => assessment
+        ? assessmentOptions[1] && answer(assessment.id, assessmentOptions[1].id)
+        : visibleChoices[1] && choose(visibleChoices[1]),
+      'choice-c': () => assessment
+        ? assessmentOptions[2] && answer(assessment.id, assessmentOptions[2].id)
+        : visibleChoices[2] && choose(visibleChoices[2]),
+    });
+  }, [
+    answer,
+    assessment,
+    choose,
+    currentCue?.caption,
+    currentStage,
+    definition.experience.stages.length,
+    goNext,
+    goPrevious,
+    playStageNarration,
+    primaryChoice,
+    restart,
+    view,
+    visibleChoices,
+  ]);
 
   return (
     <SimulationExperienceShell
@@ -231,11 +322,18 @@ export default function InteractiveInvestigationViewer({
       completionHeadline="Evidence recorded and ready for review"
       completionBody="Completion records the declared actions and observations. Mastery remains a separate evidence decision."
       completionActionLabel="Review final evidence"
-      primaryAction={ready && primaryChoice && !assessment && !view.lesson.lessonComplete
+      primaryAction={ready && primaryChoice && visibleChoices.length <= 1 && !assessment && !view.lesson.lessonComplete
         ? {
           label: primaryChoice.label,
           onActivate: () => choose(primaryChoice),
         }
+        : undefined}
+      choices={ready && !assessment && visibleChoices.length > 1
+        ? visibleChoices.map(choice => ({
+          id: choice.id,
+          label: choice.label,
+          onActivate: () => choose(choice),
+        }))
         : undefined}
       assessment={assessment ? {
         promptId: assessment.id,
@@ -258,44 +356,6 @@ export default function InteractiveInvestigationViewer({
           style={{ width: '100%', height: '100%' }}
           busy={started && !ready && !error}
         />
-        {ready && !assessment && visibleChoices.length > 1 && (
-          <div
-            aria-label="Investigation choices"
-            style={{
-              position: 'absolute',
-              left: 18,
-              top: 18,
-              zIndex: 4,
-              display: 'grid',
-              gap: 8,
-              width: 'min(340px, calc(100vw - 36px))',
-              padding: 12,
-              border: '1px solid rgba(125,211,252,.3)',
-              borderRadius: 14,
-              background: 'rgba(2,10,22,.9)',
-            }}
-          >
-            {visibleChoices.map(choice => (
-              <button
-                key={choice.id}
-                type="button"
-                data-testid="interactive-choice"
-                onClick={() => choose(choice)}
-                style={{
-                  padding: '10px 12px',
-                  border: '1px solid rgba(255,255,255,.16)',
-                  borderRadius: 9,
-                  background: 'rgba(14,116,144,.32)',
-                  color: '#f8fafc',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                }}
-              >
-                {choice.label}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
     </SimulationExperienceShell>
   );

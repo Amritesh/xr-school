@@ -9,6 +9,8 @@ interface QuestVrControlsOptions {
   onBack: () => void;
   onNarrate: () => void;
   startPosition?: THREE.Vector3;
+  /** Horizontal x/z limits for continuous Quest locomotion. */
+  movementBounds?: THREE.Box2;
 }
 
 const BUTTON_PRIMARY = 4;
@@ -36,6 +38,7 @@ export function createQuestVrControls({
   onBack,
   onNarrate: _onNarrate,
   startPosition = new THREE.Vector3(0, 0, 2.6),
+  movementBounds,
 }: QuestVrControlsOptions) {
   const rig = new THREE.Group();
   rig.name = "quest-player-rig";
@@ -163,6 +166,18 @@ export function createQuestVrControls({
       const right = new THREE.Vector3(-forward.z, 0, forward.x);
       rig.position.addScaledVector(forward, -moveY * MOVE_SPEED_METRES_PER_SECOND * deltaSeconds);
       rig.position.addScaledVector(right, moveX * MOVE_SPEED_METRES_PER_SECOND * deltaSeconds);
+      if (movementBounds) {
+        rig.position.x = THREE.MathUtils.clamp(
+          rig.position.x,
+          movementBounds.min.x,
+          movementBounds.max.x,
+        );
+        rig.position.z = THREE.MathUtils.clamp(
+          rig.position.z,
+          movementBounds.min.y,
+          movementBounds.max.y,
+        );
+      }
     }
 
     if (turnX && turnReady) {

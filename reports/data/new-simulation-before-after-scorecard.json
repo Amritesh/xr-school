@@ -7,7 +7,7 @@
     "netNewClasses": 22,
     "existingEnhancements": 1,
     "baselineAverage": 55.4,
-    "postIntegrationAverage": 76.3,
+    "postIntegrationAverage": 79.9,
     "signedQuestAcceptanceRuns": 0,
     "classroomStudies": 0
   },
@@ -222,12 +222,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -278,7 +278,7 @@
             "id": "up-you-go-snow-mountain-climbing:post-narration",
             "kind": "narration",
             "ref": "narration:guided-snow-mountain-climbing",
-            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -377,12 +377,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -433,7 +433,7 @@
             "id": "up-you-go-camp-in-snow:post-narration",
             "kind": "narration",
             "ref": "narration:guided-camp-in-snow",
-            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -687,12 +687,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -743,7 +743,7 @@
             "id": "up-you-go-river-crossing-adventure:post-narration",
             "kind": "narration",
             "ref": "narration:guided-river-crossing",
-            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -842,12 +842,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -898,7 +898,7 @@
             "id": "treat-for-mosquitoes-mosquito-life-cycle:post-narration",
             "kind": "narration",
             "ref": "narration:guided-mosquito-life-cycle",
-            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -997,12 +997,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -1053,7 +1053,7 @@
             "id": "treat-for-mosquitoes-malaria-diagnosis:post-narration",
             "kind": "narration",
             "ref": "narration:guided-malaria-diagnosis",
-            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -1152,12 +1152,12 @@
           "integrity": 14,
           "interactivity": 14,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 78,
+        "total": 82,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
@@ -1208,7 +1208,7 @@
             "id": "experiments-with-water-float-or-sink:post-narration",
             "kind": "narration",
             "ref": "narration-c5-ch07-a01-a-concept-about-what-floats-what-sinks",
-            "finding": "5 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "5 stable captioned cues and 5 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -1307,12 +1307,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -1363,7 +1363,7 @@
             "id": "experiments-with-water-dead-sea-salt-water:post-narration",
             "kind": "narration",
             "ref": "narration:guided-dead-sea-salt-water",
-            "finding": "8 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "8 stable captioned cues and 8 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -1462,13 +1462,13 @@
           "integrity": 15,
           "interactivity": 15,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 81,
-        "band": "Promising internal QA",
+        "total": 85,
+        "band": "Pilot candidate",
         "remediation": [
           "Integrated the useful PR experiment as an enhancement of the existing Solubility class, avoiding a duplicate 36th simulation.",
           "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
@@ -1519,7 +1519,7 @@
             "id": "experiments-with-water-soluble-insoluble:post-narration",
             "kind": "narration",
             "ref": "narration-c5-ch07-a03-soluble-and-insoluble-substances",
-            "finding": "5 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "5 stable captioned cues and 5 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -1618,12 +1618,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -1674,7 +1674,7 @@
             "id": "every-drop-counts-rainwater-storage:post-narration",
             "kind": "narration",
             "ref": "narration:guided-rainwater-storage",
-            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "7 stable captioned cues and 7 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -1773,12 +1773,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -1829,7 +1829,7 @@
             "id": "every-drop-counts-stepwell-structure:post-narration",
             "kind": "narration",
             "ref": "narration:guided-stepwell-structure",
-            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "7 stable captioned cues and 7 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -1928,12 +1928,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -1984,7 +1984,7 @@
             "id": "seeds-and-seeds-seed-dispersal:post-narration",
             "kind": "narration",
             "ref": "narration:guided-seed-dispersal",
-            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "7 stable captioned cues and 7 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -2083,12 +2083,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -2139,7 +2139,7 @@
             "id": "seeds-and-seeds-pitcher-plant:post-narration",
             "kind": "narration",
             "ref": "narration:guided-pitcher-plant",
-            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "7 stable captioned cues and 7 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -2238,12 +2238,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -2294,7 +2294,7 @@
             "id": "mangoes-round-the-year-aam-papad:post-narration",
             "kind": "narration",
             "ref": "narration:guided-aam-papad",
-            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "7 stable captioned cues and 7 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -2393,12 +2393,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -2449,7 +2449,7 @@
             "id": "mangoes-round-the-year-milk-spoilage:post-narration",
             "kind": "narration",
             "ref": "narration:guided-milk-spoilage",
-            "finding": "6 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "6 stable captioned cues and 6 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -2548,12 +2548,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -2604,7 +2604,7 @@
             "id": "mangoes-round-the-year-food-spoilage:post-narration",
             "kind": "narration",
             "ref": "narration:guided-food-spoilage",
-            "finding": "6 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "6 stable captioned cues and 6 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -2703,12 +2703,12 @@
           "integrity": 14,
           "interactivity": 14,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 78,
+        "total": 82,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
@@ -2759,7 +2759,7 @@
             "id": "sorting-materials-by-shape:post-narration",
             "kind": "narration",
             "ref": "narration-c6-ch04-a01-sorting-materials-according-to-their-shape",
-            "finding": "4 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "4 stable captioned cues and 4 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -2858,12 +2858,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -2914,7 +2914,7 @@
             "id": "fibre-to-fabric-cotton-farming:post-narration",
             "kind": "narration",
             "ref": "narration:guided-cotton-farming",
-            "finding": "7 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "7 stable captioned cues and 7 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -3013,12 +3013,12 @@
           "integrity": 13,
           "interactivity": 13,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 75,
+        "total": 79,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, narration, assessment, assets, legacy route, and release state into a validated ImplementedSimulationDefinition.",
@@ -3069,7 +3069,7 @@
             "id": "fibre-to-fabric-cotton-ginning:post-narration",
             "kind": "narration",
             "ref": "narration:guided-cotton-ginning",
-            "finding": "6 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "6 stable captioned cues and 6 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -3168,12 +3168,12 @@
           "integrity": 14,
           "interactivity": 14,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 78,
+        "total": 82,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
@@ -3224,7 +3224,7 @@
             "id": "components-of-food-mineral-sources:post-narration",
             "kind": "narration",
             "ref": "narration-c6-ch02-a05-the-sources-of-minerals-in-food",
-            "finding": "4 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "4 stable captioned cues and 4 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -3323,12 +3323,12 @@
           "integrity": 14,
           "interactivity": 14,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 78,
+        "total": 82,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
@@ -3379,7 +3379,7 @@
             "id": "components-of-food-vitamins-deficiencies:post-narration",
             "kind": "narration",
             "ref": "narration-c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
-            "finding": "4 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "4 stable captioned cues and 4 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",
@@ -3478,12 +3478,12 @@
           "integrity": 14,
           "interactivity": 14,
           "visuals": 9,
-          "audio": 4,
+          "audio": 8,
           "usability": 8,
           "stability": 8,
           "deployment": 3
         },
-        "total": 78,
+        "total": 82,
         "band": "Promising internal QA",
         "remediation": [
           "Moved curriculum, assessment, narration, assets, legacy route, and release state into the canonical content registry.",
@@ -3534,7 +3534,7 @@
             "id": "components-of-food-lipid-test:post-narration",
             "kind": "narration",
             "ref": "narration-c6-ch02-a03-test-the-presence-of-lipids",
-            "finding": "5 stable captioned cues and 0 packaged clips are validated without network generation during build.",
+            "finding": "5 stable captioned cues and 5 packaged clips are validated without network generation during build.",
             "dimensions": [
               "audio",
               "usability",

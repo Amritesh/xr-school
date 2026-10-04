@@ -82,7 +82,7 @@ describe("fungi development lesson experience", () => {
     });
 
     expect(
-      assessment.answer("forest-transfer", "warm-damp-surface"),
+      assessment.answer("forest-transfer", "cool-dry-surface"),
     ).toMatchObject({ correct: true });
     expect(assessment.mastery()).toMatchObject({
       mastered: true,
@@ -121,7 +121,7 @@ describe("fungi development lesson experience", () => {
     });
 
     expect(
-      assessment.answer("forest-transfer", "warm-damp-surface"),
+      assessment.answer("forest-transfer", "cool-dry-surface"),
     ).toMatchObject({ correct: true, attempts: 1 });
     expect(assessment.evidence()).toContainEqual(
       expect.objectContaining({
@@ -150,8 +150,8 @@ describe("fungi development lesson experience", () => {
       "mould-safety-misconception",
       "reject-whole-soft-food",
     );
-    assessment.answer("forest-transfer", "cool-dry-surface");
     assessment.answer("forest-transfer", "warm-damp-surface");
+    assessment.answer("forest-transfer", "cool-dry-surface");
 
     expect(assessment.evidence()).toContainEqual(
       expect.objectContaining({
@@ -219,17 +219,17 @@ describe("fungi development lesson experience", () => {
     ).toMatchObject({ correct: true, attempts: 2 });
   });
 
-  it("accepts warm and damp surface reasoning as independent transfer evidence", () => {
+  it("accepts cool, dry storage reasoning as independent transfer evidence", () => {
     const assessment = createAssessmentSession(FUNGI_DEVELOPMENT.assessment);
 
     expect(
-      assessment.answer("forest-transfer", "warm-damp-surface"),
+      assessment.answer("forest-transfer", "cool-dry-surface"),
     ).toMatchObject({ correct: true });
     expect(assessment.evidence()).toContainEqual(
       expect.objectContaining({
         promptId: "forest-transfer",
         kind: "transfer",
-        evidenceId: "warm-damp-surface",
+        evidenceId: "cool-dry-surface",
         hinted: false,
       }),
     );

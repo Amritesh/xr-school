@@ -6,6 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createQuestVrControls } from "./questVrControls";
 import { playNarration, stopNarration, unlockNarration } from "./narrationAudio";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import { createScreenSafePanelFollower, drawFittedText } from "@/lib/vr/screenSafeTextPanel";
 
 type VitaminId = "A" | "B1" | "C" | "D";
 
@@ -117,27 +118,6 @@ function speakText(text: string) {
   playNarration(text);
 }
 
-function wrapText(
-  context: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  width: number,
-  lineHeight: number,
-) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const candidate = `${line}${word} `;
-    if (line && context.measureText(candidate).width > width) {
-      context.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else line = candidate;
-  }
-  if (line) context.fillText(line.trim(), x, currentY);
-}
-
 function drawLabCard(
   canvas: HTMLCanvasElement,
   stage: number,
@@ -158,15 +138,20 @@ function drawLabCard(
     24,
     38,
   );
-  context.fillStyle = "#ffffff";
-  context.font = "bold 30px sans-serif";
-  context.fillText(STAGES[stage].title, 24, 82);
-  context.fillStyle = "#cbd5e1";
-  context.font = "20px sans-serif";
-  wrapText(context, STAGES[stage].cue, 24, 120, canvas.width - 48, 28);
-  context.fillStyle = vitamin.color;
-  context.font = "bold 22px sans-serif";
-  context.fillText(`Vitamin ${vitamin.id}: ${vitamin.role}`, 24, 222);
+  drawFittedText(context, STAGES[stage].title, {
+    x: 24, y: 54, width: canvas.width - 48, height: 48,
+    color: "#ffffff", fontWeight: 800, maxFontSize: 30, minFontSize: 21,
+    maxLines: 2, verticalAlign: "middle",
+  });
+  drawFittedText(context, STAGES[stage].cue, {
+    x: 24, y: 111, width: canvas.width - 48, height: 88,
+    color: "#cbd5e1", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+  });
+  drawFittedText(context, `Vitamin ${vitamin.id}: ${vitamin.role}`, {
+    x: 24, y: 211, width: canvas.width - 48, height: 42,
+    color: vitamin.color, fontWeight: 800, maxFontSize: 22, minFontSize: 15,
+    maxLines: 2, verticalAlign: "middle",
+  });
 }
 
 function makeVitaminModel(vitamin: VitaminCase) {
@@ -393,6 +378,10 @@ export default function VitaminDeficiencyViewer() {
     );
     card.position.set(-1.25, 2.15, -0.9);
     scene.add(card);
+    const cardFollower = createScreenSafePanelFollower(card, {
+      panelWidth: 2.2,
+      panelHeight: 0.88,
+    });
 
     const makeButton = (name: string, color: number, x: number, y: number) => {
       const button = new THREE.Mesh(
@@ -526,7 +515,7 @@ export default function VitaminDeficiencyViewer() {
       const activeCamera = renderer.xr.isPresenting
         ? renderer.xr.getCamera()
         : camera;
-      card.lookAt(activeCamera.position);
+      cardFollower.update(activeCamera);
       interactables.forEach((button) => button.lookAt(activeCamera.position));
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);

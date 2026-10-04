@@ -293,7 +293,7 @@ class ReportPrimitiveTests(unittest.TestCase):
         self.assertEqual(quality_band(55), "Needs focused improvement")
         self.assertEqual(quality_band(54), "Rebuild before pilot")
 
-    def test_report_inputs_fail_closed_until_all_36_and_23_records_exist(self) -> None:
+    def test_report_inputs_fail_closed_until_all_expected_records_exist(self) -> None:
         with tempfile.TemporaryDirectory() as fixture_tmp:
             cards_path, evidence_path, scorecard_path, cards, comparisons = write_fixture_data(Path(fixture_tmp))
             evidence = json.loads(evidence_path.read_text(encoding="utf-8"))

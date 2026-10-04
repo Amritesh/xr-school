@@ -245,7 +245,17 @@ function baselineScores(total: number, hasContributedAudio: boolean): QualitySco
 
 function contentPath(definition: ImplementedSimulationDefinition): string {
   if (definition.contribution.source === 'user-story') {
-    return 'packages/simulation-content/src/implemented/fungiDevelopment.ts';
+    const userStorySources: Record<string, string> = {
+      'c7-ch03-a01-shearing-and-scouring-of-wool': 'packages/simulation-content/src/implemented/guided/shearing-scouring.ts',
+      'c7-ch03-a03-spinning-and-rolling-of-wool': 'packages/simulation-content/src/implemented/guided/yarn-maker-mission.ts',
+      'c8-ch01-a03-irrigation-methods': 'packages/simulation-content/src/implemented/guided/irrigation-methods.ts',
+      'c8-ch01-a05-harvesting-threshing-and-storage-of-crops': 'packages/simulation-content/src/implemented/guided/harvesting-threshing-storage.ts',
+      'c8-ch02-a02-virus-introduction-spreading-and-its-effects': 'packages/simulation-content/src/implemented/guided/virus-invasion.ts',
+      'c8-ch02-a03-fungi-and-its-development': 'packages/simulation-content/src/implemented/fungiDevelopment.ts',
+    };
+    const source = userStorySources[definition.module.slug];
+    if (!source) throw new Error(`Missing user-story content evidence for ${definition.module.slug}`);
+    return source;
   }
   if (definition.contribution.source !== 'pr-8') {
     return 'packages/simulation-content/src/implemented/existing.ts';
@@ -266,7 +276,17 @@ function contentPath(definition: ImplementedSimulationDefinition): string {
 
 function behaviorTest(definition: ImplementedSimulationDefinition): string {
   if (definition.contribution.source === 'user-story') {
-    return 'tests/unit/fungi-development-viewer.test.ts';
+    const userStoryTests: Record<string, string> = {
+      'c7-ch03-a01-shearing-and-scouring-of-wool': 'tests/unit/wool-processing-viewer.test.ts',
+      'c7-ch03-a03-spinning-and-rolling-of-wool': 'tests/unit/yarn-maker-viewer.test.ts',
+      'c8-ch01-a03-irrigation-methods': 'tests/unit/irrigation-methods-viewer.test.ts',
+      'c8-ch01-a05-harvesting-threshing-and-storage-of-crops': 'tests/unit/harvesting-storage-viewer.test.ts',
+      'c8-ch02-a02-virus-introduction-spreading-and-its-effects': 'tests/unit/virus-invasion-viewer.test.ts',
+      'c8-ch02-a03-fungi-and-its-development': 'tests/unit/fungi-development-viewer.test.ts',
+    };
+    const test = userStoryTests[definition.module.slug];
+    if (!test) throw new Error(`Missing user-story behavior evidence for ${definition.module.slug}`);
+    return test;
   }
   if (definition.contribution.source !== 'pr-8') {
     return 'tests/unit/implemented-simulation-registry.test.ts';

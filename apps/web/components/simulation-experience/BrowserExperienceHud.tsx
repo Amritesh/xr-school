@@ -21,6 +21,7 @@ interface BrowserExperienceHudProps {
     disabled?: boolean;
     onActivate(): void;
   };
+  choices?: readonly { id: string; label: string; onActivate(): void }[];
   assessment?: {
     promptId: string;
     question: string;
@@ -50,6 +51,7 @@ export default function BrowserExperienceHud({
     + 'compared treatment with control, planted a seed, and identified the radicle and plumule.',
   completionActionLabel = 'Review final observation',
   primaryAction,
+  choices,
   assessment,
   caption,
   feedback,
@@ -125,16 +127,6 @@ export default function BrowserExperienceHud({
         </p>
       )}
 
-      {feedback && !assessment?.feedback && (
-        <p
-          className="simulation-experience__caption"
-          data-testid={ACCEPTANCE_HOOKS.feedback}
-          role="status"
-        >
-          {feedback}
-        </p>
-      )}
-
       {completed && (
         <section
           className="simulation-experience__complete-panel"
@@ -162,6 +154,9 @@ export default function BrowserExperienceHud({
             </h2>
             <p data-testid={ACCEPTANCE_HOOKS.stageCue}>{snapshot.cue}</p>
             {helpText && <small>{helpText}</small>}
+            {feedback && !assessment?.feedback && (
+              <p data-testid={ACCEPTANCE_HOOKS.feedback} role="status">{feedback}</p>
+            )}
           </div>
           {(primaryAction || snapshot.stageIndex > 0 || snapshot.stageComplete) && (
             <div className="simulation-experience__mission-actions">
@@ -185,6 +180,15 @@ export default function BrowserExperienceHud({
                   {snapshot.lessonComplete ? 'Complete' : 'Continue'}
                 </button>
               )}
+            </div>
+          )}
+          {!assessment && choices && choices.length > 0 && (
+            <div role="group" aria-label="Investigation choices" className="simulation-experience__investigation-choices">
+              {choices.map(choice => (
+                <button key={choice.id} type="button" data-testid="interactive-choice" onClick={choice.onActivate}>
+                  {choice.label}
+                </button>
+              ))}
             </div>
           )}
           {assessment && (

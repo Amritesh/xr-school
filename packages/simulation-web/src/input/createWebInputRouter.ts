@@ -135,7 +135,7 @@ export function createWebInputRouter(config: WebInputRouterConfig): WebInputRout
       stageId,
       timestampMs,
     };
-    config.dispatch(action);
+    if (target.emitAction !== false) config.dispatch(action);
     target.onCommit?.(action);
   }
 
@@ -209,6 +209,7 @@ export function createWebInputRouter(config: WebInputRouterConfig): WebInputRout
 
   const onPointerDown = (event: PointerEvent) => {
     if (disposed) return;
+    if (event.pointerType !== 'touch' && event.button !== 0) return;
     pointerStarts.set(event.pointerId, {
       x: event.clientX,
       y: event.clientY,

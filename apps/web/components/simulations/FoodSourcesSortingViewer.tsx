@@ -7,6 +7,7 @@ import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { computeFocusFrame, createGuidedCamera } from '@/lib/world-builder/guidedCamera';
 import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
+import { createQuestVrControls } from './questVrControls';
 
 const CATEGORIES = [
   { id: 'plant', label: 'Plant source', color: '#4ade80', threeColor: 0x4ade80, cue: 'Fields, trees, grains, pulses, fruits, vegetables, oils, and spices.' },
@@ -145,6 +146,7 @@ export default function FoodSourcesSortingViewer() {
   const platformRefs = useRef<THREE.Mesh[]>([]);
   const assignmentRef = useRef<Assignments>({});
   const selectedItemRef = useRef<ItemId>('rice');
+  const stageIndexRef = useRef(0);
   const [started, setStarted] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
@@ -248,6 +250,18 @@ export default function FoodSourcesSortingViewer() {
     controller0.add(makeControllerRay());
     controller1.add(makeControllerRay());
     scene.add(controller0, controller1);
+    const questVr = createQuestVrControls({
+      renderer,
+      scene,
+      camera,
+      controllers: [controller0, controller1],
+      onPrimary: () => setFoodStage(Math.min(stageIndexRef.current + 1, STAGES.length - 1)),
+      onBack: () => setFoodStage(Math.max(stageIndexRef.current - 1, 0)),
+      onNarrate: () => {
+        const index = stageIndexRef.current;
+        void playSimulationNarration(NARRATIONS[index], index, NARRATION_AUDIO_URLS[index]);
+      },
+    });
 
     // ── Selection: one shared raycasting/highlight system for mouse + XR.
     // Lets desktop learners click tokens and platforms directly ──────────
@@ -296,6 +310,7 @@ export default function FoodSourcesSortingViewer() {
       elapsedTotal += delta;
       const elapsed = elapsedTotal;
       if (!renderer.xr.isPresenting) guidedCamera.update(delta);
+      questVr.update();
       tokenRefs.current.forEach((token, index) => {
         const target = tokenPosition(index, assignmentRef.current);
         token.position.lerp(target, 0.08);
@@ -332,6 +347,7 @@ export default function FoodSourcesSortingViewer() {
       window.removeEventListener('resize', handleResize);
       renderer.setAnimationLoop(null);
       interactionSystem.dispose();
+      questVr.dispose();
       guidedCamera.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
@@ -364,6 +380,7 @@ export default function FoodSourcesSortingViewer() {
     selectedItemRef.current = 'rice';
     setSelectedItemId('rice');
     setStageIndex(0);
+    stageIndexRef.current = 0;
     void playSimulationNarration(NARRATIONS[0], 0, NARRATION_AUDIO_URLS[0]);
   }
 
@@ -373,6 +390,7 @@ export default function FoodSourcesSortingViewer() {
   }
 
   function setFoodStage(index: number) {
+    stageIndexRef.current = index;
     setStageIndex(index);
     void playSimulationNarration(NARRATIONS[index], index, NARRATION_AUDIO_URLS[index]);
   }

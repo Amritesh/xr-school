@@ -11,7 +11,8 @@ import * as THREE from 'three';
  * Dragging is already free to claim. The input router only commits an
  * interaction when the pointer travels less than its drag threshold between
  * down and up, so a drag has always been discarded rather than treated as a
- * tap. Orbit fills that gap without competing with picking.
+ * tap. Orbit and panning fill that gap without competing with picking. A
+ * primary-button drag orbits; right-button or modifier-key drag pans.
  *
  * Deliberately has no inertia or damping. Every camera change is the direct
  * result of a pointer or wheel event, so there is no animation to suppress for
@@ -29,6 +30,8 @@ export interface OrbitCameraControlsConfig {
   maxPolarAngle?: number;
   /** Radians of rotation per pixel dragged. */
   rotateSpeed?: number;
+  /** Multiplier applied to screen-space panning. */
+  panSpeed?: number;
   /** Fraction of the current distance travelled per wheel notch. */
   zoomSpeed?: number;
 }
@@ -66,15 +69,21 @@ export function createOrbitCameraControls(
   const minPolarAngle = config.minPolarAngle ?? 0.12;
   const maxPolarAngle = config.maxPolarAngle ?? Math.PI - 0.12;
   const rotateSpeed = config.rotateSpeed ?? 0.005;
+  const panSpeed = config.panSpeed ?? 1;
   const zoomSpeed = config.zoomSpeed ?? 0.12;
 
   const targetWorld = new THREE.Vector3();
   const spherical = new THREE.Spherical(DEFAULT_DISTANCE, Math.PI / 2, 0);
   const offset = new THREE.Vector3();
   const targetLocal = new THREE.Vector3();
+  const cameraWorldPosition = new THREE.Vector3();
+  const cameraWorldQuaternion = new THREE.Quaternion();
+  const panRight = new THREE.Vector3();
+  const panUp = new THREE.Vector3();
+  const panOffset = new THREE.Vector3();
 
   /** Active drags, so a second finger becomes a pinch rather than a second orbit. */
-  const drags = new Map<number, { x: number; y: number }>();
+  const drags = new Map<number, { x: number; y: number; mode: 'orbit' | 'pan' }>();
   let pinchDistance = 0;
   let enabled = true;
   let disposed = false;
@@ -132,6 +141,34 @@ export function createOrbitCameraControls(
     apply();
   }
 
+  function pan(deltaX: number, deltaY: number) {
+    interacted = true;
+    config.camera.updateWorldMatrix(true, false);
+    config.camera.getWorldPosition(cameraWorldPosition);
+    config.camera.getWorldQuaternion(cameraWorldQuaternion);
+
+    // Scale movement to the visible height at the pivot. This keeps panning
+    // useful at both tabletop and landscape distances and mirrors the feel of
+    // Three's OrbitControls without coupling this small controller to it.
+    const distance = Math.max(
+      DEGENERATE_RADIUS,
+      cameraWorldPosition.distanceTo(targetWorld),
+    );
+    const viewportHeight = Math.max(1, config.domElement.clientHeight || 720);
+    const visibleHeight =
+      2 * distance * Math.tan(THREE.MathUtils.degToRad(config.camera.fov * 0.5));
+    const worldPerPixel = (visibleHeight / viewportHeight) * panSpeed;
+
+    panRight.set(1, 0, 0).applyQuaternion(cameraWorldQuaternion);
+    panUp.set(0, 1, 0).applyQuaternion(cameraWorldQuaternion);
+    panOffset
+      .copy(panRight)
+      .multiplyScalar(-deltaX * worldPerPixel)
+      .addScaledVector(panUp, deltaY * worldPerPixel);
+    targetWorld.add(panOffset);
+    apply();
+  }
+
   function dolly(scale: number) {
     interacted = true;
     spherical.radius *= scale;
@@ -148,7 +185,11 @@ export function createOrbitCameraControls(
 
   const onPointerDown = (event: PointerEvent) => {
     if (!active()) return;
-    drags.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const mode =
+      event.button === 2 || event.shiftKey || event.ctrlKey || event.metaKey
+        ? 'pan'
+        : 'orbit';
+    drags.set(event.pointerId, { x: event.clientX, y: event.clientY, mode });
     if (drags.size === 2) pinchDistance = touchDistance();
     // Keeps the drag alive when the pointer leaves the canvas mid-turn.
     if (config.domElement.setPointerCapture) {
@@ -176,7 +217,11 @@ export function createOrbitCameraControls(
       return;
     }
     if (deltaX === 0 && deltaY === 0) return;
-    rotate(deltaX, deltaY);
+    if (previous.mode === 'pan') {
+      pan(deltaX, deltaY);
+    } else {
+      rotate(deltaX, deltaY);
+    }
   };
 
   const release = (event: PointerEvent) => {
@@ -199,11 +244,19 @@ export function createOrbitCameraControls(
     dolly(1 + direction * zoomSpeed);
   };
 
+  const onContextMenu = (event: MouseEvent) => {
+    if (!active()) return;
+    // A right-button pan should not finish by opening the browser menu over
+    // the simulation canvas.
+    event.preventDefault();
+  };
+
   config.domElement.addEventListener('pointerdown', onPointerDown);
   config.domElement.addEventListener('pointermove', onPointerMove);
   config.domElement.addEventListener('pointerup', release);
   config.domElement.addEventListener('pointercancel', release);
   config.domElement.addEventListener('wheel', onWheel, { passive: false });
+  config.domElement.addEventListener('contextmenu', onContextMenu);
 
   sync();
 
@@ -234,6 +287,7 @@ export function createOrbitCameraControls(
       config.domElement.removeEventListener('pointerup', release);
       config.domElement.removeEventListener('pointercancel', release);
       config.domElement.removeEventListener('wheel', onWheel);
+      config.domElement.removeEventListener('contextmenu', onContextMenu);
       if (style && previousTouchAction !== undefined) {
         style.touchAction = previousTouchAction;
       }

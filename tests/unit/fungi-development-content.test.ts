@@ -22,9 +22,7 @@ describe("canonical fungi development content", () => {
       id: "sim-c08-ch02-a03-fungi-and-its-development",
       slug: "c8-ch02-a03-fungi-and-its-development",
       viewerKey: "fungi-development",
-      title: expect.stringMatching(
-        /Living Mycelium Lab|Fungi and Its Development/i,
-      ),
+      title: "The Secret Life of Fungi",
       publicationStatus: "released",
       status: "released",
       releaseMaturity: "internalQA",
@@ -33,8 +31,8 @@ describe("canonical fungi development content", () => {
       gradeBands: ["class6To8"],
       subjects: ["biology", "science"],
       applicableBoards: ["cbse"],
-      expectedDurationMinutes: 9,
-      maxSessionDurationMinutes: 10,
+      expectedDurationMinutes: 8,
+      maxSessionDurationMinutes: 12,
       stages: 7,
       comfortRiskLevel: "low",
       targetFrameRateFps: 72,
@@ -65,7 +63,7 @@ describe("canonical fungi development content", () => {
       /scale|time/i,
     );
     expect(FUNGI_DEVELOPMENT.module.practicalUseCase).toMatch(
-      /food|medicine|forest/i,
+      /food|medicine|bread/i,
     );
     expect(FUNGI_DEVELOPMENT.module.batchActivityPrompt).toMatch(
       /group|batch|headset/i,
@@ -96,7 +94,7 @@ describe("canonical fungi development content", () => {
     }
   });
 
-  it("provides one stable en-IN captioned narration cue per stage without invented audio", () => {
+  it("provides one stable recorded en-IN narration cue per stage", () => {
     expect(FUNGI_DEVELOPMENT_NARRATION).toMatchObject({
       locale: "en-IN",
       speaker: expect.any(String),
@@ -110,31 +108,39 @@ describe("canonical fungi development content", () => {
       FUNGI_DEVELOPMENT_NARRATION.cues.every((cue) => cue.caption === cue.text),
     ).toBe(true);
     expect(
-      FUNGI_DEVELOPMENT_NARRATION.cues.every((cue) => !("audioUrl" in cue)),
+      FUNGI_DEVELOPMENT_NARRATION.cues.every(
+        (cue) =>
+          cue.audioUrl?.startsWith("/narration/") &&
+          cue.audioUrl.endsWith(".mp3"),
+      ),
     ).toBe(true);
     expect(
       FUNGI_DEVELOPMENT_NARRATION.cues.map((cue) => cue.text).join(" "),
     ).toMatch(
-      /not plants.*absorb.*hyphae.*mycelium.*spores.*warm.*moist.*five.*yeast.*medicine.*decompos.*mould.*never.*forest/is,
+      /chlorophyll.*absorb.*hypha.*mycelium.*sporangia.*spores.*warm.*moist.*yeast.*medicine.*decompos.*mould.*never.*life cycle/is,
     );
 
     const captionByStage = Object.fromEntries(
       FUNGI_DEVELOPMENT_NARRATION.cues.map((cue) => [cue.stageId, cue.caption]),
     );
-    expect(captionByStage["fungal-forensics"]).toMatch(/not plants.*absorb/is);
-    expect(captionByStage["under-the-cap"]).toMatch(/hyphae.*mycelium/is);
-    expect(captionByStage["spore-flight"]).toMatch(/spores.*warm.*moist/is);
+    expect(captionByStage["fungal-forensics"]).toMatch(/chlorophyll.*absorb/is);
+    expect(captionByStage["under-the-cap"]).toMatch(
+      /hypha.*mycelium.*sporangia/is,
+    );
+    expect(captionByStage["spore-flight"]).toMatch(
+      /spores.*warmth.*moisture/is,
+    );
     expect(captionByStage["five-day-time-lens"]).toMatch(
-      /five.*spore.*hypha.*mycelium.*release/is,
+      /four.*warm.*moist.*dry.*cold.*nutrient/is,
     );
     expect(captionByStage["fungi-at-work"]).toMatch(
       /yeast.*medicine.*decompos/is,
     );
     expect(captionByStage["food-safety-scan"]).toMatch(
-      /harmful.*mould.*never/is,
+      /mould.*never.*mould/is,
     );
     expect(captionByStage["forest-circle"]).toMatch(
-      /conclusion.*forest.*nutrient/is,
+      /life cycle.*spore.*germination.*sporangium/is,
     );
   });
 
@@ -168,7 +174,7 @@ describe("canonical fungi development content", () => {
     expect(allText).toMatch(/baking.*yeast|yeast.*baking/i);
     expect(allText).toMatch(/cutting off.*mould|visible mould patch/i);
     expect(allText).toMatch(/hidden hyphae.*beyond.*visible/i);
-    expect(allText).toMatch(/sports bag|equipment bag|cloth surface/i);
+    expect(allText).toMatch(/storage.*bread|bread.*storage/i);
     expect(
       prompts.every((prompt) => prompt.retryPolicy === "immediateWithHint"),
     ).toBe(true);
@@ -184,8 +190,19 @@ describe("canonical fungi development content", () => {
     });
   });
 
-  it("declares no remote or unverifiable runtime assets", () => {
-    expect(FUNGI_DEVELOPMENT.assets.assets).toEqual([]);
+  it("declares one local, measured 360-degree laboratory environment", () => {
+    expect(FUNGI_DEVELOPMENT.assets.assets).toEqual([
+      expect.objectContaining({
+        id: "fungi-development-secret-lab-environment-v2",
+        url: "/simulations/c8-ch02-a03-fungi-and-its-development/environment-v2.webp",
+        kind: "environment",
+        width: 1774,
+        height: 887,
+        byteSize: 147742,
+        sha256:
+          "d643110d812ff97383c88eff73a150ba80377292b7e30f44a0b2b3544e790b90",
+      }),
+    ]);
   });
 
   it("uses an unfamiliar condition scenario for independent transfer without stating the answer", () => {
@@ -195,11 +212,13 @@ describe("canonical fungi development content", () => {
 
     expect(prompt).toMatchObject({
       kind: "transfer",
-      question: expect.stringMatching(/sports bag|equipment bag|cloth surface/i),
-      acceptedEvidenceIds: ["warm-damp-surface"],
+      question: expect.stringMatching(
+        /storage.*slow.*mould|slow.*mould.*bread/i,
+      ),
+      acceptedEvidenceIds: ["cool-dry-surface"],
     });
-    expect(prompt?.question).not.toMatch(/warm.*moist.*best|correct answer/i);
-    expect(prompt?.explanation).toMatch(/warm.*moist.*growth/i);
+    expect(prompt?.question).not.toMatch(/cool.*dry.*best|correct answer/i);
+    expect(prompt?.explanation).toMatch(/cool.*dry.*slow/i);
   });
 
   it("directly challenges cutting visible mould from soft food", () => {
@@ -212,6 +231,8 @@ describe("canonical fungi development content", () => {
       question: expect.stringMatching(/cutting off.*visible mould.*safe/i),
       acceptedEvidenceIds: ["reject-whole-soft-food"],
     });
-    expect(prompt?.explanation).toMatch(/hidden hyphae.*beyond.*visible patch/i);
+    expect(prompt?.explanation).toMatch(
+      /hidden hyphae.*beyond.*visible patch/i,
+    );
   });
 });

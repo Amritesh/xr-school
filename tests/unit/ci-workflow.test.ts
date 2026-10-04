@@ -70,25 +70,24 @@ describe('web build workflows', () => {
   });
 
   // Replaces the old `toContain('run: npm run verify')` assertion. quality.yml
-  // now runs the stages as individual steps, to get per-stage timing in the UI
-  // and to fail fast, so the invariant worth guarding is that no stage of the
-  // canonical gate is silently dropped from CI.
-  it('quality runs every stage of the root verification gate', () => {
+  // Browser E2E stays local because its real-time WebGL journeys make hosted
+  // pull-request checks too slow. All other canonical stages remain in CI.
+  it('quality runs every non-browser stage of the root verification gate', () => {
     expect(verifyStages.length).toBeGreaterThan(10);
     const workflowStages = new Set(
       [...qualityWorkflow.matchAll(/run: npm run ([\w:-]+)/g)].map((match) => match[1]),
     );
-    // e2e is sharded, so it appears as an `npx playwright test --shard=` step.
-    expect(qualityWorkflow).toContain('--shard=');
+    expect(qualityWorkflow).not.toContain('playwright test');
     for (const stage of verifyStages) {
       if (stage === 'test:e2e') continue;
       expect(workflowStages, `quality.yml is missing verify stage ${stage}`).toContain(stage);
     }
   });
 
-  it('documents the same strict verification gate used by CI', () => {
+  it('documents the full local gate as a superset of the CI gate', () => {
     expect(readme).toContain('npm run verify');
-    expect(readme).toContain('GitHub Actions quality gate');
+    expect(readme).toContain('every check in the GitHub Actions quality gate');
+    expect(readme).toMatch(/Browser E2E\s+stays local/);
     expect(readme).toContain('git diff --exit-code -- generated/openapi/openapi.json');
   });
 
@@ -148,12 +147,12 @@ describe('web build workflows', () => {
     expect(rootPackage.scripts?.verify).not.toContain('narration:author');
   });
 
-  it('quality installs the report and browser verification runtime', () => {
+  it('quality installs the report runtime without browser E2E', () => {
     expect(qualityWorkflow).toContain('actions/setup-python@v5');
     expect(qualityWorkflow).toContain('python-version: "3.12"');
     expect(qualityWorkflow).toContain('python -m pip install -r requirements-report.txt');
     expect(qualityWorkflow).toContain('sudo apt-get install -y poppler-utils');
-    expect(qualityWorkflow).toContain('npx playwright install --with-deps chromium');
+    expect(qualityWorkflow).not.toContain('npx playwright install');
     expect(qualityWorkflow).not.toMatch(/edge_tts|requirements-narration\.txt|pip install --user|narration:author/);
   });
 

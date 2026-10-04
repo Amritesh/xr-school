@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 import * as THREE from 'three';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
@@ -11,19 +12,27 @@ import {
   COLOUR_ADVENTURE_STAGES,
   COLOUR_ADVENTURE_VR_REQUIREMENTS,
   COLOUR_MEMORY_QUESTIONS,
-  answerColourMemoryQuestion,
+  applyColourAdventureAction,
+  canFinishColourMemory,
+  canVisitColourStage,
+  colourMemoryActionId,
   createColourAdventureProgress,
   getColourMemoryScore,
+  getActiveColourQuestion,
   isColourAdventureStageComplete,
-  recordColourAdventureAction,
   type ColourAdventureProgress,
   type ColourAdventureStageId,
-  type ColourId,
 } from '@/lib/colourAdventureLesson';
+import { createColourMemoryScene, makeColourPanel } from '@/lib/colourAdventureScene';
+import styles from './ColourAdventureViewer.module.css';
 import {
   playSimulationNarration,
   stopSimulationNarration,
 } from '@/lib/simulationAudio';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
+import { createQuestVrControls } from './questVrControls';
+
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c1-art-a01-learning-of-colours');
 
 const colourHexById = new Map(COLOUR_ADVENTURE_COLOURS.map(colour => [colour.id, colour.hex]));
 const colourNameById = new Map(COLOUR_ADVENTURE_COLOURS.map(colour => [colour.id, colour.name]));
@@ -98,14 +107,7 @@ function material(color: number, opacity = 1) {
 }
 
 function makeLabel(text: string, accent = '#facc15') {
-  return new THREE.Mesh(
-    new THREE.PlaneGeometry(1.42, 0.54),
-    new THREE.MeshBasicMaterial({
-      map: makeTextTexture(text, '', accent, 460, 150),
-      transparent: true,
-      depthTest: false,
-    }),
-  );
+  return makeColourPanel(text, '', accent);
 }
 
 function addActionTarget(
@@ -305,35 +307,20 @@ function buildColourStageGroups(scene: THREE.Scene, targets: THREE.Object3D[]) {
 
   const find = groups.get('find-colours')!;
   COLOUR_ADVENTURE_COLOURS.forEach((colour, index) => {
-    const angle = (index / COLOUR_ADVENTURE_COLOURS.length) * Math.PI * 2;
     addActionTarget(
       find,
       targets,
       `find-${colour.id}`,
       colour.name,
       hexToNumber(colour.hex),
-      [Math.cos(angle) * 1.55, 1.2 + (index % 2) * 0.24, Math.sin(angle) * 0.48],
+      [-1.8 + index % 5 * 0.9, 1.8 - Math.floor(index / 5) * 0.9, 0],
     );
   });
   addParticleRing(find, 'find-colours-stars-coins-rainbow-reward', 0xfacc15, 150);
 
   const memory = groups.get('memory-check')!;
-  const memoryBoard = makeLabel('Memory Game', '#67e8f9');
-  memoryBoard.name = 'holographic-memory-check-board';
-  memoryBoard.position.set(0, 1.95, -0.55);
-  memory.add(memoryBoard);
-  ['red', 'blue', 'yellow', 'green'].forEach((colourId, index) => {
-    const colorNumber = hexToNumber(colourHexById.get(colourId as ColourId) ?? '#ffffff');
-    addActionTarget(
-      memory,
-      targets,
-      `memory-pad-${colourId}`,
-      colourNameById.get(colourId as ColourId) ?? colourId,
-      colorNumber,
-      [-1.25 + index * 0.85, 0.95, 0.72],
-    );
-  });
-  addActionTarget(memory, targets, 'complete-memory-check', 'Finish', 0x22c55e, [0, 0.48, 0.9]);
+  const memoryScene = createColourMemoryScene(memory);
+  targets.push(...memoryScene.targets);
 
   const celebration = groups.get('celebration')!;
   for (let index = 0; index < 14; index += 1) {
@@ -345,7 +332,7 @@ function buildColourStageGroups(scene: THREE.Scene, targets: THREE.Object3D[]) {
   }
   addParticleRing(celebration, 'rainbow-finale-balloons-butterflies-confetti', 0xfacc15, 220);
 
-  return { groups };
+  return { groups, memoryScene };
 }
 
 function setTargetComplete(target: THREE.Object3D) {
@@ -358,6 +345,7 @@ function setTargetComplete(target: THREE.Object3D) {
 
 export default function ColourAdventureViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const panelContentRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const stageGroupsRef = useRef<Map<ColourAdventureStageId, THREE.Group>>(new Map());
   const interactiveTargetsRef = useRef<THREE.Object3D[]>([]);
@@ -366,7 +354,9 @@ export default function ColourAdventureViewer() {
   const performActionRef = useRef<(actionId: string) => void>(() => undefined);
   const goToStageRef = useRef<(index: number) => void>(() => undefined);
   const focusStageRef = useRef<(stageId: ColourAdventureStageId, animate?: boolean) => void>(() => undefined);
+  const memorySceneRef = useRef<ReturnType<typeof createColourMemoryScene> | null>(null);
   const comfortModeRef = useRef(true);
+  const speakRef = useRef<(text: string, cueIndex?: number) => void>(() => undefined);
   const animatedRefs = useRef<{ teacher?: THREE.Group }>({});
 
   const [started, setStarted] = useState(false);
@@ -376,61 +366,42 @@ export default function ColourAdventureViewer() {
   const [feedback, setFeedback] = useState('Touch Start when you are ready.');
   const [muted, setMuted] = useState(false);
   const [comfortMode, setComfortMode] = useState(true);
-  const [memoryQuestionIndex, setMemoryQuestionIndex] = useState(0);
 
   const stage = COLOUR_ADVENTURE_STAGES[stageIndex];
   const completedActionIds = progress.completedActions[stage.id] ?? [];
   const stageComplete = isColourAdventureStageComplete(progress, stage.id);
-  const memoryQuestion = COLOUR_MEMORY_QUESTIONS[memoryQuestionIndex];
+  const memoryQuestion = getActiveColourQuestion(progress);
+  const memoryReady = canFinishColourMemory(progress);
   const memoryScore = getColourMemoryScore(progress);
 
   const speak = useCallback((text: string, cueIndex = stageIndexRef.current) => {
     if (muted) return;
-    void playSimulationNarration(text, cueIndex);
+    const isStageNarration = text === COLOUR_ADVENTURE_STAGES[cueIndex]?.teacherNarration;
+    void playSimulationNarration(text, cueIndex, isStageNarration ? NARRATION_AUDIO_URLS[cueIndex] : undefined);
   }, [muted]);
+  speakRef.current = speak;
 
   const performAction = useCallback((actionId: string) => {
     const currentStage = COLOUR_ADVENTURE_STAGES[stageIndexRef.current];
-    if (currentStage.requiredActionIds.includes(actionId)) {
-      setProgress(current => {
-        const next = recordColourAdventureAction(current, currentStage.id, actionId);
-        progressRef.current = next;
-        return next;
-      });
+    const result = applyColourAdventureAction(progressRef.current, currentStage.id, actionId);
+    // Update synchronously so two input sources cannot validate against stale React state.
+    progressRef.current = result.progress;
+    setProgress(result.progress);
+    setFeedback(result.feedback);
+    memorySceneRef.current?.update(result.progress, result.feedback);
+    if (result.accepted && currentStage.id !== 'memory-check') {
       const target = interactiveTargetsRef.current.find(item => item.userData.actionId === actionId);
       if (target) setTargetComplete(target);
-      const message = actionId === 'complete-memory-check'
-        ? 'Wonderful remembering! You finished the colour memory game.'
-        : 'Wonderful! Stars and sparkles for you.';
-      setFeedback(message);
-      speak(message);
-      return;
     }
-
-    const memoryPrefix = 'memory-pad-';
-    if (currentStage.id === 'memory-check' && actionId.startsWith(memoryPrefix)) {
-      const colourId = actionId.replace(memoryPrefix, '') as ColourId;
-      const correct = colourId === memoryQuestion.correctColourId;
-      setProgress(current => {
-        const next = answerColourMemoryQuestion(current, memoryQuestion.id, colourId);
-        progressRef.current = next;
-        return next;
-      });
-      const message = correct
-        ? `Correct! ${memoryQuestion.objectName} is ${colourNameById.get(colourId)}.`
-        : `That's okay. ${memoryQuestion.objectName} is ${colourNameById.get(memoryQuestion.correctColourId)}. Let's try the next one.`;
-      setFeedback(message);
-      speak(message, 30 + memoryQuestionIndex);
-      setMemoryQuestionIndex(index => Math.min(index + 1, COLOUR_MEMORY_QUESTIONS.length - 1));
-      return;
-    }
-  }, [memoryQuestion, memoryQuestionIndex, speak]);
+    speak(result.feedback, 30);
+  }, [speak]);
   performActionRef.current = performAction;
 
   const goToStage = useCallback((requestedIndex: number) => {
+    if (!Number.isInteger(requestedIndex)) return;
     const currentIndex = stageIndexRef.current;
     const nextIndex = Math.min(Math.max(requestedIndex, 0), COLOUR_ADVENTURE_STAGES.length - 1);
-    if (nextIndex > currentIndex && !isColourAdventureStageComplete(progressRef.current, COLOUR_ADVENTURE_STAGES[currentIndex].id)) {
+    if (nextIndex > currentIndex && !canVisitColourStage(progressRef.current, nextIndex)) {
       setFeedback(COLOUR_ADVENTURE_STAGES[currentIndex].interactionPrompt);
       return;
     }
@@ -449,9 +420,9 @@ export default function ColourAdventureViewer() {
     setProgress(fresh);
     setStageIndex(0);
     stageIndexRef.current = 0;
-    setMemoryQuestionIndex(0);
     setFeedback('Touch Start when you are ready.');
     stopSimulationNarration();
+    memorySceneRef.current?.update(fresh);
     interactiveTargetsRef.current.forEach(target => {
       target.scale.setScalar(1);
       const mesh = target as THREE.Mesh;
@@ -474,8 +445,13 @@ export default function ColourAdventureViewer() {
     for (const [id, group] of stageGroupsRef.current) {
       group.visible = id === stage.id;
     }
+    if (panelContentRef.current) panelContentRef.current.scrollTop = 0;
     focusStageRef.current(stage.id, true);
   }, [stage.id]);
+
+  useEffect(() => {
+    memorySceneRef.current?.update(progress, stage.id === 'memory-check' ? feedback : '');
+  }, [progress, feedback, stage.id]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -525,6 +501,7 @@ export default function ColourAdventureViewer() {
     interactiveTargetsRef.current = interactiveTargets;
     const built = buildColourStageGroups(scene, interactiveTargets);
     stageGroupsRef.current = built.groups;
+    memorySceneRef.current = built.memoryScene;
 
     const nav = new THREE.Group();
     nav.name = 'colour-vr-controller-navigation';
@@ -543,6 +520,28 @@ export default function ColourAdventureViewer() {
     controller0.add(makeRay());
     controller1.add(makeRay());
     scene.add(controller0, controller1);
+    const questVr = createQuestVrControls({
+      renderer,
+      scene,
+      camera,
+      controllers: [controller0, controller1],
+      onPrimary: () => {
+        const current = COLOUR_ADVENTURE_STAGES[stageIndexRef.current];
+        if (current.id === 'memory-check' && !isColourAdventureStageComplete(progressRef.current, current.id)) {
+          performActionRef.current('complete-memory-check');
+          return;
+        }
+        const completed = progressRef.current.completedActions[current.id] ?? [];
+        const actionId = current.requiredActionIds.find(id => !completed.includes(id));
+        if (actionId) performActionRef.current(actionId);
+        else goToStageRef.current(stageIndexRef.current + 1);
+      },
+      onBack: () => goToStageRef.current(stageIndexRef.current - 1),
+      onNarrate: () => {
+        const current = COLOUR_ADVENTURE_STAGES[stageIndexRef.current];
+        speakRef.current(current.teacherNarration, stageIndexRef.current);
+      },
+    });
 
     const interactionSystem = createInteractionSystem({
       camera,
@@ -569,7 +568,17 @@ export default function ColourAdventureViewer() {
       const delta = clock.getDelta();
       elapsed += delta;
       const time = elapsed;
+      guidedCamera.controls.enabled = !renderer.xr.isPresenting;
       if (!renderer.xr.isPresenting) guidedCamera.update(delta);
+      questVr.update();
+      interactionSystem.update(elapsed);
+      if (renderer.xr.isPresenting) interactionSystem.updateXrHover();
+      const inMemory = COLOUR_ADVENTURE_STAGES[stageIndexRef.current].id === 'memory-check';
+      classroom.room.visible = !inMemory;
+      // Phones use the fixed browser navigation; keep both ray targets in VR.
+      nav.visible = renderer.xr.isPresenting || camera.aspect >= 1.25;
+      back.position.set(inMemory ? -2.2 : -1, inMemory ? 0.1 : 0.42, 1.1);
+      next.position.set(inMemory ? 2.2 : 1, inMemory ? 0.1 : 0.42, 1.1);
       const intensity = comfortModeRef.current ? 0.4 : 1;
       rainbowLight.intensity = 1.8 + Math.sin(time * 1.4) * 0.3 * intensity;
       const { teacher } = animatedRefs.current;
@@ -589,11 +598,7 @@ export default function ColourAdventureViewer() {
           object.rotation.y += delta * 0.25 * intensity;
         }
       });
-      interactiveTargets.forEach((target, index) => {
-        if (target.visible && target.parent?.visible) {
-          target.rotation.y = time * 0.35 + index * 0.16;
-        }
-      });
+      // Keep answer labels facing forward instead of continually rotating away.
       renderer.render(scene, camera);
     });
 
@@ -604,11 +609,15 @@ export default function ColourAdventureViewer() {
       renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
     window.addEventListener('resize', onResize);
+    const resizeObserver = new ResizeObserver(onResize);
+    resizeObserver.observe(mount);
 
     return () => {
       renderer.setAnimationLoop(null);
       window.removeEventListener('resize', onResize);
+      resizeObserver.disconnect();
       interactionSystem.dispose();
+      questVr.dispose();
       guidedCamera.dispose();
       scene.traverse(object => {
         const mesh = object as THREE.Mesh;
@@ -623,6 +632,7 @@ export default function ColourAdventureViewer() {
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       stopSimulationNarration();
+      memorySceneRef.current = null;
     };
   }, []);
 
@@ -648,23 +658,16 @@ export default function ColourAdventureViewer() {
   }, [speak]);
 
   const stageProgressLabel = useMemo(() => {
-    if (stage.id === 'memory-check') return `${Object.keys(progress.memoryAnswers).length}/${COLOUR_MEMORY_QUESTIONS.length} answers`;
+    if (stage.id === 'memory-check') return `${memoryScore.correct}/${COLOUR_MEMORY_QUESTIONS.length} matched`;
     if (stage.requiredActionIds.length === 0) return 'Ready';
     return `${completedActionIds.length}/${stage.requiredActionIds.length} actions`;
-  }, [completedActionIds.length, progress.memoryAnswers, stage.id, stage.requiredActionIds.length]);
+  }, [completedActionIds.length, memoryScore.correct, stage.id, stage.requiredActionIds.length]);
 
   return (
-    <div style={{
-      position: 'relative',
-      width: '100%',
-      height: '100vh',
-      overflow: 'hidden',
-      background: '#1e1b4b',
-      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-    }}>
+    <div className={styles.root} data-started={started}>
       <SimulationCanvasHost
         ref={mountRef}
-        style={{ width: '100%', height: '100%' }}
+        className={styles.scene}
         ariaLabel="Colour Adventure world"
       />
       <ClassroomSync
@@ -719,29 +722,19 @@ export default function ColourAdventureViewer() {
               <button type="button" onClick={startLesson} style={primaryButtonStyle}>Open Adventure</button>
               {vrSupported && <button type="button" onClick={enterVR} style={secondaryButtonStyle}>Enter VR</button>}
             </div>
+            <p style={{ marginTop: 22 }}><Link href="/simulations/colour-picnic-preview" style={{ color: '#dcf3aa', textUnderlineOffset: 5 }}>Try the new hands-on Colour Picnic · 2-minute sample →</Link></p>
           </section>
         </div>
       )}
 
       {started && (
         <>
-          <header className="colour-hud-header" style={{
-            position: 'absolute',
-            top: 14,
-            left: 14,
-            right: 14,
-            zIndex: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 12,
-            pointerEvents: 'none',
-          }}>
+          <header className={styles.header}>
             <div style={panelHeaderStyle}>
               <strong>Stage {stageIndex + 1} / {COLOUR_ADVENTURE_STAGES.length}</strong>
               <span style={{ color: '#fde68a', marginLeft: 10 }}>{stage.title}</span>
             </div>
-            <div className="colour-utility-controls" style={{ display: 'flex', gap: 8, pointerEvents: 'auto' }}>
+            <div className={styles.tools}>
               <button
                 type="button"
                 onClick={() => {
@@ -757,34 +750,29 @@ export default function ColourAdventureViewer() {
               <button type="button" onClick={() => setComfortMode(value => !value)} style={utilityButtonStyle}>
                 Comfort {comfortMode ? 'on' : 'off'}
               </button>
+              <button type="button" onClick={() => speak(stage.teacherNarration, stageIndex)} style={utilityButtonStyle}>
+                Replay voice
+              </button>
               <button type="button" aria-label="Restart adventure" onClick={restart} style={utilityButtonStyle}>
                 Restart
               </button>
             </div>
           </header>
 
-          <aside className="colour-stage-panel" style={{
-            position: 'absolute',
-            zIndex: 8,
-            right: 16,
-            top: 78,
-            bottom: 16,
-            width: 'min(360px, calc(100vw - 32px))',
-            overflowY: 'auto',
-            padding: 18,
-            borderRadius: 18,
-            border: '1px solid rgba(253,230,138,.28)',
-            background: 'linear-gradient(160deg,rgba(30,27,75,.94),rgba(67,56,202,.86))',
-            color: '#f8fafc',
-            boxShadow: '0 24px 70px rgba(0,0,0,.34)',
-            backdropFilter: 'blur(14px)',
-          }}>
+          <div className={styles.cameraTools}>
+            <span>Drag to orbit · Right-drag to pan · Scroll to zoom</span>
+            <button type="button" onClick={() => focusStageRef.current(stage.id, false)}>Reset view</button>
+          </div>
+          <aside className={styles.panel} aria-label="Colour activity">
+            <div ref={panelContentRef} className={styles.panelContent}>
             <div style={{ color: '#fde68a', fontSize: 12, fontWeight: 900, letterSpacing: '.13em' }}>
               {stageProgressLabel.toUpperCase()}
             </div>
             <h2 style={{ margin: '7px 0 8px', fontSize: 24 }}>{stage.title}</h2>
             <p style={{ color: '#e0e7ff', lineHeight: 1.5, margin: '0 0 10px' }}>{stage.interactionPrompt}</p>
-            <p style={{
+            <details className={styles.transcript}>
+              <summary>Teacher transcript</summary>
+              <p style={{
               margin: '0 0 14px',
               padding: '11px 12px',
               borderRadius: 12,
@@ -794,7 +782,8 @@ export default function ColourAdventureViewer() {
               fontSize: 14,
             }}>
               {stage.teacherNarration}
-            </p>
+              </p>
+            </details>
 
             {stage.id !== 'memory-check' ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
@@ -817,19 +806,20 @@ export default function ColourAdventureViewer() {
               </div>
             ) : (
               <div style={{ display: 'grid', gap: 10 }}>
-                <strong>{memoryQuestion.prompt}</strong>
+                <strong>{memoryQuestion?.prompt ?? 'All ten objects matched!'}</strong>
+                {memoryQuestion && <span className={styles.specimenName}>Look at the {memoryQuestion.objectName.toLowerCase()} in the scene.</span>}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
-                  {memoryQuestion.optionIds.map(colourId => (
+                  {memoryQuestion?.optionIds.map(colourId => (
                     <button
                       key={colourId}
                       type="button"
-                      onClick={() => performAction(`memory-pad-${colourId}`)}
+                      onClick={() => performAction(colourMemoryActionId(memoryQuestion.id, colourId))}
                       style={{
                         padding: '12px 10px',
                         borderRadius: 12,
                         border: '1px solid rgba(255,255,255,.25)',
                         background: colourHexById.get(colourId),
-                        color: colourId === 'white' || colourId === 'yellow' ? '#111827' : '#fff',
+                        color: ['white', 'yellow', 'green', 'orange', 'pink'].includes(colourId) ? '#111827' : '#fff',
                         fontWeight: 900,
                         cursor: 'pointer',
                       }}
@@ -841,8 +831,8 @@ export default function ColourAdventureViewer() {
                 <button
                   type="button"
                   onClick={() => performAction('complete-memory-check')}
-                  disabled={Object.keys(progress.memoryAnswers).length < COLOUR_MEMORY_QUESTIONS.length}
-                  style={actionButtonStyle(Object.keys(progress.memoryAnswers).length >= COLOUR_MEMORY_QUESTIONS.length)}
+                  disabled={!memoryReady || stageComplete}
+                  style={actionButtonStyle(memoryReady)}
                 >
                   Finish Memory Game
                 </button>
@@ -862,8 +852,8 @@ export default function ColourAdventureViewer() {
             }}>
               {feedback}
             </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 12 }}>
+            </div>
+            <nav className={styles.navigation} aria-label="Lesson navigation">
               <button
                 type="button"
                 aria-label="Previous stage"
@@ -882,7 +872,7 @@ export default function ColourAdventureViewer() {
               >
                 Next
               </button>
-            </div>
+            </nav>
           </aside>
         </>
       )}

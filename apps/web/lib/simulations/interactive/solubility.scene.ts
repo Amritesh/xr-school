@@ -28,6 +28,11 @@ export function createSolubilitySceneAdapter() {
     slug,
     accent: '#38bdf8',
     build(_context, root) {
+      // Aim between the apparatus and its controls, never at a group's floor-level origin.
+      const labFocus = new THREE.Object3D();
+      labFocus.name = 'solubility-apparatus-focus';
+      labFocus.position.set(0, 1.2, -1.04);
+      root.add(labFocus);
       const beaker = new THREE.Mesh(
         new THREE.CylinderGeometry(0.66, 0.56, 1.25, 32, 1, true),
         new THREE.MeshPhysicalMaterial({
@@ -40,6 +45,7 @@ export function createSolubilitySceneAdapter() {
         }),
       );
       beaker.position.set(0, 1.52, -1.04);
+      beaker.name = 'solubility-beaker';
       root.add(beaker);
       const mixture = new THREE.Mesh(
         new THREE.CylinderGeometry(0.54, 0.49, 0.82, 28),
@@ -181,9 +187,7 @@ export function createSolubilitySceneAdapter() {
           rateGroup.visible = stageId === 'investigate-rate';
         },
         focusTarget() {
-          if (stageId === 'fair-test') return trialGroup;
-          if (stageId === 'investigate-rate') return rateGroup;
-          return predictionGroup;
+          return labFocus;
         },
       };
     },

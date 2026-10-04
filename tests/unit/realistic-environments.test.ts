@@ -6,7 +6,7 @@ import { GUIDED_IMPLEMENTED_SIMULATIONS } from '@xr-school/simulation-content';
 
 describe('Canonical guided environments', () => {
   it('assigns one topic-specific local environment to every guided class', () => {
-    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(17);
+    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(22);
     for (const record of GUIDED_IMPLEMENTED_SIMULATIONS) {
       const environments = record.assets.assets.filter(asset => asset.kind === 'environment');
       expect(environments, record.module.slug).toHaveLength(1);

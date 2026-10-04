@@ -24,6 +24,8 @@ export interface SimulationInteractionTarget {
   actionId: string;
   accessibilityLabel: string;
   inputSources?: NormalizedInputSource[];
+  /** Set false for host-level controls that must not enter lesson state. */
+  emitAction?: boolean;
   onCommit?(action: NormalizedAction): void;
 }
 

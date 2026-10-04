@@ -1,5 +1,141 @@
 [
   {
+    "slug": "c5-ch07-a03-soluble-and-insoluble-substances",
+    "title": "Soluble and Insoluble Substances Lab",
+    "route": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/experiments-with-water-soluble-insoluble"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 19,
+      "integrity": 15,
+      "interactivity": 15,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Pilot candidate",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:definition",
+        "c5-ch07-a03-soluble-and-insoluble-substances:behavior"
+      ],
+      "integrity": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:definition",
+        "c5-ch07-a03-soluble-and-insoluble-substances:behavior"
+      ],
+      "interactivity": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
+        "c5-ch07-a03-soluble-and-insoluble-substances:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:assets"
+      ],
+      "audio": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:narration"
+      ],
+      "usability": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
+        "c5-ch07-a03-soluble-and-insoluble-substances:narration",
+        "c5-ch07-a03-soluble-and-insoluble-substances:browser-contract"
+      ],
+      "stability": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
+        "c5-ch07-a03-soluble-and-insoluble-substances:assets",
+        "c5-ch07-a03-soluble-and-insoluble-substances:release-build"
+      ],
+      "deployment": [
+        "c5-ch07-a03-soluble-and-insoluble-substances:release-build"
+      ]
+    },
+    "summary": "Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "5 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c8-ch02-a03-fungi-and-its-development",
+    "title": "The Secret Life of Fungi",
+    "route": "/simulations/c8-ch02-a03-fungi-and-its-development",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [],
+    "grade": "Class 8",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
+      "visuals": 11,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c8-ch02-a03-fungi-and-its-development:definition",
+        "c8-ch02-a03-fungi-and-its-development:behavior"
+      ],
+      "integrity": [
+        "c8-ch02-a03-fungi-and-its-development:definition",
+        "c8-ch02-a03-fungi-and-its-development:behavior"
+      ],
+      "interactivity": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "c8-ch02-a03-fungi-and-its-development:browser-contract"
+      ],
+      "visuals": [
+        "c8-ch02-a03-fungi-and-its-development:assets"
+      ],
+      "audio": [
+        "c8-ch02-a03-fungi-and-its-development:narration"
+      ],
+      "usability": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "c8-ch02-a03-fungi-and-its-development:narration",
+        "c8-ch02-a03-fungi-and-its-development:browser-contract"
+      ],
+      "stability": [
+        "c8-ch02-a03-fungi-and-its-development:behavior",
+        "c8-ch02-a03-fungi-and-its-development:assets",
+        "c8-ch02-a03-fungi-and-its-development:release-build"
+      ],
+      "deployment": [
+        "c8-ch02-a03-fungi-and-its-development:release-build"
+      ]
+    },
+    "summary": "The Secret Life of Fungi is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "7 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
     "slug": "pollination",
     "title": "Plant Pollination & Growth Cycle",
     "route": "/simulations/pollination",
@@ -67,23 +203,23 @@
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
   },
   {
-    "slug": "c5-ch07-a03-soluble-and-insoluble-substances",
-    "title": "Soluble and Insoluble Substances Lab",
-    "route": "/simulations/c5-ch07-a03-soluble-and-insoluble-substances",
+    "slug": "c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "title": "What Floats, What Sinks?",
+    "route": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
     "publicationStatus": "released",
     "evidenceMaturity": "internalQA",
     "legacyPaths": [
-      "/simulations/experiments-with-water-soluble-insoluble"
+      "/simulations/experiments-with-water-float-or-sink"
     ],
     "grade": "Class 5",
     "subject": "Environmental Science, Science",
     "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
     "scores": {
-      "education": 19,
-      "integrity": 15,
-      "interactivity": 15,
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -91,46 +227,458 @@
     "band": "Promising internal QA",
     "dimensionEvidence": {
       "education": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:definition",
-        "c5-ch07-a03-soluble-and-insoluble-substances:behavior"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:definition",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior"
       ],
       "integrity": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:definition",
-        "c5-ch07-a03-soluble-and-insoluble-substances:behavior"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:definition",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior"
       ],
       "interactivity": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
-        "c5-ch07-a03-soluble-and-insoluble-substances:browser-contract"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:browser-contract"
       ],
       "visuals": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:assets"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:assets"
       ],
       "audio": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:narration"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:narration"
       ],
       "usability": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
-        "c5-ch07-a03-soluble-and-insoluble-substances:narration",
-        "c5-ch07-a03-soluble-and-insoluble-substances:browser-contract"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:narration",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:browser-contract"
       ],
       "stability": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:behavior",
-        "c5-ch07-a03-soluble-and-insoluble-substances:assets",
-        "c5-ch07-a03-soluble-and-insoluble-substances:release-build"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:assets",
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:release-build"
       ],
       "deployment": [
-        "c5-ch07-a03-soluble-and-insoluble-substances:release-build"
+        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:release-build"
       ]
     },
-    "summary": "Soluble and Insoluble Substances Lab is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "summary": "What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
       "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c6-ch02-a03-test-the-presence-of-lipids",
+    "title": "Test the Presence of Lipids",
+    "route": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/components-of-food-lipid-test"
+    ],
+    "grade": "Class 6",
+    "subject": "Science, Biology",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c6-ch02-a03-test-the-presence-of-lipids:definition",
+        "c6-ch02-a03-test-the-presence-of-lipids:behavior"
+      ],
+      "integrity": [
+        "c6-ch02-a03-test-the-presence-of-lipids:definition",
+        "c6-ch02-a03-test-the-presence-of-lipids:behavior"
+      ],
+      "interactivity": [
+        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
+        "c6-ch02-a03-test-the-presence-of-lipids:browser-contract"
+      ],
+      "visuals": [
+        "c6-ch02-a03-test-the-presence-of-lipids:assets"
+      ],
+      "audio": [
+        "c6-ch02-a03-test-the-presence-of-lipids:narration"
+      ],
+      "usability": [
+        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
+        "c6-ch02-a03-test-the-presence-of-lipids:narration",
+        "c6-ch02-a03-test-the-presence-of-lipids:browser-contract"
+      ],
+      "stability": [
+        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
+        "c6-ch02-a03-test-the-presence-of-lipids:assets",
+        "c6-ch02-a03-test-the-presence-of-lipids:release-build"
+      ],
+      "deployment": [
+        "c6-ch02-a03-test-the-presence-of-lipids:release-build"
+      ]
+    },
+    "summary": "Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "5 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "title": "Sources of Vitamins and Their Deficiencies",
+    "route": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/components-of-food-vitamins-deficiencies"
+    ],
+    "grade": "Class 6",
+    "subject": "Science, Biology",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:definition",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior"
+      ],
+      "integrity": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:definition",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior"
+      ],
+      "interactivity": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:browser-contract"
+      ],
+      "visuals": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:assets"
+      ],
+      "audio": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:narration"
+      ],
+      "usability": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:narration",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:browser-contract"
+      ],
+      "stability": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:assets",
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:release-build"
+      ],
+      "deployment": [
+        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:release-build"
+      ]
+    },
+    "summary": "Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "4 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c6-ch02-a05-the-sources-of-minerals-in-food",
+    "title": "The Sources of Minerals in Food",
+    "route": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/components-of-food-mineral-sources"
+    ],
+    "grade": "Class 6",
+    "subject": "Science, Biology",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:definition",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior"
+      ],
+      "integrity": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:definition",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior"
+      ],
+      "interactivity": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:browser-contract"
+      ],
+      "visuals": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:assets"
+      ],
+      "audio": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:narration"
+      ],
+      "usability": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:narration",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:browser-contract"
+      ],
+      "stability": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:assets",
+        "c6-ch02-a05-the-sources-of-minerals-in-food:release-build"
+      ],
+      "deployment": [
+        "c6-ch02-a05-the-sources-of-minerals-in-food:release-build"
+      ]
+    },
+    "summary": "The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "4 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c6-ch04-a01-sorting-materials-according-to-their-shape",
+    "title": "Sorting Materials According to Their Shape",
+    "route": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/sorting-materials-by-shape"
+    ],
+    "grade": "Class 6",
+    "subject": "Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 18,
+      "integrity": 14,
+      "interactivity": 14,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:definition",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior"
+      ],
+      "integrity": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:definition",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior"
+      ],
+      "interactivity": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:browser-contract"
+      ],
+      "visuals": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:assets"
+      ],
+      "audio": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:narration"
+      ],
+      "usability": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:narration",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:browser-contract"
+      ],
+      "stability": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:assets",
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build"
+      ],
+      "deployment": [
+        "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build"
+      ]
+    },
+    "summary": "Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "4 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c7-ch03-a01-shearing-and-scouring-of-wool",
+    "title": "Shearing and Scouring of Wool",
+    "route": "/simulations/c7-ch03-a01-shearing-and-scouring-of-wool",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/fibre-to-fabric-shearing-scouring"
+    ],
+    "grade": "Class 7",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 11,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:definition",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:behavior"
+      ],
+      "integrity": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:definition",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:behavior"
+      ],
+      "interactivity": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:behavior",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:browser-contract"
+      ],
+      "visuals": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:assets"
+      ],
+      "audio": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:narration"
+      ],
+      "usability": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:behavior",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:narration",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:browser-contract"
+      ],
+      "stability": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:behavior",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:assets",
+        "c7-ch03-a01-shearing-and-scouring-of-wool:release-build"
+      ],
+      "deployment": [
+        "c7-ch03-a01-shearing-and-scouring-of-wool:release-build"
+      ]
+    },
+    "summary": "Shearing and Scouring of Wool is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "10 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "10 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c7-ch03-a03-spinning-and-rolling-of-wool",
+    "title": "Spinning and Rolling of Wool",
+    "route": "/simulations/c7-ch03-a03-spinning-and-rolling-of-wool",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [],
+    "grade": "Class 7",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 11,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:definition",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:behavior"
+      ],
+      "integrity": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:definition",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:behavior"
+      ],
+      "interactivity": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:behavior",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:browser-contract"
+      ],
+      "visuals": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:assets"
+      ],
+      "audio": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:narration"
+      ],
+      "usability": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:behavior",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:narration",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:browser-contract"
+      ],
+      "stability": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:behavior",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:assets",
+        "c7-ch03-a03-spinning-and-rolling-of-wool:release-build"
+      ],
+      "deployment": [
+        "c7-ch03-a03-spinning-and-rolling-of-wool:release-build"
+      ]
+    },
+    "summary": "Spinning and Rolling of Wool is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "10 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "10 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -193,7 +741,208 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c8-ch01-a03-irrigation-methods",
+    "title": "Irrigation Methods: Every Root Gets Water",
+    "route": "/simulations/c8-ch01-a03-irrigation-methods",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [],
+    "grade": "Class 8",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 11,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c8-ch01-a03-irrigation-methods:definition",
+        "c8-ch01-a03-irrigation-methods:behavior"
+      ],
+      "integrity": [
+        "c8-ch01-a03-irrigation-methods:definition",
+        "c8-ch01-a03-irrigation-methods:behavior"
+      ],
+      "interactivity": [
+        "c8-ch01-a03-irrigation-methods:behavior",
+        "c8-ch01-a03-irrigation-methods:browser-contract"
+      ],
+      "visuals": [
+        "c8-ch01-a03-irrigation-methods:assets"
+      ],
+      "audio": [
+        "c8-ch01-a03-irrigation-methods:narration"
+      ],
+      "usability": [
+        "c8-ch01-a03-irrigation-methods:behavior",
+        "c8-ch01-a03-irrigation-methods:narration",
+        "c8-ch01-a03-irrigation-methods:browser-contract"
+      ],
+      "stability": [
+        "c8-ch01-a03-irrigation-methods:behavior",
+        "c8-ch01-a03-irrigation-methods:assets",
+        "c8-ch01-a03-irrigation-methods:release-build"
+      ],
+      "deployment": [
+        "c8-ch01-a03-irrigation-methods:release-build"
+      ]
+    },
+    "summary": "Irrigation Methods: Every Root Gets Water is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c8-ch01-a05-harvesting-threshing-and-storage-of-crops",
+    "title": "Harvesting, Threshing and Storage of Crops",
+    "route": "/simulations/c8-ch01-a05-harvesting-threshing-and-storage-of-crops",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [],
+    "grade": "Class 8",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 11,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:definition",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:behavior"
+      ],
+      "integrity": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:definition",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:behavior"
+      ],
+      "interactivity": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:behavior",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:browser-contract"
+      ],
+      "visuals": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:assets"
+      ],
+      "audio": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:narration"
+      ],
+      "usability": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:behavior",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:narration",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:browser-contract"
+      ],
+      "stability": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:behavior",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:assets",
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:release-build"
+      ],
+      "deployment": [
+        "c8-ch01-a05-harvesting-threshing-and-storage-of-crops:release-build"
+      ]
+    },
+    "summary": "Harvesting, Threshing and Storage of Crops is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Asset richness and visual clarity still need a representative low-end device review.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c8-ch02-a02-virus-introduction-spreading-and-its-effects",
+    "title": "The Invisible Invader: Break the Viral Chain",
+    "route": "/simulations/c8-ch02-a02-virus-introduction-spreading-and-its-effects",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [],
+    "grade": "Class 8",
+    "subject": "Biology, Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 11,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:definition",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:behavior"
+      ],
+      "integrity": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:definition",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:behavior"
+      ],
+      "interactivity": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:behavior",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:browser-contract"
+      ],
+      "visuals": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:assets"
+      ],
+      "audio": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:narration"
+      ],
+      "usability": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:behavior",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:narration",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:browser-contract"
+      ],
+      "stability": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:behavior",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:assets",
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:release-build"
+      ],
+      "deployment": [
+        "c8-ch02-a02-virus-introduction-spreading-and-its-effects:release-build"
+      ]
+    },
+    "summary": "The Invisible Invader: Break the Viral Chain is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -270,75 +1019,6 @@
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
   },
   {
-    "slug": "c8-ch02-a03-fungi-and-its-development",
-    "title": "Living Mycelium Lab: Fungi and Its Development",
-    "route": "/simulations/c8-ch02-a03-fungi-and-its-development",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [],
-    "grade": "Class 8",
-    "subject": "Biology, Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 18,
-      "integrity": 14,
-      "interactivity": 14,
-      "visuals": 11,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c8-ch02-a03-fungi-and-its-development:definition",
-        "c8-ch02-a03-fungi-and-its-development:behavior"
-      ],
-      "integrity": [
-        "c8-ch02-a03-fungi-and-its-development:definition",
-        "c8-ch02-a03-fungi-and-its-development:behavior"
-      ],
-      "interactivity": [
-        "c8-ch02-a03-fungi-and-its-development:behavior",
-        "c8-ch02-a03-fungi-and-its-development:browser-contract"
-      ],
-      "visuals": [
-        "c8-ch02-a03-fungi-and-its-development:visual-source",
-        "c8-ch02-a03-fungi-and-its-development:visual-behavior"
-      ],
-      "audio": [
-        "c8-ch02-a03-fungi-and-its-development:narration"
-      ],
-      "usability": [
-        "c8-ch02-a03-fungi-and-its-development:behavior",
-        "c8-ch02-a03-fungi-and-its-development:narration",
-        "c8-ch02-a03-fungi-and-its-development:browser-contract"
-      ],
-      "stability": [
-        "c8-ch02-a03-fungi-and-its-development:behavior",
-        "c8-ch02-a03-fungi-and-its-development:visual-source",
-        "c8-ch02-a03-fungi-and-its-development:visual-behavior",
-        "c8-ch02-a03-fungi-and-its-development:release-build"
-      ],
-      "deployment": [
-        "c8-ch02-a03-fungi-and-its-development:release-build"
-      ]
-    },
-    "summary": "Living Mycelium Lab: Fungi and Its Development is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "7 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
     "slug": "circuit",
     "title": "Electric Circuits & Resistance (Ohm's Law)",
     "route": "/simulations/circuit",
@@ -406,6 +1086,765 @@
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
   },
   {
+    "slug": "c5-ch04-a01-food-spoilage",
+    "title": "Food Spoilage",
+    "route": "/simulations/c5-ch04-a01-food-spoilage",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/mangoes-round-the-year-food-spoilage"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch04-a01-food-spoilage:definition",
+        "c5-ch04-a01-food-spoilage:behavior"
+      ],
+      "integrity": [
+        "c5-ch04-a01-food-spoilage:definition",
+        "c5-ch04-a01-food-spoilage:behavior"
+      ],
+      "interactivity": [
+        "c5-ch04-a01-food-spoilage:behavior",
+        "c5-ch04-a01-food-spoilage:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch04-a01-food-spoilage:assets"
+      ],
+      "audio": [
+        "c5-ch04-a01-food-spoilage:narration"
+      ],
+      "usability": [
+        "c5-ch04-a01-food-spoilage:behavior",
+        "c5-ch04-a01-food-spoilage:narration",
+        "c5-ch04-a01-food-spoilage:browser-contract"
+      ],
+      "stability": [
+        "c5-ch04-a01-food-spoilage:behavior",
+        "c5-ch04-a01-food-spoilage:assets",
+        "c5-ch04-a01-food-spoilage:release-build"
+      ],
+      "deployment": [
+        "c5-ch04-a01-food-spoilage:release-build"
+      ]
+    },
+    "summary": "Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "6 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch04-a02-milk-spoilage",
+    "title": "Milk Spoilage",
+    "route": "/simulations/c5-ch04-a02-milk-spoilage",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/mangoes-round-the-year-milk-spoilage"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch04-a02-milk-spoilage:definition",
+        "c5-ch04-a02-milk-spoilage:behavior"
+      ],
+      "integrity": [
+        "c5-ch04-a02-milk-spoilage:definition",
+        "c5-ch04-a02-milk-spoilage:behavior"
+      ],
+      "interactivity": [
+        "c5-ch04-a02-milk-spoilage:behavior",
+        "c5-ch04-a02-milk-spoilage:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch04-a02-milk-spoilage:assets"
+      ],
+      "audio": [
+        "c5-ch04-a02-milk-spoilage:narration"
+      ],
+      "usability": [
+        "c5-ch04-a02-milk-spoilage:behavior",
+        "c5-ch04-a02-milk-spoilage:narration",
+        "c5-ch04-a02-milk-spoilage:browser-contract"
+      ],
+      "stability": [
+        "c5-ch04-a02-milk-spoilage:behavior",
+        "c5-ch04-a02-milk-spoilage:assets",
+        "c5-ch04-a02-milk-spoilage:release-build"
+      ],
+      "deployment": [
+        "c5-ch04-a02-milk-spoilage:release-build"
+      ]
+    },
+    "summary": "Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "6 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch04-a03-the-making-of-aam-papad",
+    "title": "The Making of Aam Papad",
+    "route": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/mangoes-round-the-year-aam-papad"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch04-a03-the-making-of-aam-papad:definition",
+        "c5-ch04-a03-the-making-of-aam-papad:behavior"
+      ],
+      "integrity": [
+        "c5-ch04-a03-the-making-of-aam-papad:definition",
+        "c5-ch04-a03-the-making-of-aam-papad:behavior"
+      ],
+      "interactivity": [
+        "c5-ch04-a03-the-making-of-aam-papad:behavior",
+        "c5-ch04-a03-the-making-of-aam-papad:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch04-a03-the-making-of-aam-papad:assets"
+      ],
+      "audio": [
+        "c5-ch04-a03-the-making-of-aam-papad:narration"
+      ],
+      "usability": [
+        "c5-ch04-a03-the-making-of-aam-papad:behavior",
+        "c5-ch04-a03-the-making-of-aam-papad:narration",
+        "c5-ch04-a03-the-making-of-aam-papad:browser-contract"
+      ],
+      "stability": [
+        "c5-ch04-a03-the-making-of-aam-papad:behavior",
+        "c5-ch04-a03-the-making-of-aam-papad:assets",
+        "c5-ch04-a03-the-making-of-aam-papad:release-build"
+      ],
+      "deployment": [
+        "c5-ch04-a03-the-making-of-aam-papad:release-build"
+      ]
+    },
+    "summary": "The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch05-a01-pitcher-plant-the-insect-hunter",
+    "title": "Pitcher Plant — The Insect Hunter",
+    "route": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/seeds-and-seeds-pitcher-plant"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:definition",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior"
+      ],
+      "integrity": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:definition",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior"
+      ],
+      "interactivity": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:assets"
+      ],
+      "audio": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:narration"
+      ],
+      "usability": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:narration",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:browser-contract"
+      ],
+      "stability": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:assets",
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:release-build"
+      ],
+      "deployment": [
+        "c5-ch05-a01-pitcher-plant-the-insect-hunter:release-build"
+      ]
+    },
+    "summary": "Pitcher Plant — The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch05-a02-seed-dispersal",
+    "title": "Seed Dispersal",
+    "route": "/simulations/c5-ch05-a02-seed-dispersal",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/seeds-and-seeds-seed-dispersal"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch05-a02-seed-dispersal:definition",
+        "c5-ch05-a02-seed-dispersal:behavior"
+      ],
+      "integrity": [
+        "c5-ch05-a02-seed-dispersal:definition",
+        "c5-ch05-a02-seed-dispersal:behavior"
+      ],
+      "interactivity": [
+        "c5-ch05-a02-seed-dispersal:behavior",
+        "c5-ch05-a02-seed-dispersal:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch05-a02-seed-dispersal:assets"
+      ],
+      "audio": [
+        "c5-ch05-a02-seed-dispersal:narration"
+      ],
+      "usability": [
+        "c5-ch05-a02-seed-dispersal:behavior",
+        "c5-ch05-a02-seed-dispersal:narration",
+        "c5-ch05-a02-seed-dispersal:browser-contract"
+      ],
+      "stability": [
+        "c5-ch05-a02-seed-dispersal:behavior",
+        "c5-ch05-a02-seed-dispersal:assets",
+        "c5-ch05-a02-seed-dispersal:release-build"
+      ],
+      "deployment": [
+        "c5-ch05-a02-seed-dispersal:release-build"
+      ]
+    },
+    "summary": "Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch06-a01-the-storage-of-rainwater",
+    "title": "The Storage of Rainwater",
+    "route": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/every-drop-counts-rainwater-storage"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch06-a01-the-storage-of-rainwater:definition",
+        "c5-ch06-a01-the-storage-of-rainwater:behavior"
+      ],
+      "integrity": [
+        "c5-ch06-a01-the-storage-of-rainwater:definition",
+        "c5-ch06-a01-the-storage-of-rainwater:behavior"
+      ],
+      "interactivity": [
+        "c5-ch06-a01-the-storage-of-rainwater:behavior",
+        "c5-ch06-a01-the-storage-of-rainwater:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch06-a01-the-storage-of-rainwater:assets"
+      ],
+      "audio": [
+        "c5-ch06-a01-the-storage-of-rainwater:narration"
+      ],
+      "usability": [
+        "c5-ch06-a01-the-storage-of-rainwater:behavior",
+        "c5-ch06-a01-the-storage-of-rainwater:narration",
+        "c5-ch06-a01-the-storage-of-rainwater:browser-contract"
+      ],
+      "stability": [
+        "c5-ch06-a01-the-storage-of-rainwater:behavior",
+        "c5-ch06-a01-the-storage-of-rainwater:assets",
+        "c5-ch06-a01-the-storage-of-rainwater:release-build"
+      ],
+      "deployment": [
+        "c5-ch06-a01-the-storage-of-rainwater:release-build"
+      ]
+    },
+    "summary": "The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch06-a02-a-step-well-structure",
+    "title": "A Step Well Structure",
+    "route": "/simulations/c5-ch06-a02-a-step-well-structure",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/every-drop-counts-stepwell-structure"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch06-a02-a-step-well-structure:definition",
+        "c5-ch06-a02-a-step-well-structure:behavior"
+      ],
+      "integrity": [
+        "c5-ch06-a02-a-step-well-structure:definition",
+        "c5-ch06-a02-a-step-well-structure:behavior"
+      ],
+      "interactivity": [
+        "c5-ch06-a02-a-step-well-structure:behavior",
+        "c5-ch06-a02-a-step-well-structure:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch06-a02-a-step-well-structure:assets"
+      ],
+      "audio": [
+        "c5-ch06-a02-a-step-well-structure:narration"
+      ],
+      "usability": [
+        "c5-ch06-a02-a-step-well-structure:behavior",
+        "c5-ch06-a02-a-step-well-structure:narration",
+        "c5-ch06-a02-a-step-well-structure:browser-contract"
+      ],
+      "stability": [
+        "c5-ch06-a02-a-step-well-structure:behavior",
+        "c5-ch06-a02-a-step-well-structure:assets",
+        "c5-ch06-a02-a-step-well-structure:release-build"
+      ],
+      "deployment": [
+        "c5-ch06-a02-a-step-well-structure:release-build"
+      ]
+    },
+    "summary": "A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "title": "Dead Sea: Salt Water and Its Effects",
+    "route": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/experiments-with-water-dead-sea-salt-water"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:definition",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior"
+      ],
+      "integrity": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:definition",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior"
+      ],
+      "interactivity": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:assets"
+      ],
+      "audio": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:narration"
+      ],
+      "usability": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:narration",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:browser-contract"
+      ],
+      "stability": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:assets",
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:release-build"
+      ],
+      "deployment": [
+        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:release-build"
+      ]
+    },
+    "summary": "Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch08-a01-diagnosis-of-malaria",
+    "title": "Diagnosis of Malaria",
+    "route": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/treat-for-mosquitoes-malaria-diagnosis"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch08-a01-diagnosis-of-malaria:definition",
+        "c5-ch08-a01-diagnosis-of-malaria:behavior"
+      ],
+      "integrity": [
+        "c5-ch08-a01-diagnosis-of-malaria:definition",
+        "c5-ch08-a01-diagnosis-of-malaria:behavior"
+      ],
+      "interactivity": [
+        "c5-ch08-a01-diagnosis-of-malaria:behavior",
+        "c5-ch08-a01-diagnosis-of-malaria:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch08-a01-diagnosis-of-malaria:assets"
+      ],
+      "audio": [
+        "c5-ch08-a01-diagnosis-of-malaria:narration"
+      ],
+      "usability": [
+        "c5-ch08-a01-diagnosis-of-malaria:behavior",
+        "c5-ch08-a01-diagnosis-of-malaria:narration",
+        "c5-ch08-a01-diagnosis-of-malaria:browser-contract"
+      ],
+      "stability": [
+        "c5-ch08-a01-diagnosis-of-malaria:behavior",
+        "c5-ch08-a01-diagnosis-of-malaria:assets",
+        "c5-ch08-a01-diagnosis-of-malaria:release-build"
+      ],
+      "deployment": [
+        "c5-ch08-a01-diagnosis-of-malaria:release-build"
+      ]
+    },
+    "summary": "Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch08-a02-life-cycle-of-the-mosquito",
+    "title": "Life Cycle of the Mosquito",
+    "route": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/treat-for-mosquitoes-mosquito-life-cycle"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:definition",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior"
+      ],
+      "integrity": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:definition",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior"
+      ],
+      "interactivity": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:assets"
+      ],
+      "audio": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:narration"
+      ],
+      "usability": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:narration",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:browser-contract"
+      ],
+      "stability": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:assets",
+        "c5-ch08-a02-life-cycle-of-the-mosquito:release-build"
+      ],
+      "deployment": [
+        "c5-ch08-a02-life-cycle-of-the-mosquito:release-build"
+      ]
+    },
+    "summary": "Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch09-a01-river-crossing-adventure",
+    "title": "River Crossing Adventure",
+    "route": "/simulations/c5-ch09-a01-river-crossing-adventure",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/up-you-go-river-crossing-adventure"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch09-a01-river-crossing-adventure:definition",
+        "c5-ch09-a01-river-crossing-adventure:behavior"
+      ],
+      "integrity": [
+        "c5-ch09-a01-river-crossing-adventure:definition",
+        "c5-ch09-a01-river-crossing-adventure:behavior"
+      ],
+      "interactivity": [
+        "c5-ch09-a01-river-crossing-adventure:behavior",
+        "c5-ch09-a01-river-crossing-adventure:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch09-a01-river-crossing-adventure:assets"
+      ],
+      "audio": [
+        "c5-ch09-a01-river-crossing-adventure:narration"
+      ],
+      "usability": [
+        "c5-ch09-a01-river-crossing-adventure:behavior",
+        "c5-ch09-a01-river-crossing-adventure:narration",
+        "c5-ch09-a01-river-crossing-adventure:browser-contract"
+      ],
+      "stability": [
+        "c5-ch09-a01-river-crossing-adventure:behavior",
+        "c5-ch09-a01-river-crossing-adventure:assets",
+        "c5-ch09-a01-river-crossing-adventure:release-build"
+      ],
+      "deployment": [
+        "c5-ch09-a01-river-crossing-adventure:release-build"
+      ]
+    },
+    "summary": "River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
     "slug": "c5-ch09-a02-rock-climbing",
     "title": "Rock Climbing",
     "route": "/simulations/c5-ch09-a02-rock-climbing",
@@ -462,6 +1901,144 @@
       ]
     },
     "summary": "Rock Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch09-a03-camp-in-the-snow",
+    "title": "Camp in the Snow",
+    "route": "/simulations/c5-ch09-a03-camp-in-the-snow",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/up-you-go-camp-in-snow"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch09-a03-camp-in-the-snow:definition",
+        "c5-ch09-a03-camp-in-the-snow:behavior"
+      ],
+      "integrity": [
+        "c5-ch09-a03-camp-in-the-snow:definition",
+        "c5-ch09-a03-camp-in-the-snow:behavior"
+      ],
+      "interactivity": [
+        "c5-ch09-a03-camp-in-the-snow:behavior",
+        "c5-ch09-a03-camp-in-the-snow:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch09-a03-camp-in-the-snow:assets"
+      ],
+      "audio": [
+        "c5-ch09-a03-camp-in-the-snow:narration"
+      ],
+      "usability": [
+        "c5-ch09-a03-camp-in-the-snow:behavior",
+        "c5-ch09-a03-camp-in-the-snow:narration",
+        "c5-ch09-a03-camp-in-the-snow:browser-contract"
+      ],
+      "stability": [
+        "c5-ch09-a03-camp-in-the-snow:behavior",
+        "c5-ch09-a03-camp-in-the-snow:assets",
+        "c5-ch09-a03-camp-in-the-snow:release-build"
+      ],
+      "deployment": [
+        "c5-ch09-a03-camp-in-the-snow:release-build"
+      ]
+    },
+    "summary": "Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "strengths": [
+      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "8 committed narration clips are owned by the manifest with exact captions."
+    ],
+    "risks": [
+      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
+      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
+      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
+    ],
+    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
+  },
+  {
+    "slug": "c5-ch09-a04-snow-mountain-climbing",
+    "title": "Snow Mountain Climbing",
+    "route": "/simulations/c5-ch09-a04-snow-mountain-climbing",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA",
+    "legacyPaths": [
+      "/simulations/up-you-go-snow-mountain-climbing"
+    ],
+    "grade": "Class 5",
+    "subject": "Environmental Science",
+    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
+    "scores": {
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
+      "visuals": 9,
+      "audio": 8,
+      "usability": 8,
+      "stability": 8,
+      "deployment": 3
+    },
+    "band": "Promising internal QA",
+    "dimensionEvidence": {
+      "education": [
+        "c5-ch09-a04-snow-mountain-climbing:definition",
+        "c5-ch09-a04-snow-mountain-climbing:behavior"
+      ],
+      "integrity": [
+        "c5-ch09-a04-snow-mountain-climbing:definition",
+        "c5-ch09-a04-snow-mountain-climbing:behavior"
+      ],
+      "interactivity": [
+        "c5-ch09-a04-snow-mountain-climbing:behavior",
+        "c5-ch09-a04-snow-mountain-climbing:browser-contract"
+      ],
+      "visuals": [
+        "c5-ch09-a04-snow-mountain-climbing:assets"
+      ],
+      "audio": [
+        "c5-ch09-a04-snow-mountain-climbing:narration"
+      ],
+      "usability": [
+        "c5-ch09-a04-snow-mountain-climbing:behavior",
+        "c5-ch09-a04-snow-mountain-climbing:narration",
+        "c5-ch09-a04-snow-mountain-climbing:browser-contract"
+      ],
+      "stability": [
+        "c5-ch09-a04-snow-mountain-climbing:behavior",
+        "c5-ch09-a04-snow-mountain-climbing:assets",
+        "c5-ch09-a04-snow-mountain-climbing:release-build"
+      ],
+      "deployment": [
+        "c5-ch09-a04-snow-mountain-climbing:release-build"
+      ]
+    },
+    "summary": "Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
@@ -544,92 +2121,23 @@
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
   },
   {
-    "slug": "c5-ch07-a01-a-concept-about-what-floats-what-sinks",
-    "title": "What Floats, What Sinks?",
-    "route": "/simulations/c5-ch07-a01-a-concept-about-what-floats-what-sinks",
+    "slug": "c6-ch03-a01-cotton-farming",
+    "title": "Cotton Farming",
+    "route": "/simulations/c6-ch03-a01-cotton-farming",
     "publicationStatus": "released",
     "evidenceMaturity": "internalQA",
     "legacyPaths": [
-      "/simulations/experiments-with-water-float-or-sink"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science, Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 18,
-      "integrity": 14,
-      "interactivity": 14,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:definition",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior"
-      ],
-      "integrity": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:definition",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior"
-      ],
-      "interactivity": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:assets"
-      ],
-      "audio": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:narration"
-      ],
-      "usability": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:narration",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:browser-contract"
-      ],
-      "stability": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:behavior",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:assets",
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:release-build"
-      ],
-      "deployment": [
-        "c5-ch07-a01-a-concept-about-what-floats-what-sinks:release-build"
-      ]
-    },
-    "summary": "What Floats, What Sinks? is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c6-ch02-a03-test-the-presence-of-lipids",
-    "title": "Test the Presence of Lipids",
-    "route": "/simulations/c6-ch02-a03-test-the-presence-of-lipids",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/components-of-food-lipid-test"
+      "/simulations/fibre-to-fabric-cotton-farming"
     ],
     "grade": "Class 6",
-    "subject": "Science, Biology",
+    "subject": "Environmental Science",
     "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
     "scores": {
-      "education": 18,
-      "integrity": 14,
-      "interactivity": 14,
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -637,42 +2145,42 @@
     "band": "Promising internal QA",
     "dimensionEvidence": {
       "education": [
-        "c6-ch02-a03-test-the-presence-of-lipids:definition",
-        "c6-ch02-a03-test-the-presence-of-lipids:behavior"
+        "c6-ch03-a01-cotton-farming:definition",
+        "c6-ch03-a01-cotton-farming:behavior"
       ],
       "integrity": [
-        "c6-ch02-a03-test-the-presence-of-lipids:definition",
-        "c6-ch02-a03-test-the-presence-of-lipids:behavior"
+        "c6-ch03-a01-cotton-farming:definition",
+        "c6-ch03-a01-cotton-farming:behavior"
       ],
       "interactivity": [
-        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
-        "c6-ch02-a03-test-the-presence-of-lipids:browser-contract"
+        "c6-ch03-a01-cotton-farming:behavior",
+        "c6-ch03-a01-cotton-farming:browser-contract"
       ],
       "visuals": [
-        "c6-ch02-a03-test-the-presence-of-lipids:assets"
+        "c6-ch03-a01-cotton-farming:assets"
       ],
       "audio": [
-        "c6-ch02-a03-test-the-presence-of-lipids:narration"
+        "c6-ch03-a01-cotton-farming:narration"
       ],
       "usability": [
-        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
-        "c6-ch02-a03-test-the-presence-of-lipids:narration",
-        "c6-ch02-a03-test-the-presence-of-lipids:browser-contract"
+        "c6-ch03-a01-cotton-farming:behavior",
+        "c6-ch03-a01-cotton-farming:narration",
+        "c6-ch03-a01-cotton-farming:browser-contract"
       ],
       "stability": [
-        "c6-ch02-a03-test-the-presence-of-lipids:behavior",
-        "c6-ch02-a03-test-the-presence-of-lipids:assets",
-        "c6-ch02-a03-test-the-presence-of-lipids:release-build"
+        "c6-ch03-a01-cotton-farming:behavior",
+        "c6-ch03-a01-cotton-farming:assets",
+        "c6-ch03-a01-cotton-farming:release-build"
       ],
       "deployment": [
-        "c6-ch02-a03-test-the-presence-of-lipids:release-build"
+        "c6-ch03-a01-cotton-farming:release-build"
       ]
     },
-    "summary": "Test the Presence of Lipids is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "summary": "Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
-      "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "7 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -682,161 +2190,23 @@
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
   },
   {
-    "slug": "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
-    "title": "Sources of Vitamins and Their Deficiencies",
-    "route": "/simulations/c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies",
+    "slug": "c6-ch03-a02-the-process-of-cotton-ginning",
+    "title": "The Process of Cotton Ginning",
+    "route": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
     "publicationStatus": "released",
     "evidenceMaturity": "internalQA",
     "legacyPaths": [
-      "/simulations/components-of-food-vitamins-deficiencies"
-    ],
-    "grade": "Class 6",
-    "subject": "Science, Biology",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 18,
-      "integrity": 14,
-      "interactivity": 14,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:definition",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior"
-      ],
-      "integrity": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:definition",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior"
-      ],
-      "interactivity": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:browser-contract"
-      ],
-      "visuals": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:assets"
-      ],
-      "audio": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:narration"
-      ],
-      "usability": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:narration",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:browser-contract"
-      ],
-      "stability": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:behavior",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:assets",
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:release-build"
-      ],
-      "deployment": [
-        "c6-ch02-a04-the-sources-of-vitamins-and-their-deficiencies:release-build"
-      ]
-    },
-    "summary": "Sources of Vitamins and Their Deficiencies is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c6-ch02-a05-the-sources-of-minerals-in-food",
-    "title": "The Sources of Minerals in Food",
-    "route": "/simulations/c6-ch02-a05-the-sources-of-minerals-in-food",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/components-of-food-mineral-sources"
-    ],
-    "grade": "Class 6",
-    "subject": "Science, Biology",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 18,
-      "integrity": 14,
-      "interactivity": 14,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:definition",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior"
-      ],
-      "integrity": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:definition",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior"
-      ],
-      "interactivity": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:browser-contract"
-      ],
-      "visuals": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:assets"
-      ],
-      "audio": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:narration"
-      ],
-      "usability": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:narration",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:browser-contract"
-      ],
-      "stability": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:behavior",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:assets",
-        "c6-ch02-a05-the-sources-of-minerals-in-food:release-build"
-      ],
-      "deployment": [
-        "c6-ch02-a05-the-sources-of-minerals-in-food:release-build"
-      ]
-    },
-    "summary": "The Sources of Minerals in Food is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c6-ch04-a01-sorting-materials-according-to-their-shape",
-    "title": "Sorting Materials According to Their Shape",
-    "route": "/simulations/c6-ch04-a01-sorting-materials-according-to-their-shape",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/sorting-materials-by-shape"
+      "/simulations/fibre-to-fabric-cotton-ginning"
     ],
     "grade": "Class 6",
     "subject": "Science",
     "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
     "scores": {
-      "education": 18,
-      "integrity": 14,
-      "interactivity": 14,
+      "education": 17,
+      "integrity": 13,
+      "interactivity": 13,
       "visuals": 9,
-      "audio": 4,
+      "audio": 8,
       "usability": 8,
       "stability": 8,
       "deployment": 3
@@ -844,42 +2214,42 @@
     "band": "Promising internal QA",
     "dimensionEvidence": {
       "education": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:definition",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior"
+        "c6-ch03-a02-the-process-of-cotton-ginning:definition",
+        "c6-ch03-a02-the-process-of-cotton-ginning:behavior"
       ],
       "integrity": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:definition",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior"
+        "c6-ch03-a02-the-process-of-cotton-ginning:definition",
+        "c6-ch03-a02-the-process-of-cotton-ginning:behavior"
       ],
       "interactivity": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:browser-contract"
+        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
+        "c6-ch03-a02-the-process-of-cotton-ginning:browser-contract"
       ],
       "visuals": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:assets"
+        "c6-ch03-a02-the-process-of-cotton-ginning:assets"
       ],
       "audio": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:narration"
+        "c6-ch03-a02-the-process-of-cotton-ginning:narration"
       ],
       "usability": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:narration",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:browser-contract"
+        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
+        "c6-ch03-a02-the-process-of-cotton-ginning:narration",
+        "c6-ch03-a02-the-process-of-cotton-ginning:browser-contract"
       ],
       "stability": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:behavior",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:assets",
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build"
+        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
+        "c6-ch03-a02-the-process-of-cotton-ginning:assets",
+        "c6-ch03-a02-the-process-of-cotton-ginning:release-build"
       ],
       "deployment": [
-        "c6-ch04-a01-sorting-materials-according-to-their-shape:release-build"
+        "c6-ch03-a02-the-process-of-cotton-ginning:release-build"
       ]
     },
-    "summary": "Sorting Materials According to Their Shape is now a canonical interactive class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
+    "summary": "The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
     "strengths": [
-      "4 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "4 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
+      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -946,7 +2316,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1080,7 +2450,7 @@
     "strengths": [
       "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "8 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1147,7 +2517,7 @@
     "strengths": [
       "5 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "5 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "5 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -1214,1046 +2584,11 @@
     "strengths": [
       "10 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "10 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "10 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
       "Code-native visual structure has source and automated evidence; visual clarity and performance still need a representative low-end device review.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch04-a01-food-spoilage",
-    "title": "Food Spoilage",
-    "route": "/simulations/c5-ch04-a01-food-spoilage",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/mangoes-round-the-year-food-spoilage"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch04-a01-food-spoilage:definition",
-        "c5-ch04-a01-food-spoilage:behavior"
-      ],
-      "integrity": [
-        "c5-ch04-a01-food-spoilage:definition",
-        "c5-ch04-a01-food-spoilage:behavior"
-      ],
-      "interactivity": [
-        "c5-ch04-a01-food-spoilage:behavior",
-        "c5-ch04-a01-food-spoilage:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch04-a01-food-spoilage:assets"
-      ],
-      "audio": [
-        "c5-ch04-a01-food-spoilage:narration"
-      ],
-      "usability": [
-        "c5-ch04-a01-food-spoilage:behavior",
-        "c5-ch04-a01-food-spoilage:narration",
-        "c5-ch04-a01-food-spoilage:browser-contract"
-      ],
-      "stability": [
-        "c5-ch04-a01-food-spoilage:behavior",
-        "c5-ch04-a01-food-spoilage:assets",
-        "c5-ch04-a01-food-spoilage:release-build"
-      ],
-      "deployment": [
-        "c5-ch04-a01-food-spoilage:release-build"
-      ]
-    },
-    "summary": "Food Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch04-a02-milk-spoilage",
-    "title": "Milk Spoilage",
-    "route": "/simulations/c5-ch04-a02-milk-spoilage",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/mangoes-round-the-year-milk-spoilage"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch04-a02-milk-spoilage:definition",
-        "c5-ch04-a02-milk-spoilage:behavior"
-      ],
-      "integrity": [
-        "c5-ch04-a02-milk-spoilage:definition",
-        "c5-ch04-a02-milk-spoilage:behavior"
-      ],
-      "interactivity": [
-        "c5-ch04-a02-milk-spoilage:behavior",
-        "c5-ch04-a02-milk-spoilage:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch04-a02-milk-spoilage:assets"
-      ],
-      "audio": [
-        "c5-ch04-a02-milk-spoilage:narration"
-      ],
-      "usability": [
-        "c5-ch04-a02-milk-spoilage:behavior",
-        "c5-ch04-a02-milk-spoilage:narration",
-        "c5-ch04-a02-milk-spoilage:browser-contract"
-      ],
-      "stability": [
-        "c5-ch04-a02-milk-spoilage:behavior",
-        "c5-ch04-a02-milk-spoilage:assets",
-        "c5-ch04-a02-milk-spoilage:release-build"
-      ],
-      "deployment": [
-        "c5-ch04-a02-milk-spoilage:release-build"
-      ]
-    },
-    "summary": "Milk Spoilage is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch04-a03-the-making-of-aam-papad",
-    "title": "The Making of Aam Papad",
-    "route": "/simulations/c5-ch04-a03-the-making-of-aam-papad",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/mangoes-round-the-year-aam-papad"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch04-a03-the-making-of-aam-papad:definition",
-        "c5-ch04-a03-the-making-of-aam-papad:behavior"
-      ],
-      "integrity": [
-        "c5-ch04-a03-the-making-of-aam-papad:definition",
-        "c5-ch04-a03-the-making-of-aam-papad:behavior"
-      ],
-      "interactivity": [
-        "c5-ch04-a03-the-making-of-aam-papad:behavior",
-        "c5-ch04-a03-the-making-of-aam-papad:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch04-a03-the-making-of-aam-papad:assets"
-      ],
-      "audio": [
-        "c5-ch04-a03-the-making-of-aam-papad:narration"
-      ],
-      "usability": [
-        "c5-ch04-a03-the-making-of-aam-papad:behavior",
-        "c5-ch04-a03-the-making-of-aam-papad:narration",
-        "c5-ch04-a03-the-making-of-aam-papad:browser-contract"
-      ],
-      "stability": [
-        "c5-ch04-a03-the-making-of-aam-papad:behavior",
-        "c5-ch04-a03-the-making-of-aam-papad:assets",
-        "c5-ch04-a03-the-making-of-aam-papad:release-build"
-      ],
-      "deployment": [
-        "c5-ch04-a03-the-making-of-aam-papad:release-build"
-      ]
-    },
-    "summary": "The Making of Aam Papad is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch05-a01-pitcher-plant-the-insect-hunter",
-    "title": "Pitcher Plant — The Insect Hunter",
-    "route": "/simulations/c5-ch05-a01-pitcher-plant-the-insect-hunter",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/seeds-and-seeds-pitcher-plant"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:definition",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior"
-      ],
-      "integrity": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:definition",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior"
-      ],
-      "interactivity": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:assets"
-      ],
-      "audio": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:narration"
-      ],
-      "usability": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:narration",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:browser-contract"
-      ],
-      "stability": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:behavior",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:assets",
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:release-build"
-      ],
-      "deployment": [
-        "c5-ch05-a01-pitcher-plant-the-insect-hunter:release-build"
-      ]
-    },
-    "summary": "Pitcher Plant — The Insect Hunter is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch05-a02-seed-dispersal",
-    "title": "Seed Dispersal",
-    "route": "/simulations/c5-ch05-a02-seed-dispersal",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/seeds-and-seeds-seed-dispersal"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch05-a02-seed-dispersal:definition",
-        "c5-ch05-a02-seed-dispersal:behavior"
-      ],
-      "integrity": [
-        "c5-ch05-a02-seed-dispersal:definition",
-        "c5-ch05-a02-seed-dispersal:behavior"
-      ],
-      "interactivity": [
-        "c5-ch05-a02-seed-dispersal:behavior",
-        "c5-ch05-a02-seed-dispersal:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch05-a02-seed-dispersal:assets"
-      ],
-      "audio": [
-        "c5-ch05-a02-seed-dispersal:narration"
-      ],
-      "usability": [
-        "c5-ch05-a02-seed-dispersal:behavior",
-        "c5-ch05-a02-seed-dispersal:narration",
-        "c5-ch05-a02-seed-dispersal:browser-contract"
-      ],
-      "stability": [
-        "c5-ch05-a02-seed-dispersal:behavior",
-        "c5-ch05-a02-seed-dispersal:assets",
-        "c5-ch05-a02-seed-dispersal:release-build"
-      ],
-      "deployment": [
-        "c5-ch05-a02-seed-dispersal:release-build"
-      ]
-    },
-    "summary": "Seed Dispersal is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch06-a01-the-storage-of-rainwater",
-    "title": "The Storage of Rainwater",
-    "route": "/simulations/c5-ch06-a01-the-storage-of-rainwater",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/every-drop-counts-rainwater-storage"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch06-a01-the-storage-of-rainwater:definition",
-        "c5-ch06-a01-the-storage-of-rainwater:behavior"
-      ],
-      "integrity": [
-        "c5-ch06-a01-the-storage-of-rainwater:definition",
-        "c5-ch06-a01-the-storage-of-rainwater:behavior"
-      ],
-      "interactivity": [
-        "c5-ch06-a01-the-storage-of-rainwater:behavior",
-        "c5-ch06-a01-the-storage-of-rainwater:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch06-a01-the-storage-of-rainwater:assets"
-      ],
-      "audio": [
-        "c5-ch06-a01-the-storage-of-rainwater:narration"
-      ],
-      "usability": [
-        "c5-ch06-a01-the-storage-of-rainwater:behavior",
-        "c5-ch06-a01-the-storage-of-rainwater:narration",
-        "c5-ch06-a01-the-storage-of-rainwater:browser-contract"
-      ],
-      "stability": [
-        "c5-ch06-a01-the-storage-of-rainwater:behavior",
-        "c5-ch06-a01-the-storage-of-rainwater:assets",
-        "c5-ch06-a01-the-storage-of-rainwater:release-build"
-      ],
-      "deployment": [
-        "c5-ch06-a01-the-storage-of-rainwater:release-build"
-      ]
-    },
-    "summary": "The Storage of Rainwater is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch06-a02-a-step-well-structure",
-    "title": "A Step Well Structure",
-    "route": "/simulations/c5-ch06-a02-a-step-well-structure",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/every-drop-counts-stepwell-structure"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch06-a02-a-step-well-structure:definition",
-        "c5-ch06-a02-a-step-well-structure:behavior"
-      ],
-      "integrity": [
-        "c5-ch06-a02-a-step-well-structure:definition",
-        "c5-ch06-a02-a-step-well-structure:behavior"
-      ],
-      "interactivity": [
-        "c5-ch06-a02-a-step-well-structure:behavior",
-        "c5-ch06-a02-a-step-well-structure:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch06-a02-a-step-well-structure:assets"
-      ],
-      "audio": [
-        "c5-ch06-a02-a-step-well-structure:narration"
-      ],
-      "usability": [
-        "c5-ch06-a02-a-step-well-structure:behavior",
-        "c5-ch06-a02-a-step-well-structure:narration",
-        "c5-ch06-a02-a-step-well-structure:browser-contract"
-      ],
-      "stability": [
-        "c5-ch06-a02-a-step-well-structure:behavior",
-        "c5-ch06-a02-a-step-well-structure:assets",
-        "c5-ch06-a02-a-step-well-structure:release-build"
-      ],
-      "deployment": [
-        "c5-ch06-a02-a-step-well-structure:release-build"
-      ]
-    },
-    "summary": "A Step Well Structure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch07-a02-dead-sea-salt-water-and-its-effects",
-    "title": "Dead Sea: Salt Water and Its Effects",
-    "route": "/simulations/c5-ch07-a02-dead-sea-salt-water-and-its-effects",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/experiments-with-water-dead-sea-salt-water"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:definition",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior"
-      ],
-      "integrity": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:definition",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior"
-      ],
-      "interactivity": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:assets"
-      ],
-      "audio": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:narration"
-      ],
-      "usability": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:narration",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:browser-contract"
-      ],
-      "stability": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:behavior",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:assets",
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:release-build"
-      ],
-      "deployment": [
-        "c5-ch07-a02-dead-sea-salt-water-and-its-effects:release-build"
-      ]
-    },
-    "summary": "Dead Sea: Salt Water and Its Effects is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch08-a01-diagnosis-of-malaria",
-    "title": "Diagnosis of Malaria",
-    "route": "/simulations/c5-ch08-a01-diagnosis-of-malaria",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/treat-for-mosquitoes-malaria-diagnosis"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch08-a01-diagnosis-of-malaria:definition",
-        "c5-ch08-a01-diagnosis-of-malaria:behavior"
-      ],
-      "integrity": [
-        "c5-ch08-a01-diagnosis-of-malaria:definition",
-        "c5-ch08-a01-diagnosis-of-malaria:behavior"
-      ],
-      "interactivity": [
-        "c5-ch08-a01-diagnosis-of-malaria:behavior",
-        "c5-ch08-a01-diagnosis-of-malaria:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch08-a01-diagnosis-of-malaria:assets"
-      ],
-      "audio": [
-        "c5-ch08-a01-diagnosis-of-malaria:narration"
-      ],
-      "usability": [
-        "c5-ch08-a01-diagnosis-of-malaria:behavior",
-        "c5-ch08-a01-diagnosis-of-malaria:narration",
-        "c5-ch08-a01-diagnosis-of-malaria:browser-contract"
-      ],
-      "stability": [
-        "c5-ch08-a01-diagnosis-of-malaria:behavior",
-        "c5-ch08-a01-diagnosis-of-malaria:assets",
-        "c5-ch08-a01-diagnosis-of-malaria:release-build"
-      ],
-      "deployment": [
-        "c5-ch08-a01-diagnosis-of-malaria:release-build"
-      ]
-    },
-    "summary": "Diagnosis of Malaria is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch08-a02-life-cycle-of-the-mosquito",
-    "title": "Life Cycle of the Mosquito",
-    "route": "/simulations/c5-ch08-a02-life-cycle-of-the-mosquito",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/treat-for-mosquitoes-mosquito-life-cycle"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:definition",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior"
-      ],
-      "integrity": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:definition",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior"
-      ],
-      "interactivity": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:assets"
-      ],
-      "audio": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:narration"
-      ],
-      "usability": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:narration",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:browser-contract"
-      ],
-      "stability": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:behavior",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:assets",
-        "c5-ch08-a02-life-cycle-of-the-mosquito:release-build"
-      ],
-      "deployment": [
-        "c5-ch08-a02-life-cycle-of-the-mosquito:release-build"
-      ]
-    },
-    "summary": "Life Cycle of the Mosquito is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch09-a01-river-crossing-adventure",
-    "title": "River Crossing Adventure",
-    "route": "/simulations/c5-ch09-a01-river-crossing-adventure",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/up-you-go-river-crossing-adventure"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch09-a01-river-crossing-adventure:definition",
-        "c5-ch09-a01-river-crossing-adventure:behavior"
-      ],
-      "integrity": [
-        "c5-ch09-a01-river-crossing-adventure:definition",
-        "c5-ch09-a01-river-crossing-adventure:behavior"
-      ],
-      "interactivity": [
-        "c5-ch09-a01-river-crossing-adventure:behavior",
-        "c5-ch09-a01-river-crossing-adventure:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch09-a01-river-crossing-adventure:assets"
-      ],
-      "audio": [
-        "c5-ch09-a01-river-crossing-adventure:narration"
-      ],
-      "usability": [
-        "c5-ch09-a01-river-crossing-adventure:behavior",
-        "c5-ch09-a01-river-crossing-adventure:narration",
-        "c5-ch09-a01-river-crossing-adventure:browser-contract"
-      ],
-      "stability": [
-        "c5-ch09-a01-river-crossing-adventure:behavior",
-        "c5-ch09-a01-river-crossing-adventure:assets",
-        "c5-ch09-a01-river-crossing-adventure:release-build"
-      ],
-      "deployment": [
-        "c5-ch09-a01-river-crossing-adventure:release-build"
-      ]
-    },
-    "summary": "River Crossing Adventure is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch09-a03-camp-in-the-snow",
-    "title": "Camp in the Snow",
-    "route": "/simulations/c5-ch09-a03-camp-in-the-snow",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/up-you-go-camp-in-snow"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch09-a03-camp-in-the-snow:definition",
-        "c5-ch09-a03-camp-in-the-snow:behavior"
-      ],
-      "integrity": [
-        "c5-ch09-a03-camp-in-the-snow:definition",
-        "c5-ch09-a03-camp-in-the-snow:behavior"
-      ],
-      "interactivity": [
-        "c5-ch09-a03-camp-in-the-snow:behavior",
-        "c5-ch09-a03-camp-in-the-snow:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch09-a03-camp-in-the-snow:assets"
-      ],
-      "audio": [
-        "c5-ch09-a03-camp-in-the-snow:narration"
-      ],
-      "usability": [
-        "c5-ch09-a03-camp-in-the-snow:behavior",
-        "c5-ch09-a03-camp-in-the-snow:narration",
-        "c5-ch09-a03-camp-in-the-snow:browser-contract"
-      ],
-      "stability": [
-        "c5-ch09-a03-camp-in-the-snow:behavior",
-        "c5-ch09-a03-camp-in-the-snow:assets",
-        "c5-ch09-a03-camp-in-the-snow:release-build"
-      ],
-      "deployment": [
-        "c5-ch09-a03-camp-in-the-snow:release-build"
-      ]
-    },
-    "summary": "Camp in the Snow is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c5-ch09-a04-snow-mountain-climbing",
-    "title": "Snow Mountain Climbing",
-    "route": "/simulations/c5-ch09-a04-snow-mountain-climbing",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/up-you-go-snow-mountain-climbing"
-    ],
-    "grade": "Class 5",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c5-ch09-a04-snow-mountain-climbing:definition",
-        "c5-ch09-a04-snow-mountain-climbing:behavior"
-      ],
-      "integrity": [
-        "c5-ch09-a04-snow-mountain-climbing:definition",
-        "c5-ch09-a04-snow-mountain-climbing:behavior"
-      ],
-      "interactivity": [
-        "c5-ch09-a04-snow-mountain-climbing:behavior",
-        "c5-ch09-a04-snow-mountain-climbing:browser-contract"
-      ],
-      "visuals": [
-        "c5-ch09-a04-snow-mountain-climbing:assets"
-      ],
-      "audio": [
-        "c5-ch09-a04-snow-mountain-climbing:narration"
-      ],
-      "usability": [
-        "c5-ch09-a04-snow-mountain-climbing:behavior",
-        "c5-ch09-a04-snow-mountain-climbing:narration",
-        "c5-ch09-a04-snow-mountain-climbing:browser-contract"
-      ],
-      "stability": [
-        "c5-ch09-a04-snow-mountain-climbing:behavior",
-        "c5-ch09-a04-snow-mountain-climbing:assets",
-        "c5-ch09-a04-snow-mountain-climbing:release-build"
-      ],
-      "deployment": [
-        "c5-ch09-a04-snow-mountain-climbing:release-build"
-      ]
-    },
-    "summary": "Snow Mountain Climbing is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "8 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "8 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c6-ch03-a01-cotton-farming",
-    "title": "Cotton Farming",
-    "route": "/simulations/c6-ch03-a01-cotton-farming",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/fibre-to-fabric-cotton-farming"
-    ],
-    "grade": "Class 6",
-    "subject": "Environmental Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c6-ch03-a01-cotton-farming:definition",
-        "c6-ch03-a01-cotton-farming:behavior"
-      ],
-      "integrity": [
-        "c6-ch03-a01-cotton-farming:definition",
-        "c6-ch03-a01-cotton-farming:behavior"
-      ],
-      "interactivity": [
-        "c6-ch03-a01-cotton-farming:behavior",
-        "c6-ch03-a01-cotton-farming:browser-contract"
-      ],
-      "visuals": [
-        "c6-ch03-a01-cotton-farming:assets"
-      ],
-      "audio": [
-        "c6-ch03-a01-cotton-farming:narration"
-      ],
-      "usability": [
-        "c6-ch03-a01-cotton-farming:behavior",
-        "c6-ch03-a01-cotton-farming:narration",
-        "c6-ch03-a01-cotton-farming:browser-contract"
-      ],
-      "stability": [
-        "c6-ch03-a01-cotton-farming:behavior",
-        "c6-ch03-a01-cotton-farming:assets",
-        "c6-ch03-a01-cotton-farming:release-build"
-      ],
-      "deployment": [
-        "c6-ch03-a01-cotton-farming:release-build"
-      ]
-    },
-    "summary": "Cotton Farming is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "7 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "7 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
-      "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
-    ],
-    "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
-  },
-  {
-    "slug": "c6-ch03-a02-the-process-of-cotton-ginning",
-    "title": "The Process of Cotton Ginning",
-    "route": "/simulations/c6-ch03-a02-the-process-of-cotton-ginning",
-    "publicationStatus": "released",
-    "evidenceMaturity": "internalQA",
-    "legacyPaths": [
-      "/simulations/fibre-to-fabric-cotton-ginning"
-    ],
-    "grade": "Class 6",
-    "subject": "Science",
-    "evidenceConfidence": "Internal automated evidence; device and classroom evidence not run",
-    "scores": {
-      "education": 17,
-      "integrity": 13,
-      "interactivity": 13,
-      "visuals": 9,
-      "audio": 4,
-      "usability": 8,
-      "stability": 8,
-      "deployment": 3
-    },
-    "band": "Promising internal QA",
-    "dimensionEvidence": {
-      "education": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:definition",
-        "c6-ch03-a02-the-process-of-cotton-ginning:behavior"
-      ],
-      "integrity": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:definition",
-        "c6-ch03-a02-the-process-of-cotton-ginning:behavior"
-      ],
-      "interactivity": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
-        "c6-ch03-a02-the-process-of-cotton-ginning:browser-contract"
-      ],
-      "visuals": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:assets"
-      ],
-      "audio": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:narration"
-      ],
-      "usability": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
-        "c6-ch03-a02-the-process-of-cotton-ginning:narration",
-        "c6-ch03-a02-the-process-of-cotton-ginning:browser-contract"
-      ],
-      "stability": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:behavior",
-        "c6-ch03-a02-the-process-of-cotton-ginning:assets",
-        "c6-ch03-a02-the-process-of-cotton-ginning:release-build"
-      ],
-      "deployment": [
-        "c6-ch03-a02-the-process-of-cotton-ginning:release-build"
-      ]
-    },
-    "summary": "The Process of Cotton Ginning is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.",
-    "strengths": [
-      "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
-      "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
-    ],
-    "risks": [
-      "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
-      "Contributor-supplied panorama provenance remains incomplete, so visuals are capped in the audit.",
       "Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot."
     ],
     "action": "Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims."
@@ -2316,7 +2651,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2383,7 +2718,7 @@
     "strengths": [
       "14 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "14 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "14 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",
@@ -2450,7 +2785,7 @@
     "strengths": [
       "6 declared stages connect the curriculum objective to observable learner actions and evidence.",
       "2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.",
-      "6 exact captions and a browser speech fallback preserve access, but do not count as packaged voice production."
+      "6 committed narration clips are owned by the manifest with exact captions."
     ],
     "risks": [
       "Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.",

@@ -42,10 +42,10 @@ function unique(values: readonly string[]) {
 }
 
 describe('guided simulation inventory', () => {
-  it('publishes the exact 17 PR #8 classes and 124 evidence-gated stages', () => {
-    expect(GUIDED_SIMULATION_DEFINITIONS).toHaveLength(17);
-    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(17);
-    expect(GUIDED_SIMULATION_DEFINITIONS.flatMap(item => item.stages)).toHaveLength(124);
+  it('publishes the 17 PR #8 classes plus five new evidence-backed guided simulations with 167 stages', () => {
+    expect(GUIDED_SIMULATION_DEFINITIONS).toHaveLength(22);
+    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(22);
+    expect(GUIDED_SIMULATION_DEFINITIONS.flatMap(item => item.stages)).toHaveLength(167);
 
     for (const [slug, moduleId, viewerKey, legacyPath, stageCount] of EXPECTED_GUIDED) {
       const record = GUIDED_IMPLEMENTED_SIMULATIONS.find(
@@ -77,6 +77,59 @@ describe('guided simulation inventory', () => {
         redirect: true,
       });
     }
+
+    const missionWool = GUIDED_IMPLEMENTED_SIMULATIONS.find(
+      item => item.module.slug === 'c7-ch03-a01-shearing-and-scouring-of-wool',
+    );
+    expect(missionWool).toMatchObject({
+      kind: 'guided',
+      legacyPaths: ['/simulations/fibre-to-fabric-shearing-scouring'],
+      contribution: { source: 'user-story', integration: 'new-class' },
+      module: {
+        id: 'sim-c07-ch03-a01-shearing-and-scouring-of-wool',
+        viewerKey: 'guided-shearing-scouring-wool',
+        publicationStatus: 'released',
+        evidenceMaturity: 'internalQA',
+      },
+    });
+    expect(missionWool?.experience.stages).toHaveLength(10);
+    expect(resolveSimulationPath('/simulations/fibre-to-fabric-shearing-scouring')).toMatchObject({
+      canonicalPath: '/simulations/c7-ch03-a01-shearing-and-scouring-of-wool',
+      redirect: true,
+    });
+
+    const yarnMaker = GUIDED_IMPLEMENTED_SIMULATIONS.find(
+      item => item.module.slug === 'c7-ch03-a03-spinning-and-rolling-of-wool',
+    );
+    expect(yarnMaker).toMatchObject({
+      kind: 'guided',
+      legacyPaths: [],
+      contribution: { source: 'user-story', integration: 'new-class' },
+      module: {
+        id: 'sim-c07-ch03-a03-spinning-and-rolling-of-wool',
+        viewerKey: 'guided-yarn-maker-mission',
+        publicationStatus: 'released',
+        evidenceMaturity: 'internalQA',
+        expectedDurationMinutes: 6,
+      },
+    });
+    expect(yarnMaker?.experience.stages).toHaveLength(10);
+
+    const invisibleInvader = GUIDED_IMPLEMENTED_SIMULATIONS.find(
+      item => item.module.slug === 'c8-ch02-a02-virus-introduction-spreading-and-its-effects',
+    );
+    expect(invisibleInvader).toMatchObject({
+      kind: 'guided',
+      contribution: { source: 'user-story', integration: 'new-class' },
+      module: {
+        id: 'sim-c08-ch02-a02-virus-introduction-spreading-and-its-effects',
+        viewerKey: 'guided-virus-invasion',
+        publicationStatus: 'released',
+        evidenceMaturity: 'internalQA',
+        expectedDurationMinutes: 5,
+      },
+    });
+    expect(invisibleInvader?.experience.stages).toHaveLength(7);
   });
 
   it('keeps every identifier, caption, path, and asset identity unique', () => {

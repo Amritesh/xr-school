@@ -10,7 +10,9 @@ import {
   answerMoneyMemoryQuestion,
   createMoneyTownProgress,
   getMoneyMemoryScore,
+  isMoneyMemoryReady,
   isMoneyTownStageComplete,
+  payForMoneyShopItem,
   recordMoneyTownAction,
 } from '../../apps/web/lib/moneyTownLesson';
 
@@ -77,15 +79,29 @@ describe('Class 1 Money Town lesson model', () => {
     }
     expect(isMoneyTownStageComplete(progress, 'identify-money')).toBe(true);
 
-    for (const shopItem of MONEY_SHOP_ITEMS) {
-      progress = recordMoneyTownAction(progress, 'shopping-challenge', `buy-${shopItem.id}`);
-    }
+    // A raw scene action cannot bypass choosing matching money.
+    const bypassed = recordMoneyTownAction(progress, 'shopping-challenge', 'buy-fruit-apple');
+    expect(bypassed).toBe(progress);
+    for (const shopItem of MONEY_SHOP_ITEMS) progress = payForMoneyShopItem(progress, shopItem.id, shopItem.correctMoneyId);
     expect(isMoneyTownStageComplete(progress, 'shopping-challenge')).toBe(true);
 
     for (const question of MONEY_MEMORY_QUESTIONS) {
       progress = answerMoneyMemoryQuestion(progress, question.id, question.correctAnswer);
     }
     expect(getMoneyMemoryScore(progress)).toEqual({ correct: 8, total: 8 });
+    expect(isMoneyMemoryReady(progress)).toBe(true);
+    expect(isMoneyTownStageComplete(progress, 'memory-check')).toBe(false);
+    progress = recordMoneyTownAction(progress, 'memory-check', 'complete-money-memory-check');
     expect(isMoneyTownStageComplete(progress, 'memory-check')).toBe(true);
+  });
+
+  it('cannot finish the memory check before every answer is correct', () => {
+    let progress = createMoneyTownProgress();
+    progress = recordMoneyTownAction(progress, 'memory-check', 'complete-money-memory-check');
+    expect(isMoneyTownStageComplete(progress, 'memory-check')).toBe(false);
+    const question = MONEY_MEMORY_QUESTIONS[0];
+    progress = answerMoneyMemoryQuestion(progress, question.id, question.options[0]);
+    expect(progress.memoryAnswers[question.id]).not.toBe(question.correctAnswer);
+    expect(isMoneyMemoryReady(progress)).toBe(false);
   });
 });

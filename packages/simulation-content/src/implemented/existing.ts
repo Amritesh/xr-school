@@ -20,6 +20,7 @@ import {
   SOURCES_OF_FOOD_MODULE,
   STATES_OF_MATTER_MODULE,
 } from '../modules.js';
+import { withPackagedNarration } from './narrationAssets.js';
 
 interface StageSeed extends ExperienceStageDefinition {
   narration?: string;
@@ -282,13 +283,13 @@ function createExistingDefinition(
       id: `${module.viewerKey}-narration`,
       cues: options.stages.map((value) => {
         const text = value.narration ?? `${value.title}. ${value.cue}`;
-        return {
+        return withPackagedNarration({
           id: `${module.viewerKey}-narration-${value.id}`,
           stageId: value.id,
           text,
           caption: text,
           ...(value.audioUrl ? { audioUrl: value.audioUrl } : {}),
-        };
+        });
       }),
       fallback: 'browserTts',
     },
@@ -311,7 +312,6 @@ const pollinationStages = [
   stage('stage-germination', 'Plant the resulting seed', 'Open the fruit, plant and cover one seed, then add enough water.', ['open-fruit', 'plant-seed', 'cover-seed', 'water-seed'], ['germination-conditions-provided'], undefined, '/audio/pollination/stage-07.mp3'),
   stage('stage-mature-plant', 'Inspect germination', 'Use the soil window to identify the radicle and plumule, then return to the mature plant.', ['inspect-germination'], ['cycle-completion-observed'], undefined, '/audio/pollination/stage-08.mp3'),
 ];
-
 const pollinationAssessment: AssessmentSequence = {
   id: 'pollination-mastery',
   objectiveId: 'experience-pollination-cycle',

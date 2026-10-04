@@ -1,0 +1,370 @@
+.root {
+  height: 100dvh;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  background: #15343d;
+  color: #fff9e8;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+}
+.root * {
+  box-sizing: border-box;
+}
+.root button {
+  min-height: 44px;
+  border: 1px solid #9ec5c6;
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: #254b55;
+  color: #fff9e8;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.root button:hover:not(:disabled) {
+  background: #38616a;
+}
+.root button:focus-visible {
+  outline: 3px solid #ffd363;
+  outline-offset: 2px;
+}
+.root button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  align-items: center;
+  border-bottom: 1px solid #547274;
+  background: #102c36;
+}
+.header strong {
+  display: block;
+  font-size: 18px;
+}
+.header span {
+  display: block;
+  margin-top: 4px;
+  color: #d6e4df;
+  font-size: 13px;
+}
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tools button {
+  font-size: 13px;
+  padding: 8px 10px;
+}
+.body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+}
+.scene {
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.canvas {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.canvas canvas {
+  display: block;
+}
+.sceneHelp {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  pointer-events: none;
+  font-size: 11px;
+  color: #e2f2ee;
+  text-shadow: 0 1px 3px #000;
+}
+.sceneHelp button {
+  pointer-events: auto;
+  min-height: 36px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+.panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f6f1e3;
+  color: #183d43;
+  border-left: 1px solid #b9c9bd;
+}
+.panelContent {
+  min-height: 0;
+  overflow: auto;
+  padding: 20px;
+}
+.panel h1 {
+  font-size: 25px;
+  line-height: 1.15;
+  margin: 8px 0 14px;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  color: #a9670c;
+}
+.prompt {
+  font-size: 17px;
+  line-height: 1.4;
+  margin: 12px 0;
+}
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.choices button {
+  background: #1d6370;
+  border-color: #1d6370;
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.choicePhoto {
+  width: 100%;
+  height: 64px;
+  object-fit: contain;
+}
+.coinPhoto {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+.notePhoto {
+  width: 100%;
+  max-width: 290px;
+  height: auto;
+  object-fit: contain;
+}
+.photoCredit {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #425f63;
+}
+.photoCredit a {
+  color: inherit;
+  text-decoration: underline;
+}
+.choices button:only-child {
+  grid-column: 1/-1;
+}
+.feedback {
+  background: #e4ebda;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 42px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.audioStatus {
+  font-size: 12px;
+  color: #425f63;
+}
+.root .transcriptToggle {
+  background: transparent;
+  color: #254b55;
+  padding: 7px;
+  min-height: 36px;
+  font-size: 12px;
+}
+.transcript {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.navigation {
+  margin-top: auto;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #e7e5d6;
+  border-top: 1px solid #bacac0;
+}
+.navigation button:last-child {
+  background: #146b56;
+}
+.specimen {
+  margin: 12px 0;
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+.specimen figcaption {
+  font-size: 10px;
+  color: #566a66;
+}
+.coin,
+.note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #253c43;
+  box-shadow: 0 6px 12px #163b4329;
+}
+.coin {
+  border-radius: 50%;
+  width: 112px;
+  height: 112px;
+  border: 8px double #9d8e5b;
+  background: radial-gradient(circle at 30% 20%, #fff6d0, #bca35d);
+}
+.note {
+  width: 220px;
+  height: 104px;
+  border: 5px double #736190;
+  background: repeating-linear-gradient(
+    40deg,
+    #d9c7e2,
+    #d9c7e2 3px,
+    #cfbcd8 4px
+  );
+}
+.coin span,
+.note span {
+  font-size: 36px;
+  font-weight: 850;
+}
+.coin small,
+.note small {
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 90%;
+}
+.intro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(ellipse at center, #163a45e8, #10212cf7);
+  text-align: center;
+}
+.intro > div {
+  max-width: 620px;
+}
+.intro h1 {
+  font-size: clamp(32px, 6vw, 64px);
+  line-height: 1.05;
+}
+.intro p {
+  line-height: 1.6;
+}
+.intro button {
+  margin: 6px;
+  background: #247d70;
+}
+@media (max-width: 760px) {
+  .header {
+    padding: 9px 12px;
+    gap: 8px;
+  }
+  .header strong {
+    font-size: 16px;
+  }
+  .tools {
+    width: 100%;
+  }
+  .tools button {
+    flex: 1;
+    padding: 7px 6px;
+    font-size: 11px;
+  }
+  .body {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(180px, 42%) minmax(0, 1fr);
+  }
+  .panel {
+    border-left: 0;
+    border-top: 1px solid #b9c9bd;
+  }
+  .panelContent {
+    padding: 12px 16px;
+  }
+  .panel h1 {
+    font-size: 20px;
+    margin: 6px 0 8px;
+  }
+  .prompt {
+    font-size: 15px;
+  }
+  .navigation {
+    padding: 8px 16px;
+  }
+  .specimen {
+    float: right;
+    margin: 0 0 8px 12px;
+  }
+  .coin {
+    height: 76px;
+    width: 76px;
+    border-width: 5px;
+  }
+  .note {
+    width: 140px;
+    height: 72px;
+  }
+  .coin span,
+  .note span {
+    font-size: 24px;
+  }
+  .specimen figcaption {
+    display: none;
+  }
+  .coinPhoto {
+    width: 84px;
+    height: 84px;
+  }
+  .notePhoto {
+    max-width: 160px;
+  }
+  .choicePhoto {
+    height: 52px;
+  }
+  .choices {
+    clear: both;
+  }
+  .sceneHelp {
+    font-size: 9px;
+    bottom: 5px;
+  }
+}
+@media (max-height: 520px) and (min-width: 761px) {
+  .header {
+    padding: 6px 12px;
+  }
+  .panelContent {
+    padding: 12px;
+  }
+}

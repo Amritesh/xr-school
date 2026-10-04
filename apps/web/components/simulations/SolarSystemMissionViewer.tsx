@@ -13,6 +13,7 @@ import SimulationExperienceShell, {
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
 import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
@@ -66,6 +67,7 @@ const NARRATIONS = [
   'A visitor from the frozen edge is falling toward the Sun, and as it warms it grows a tail. Before you ride alongside — which way will that tail point? Choose an arrow.',
   'Final problem, explorer. A new probe orbits the Sun from twice Earth’s distance. You have seen what distance does to gravity and speed. Is that probe’s year longer or shorter than ours? Answer, then collect your badge.',
 ];
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c8-10-science-solar-system');
 
 const ACTION_LABELS: Record<string, string> = {
   'inspect-sun': 'Select the Sun',
@@ -170,7 +172,7 @@ function isObjectActionSource(source: NormalizedInputSource) {
 
 function playNarration(stageIndex: number, enabled: boolean) {
   if (!enabled) return;
-  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex);
+  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
 export default function SolarSystemMissionViewer() {
@@ -768,9 +770,15 @@ export default function SolarSystemMissionViewer() {
       const locomotion = createVrLocomotion({
         renderer: host.renderer,
         rig: vrRig.rig,
+        locomotion: 'boundedTeleport',
+        movementBounds: new THREE.Box3(new THREE.Vector3(-4, -1, -4), new THREE.Vector3(4, 3, 4)),
+        onPrimary: () => {
+          const actionId = focusActionRef.current;
+          if (actionId) performLessonAction(actionId, 'xr-controller');
+        },
+        onNarrate: () => playNarration(snapshotRef.current.stageIndex, preferences.audio),
         onBack: () => {
-          if (snapshotRef.current.stageIndex > 0) previousRef.current();
-          else void host!.renderer.xr.getSession()?.end();
+          previousRef.current();
         },
       });
 

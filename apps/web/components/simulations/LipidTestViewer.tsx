@@ -6,6 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createQuestVrControls } from "./questVrControls";
 import { playNarration, stopNarration, unlockNarration } from "./narrationAudio";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import { createScreenSafePanelFollower, drawFittedText } from "@/lib/vr/screenSafeTextPanel";
 
 type SampleId = "peanut" | "coconut" | "rice";
 
@@ -127,38 +128,20 @@ function drawInstructionCard(
   ctx.fillStyle = "#22d3ee";
   ctx.font = "bold 20px sans-serif";
   ctx.fillText(`Activity 3  •  Stage ${stage + 1} of ${STAGES.length}`, 22, 38);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 28px sans-serif";
-  ctx.fillText(STAGES[stage].title, 22, 82);
-  ctx.fillStyle = "#cbd5e1";
-  ctx.font = "20px sans-serif";
-  wrapText(ctx, STAGES[stage].cue, 22, 118, canvas.width - 44, 27);
-  ctx.fillStyle = "#facc15";
-  ctx.font = "bold 18px sans-serif";
-  ctx.fillText(`Current sample: ${sample.name}`, 22, 226);
-}
-
-function wrapText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  maxWidth: number,
-  lineHeight: number,
-) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const test = `${line}${word} `;
-    if (line && ctx.measureText(test).width > maxWidth) {
-      ctx.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else {
-      line = test;
-    }
-  }
-  if (line) ctx.fillText(line.trim(), x, currentY);
+  drawFittedText(ctx, STAGES[stage].title, {
+    x: 22, y: 55, width: canvas.width - 44, height: 44,
+    color: "#ffffff", fontWeight: 800, maxFontSize: 28, minFontSize: 20,
+    maxLines: 2, verticalAlign: "middle",
+  });
+  drawFittedText(ctx, STAGES[stage].cue, {
+    x: 22, y: 106, width: canvas.width - 44, height: 88,
+    color: "#cbd5e1", maxFontSize: 20, minFontSize: 15, maxLines: 4,
+  });
+  drawFittedText(ctx, `Current sample: ${sample.name}`, {
+    x: 22, y: 211, width: canvas.width - 44, height: 31,
+    color: "#facc15", fontWeight: 800, maxFontSize: 18, minFontSize: 14,
+    maxLines: 1, verticalAlign: "middle",
+  });
 }
 
 function makeFoodMesh(sample: FoodSample) {
@@ -397,6 +380,10 @@ export default function LipidTestViewer() {
     );
     card.position.set(-1.0, 1.95, -0.7);
     scene.add(card);
+    const cardFollower = createScreenSafePanelFollower(card, {
+      panelWidth: 1.85,
+      panelHeight: 0.78,
+    });
 
     const buttonMaterial = (color: number) =>
       new THREE.MeshStandardMaterial({
@@ -605,7 +592,7 @@ export default function LipidTestViewer() {
       const activeCamera = renderer.xr.isPresenting
         ? renderer.xr.getCamera()
         : camera;
-      card.lookAt(activeCamera.position);
+      cardFollower.update(activeCamera);
       interactables.forEach((button) => button.lookAt(activeCamera.position));
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);

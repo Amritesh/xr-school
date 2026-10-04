@@ -377,7 +377,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
   {
     id: "diagnose",
     objective:
-      "Predict which specimens are fungi, then inspect all three before revising the classification.",
+      "Investigate the mysterious sealed bread and identify fungal evidence before revising your classification.",
     landmark: "triage-table",
     persistentLandmarkId: "triage-table",
     cameraPose: camera([0, 2.8, 7.5], [0, 1.1, 0]),
@@ -388,7 +388,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     hints: [
       "Use observable structures to decide which specimens belong to the fungal kingdom.",
       "Move the magnifying lens across every specimen on the triage table.",
-      "Look for gills or filaments and compare them with green leaf tissue before revising.",
+      "Look for mould filaments or a mushroom cap and compare them with green leaf tissue before revising.",
     ],
     entryMode: "guided-pan",
     exitMode: "guided-pan",
@@ -400,7 +400,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
   {
     id: "mycelium",
     objective:
-      "Trace distinct hyphal branches and interpret how they form one feeding network.",
+      "Enter the colony, trace distinct hyphae, and interpret how they form one mycelium feeding network.",
     landmark: "mycelium-log",
     persistentLandmarkId: "mycelium-log",
     cameraPose: camera([-5.2, 2.2, 4.8], [-4.4, 0.8, -0.6]),
@@ -423,7 +423,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
   {
     id: "spore-flight",
     objective:
-      "Compare an unsuccessful or dormant spore landing with a landing that germinates.",
+      "Follow a spore through the air and compare an unsuitable landing with one that germinates.",
     landmark: "mycelium-log",
     persistentLandmarkId: "mycelium-log",
     cameraPose: camera([-2.8, 3.5, 6.2], [-1.5, 1.3, -1.2]),
@@ -446,7 +446,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
   {
     id: "growth-chamber",
     objective:
-      "Run and interpret a fair two-trial comparison in which exactly one variable changes.",
+      "Test the four chamber conditions and interpret a fair comparison in which exactly one variable changes.",
     landmark: "growth-chamber",
     persistentLandmarkId: "growth-chamber",
     cameraPose: camera([3.8, 2.9, 6.6], [4.1, 1.1, -0.2]),
@@ -462,7 +462,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     ],
     resetBoundary: "experiment",
     hints: [
-      "Use controlled evidence to explain which condition changed fungal growth.",
+      "Try the warm-moist, warm-dry, cold-moist, and nutrient-rich presets.",
       "Save two chamber trials and compare them in the trial notebook.",
       "Keep every setting except one identical, then interpret that changed variable.",
     ],
@@ -519,7 +519,7 @@ const missionDescriptors: FungiMissionDescriptor[] = [
   {
     id: "recommendation",
     objective:
-      "Recommend a storage change, cite saved trial evidence, and distinguish harmful from useful fungi.",
+      "Build the six-stage fungal life cycle, then recommend a storage change and cite your trial evidence.",
     landmark: "nursery-gate",
     persistentLandmarkId: "nursery-gate",
     cameraPose: camera([0, 3.1, -9.6], [0, 1.4, -12]),
@@ -532,8 +532,8 @@ const missionDescriptors: FungiMissionDescriptor[] = [
     ],
     resetBoundary: "mission",
     hints: [
-      "Apply evidence from the nursery investigation to the new storage problem.",
-      "Choose a storage change and cite one of your saved chamber trials.",
+      "Begin with a spore, then follow growth and reproduction in the correct order.",
+      "After the cycle, choose a cool, dry storage change and cite one saved chamber trial.",
       "Reduce warmth or moisture, then contrast harmful spoilage with useful decomposition.",
     ],
     entryMode: "guided-pan",

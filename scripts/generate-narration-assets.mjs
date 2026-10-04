@@ -46,6 +46,11 @@ const narrationProfiles = Object.fromEntries([
   "SolubleInsolubleViewer.tsx",
   "StepwellStructureViewer.tsx",
   "VitaminDeficiencyViewer.tsx",
+  "VirusInvasionViewer.tsx",
+  "IrrigationMethodsViewer.tsx",
+  "HarvestingStorageViewer.tsx",
+  "WoolProcessingViewer.tsx",
+  "YarnMakerViewer.tsx",
 ].map((file) => [file, NEERJA_STORYTELLER]));
 const requestedViewer = process.argv[2];
 const narrationPython = process.env.NARRATION_PYTHON ?? "python3";
@@ -148,7 +153,9 @@ let generated = 0;
 for (const file of files) {
   const profile = narrationProfiles[file] ?? NEERJA_STORYTELLER;
   const source = readFileSync(join(viewerDirectory, file), "utf8");
-  const array = source.match(/const NARRATIONS\s*=\s*\[([\s\S]*?)\];/)?.[1];
+  const array = source.match(
+    /const NARRATIONS\s*=\s*\[([\s\S]*?)\]\s*(?:as const\s*)?;/,
+  )?.[1];
   if (!array) continue;
   const strings = [...array.matchAll(/"((?:\\.|[^"\\])*)"/g)].map((match) => JSON.parse(`"${match[1]}"`));
   for (const match of source.matchAll(/const [A-Z_]*NARRATION\s*=\s*"((?:\\.|[^"\\])*)"/g)) {

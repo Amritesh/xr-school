@@ -51,8 +51,8 @@ npm run dev -w @xr-school/api
 
 ## Verification
 
-Install the report and browser acceptance tooling once, then run the same strict
-gate used by CI:
+Install the report and browser acceptance tooling once, then run the full local
+gate:
 
 ```powershell
 python3 -m pip install -r requirements-report.txt
@@ -60,11 +60,10 @@ npx playwright install chromium
 npm run verify
 ```
 
-This matches the GitHub Actions quality gate. It checks the local environment,
-TypeSpec and catalog drift, the canonical simulation registry, narration and
-assets, all unit/package/API tests, package and production builds, report
-freshness, and Chromium acceptance for every released simulation and legacy
-route.
+This includes every check in the GitHub Actions quality gate, followed by local
+Chromium acceptance for every released simulation and legacy route. Browser E2E
+stays local because those real-time WebGL journeys take much longer than the
+contracts, unit tests, typechecks, and builds used for pull-request feedback.
 
 ### When CI runs it
 
@@ -73,9 +72,8 @@ running tests.** The full gate is not on the push path.
 
 | What you want | Command |
 | --- | --- |
-| Full gate in CI | `gh workflow run quality.yml` |
-| Everything except browser tests | `gh workflow run quality.yml -f skip_e2e=true` |
-| Full gate locally | `npm run verify` |
+| Contracts, types, unit tests, and builds in CI | `gh workflow run quality.yml` |
+| Full gate including browser E2E locally | `npm run verify` |
 
 It also runs automatically on every pull request, which is where a broken
 change should be caught before it reaches `main`.

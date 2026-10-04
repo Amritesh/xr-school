@@ -8,6 +8,7 @@ import type {
 import { createWebInputRouter } from '../../packages/simulation-web/src/input/createWebInputRouter';
 
 type PointerLikeEvent = {
+  button: number;
   clientX: number;
   clientY: number;
   pointerId: number;
@@ -31,6 +32,7 @@ function createFakeDomElement() {
     },
     dispatch(type: string, event: Partial<PointerLikeEvent> = {}) {
       const complete = {
+        button: 0,
         clientX: 50,
         clientY: 50,
         pointerId: 1,
@@ -96,6 +98,7 @@ function registerTarget(
     actionId?: string;
     accessibilityLabel?: string;
     inputSources?: NormalizedInputSource[];
+    emitAction?: boolean;
     onCommit?: (action: NormalizedAction) => void;
   } = {},
 ) {
@@ -105,6 +108,7 @@ function registerTarget(
     actionId: options.actionId ?? 'toggle-switch',
     accessibilityLabel: options.accessibilityLabel ?? 'Toggle the switch',
     inputSources: options.inputSources,
+    emitAction: options.emitAction,
     onCommit: options.onCommit,
   });
 }
@@ -130,6 +134,18 @@ describe('createWebInputRouter', () => {
       timestampMs: 321,
     }]);
     expect(order).toEqual(['dispatch', 'commit']);
+    harness.router.dispose();
+  });
+
+  it('supports host controls that commit without mutating lesson state', () => {
+    const onCommit = vi.fn();
+    const harness = createHarness();
+    registerTarget(harness, createMesh(), { emitAction: false, onCommit });
+
+    harness.router.interactions.activate('target-switch', 'keyboard');
+
+    expect(harness.actions).toEqual([]);
+    expect(onCommit).toHaveBeenCalledOnce();
     harness.router.dispose();
   });
 
@@ -198,6 +214,17 @@ describe('createWebInputRouter', () => {
     harness.dom.dispatch('pointerup', { clientX: 57, clientY: 50, pointerId: 2 });
 
     expect(harness.actions).toHaveLength(1);
+    harness.router.dispose();
+  });
+
+  it('reserves non-primary mouse buttons for OrbitControls panning', () => {
+    const harness = createHarness();
+    registerTarget(harness, createMesh());
+
+    harness.dom.dispatch('pointerdown', { button: 2 });
+    harness.dom.dispatch('pointerup', { button: 2 });
+
+    expect(harness.actions).toEqual([]);
     harness.router.dispose();
   });
 

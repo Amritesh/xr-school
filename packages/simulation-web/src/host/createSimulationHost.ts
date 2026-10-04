@@ -52,6 +52,12 @@ export interface SimulationHostConfig {
   preferences: SimulationLaunchPreferences;
   narration: SimulationNarrationManifest;
   navigation?: SimulationHostNavigationConfig;
+  controllerActions?: {
+    onPrimary?(): void;
+    onBack?(): void;
+    onNarrate?(): void;
+    onExit?(): void;
+  };
   onAction?(action: NormalizedAction): void;
   onEvidence?(evidenceId: string): void;
   onProfileChange?(profileId: QualityProfileId): void;
@@ -59,12 +65,17 @@ export interface SimulationHostConfig {
 
 export interface SimulationHost {
   renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  camera: THREE.PerspectiveCamera;
+  interactions: SimulationInteractionRegistry;
   resources: ResourceRegistry;
   initialize(): Promise<void>;
   profile(): QualityProfileId;
   dispatch(action: NormalizedAction): void;
   applySnapshot(snapshot: LessonSnapshot): void;
   enterVr(): Promise<void>;
+  exitVr(): Promise<void>;
+  addFrameListener(listener: (deltaSeconds: number) => void): () => void;
   focusTarget(): THREE.Object3D | undefined;
   narration: SimulationNarrationController;
   dispose(): Promise<void>;
@@ -197,6 +208,10 @@ export function createSimulationHost(
   let disposed = false;
   let previousTimeMs: number | undefined;
   let documentHidden = false;
+  const desktopCameraPosition = new THREE_RUNTIME.Vector3();
+  const desktopCameraQuaternion = new THREE_RUNTIME.Quaternion();
+  const desktopCameraTarget = new THREE_RUNTIME.Vector3();
+  const frameListeners = new Set<(deltaSeconds: number) => void>();
 
   const dispatch = (action: NormalizedAction) => {
     const errors = validateNormalizedAction(action);
@@ -266,6 +281,7 @@ export function createSimulationHost(
     });
     scene = new THREE_RUNTIME.Scene();
     camera = new THREE_RUNTIME.PerspectiveCamera(58, 1, 0.04, 80);
+    camera.position.set(0, 1.55, 3.6);
     navigationRig = new THREE_RUNTIME.Group();
     navigationRig.name = 'simulation-navigation-rig';
     navigationRig.add(camera);
@@ -295,6 +311,12 @@ export function createSimulationHost(
       teleportStepMeters: config.navigation?.teleportStepMeters,
       turnMode: preferences.turnMode,
       reducedMotion: preferences.reducedMotion,
+      onPrimary: config.controllerActions?.onPrimary,
+      onBack: config.controllerActions?.onBack,
+      onNarrate: config.controllerActions?.onNarrate,
+      onExit: config.controllerActions?.onExit ?? (() => {
+        void renderer.xr.getSession()?.end();
+      }),
     });
     browserProfileId = resolvedDependencies.detectProfile(renderer);
     profileId = browserProfileId;
@@ -344,11 +366,23 @@ export function createSimulationHost(
       dispose: stopVisibilityObserver,
     });
 
-    onSessionStart = () => setProfile('questBaseline');
+    onSessionStart = () => {
+      setProfile('questBaseline');
+      desktopCameraPosition.copy(camera.position);
+      desktopCameraQuaternion.copy(camera.quaternion);
+      desktopCameraTarget.copy(orbit?.target() ?? initialOrbitTarget());
+      orbit?.setEnabled(false);
+      camera.position.set(0, 0, 0);
+      camera.quaternion.identity();
+      navigationRig.position.set(0, 0, 2.6);
+    };
     onSessionEnd = () => {
       setProfile(browserProfileId);
-      // The player rig restores the pre-session desktop pose, so re-read it
-      // and continue orbiting from there instead of snapping back.
+      camera.position.copy(desktopCameraPosition);
+      camera.quaternion.copy(desktopCameraQuaternion);
+      navigationRig.position.set(0, 0, 0);
+      orbit?.setTarget(desktopCameraTarget);
+      orbit?.setEnabled(true);
       orbit?.sync();
     };
     renderer.xr.addEventListener('sessionstart', onSessionStart);
@@ -422,6 +456,7 @@ export function createSimulationHost(
       },
       renderUpdate(context) {
         sceneHandle?.renderUpdate?.(context);
+        for (const listener of frameListeners) listener(context.frameDeltaSeconds);
         presentation.render(scene, camera);
       },
       dispose() {
@@ -432,6 +467,9 @@ export function createSimulationHost(
 
   return {
     renderer,
+    scene,
+    camera,
+    interactions: input.interactions,
     resources,
     narration,
     profile: () => profileId,
@@ -482,12 +520,21 @@ export function createSimulationHost(
       });
       await renderer.xr.setSession(session);
     },
+    async exitVr() {
+      await renderer.xr.getSession()?.end();
+    },
+    addFrameListener(listener) {
+      if (disposed) throw new Error('Simulation host is disposed');
+      frameListeners.add(listener);
+      return () => frameListeners.delete(listener);
+    },
     focusTarget() {
       return sceneHandle?.focusTarget?.();
     },
     async dispose() {
       if (disposed) return;
       disposed = true;
+      frameListeners.clear();
       await runtime!.dispose();
     },
   };

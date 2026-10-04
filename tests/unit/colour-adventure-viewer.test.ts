@@ -47,13 +47,24 @@ describe('Class 1 colour adventure viewer', () => {
       'floating-${colour.id}-balloon',
       '`touch-${colour.id}-balloon`',
       'find-colours-stars-coins-rainbow-reward',
-      'holographic-memory-check-board',
+      'createColourMemoryScene',
       'rainbow-finale-balloons-butterflies-confetti',
       'colour-vr-controller-navigation',
-      '`memory-pad-${colourId}`',
+      'colourMemoryActionId(memoryQuestion.id, colourId)',
       'complete-memory-check',
     ]) {
       expect(source).toContain(identifier);
     }
+  });
+
+  it('shares action validation, keeps labels stationary and reserves the scene viewport', () => {
+    const source = readFileSync(viewerPath, 'utf8');
+    expect(source).toContain('applyColourAdventureAction(progressRef.current, currentStage.id, actionId)');
+    expect(source).toContain('disabled={!memoryReady || stageComplete}');
+    expect(source).toContain('canVisitColourStage(progressRef.current, nextIndex)');
+    expect(source).not.toContain('setMemoryQuestionIndex');
+    expect(source).not.toContain('target.rotation.y = time');
+    expect(source).toContain('new ResizeObserver(onResize)');
+    expect(source).toContain('className={styles.scene}');
   });
 });

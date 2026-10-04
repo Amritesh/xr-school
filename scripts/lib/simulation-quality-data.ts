@@ -13,7 +13,7 @@ export const QUALITY_WEIGHTS = Object.freeze({
   deployment: 5,
 } as const);
 
-export const EXPECTED_RELEASED_SIMULATION_COUNT = 36;
+export const EXPECTED_RELEASED_SIMULATION_COUNT = 41;
 
 export type QualityDimension = keyof typeof QUALITY_WEIGHTS;
 export type QualityScores = Record<QualityDimension, number>;

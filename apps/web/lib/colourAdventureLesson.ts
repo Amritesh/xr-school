@@ -211,7 +211,7 @@ export const COLOUR_ADVENTURE_VR_REQUIREMENTS = [
   'One new colour at a time',
   'Interaction every 20-30 seconds',
   'Trigger selects answers, grabs objects, and touches balloons',
-  'A button moves next, B button goes back or pauses narration',
+  'A continues after the activity, B exits VR, Y goes back',
   'Optional hand tracking for touching, picking, and popping balloons',
   'Smooth rainbow transitions only',
   'No student NPCs',
@@ -238,6 +238,9 @@ export function recordColourAdventureAction(
     throw new Error(`Action "${actionId}" is not valid for stage "${stageId}"`);
   }
 
+  // The guard belongs in the model, not only on a disabled browser button.
+  if (stageId === 'memory-check' && !canFinishColourMemory(progress)) return progress;
+
   const completed = progress.completedActions[stageId] ?? [];
   if (completed.includes(actionId)) return progress;
 
@@ -257,7 +260,8 @@ export function isColourAdventureStageComplete(
   const stage = stagesById.get(stageId);
   if (!stage) throw new Error(`Unknown colour adventure stage: ${stageId}`);
   const completed = progress.completedActions[stageId] ?? [];
-  return stage.requiredActionIds.every(actionId => completed.includes(actionId));
+  return (stageId !== 'memory-check' || canFinishColourMemory(progress))
+    && stage.requiredActionIds.every(actionId => completed.includes(actionId));
 }
 
 export function answerColourMemoryQuestion(
@@ -266,10 +270,8 @@ export function answerColourMemoryQuestion(
   colourId: ColourId,
 ): ColourAdventureProgress {
   const question = memoryQuestionsById.get(questionId);
-  if (!question) throw new Error(`Unknown colour memory question: ${questionId}`);
-  if (!question.optionIds.includes(colourId)) {
-    throw new Error(`Unknown colour "${colourId}" for question "${questionId}"`);
-  }
+  // Stale or invalid scene selections are learner input, not fatal errors.
+  if (!question || !question.optionIds.includes(colourId)) return progress;
 
   return {
     ...progress,
@@ -286,5 +288,66 @@ export function getColourMemoryScore(progress: ColourAdventureProgress) {
       question => progress.memoryAnswers[question.id] === question.correctColourId,
     ).length,
     total: COLOUR_MEMORY_QUESTIONS.length,
+  };
+}
+
+export function canFinishColourMemory(progress: ColourAdventureProgress) {
+  return COLOUR_MEMORY_QUESTIONS.every(
+    question => progress.memoryAnswers[question.id] === question.correctColourId,
+  );
+}
+
+/** Wrong answers stay on the same specimen until the learner succeeds. */
+export function getActiveColourQuestion(progress: ColourAdventureProgress) {
+  return COLOUR_MEMORY_QUESTIONS.find(
+    question => progress.memoryAnswers[question.id] !== question.correctColourId,
+  );
+}
+
+export function colourMemoryActionId(questionId: string, colourId: ColourId) {
+  return `memory-pad-${questionId}:${colourId}`;
+}
+
+export function canVisitColourStage(progress: ColourAdventureProgress, index: number) {
+  return Number.isInteger(index) && index >= 0 && index < COLOUR_ADVENTURE_STAGES.length
+    && COLOUR_ADVENTURE_STAGES.slice(0, index).every(stage =>
+      isColourAdventureStageComplete(progress, stage.id));
+}
+
+/** Single input boundary used by browser buttons, raycasts, and controller A. */
+export function applyColourAdventureAction(
+  progress: ColourAdventureProgress,
+  stageId: ColourAdventureStageId,
+  actionId: string,
+): { progress: ColourAdventureProgress; feedback: string; accepted: boolean } {
+  const reject = (feedback: string) => ({ progress, feedback, accepted: false });
+  if (stageId === 'memory-check') {
+    if (actionId === 'complete-memory-check') {
+      if (!canFinishColourMemory(progress)) return reject('Keep going! Match all ten objects before you finish.');
+      return {
+        progress: recordColourAdventureAction(progress, stageId, actionId),
+        feedback: 'Wonderful remembering! All ten objects matched. Select Next for your celebration.',
+        accepted: true,
+      };
+    }
+    const question = getActiveColourQuestion(progress);
+    if (!question) return reject('All ten objects matched! Select Finish Memory Game.');
+    const colourId = question.optionIds.find(id => colourMemoryActionId(question.id, id) === actionId);
+    if (!colourId) return reject('Choose one of the four colours beside this object.');
+    const correct = colourId === question.correctColourId;
+    return {
+      progress: answerColourMemoryQuestion(progress, question.id, colourId),
+      feedback: correct
+        ? `Correct! ${question.objectName} ${question.objectName === 'Grapes' ? 'are' : 'is'} ${COLOUR_ADVENTURE_COLOURS.find(colour => colour.id === colourId)!.name}.`
+        : 'Good try! Look at the object again and choose its matching colour.',
+      accepted: correct,
+    };
+  }
+  const stage = stagesById.get(stageId);
+  if (!stage?.requiredActionIds.includes(actionId)) return reject('Choose the glowing object for this activity.');
+  return {
+    progress: recordColourAdventureAction(progress, stageId, actionId),
+    feedback: 'Wonderful! Stars and sparkles for you.',
+    accepted: true,
   };
 }

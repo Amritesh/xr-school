@@ -100,12 +100,15 @@ describe("registry-driven simulation route resolution", () => {
       }
     }
 
-    expect(checkedPaths.size).toBe(23);
+    expect(checkedPaths.size).toBe(24);
     expect(checkedPaths).toContain(
       "/simulations/experiments-with-water-soluble-insoluble",
     );
     expect(checkedPaths).toContain(
       "/simulations/mangoes-round-the-year-food-spoilage",
+    );
+    expect(checkedPaths).toContain(
+      "/simulations/fibre-to-fabric-shearing-scouring",
     );
   });
 

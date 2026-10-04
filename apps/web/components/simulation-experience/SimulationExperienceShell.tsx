@@ -37,6 +37,7 @@ interface SimulationExperienceShellProps {
     disabled?: boolean;
     onActivate(): void;
   };
+  choices?: readonly { id: string; label: string; onActivate(): void }[];
   assessment?: {
     promptId: string;
     question: string;
@@ -77,6 +78,7 @@ export default function SimulationExperienceShell({
   completionBody,
   completionActionLabel,
   primaryAction,
+  choices,
   assessment,
   caption,
   feedback,
@@ -129,6 +131,7 @@ export default function SimulationExperienceShell({
           completionBody={completionBody}
           completionActionLabel={completionActionLabel}
           primaryAction={primaryAction}
+          choices={choices}
           assessment={assessment}
           caption={caption}
           feedback={feedback}

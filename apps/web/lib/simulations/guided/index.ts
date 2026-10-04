@@ -18,6 +18,11 @@ export * from './c5-ch09-a04-snow-mountain-climbing.scene';
 export * from './c5-ch10-a01-a-visit-of-ancient-fort.scene';
 export * from './c6-ch03-a01-cotton-farming.scene';
 export * from './c6-ch03-a02-the-process-of-cotton-ginning.scene';
+export * from './c7-ch03-a01-shearing-and-scouring-of-wool.scene';
+export * from './c7-ch03-a03-spinning-and-rolling-of-wool.scene';
+export * from './c8-ch02-a02-virus-introduction-spreading-and-its-effects.scene';
+export * from './c8-ch01-a03-irrigation-methods.scene';
+export * from './c8-ch01-a05-harvesting-threshing-and-storage-of-crops.scene';
 
 import { FOOD_SPOILAGE_SCENE_ENTRY } from './c5-ch04-a01-food-spoilage.scene';
 import { MILK_SPOILAGE_SCENE_ENTRY } from './c5-ch04-a02-milk-spoilage.scene';
@@ -36,6 +41,11 @@ import { SNOW_MOUNTAIN_CLIMBING_SCENE_ENTRY } from './c5-ch09-a04-snow-mountain-
 import { ANCIENT_FORT_SCENE_ENTRY } from './c5-ch10-a01-a-visit-of-ancient-fort.scene';
 import { COTTON_FARMING_SCENE_ENTRY } from './c6-ch03-a01-cotton-farming.scene';
 import { COTTON_GINNING_SCENE_ENTRY } from './c6-ch03-a02-the-process-of-cotton-ginning.scene';
+import { SHEARING_SCOURING_WOOL_SCENE_ENTRY } from './c7-ch03-a01-shearing-and-scouring-of-wool.scene';
+import { YARN_MAKER_SCENE_ENTRY } from './c7-ch03-a03-spinning-and-rolling-of-wool.scene';
+import { VIRUS_INVASION_SCENE_ENTRY } from './c8-ch02-a02-virus-introduction-spreading-and-its-effects.scene';
+import { IRRIGATION_METHODS_SCENE_ENTRY } from './c8-ch01-a03-irrigation-methods.scene';
+import { HARVESTING_THRESHING_STORAGE_SCENE_ENTRY } from './c8-ch01-a05-harvesting-threshing-and-storage-of-crops.scene';
 
 export const GUIDED_SCENE_ENTRIES = [
   FOOD_SPOILAGE_SCENE_ENTRY,
@@ -55,4 +65,9 @@ export const GUIDED_SCENE_ENTRIES = [
   ANCIENT_FORT_SCENE_ENTRY,
   COTTON_FARMING_SCENE_ENTRY,
   COTTON_GINNING_SCENE_ENTRY,
+  SHEARING_SCOURING_WOOL_SCENE_ENTRY,
+  YARN_MAKER_SCENE_ENTRY,
+  VIRUS_INVASION_SCENE_ENTRY,
+  IRRIGATION_METHODS_SCENE_ENTRY,
+  HARVESTING_THRESHING_STORAGE_SCENE_ENTRY,
 ] as const;

@@ -41,15 +41,54 @@ describe('guided asset manifests', () => {
         height: 887,
         byteSize: bytes.byteLength,
         sha256: sha256(bytes),
-        compression: 'WebP lossy q75; cwebp 1.6.0 method 6',
-        author: 'unverified-contributor-supplied',
-        license: 'unverified-contributor-supplied',
       });
-      expect(environment.source).toContain('PR #8 621dfb61');
+      if (record.module.slug === 'c7-ch03-a01-shearing-and-scouring-of-wool') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q75; sharp/libvips effort 6',
+          author: 'OpenAI image generation directed by Aditya K. R. Pandey',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Mission Wool');
+      } else if (record.module.slug === 'c7-ch03-a03-spinning-and-rolling-of-wool') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'OpenAI image generation directed by Aditya K. R. Pandey',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Yarn Maker Mission');
+      } else if (record.module.slug === 'c8-ch02-a02-virus-introduction-spreading-and-its-effects') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'OpenAI image generation directed by Aditya K. R. Pandey',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Invisible Invader');
+      } else if (record.module.slug === 'c8-ch01-a03-irrigation-methods') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'OpenAI image generation directed by Aditya K. R. Pandey',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Irrigation Methods');
+      } else if (record.module.slug === 'c8-ch01-a05-harvesting-threshing-and-storage-of-crops') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'OpenAI image generation directed by Aditya K. R. Pandey',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Harvesting');
+      } else {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q75; cwebp 1.6.0 method 6',
+          author: 'unverified-contributor-supplied',
+          license: 'unverified-contributor-supplied',
+        });
+        expect(environment.source).toContain('PR #8 621dfb61');
+      }
     }
   });
 
-  it('publishes only the 16 committed narration files and never a missing URL', () => {
+  it('publishes a committed narration file for every cue and never a missing URL', () => {
     for (const record of GUIDED_IMPLEMENTED_SIMULATIONS) {
       const expectsAudio = [
         'c5-ch09-a02-rock-climbing',
@@ -57,19 +96,26 @@ describe('guided asset manifests', () => {
       ].includes(record.module.slug);
       const cuesWithAudio = record.narration.cues.filter(cue => cue.audioUrl);
       const audioAssets = record.assets.assets.filter(asset => asset.kind === 'audio');
-      expect(cuesWithAudio).toHaveLength(expectsAudio ? 8 : 0);
+      expect(cuesWithAudio).toHaveLength(record.narration.cues.length);
       expect(audioAssets).toHaveLength(expectsAudio ? 8 : 0);
 
       for (const cue of cuesWithAudio) {
         const bytes = readFileSync(publicFile(cue.audioUrl!));
         const asset = audioAssets.find(candidate => candidate.url === cue.audioUrl);
-        expect(asset).toMatchObject({
-          byteSize: bytes.byteLength,
-          sha256: sha256(bytes),
-        });
+        if (asset) {
+          expect(asset).toMatchObject({
+            byteSize: bytes.byteLength,
+            sha256: sha256(bytes),
+          });
+        } else {
+          expect(cue.audioUrl).toMatch(/^\/narration\/[a-z0-9]+\.mp3$/u);
+          expect(bytes.byteLength).toBeGreaterThanOrEqual(1024);
+        }
       }
       if (!expectsAudio) {
-        expect(record.narration.cues.every(cue => cue.audioUrl === undefined)).toBe(true);
+        expect(record.narration.cues.every(
+          cue => cue.audioUrl?.startsWith('/narration/'),
+        )).toBe(true);
       }
     }
   });

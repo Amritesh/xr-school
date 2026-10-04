@@ -89,6 +89,17 @@ export const FeedbackState = {
   },
 };
 
+export const ChoicesState = {
+  args: {
+    ...Default.args,
+    snapshot: IN_PROGRESS_SNAPSHOT,
+    choices: [
+      { id: 'control', label: 'Inspect control flower', onActivate: noAction },
+      { id: 'treatment', label: 'Inspect treated flower', onActivate: noAction },
+    ],
+  },
+};
+
 // The completion panel's copy is per-simulation (completionEyebrow/
 // Headline/Body/ActionLabel) rather than hardcoded, so a second simulation
 // (here, the Class 7 Breathing Process lab) can show its own summary

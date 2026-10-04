@@ -10,6 +10,7 @@ import {
   type SimulationModuleRecord,
   type SimulationNarrationManifest,
 } from '@xr-school/simulation-schema';
+import { withPackagedNarration } from '../narrationAssets.js';
 
 export interface GuidedStageAuthoring {
   id: string;
@@ -79,13 +80,15 @@ export function createGuidedLesson(input: GuidedLessonAuthoring): {
         : {}),
     };
   });
-  const cues: NarrationCueDefinition[] = input.stages.map((stage, index) => ({
-    id: stages[index].narrationId,
-    stageId: stage.id,
-    text: stage.narrationText,
-    caption: stage.narrationText,
-    ...(stage.audioUrl ? { audioUrl: stage.audioUrl } : {}),
-  }));
+  const cues: NarrationCueDefinition[] = input.stages.map((stage, index) =>
+    withPackagedNarration({
+      id: stages[index].narrationId,
+      stageId: stage.id,
+      text: stage.narrationText,
+      caption: stage.narrationText,
+      ...(stage.audioUrl ? { audioUrl: stage.audioUrl } : {}),
+    }),
+  );
   const guidance: GuidedSimulationDefinition = {
     id: input.id,
     moduleId: input.moduleId,

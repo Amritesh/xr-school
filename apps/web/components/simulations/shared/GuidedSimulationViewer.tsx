@@ -1,11 +1,14 @@
 'use client';
 
 import {
+  createElement,
   useCallback,
   useEffect,
   useRef,
   useState,
+  type ComponentType,
 } from 'react';
+import * as THREE from 'three';
 import { createLessonSession } from '@xr-school/simulation-runtime';
 import {
   findImplementedSimulation,
@@ -27,10 +30,15 @@ import {
   type GuidedSimulationController,
   type GuidedSimulationControllerView,
 } from '@/lib/simulations/guided/createGuidedSimulationController';
+import {
+  createManagedVrHud,
+  type ManagedVrHud,
+} from './createManagedVrHud';
 
 export interface GuidedSimulationViewerProps {
   definition: GuidedSimulationDefinition;
   sceneAdapter: SimulationSceneAdapter;
+  experienceComponent?: ComponentType;
 }
 
 const DEFAULT_PREFERENCES: ExperiencePreferences = {
@@ -44,7 +52,19 @@ const DEFAULT_PREFERENCES: ExperiencePreferences = {
 export default function GuidedSimulationViewer({
   definition,
   sceneAdapter,
+  experienceComponent,
 }: GuidedSimulationViewerProps) {
+  if (experienceComponent) return createElement(experienceComponent);
+  return createElement(ManagedGuidedSimulationViewer, {
+    definition,
+    sceneAdapter,
+  });
+}
+
+function ManagedGuidedSimulationViewer({
+  definition,
+  sceneAdapter,
+}: Omit<GuidedSimulationViewerProps, 'experienceComponent'>) {
   const record = findImplementedSimulation(definition.moduleId);
   if (!record || record.kind !== 'guided') {
     throw new Error(`Missing guided simulation record ${definition.moduleId}`);
@@ -53,6 +73,8 @@ export default function GuidedSimulationViewer({
   const mountRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<SimulationHost | undefined>(undefined);
   const controllerRef = useRef<GuidedSimulationController | undefined>(undefined);
+  const hudRef = useRef<ManagedVrHud | undefined>(undefined);
+  const currentStageRef = useRef(definition.stages[0]);
   const launchingRef = useRef(false);
   const preferencesRef = useRef(DEFAULT_PREFERENCES);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
@@ -71,6 +93,8 @@ export default function GuidedSimulationViewer({
   }, [preferences]);
 
   useEffect(() => () => {
+    hudRef.current?.dispose();
+    hudRef.current = undefined;
     const controller = controllerRef.current;
     const host = hostRef.current;
     controllerRef.current = undefined;
@@ -96,8 +120,30 @@ export default function GuidedSimulationViewer({
         preferences: {
           reducedMotion: launchPreferences.reducedMotion,
           seatedMode: launchPreferences.seated,
-          locomotion: 'stationary',
+          locomotion: 'boundedTeleport',
           turnMode: launchPreferences.comfort ? 'snap' : 'none',
+        },
+        navigation: {
+          movementBounds: new THREE.Box3(
+            new THREE.Vector3(-4, -1, -4),
+            new THREE.Vector3(4, 3, 4),
+          ),
+          teleportStepMeters: 0.7,
+        },
+        controllerActions: {
+          onPrimary() {
+            const stage = currentStageRef.current;
+            hostRef.current?.dispatch({
+              actionId: stage.requiredActionIds[0],
+              targetEntityId: `${definition.moduleId}:primary:${stage.id}`,
+              source: 'xr-controller',
+              phase: 'commit',
+              stageId: stage.id,
+              timestampMs: globalThis.performance?.now() ?? Date.now(),
+            });
+          },
+          onBack: () => controllerRef.current?.previous(),
+          onNarrate: () => { void controllerRef.current?.replayNarration(); },
         },
         onAction(action) {
           controllerRef.current?.dispatch(action);
@@ -116,10 +162,13 @@ export default function GuidedSimulationViewer({
         narrationEnabled: () => preferencesRef.current.audio,
       });
       controllerRef.current = controller;
+      hudRef.current = createManagedVrHud(host);
       setReady(true);
       if (enterVr) await host.enterVr();
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : String(reason));
+      hudRef.current?.dispose();
+      hudRef.current = undefined;
       if (controllerRef.current) await controllerRef.current.dispose();
       else if (host) await host.dispose();
       controllerRef.current = undefined;
@@ -130,6 +179,7 @@ export default function GuidedSimulationViewer({
   }, [definition, record, sceneAdapter]);
 
   const currentStage = controllerView?.stage ?? definition.stages[0];
+  currentStageRef.current = currentStage;
   const snapshot = controllerView?.snapshot ?? fallbackSnapshot;
   const actionPerformed = snapshot.performedActionIds.includes(
     currentStage.requiredActionIds[0],
@@ -147,6 +197,36 @@ export default function GuidedSimulationViewer({
       timestampMs: globalThis.performance?.now() ?? Date.now(),
     });
   }, [currentStage, definition.moduleId]);
+
+  useEffect(() => {
+    const hud = hudRef.current;
+    if (!hud) return;
+    const assessment = controllerView?.assessment;
+    const options = assessment?.options ?? [];
+    hud.setContent({
+      eyebrow: `Stage ${snapshot.stageIndex + 1} of ${definition.stages.length}`,
+      title: currentStage.title,
+      body: controllerView?.caption || currentStage.detail,
+      hint: controllerView?.feedback ?? `Next: ${currentStage.actionLabel}`,
+      choices: options.slice(0, 3).map(option => ({ label: option.label })),
+      buttons: [
+        ...(snapshot.stageIndex > 0 ? ['previous' as const] : []),
+        'replay',
+        'restart',
+        'exit',
+        ...(!assessment && !snapshot.lessonComplete ? ['next' as const] : []),
+      ],
+    }, {
+      previous: () => controllerRef.current?.previous(),
+      next: () => controllerRef.current?.next(),
+      replay: () => { void controllerRef.current?.replayNarration(); },
+      restart: () => controllerRef.current?.restart(),
+      exit: () => { void hostRef.current?.exitVr(); },
+      'choice-a': () => options[0] && controllerRef.current?.answer(options[0].id),
+      'choice-b': () => options[1] && controllerRef.current?.answer(options[1].id),
+      'choice-c': () => options[2] && controllerRef.current?.answer(options[2].id),
+    });
+  }, [controllerView, currentStage, definition.stages.length, snapshot]);
 
   return (
     <SimulationExperienceShell

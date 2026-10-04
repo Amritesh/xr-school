@@ -10,7 +10,7 @@ import { validateCurriculumGraph } from '../../packages/simulation-schema/src/in
 describe('canonical curriculum content', () => {
   it('defines typed courses, chapters, and concepts for every working simulation', () => {
     expect(COURSES).toHaveLength(11);
-    expect(CURRICULUM_CHAPTERS).toHaveLength(23);
+    expect(CURRICULUM_CHAPTERS).toHaveLength(25);
     expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(74);
 
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
@@ -33,6 +33,7 @@ describe('canonical curriculum content', () => {
       item => item.id === 'course-cbse-c5-environmental-science',
     );
     const class6 = COURSES.find(item => item.id === 'course-cbse-c6-science');
+    const class7 = COURSES.find(item => item.id === 'course-cbse-c7-biology');
 
     expect(class5?.chapterIds).toEqual(expect.arrayContaining([
       'chapter-cbse-c5-mangoes-round-year',
@@ -47,6 +48,26 @@ describe('canonical curriculum content', () => {
       'sim-c06-ch03-a01-cotton-farming',
       'sim-c06-ch03-a02-the-process-of-cotton-ginning',
     ]));
+    expect(class7?.chapterIds).toContain('chapter-cbse-c7-fibre-to-fabric');
+    expect(class7?.simulationIds).toEqual(expect.arrayContaining([
+      'sim-c07-ch03-a01-shearing-and-scouring-of-wool',
+      'sim-c07-ch03-a03-spinning-and-rolling-of-wool',
+    ]));
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c7-fibre-to-fabric',
+    )).toMatchObject({
+      chapterNumber: 3,
+      conceptIds: [
+        'concept-shearing-scouring-wool',
+        'concept-wool-carding-combing',
+        'concept-wool-drawing-spinning',
+        'concept-yarn-winding-quality',
+      ],
+      simulationIds: [
+        'sim-c07-ch03-a01-shearing-and-scouring-of-wool',
+        'sim-c07-ch03-a03-spinning-and-rolling-of-wool',
+      ],
+    });
     expect(CURRICULUM_CHAPTERS.find(
       item => item.id === 'chapter-cbse-c5-water-experiments',
     )?.simulationIds).toEqual([
@@ -83,6 +104,10 @@ describe('canonical curriculum content', () => {
       'sim-c1-math-ch01-introduction-to-money',
       'sim-c2-english-ch01-prepositions',
       'sim-c8-10-science-solar-system',
+      'sim-c07-ch03-a03-spinning-and-rolling-of-wool',
+      'sim-c08-ch01-a03-irrigation-methods',
+      'sim-c08-ch01-a05-harvesting-threshing-and-storage-of-crops',
+      'sim-c08-ch02-a02-virus-introduction-spreading-and-its-effects',
       'sim-c08-ch02-a03-fungi-and-its-development',
     ]) {
       expect(linkedSimulationIds.has(simulationId)).toBe(true);
@@ -101,11 +126,38 @@ describe('canonical curriculum content', () => {
       item => item.id === 'chapter-cbse-c8-solar-system',
     )?.simulationIds).toEqual(['sim-c8-10-science-solar-system']);
     expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c8-crop-production',
+    )).toMatchObject({
+      chapterNumber: 1,
+      conceptIds: [
+        'concept-irrigation',
+        'concept-irrigation-water-sources',
+        'concept-irrigation-method-selection',
+        'concept-crop-harvest-maturity',
+        'concept-threshing-and-winnowing',
+        'concept-grain-drying-and-storage',
+      ],
+      simulationIds: [
+        'sim-c08-ch01-a03-irrigation-methods',
+        'sim-c08-ch01-a05-harvesting-threshing-and-storage-of-crops',
+      ],
+    });
+    expect(CURRICULUM_CHAPTERS.find(
       item => item.id === 'chapter-cbse-c8-microorganisms',
     )).toMatchObject({
       chapterNumber: 2,
-      conceptIds: ['concept-fungi', 'concept-mycelium', 'concept-decomposition'],
-      simulationIds: ['sim-c08-ch02-a03-fungi-and-its-development'],
+      conceptIds: [
+        'concept-virus-structure',
+        'concept-virus-replication',
+        'concept-virus-transmission-prevention',
+        'concept-fungi',
+        'concept-mycelium',
+        'concept-decomposition',
+      ],
+      simulationIds: [
+        'sim-c08-ch02-a02-virus-introduction-spreading-and-its-effects',
+        'sim-c08-ch02-a03-fungi-and-its-development',
+      ],
     });
   });
 

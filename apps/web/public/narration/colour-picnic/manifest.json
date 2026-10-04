@@ -1,0 +1,136 @@
+{
+  "profile": {
+    "previewNumber": 9,
+    "label": "Prabhat — Animated Story Teacher",
+    "voice": "en-IN-PrabhatNeural",
+    "rate": "+6%",
+    "pitch": "+1Hz"
+  },
+  "cues": [
+    {
+      "id": "welcome",
+      "text": "Hello, friend! Let's make a colour picnic. We will pack, paint and decorate together.",
+      "audioUrl": "/narration/colour-picnic/welcome.mp3"
+    },
+    {
+      "id": "fruit-prompt",
+      "text": "First, pack a red fruit. Pick up a fruit and look at its colour.",
+      "audioUrl": "/narration/colour-picnic/fruit-prompt.mp3"
+    },
+    {
+      "id": "fruit-red",
+      "text": "This apple is red. Put it in the basket.",
+      "audioUrl": "/narration/colour-picnic/fruit-red.mp3"
+    },
+    {
+      "id": "fruit-green",
+      "text": "This apple is green. Have a look. We need a red fruit for our basket.",
+      "audioUrl": "/narration/colour-picnic/fruit-green.mp3"
+    },
+    {
+      "id": "fruit-yellow",
+      "text": "This banana is yellow. Have a look. We need a red fruit for our basket.",
+      "audioUrl": "/narration/colour-picnic/fruit-yellow.mp3"
+    },
+    {
+      "id": "fruit-correct",
+      "text": "Yes, this apple is red! Our fruit is packed. Choose Next when you are ready.",
+      "audioUrl": "/narration/colour-picnic/fruit-correct.mp3"
+    },
+    {
+      "id": "fruit-try-green",
+      "text": "This apple is green. Back to the tray it goes. Look for the red fruit.",
+      "audioUrl": "/narration/colour-picnic/fruit-try-green.mp3"
+    },
+    {
+      "id": "fruit-try-yellow",
+      "text": "This banana is yellow. Back to the tray it goes. Look for the red fruit.",
+      "audioUrl": "/narration/colour-picnic/fruit-try-yellow.mp3"
+    },
+    {
+      "id": "fruit-empty",
+      "text": "Pick up a fruit first. Look for red.",
+      "audioUrl": "/narration/colour-picnic/fruit-empty.mp3"
+    },
+    {
+      "id": "fruit-put-down",
+      "text": "Back on the tray. Take your time and look for the red fruit.",
+      "audioUrl": "/narration/colour-picnic/fruit-put-down.mp3"
+    },
+    {
+      "id": "paint-prompt",
+      "text": "Now, let us paint our picnic cup blue. Choose blue paint and brush the cup.",
+      "audioUrl": "/narration/colour-picnic/paint-prompt.mp3"
+    },
+    {
+      "id": "paint-red",
+      "text": "This paint is red. We need blue for our cup.",
+      "audioUrl": "/narration/colour-picnic/paint-red.mp3"
+    },
+    {
+      "id": "paint-blue",
+      "text": "This paint is blue. Move your brush over the cup.",
+      "audioUrl": "/narration/colour-picnic/paint-blue.mp3"
+    },
+    {
+      "id": "paint-yellow",
+      "text": "This paint is yellow. We need blue for our cup.",
+      "audioUrl": "/narration/colour-picnic/paint-yellow.mp3"
+    },
+    {
+      "id": "paint-empty",
+      "text": "Choose a paint pot first. We are looking for blue.",
+      "audioUrl": "/narration/colour-picnic/paint-empty.mp3"
+    },
+    {
+      "id": "paint-try-red",
+      "text": "That is red paint. Choose blue and paint this patch again.",
+      "audioUrl": "/narration/colour-picnic/paint-try-red.mp3"
+    },
+    {
+      "id": "paint-try-yellow",
+      "text": "That is yellow paint. Choose blue and paint this patch again.",
+      "audioUrl": "/narration/colour-picnic/paint-try-yellow.mp3"
+    },
+    {
+      "id": "paint-done",
+      "text": "Lovely blue brush strokes! Our cup is ready. You can keep painting, or choose Next.",
+      "audioUrl": "/narration/colour-picnic/paint-done.mp3"
+    },
+    {
+      "id": "decorate-prompt",
+      "text": "Make this picnic yours. Choose any colour for a flag, then plant it beside the cloth.",
+      "audioUrl": "/narration/colour-picnic/decorate-prompt.mp3"
+    },
+    {
+      "id": "flag-red",
+      "text": "A red flag. Your choice! Plant it beside the cloth.",
+      "audioUrl": "/narration/colour-picnic/flag-red.mp3"
+    },
+    {
+      "id": "flag-blue",
+      "text": "A blue flag. Your choice! Plant it beside the cloth.",
+      "audioUrl": "/narration/colour-picnic/flag-blue.mp3"
+    },
+    {
+      "id": "flag-yellow",
+      "text": "A yellow flag. Your choice! Plant it beside the cloth.",
+      "audioUrl": "/narration/colour-picnic/flag-yellow.mp3"
+    },
+    {
+      "id": "flag-empty",
+      "text": "Choose any flag colour first. Red, blue or yellow: you decide.",
+      "audioUrl": "/narration/colour-picnic/flag-empty.mp3"
+    },
+    {
+      "id": "flag-planted",
+      "text": "Your flag is planted! Choose Next to enjoy our picnic.",
+      "audioUrl": "/narration/colour-picnic/flag-planted.mp3"
+    },
+    {
+      "id": "celebrate",
+      "text": "Our colour picnic is ready! You found red, painted blue and chose your own flag. Well done!",
+      "audioUrl": "/narration/colour-picnic/celebrate.mp3"
+    }
+  ]
+}

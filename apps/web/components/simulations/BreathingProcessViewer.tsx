@@ -13,6 +13,7 @@ import SimulationExperienceShell, {
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
 import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
@@ -54,6 +55,7 @@ const NARRATIONS = [
   'Zoom into the alveoli, tiny grape-like air sacs at the end of the smallest airways, where oxygen enters the blood and carbon dioxide leaves it.',
   'Review the comparison board to see how rib position, diaphragm shape, and lung volume differ between inhaling and exhaling.',
 ];
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c7-ch10-a02-the-breathing-process-in-human');
 
 const ACTION_LABELS: Record<string, string> = {
   'inspect-airway': 'Trace the airway',
@@ -166,7 +168,7 @@ function advanceAfterObjectAction(source: NormalizedInputSource, snapshot: Lesso
 
 function playNarration(stageIndex: number, enabled: boolean) {
   if (!enabled) return;
-  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex);
+  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
 function createAnatomyMaterials(): { materials: BreathingAnatomyMaterials; dispose(): void } {
@@ -487,9 +489,15 @@ export default function BreathingProcessViewer() {
       const locomotion = createVrLocomotion({
         renderer: host.renderer,
         rig: vrRig.rig,
+        locomotion: 'boundedTeleport',
+        movementBounds: new THREE.Box3(new THREE.Vector3(-4, -1, -4), new THREE.Vector3(4, 3, 4)),
+        onPrimary: () => {
+          const actionId = focusActionRef.current;
+          if (actionId) performAction(actionId, 'xr-controller');
+        },
+        onNarrate: () => playNarration(snapshotRef.current.stageIndex, preferences.audio),
         onBack: () => {
-          if (snapshotRef.current.stageIndex > 0) previousRef.current();
-          else void host!.renderer.xr.getSession()?.end();
+          previousRef.current();
         },
       });
 

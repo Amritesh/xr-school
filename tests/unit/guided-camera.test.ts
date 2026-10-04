@@ -7,8 +7,19 @@ import {
 
 function createFakeDomElement() {
   const listeners = new Map<string, (event: any) => void>();
+  const rootListeners = new Map<string, (event: any) => void>();
+  const root = {
+    addEventListener(type: string, handler: (event: any) => void) {
+      rootListeners.set(type, handler);
+    },
+    removeEventListener(type: string) {
+      rootListeners.delete(type);
+    },
+  };
   const self = {
     style: {} as Record<string, string>,
+    clientWidth: 800,
+    clientHeight: 600,
     addEventListener(type: string, handler: (event: any) => void) {
       listeners.set(type, handler);
     },
@@ -19,6 +30,12 @@ function createFakeDomElement() {
     releasePointerCapture() {},
     hasPointerCapture() {
       return false;
+    },
+    getRootNode() {
+      return root;
+    },
+    getBoundingClientRect() {
+      return { left: 0, top: 0, width: 800, height: 600 };
     },
     dispatch(type: string, event: Record<string, unknown> = {}) {
       listeners.get(type)?.({ preventDefault() {}, ...event });
@@ -159,42 +176,71 @@ describe('createGuidedCamera', () => {
     guided.dispose();
   });
 
-  it('rotates around the camera eye, not a distant point, and is never blocked', () => {
+  it('enables browser orbit, pan, and dolly controls around the guided target', () => {
     const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
-    const dom = createFakeDomElement();
-    const guided = createGuidedCamera(camera, dom, { transitionSeconds: 0.4 });
-
-    // Mid-transition: dragging should still rotate the view immediately.
-    guided.focusOn({
-      position: new THREE.Vector3(5, 0, 0),
-      target: new THREE.Vector3(5, 0, -1),
-    });
-    guided.update(0.1); // partway through the move
-
-    const positionBeforeDrag = camera.position.clone();
-    dom.dispatch('pointerdown', { clientX: 100, clientY: 100 });
-    dom.dispatch('pointermove', { clientX: 200, clientY: 100 });
-
-    // Rotation must not relocate the eye — only orientation changes.
-    expect(camera.position.distanceTo(positionBeforeDrag)).toBeLessThan(1e-6);
-    const directionAfterDrag = camera.getWorldDirection(new THREE.Vector3());
-
-    // Finish the transition; since the learner took over rotation, the
-    // automatic look-at-target orientation must not silently override it.
-    guided.update(1);
-    const directionAfterSettle = camera.getWorldDirection(new THREE.Vector3());
-    expect(directionAfterSettle.angleTo(directionAfterDrag)).toBeLessThan(1e-6);
-    guided.dispose();
-  });
-
-  it('does not change field of view on scroll — no zoom control', () => {
-    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.set(0, 1, 5);
     const dom = createFakeDomElement();
     const guided = createGuidedCamera(camera, dom);
 
-    dom.dispatch('wheel', { deltaY: 100000 });
+    expect(guided.controls.enableRotate).toBe(true);
+    expect(guided.controls.enablePan).toBe(true);
+    expect(guided.controls.screenSpacePanning).toBe(true);
+    expect(guided.controls.enableZoom).toBe(true);
+    expect(guided.controls.enableDamping).toBe(true);
+    guided.dispose();
+  });
 
-    expect(camera.fov).toBe(60);
+  it('orbits the camera around the focus target while preserving its radius', () => {
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.set(0, 1, 5);
+    const dom = createFakeDomElement();
+    const guided = createGuidedCamera(camera, dom);
+    guided.focusOn(
+      { position: new THREE.Vector3(0, 1, 5), target: new THREE.Vector3(0, 1, 0) },
+      { animate: false },
+    );
+    const before = camera.position.clone();
+    const radius = camera.position.distanceTo(guided.controls.target);
+
+    guided.controls.autoRotate = true;
+    guided.update(1);
+
+    expect(camera.position.distanceTo(before)).toBeGreaterThan(0.01);
+    expect(camera.position.distanceTo(guided.controls.target)).toBeCloseTo(radius, 5);
+    guided.dispose();
+  });
+
+  it('pans the camera target with a right-button drag', () => {
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.set(0, 1, 5);
+    const dom = createFakeDomElement();
+    const guided = createGuidedCamera(camera, dom);
+    const targetBefore = guided.controls.target.clone();
+
+    dom.dispatch('pointerdown', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      button: 2,
+      clientX: 300,
+      clientY: 300,
+    });
+    dom.dispatch('pointermove', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      button: 2,
+      clientX: 360,
+      clientY: 325,
+    });
+    dom.dispatch('pointerup', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      button: 2,
+      clientX: 360,
+      clientY: 325,
+    });
+    guided.update(1 / 60);
+
+    expect(guided.controls.target.distanceTo(targetBefore)).toBeGreaterThan(0.01);
     guided.dispose();
   });
 });

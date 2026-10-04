@@ -28,10 +28,26 @@ function drag(
   emit: (type: string, event: Record<string, unknown>) => void,
   from: { x: number; y: number },
   to: { x: number; y: number },
+  modifiers: Record<string, unknown> = {},
 ) {
-  emit('pointerdown', { pointerId: 1, clientX: from.x, clientY: from.y });
-  emit('pointermove', { pointerId: 1, clientX: to.x, clientY: to.y });
-  emit('pointerup', { pointerId: 1, clientX: to.x, clientY: to.y });
+  emit('pointerdown', {
+    pointerId: 1,
+    clientX: from.x,
+    clientY: from.y,
+    ...modifiers,
+  });
+  emit('pointermove', {
+    pointerId: 1,
+    clientX: to.x,
+    clientY: to.y,
+    ...modifiers,
+  });
+  emit('pointerup', {
+    pointerId: 1,
+    clientX: to.x,
+    clientY: to.y,
+    ...modifiers,
+  });
 }
 
 describe('browser orbit camera controls', () => {
@@ -92,6 +108,51 @@ describe('browser orbit camera controls', () => {
     expect(camera.position.distanceTo(before)).toBeGreaterThan(0.1);
     controls.dispose();
   });
+
+  it('pans the camera and pivot together with a right-button drag', () => {
+    const controls = build();
+    const pivotBefore = new THREE.Vector3(0, 0, -3);
+    controls.setTarget(pivotBefore);
+    const cameraBefore = camera.position.clone();
+    const distanceBefore = cameraBefore.distanceTo(pivotBefore);
+
+    drag(stub.emit, { x: 100, y: 100 }, { x: 240, y: 150 }, { button: 2 });
+
+    const pivotAfter = controls.target();
+    const cameraDelta = camera.position.clone().sub(cameraBefore);
+    const pivotDelta = pivotAfter.clone().sub(pivotBefore);
+    expect(pivotDelta.length()).toBeGreaterThan(0.1);
+    expect(cameraDelta.distanceTo(pivotDelta)).toBeLessThan(1e-5);
+    expect(camera.position.distanceTo(pivotAfter)).toBeCloseTo(distanceBefore, 5);
+    controls.dispose();
+  });
+
+  it.each(['shiftKey', 'ctrlKey', 'metaKey'] as const)(
+    'pans instead of orbiting when %s is held',
+    (modifier) => {
+      const controls = build();
+      const pivotBefore = new THREE.Vector3(0, 0, -3);
+      controls.setTarget(pivotBefore);
+      const cameraBefore = camera.position.clone();
+
+      drag(
+        stub.emit,
+        { x: 100, y: 100 },
+        { x: 220, y: 100 },
+        { [modifier]: true },
+      );
+
+      const pivotAfter = controls.target();
+      expect(pivotAfter.distanceTo(pivotBefore)).toBeGreaterThan(0.1);
+      expect(
+        camera.position
+          .clone()
+          .sub(cameraBefore)
+          .distanceTo(pivotAfter.clone().sub(pivotBefore)),
+      ).toBeLessThan(1e-5);
+      controls.dispose();
+    },
+  );
 
   it('clamps the polar angle so the camera never flips over the pole', () => {
     const controls = build();
@@ -180,6 +241,37 @@ describe('browser orbit camera controls', () => {
     expect(
       camera.getWorldPosition(new THREE.Vector3()).distanceTo(pivotWorld),
     ).toBeCloseTo(3, 3);
+    controls.dispose();
+  });
+
+  it('pans in screen space while the camera is parented to a rotated rig', () => {
+    const rig = new THREE.Group();
+    rig.position.set(4, 0, 9);
+    rig.rotation.y = 0.45;
+    rig.add(camera);
+    new THREE.Scene().add(rig);
+    rig.updateWorldMatrix(true, true);
+
+    const controls = build();
+    const pivotBefore = new THREE.Vector3(0, 0, -3).applyMatrix4(rig.matrixWorld);
+    controls.setTarget(pivotBefore);
+    camera.updateWorldMatrix(true, false);
+    const cameraBefore = camera.getWorldPosition(new THREE.Vector3());
+    const distanceBefore = cameraBefore.distanceTo(pivotBefore);
+
+    drag(stub.emit, { x: 80, y: 70 }, { x: 210, y: 120 }, { shiftKey: true });
+
+    camera.updateWorldMatrix(true, false);
+    const cameraAfter = camera.getWorldPosition(new THREE.Vector3());
+    const pivotAfter = controls.target();
+    expect(pivotAfter.distanceTo(pivotBefore)).toBeGreaterThan(0.1);
+    expect(
+      cameraAfter
+        .clone()
+        .sub(cameraBefore)
+        .distanceTo(pivotAfter.clone().sub(pivotBefore)),
+    ).toBeLessThan(1e-5);
+    expect(cameraAfter.distanceTo(pivotAfter)).toBeCloseTo(distanceBefore, 5);
     controls.dispose();
   });
 

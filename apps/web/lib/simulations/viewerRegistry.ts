@@ -49,6 +49,36 @@ function guidedViewerInput(
   };
 }
 
+function bespokeGuidedViewerInput(
+  moduleId: string,
+  sourcePath: string,
+  loadAdapter: () => Promise<{ default: SimulationSceneAdapter }>,
+  loadViewer: () => Promise<SimulationViewerModule>,
+): SimulationViewerInput {
+  const definition = GUIDED_SIMULATION_DEFINITIONS.find(
+    item => item.moduleId === moduleId,
+  );
+  if (!definition) throw new Error(`Missing guided definition ${moduleId}`);
+  return {
+    sourcePath,
+    async load() {
+      const [{ default: sceneAdapter }, { default: Viewer }] = await Promise.all([
+        loadAdapter(),
+        loadViewer(),
+      ]);
+      return {
+        default: function RegisteredBespokeGuidedViewer() {
+          return createElement(GuidedSimulationViewer, {
+            definition,
+            sceneAdapter,
+            experienceComponent: Viewer,
+          });
+        },
+      };
+    },
+  };
+}
+
 function interactiveViewerInput(
   viewerKey: string,
   sourcePath: string,
@@ -151,91 +181,28 @@ const VIEWER_INPUTS = {
     'interactive-shape-sorting',
     'apps/web/lib/simulations/interactive/shape-sorting.scene.ts',
   ),
-  'guided-food-spoilage': guidedViewerInput(
-    'sim-c05-ch04-a01-food-spoilage',
-    'apps/web/lib/simulations/guided/c5-ch04-a01-food-spoilage.scene.ts',
-    () => import('./guided/c5-ch04-a01-food-spoilage.scene'),
-  ),
-  'guided-milk-spoilage': guidedViewerInput(
-    'sim-c05-ch04-a02-milk-spoilage',
-    'apps/web/lib/simulations/guided/c5-ch04-a02-milk-spoilage.scene.ts',
-    () => import('./guided/c5-ch04-a02-milk-spoilage.scene'),
-  ),
-  'guided-aam-papad': guidedViewerInput(
-    'sim-c05-ch04-a03-the-making-of-aam-papad',
-    'apps/web/lib/simulations/guided/c5-ch04-a03-the-making-of-aam-papad.scene.ts',
-    () => import('./guided/c5-ch04-a03-the-making-of-aam-papad.scene'),
-  ),
-  'guided-pitcher-plant': guidedViewerInput(
-    'sim-c05-ch05-a01-pitcher-plant-the-insect-hunter',
-    'apps/web/lib/simulations/guided/c5-ch05-a01-pitcher-plant-the-insect-hunter.scene.ts',
-    () => import('./guided/c5-ch05-a01-pitcher-plant-the-insect-hunter.scene'),
-  ),
-  'guided-seed-dispersal': guidedViewerInput(
-    'sim-c05-ch05-a02-seed-dispersal',
-    'apps/web/lib/simulations/guided/c5-ch05-a02-seed-dispersal.scene.ts',
-    () => import('./guided/c5-ch05-a02-seed-dispersal.scene'),
-  ),
-  'guided-rainwater-storage': guidedViewerInput(
-    'sim-c05-ch06-a01-the-storage-of-rainwater',
-    'apps/web/lib/simulations/guided/c5-ch06-a01-the-storage-of-rainwater.scene.ts',
-    () => import('./guided/c5-ch06-a01-the-storage-of-rainwater.scene'),
-  ),
-  'guided-stepwell-structure': guidedViewerInput(
-    'sim-c05-ch06-a02-a-step-well-structure',
-    'apps/web/lib/simulations/guided/c5-ch06-a02-a-step-well-structure.scene.ts',
-    () => import('./guided/c5-ch06-a02-a-step-well-structure.scene'),
-  ),
-  'guided-dead-sea-salt-water': guidedViewerInput(
-    'sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects',
-    'apps/web/lib/simulations/guided/c5-ch07-a02-dead-sea-salt-water-and-its-effects.scene.ts',
-    () => import('./guided/c5-ch07-a02-dead-sea-salt-water-and-its-effects.scene'),
-  ),
-  'guided-malaria-diagnosis': guidedViewerInput(
-    'sim-c05-ch08-a01-diagnosis-of-malaria',
-    'apps/web/lib/simulations/guided/c5-ch08-a01-diagnosis-of-malaria.scene.ts',
-    () => import('./guided/c5-ch08-a01-diagnosis-of-malaria.scene'),
-  ),
-  'guided-mosquito-life-cycle': guidedViewerInput(
-    'sim-c05-ch08-a02-life-cycle-of-the-mosquito',
-    'apps/web/lib/simulations/guided/c5-ch08-a02-life-cycle-of-the-mosquito.scene.ts',
-    () => import('./guided/c5-ch08-a02-life-cycle-of-the-mosquito.scene'),
-  ),
-  'guided-river-crossing': guidedViewerInput(
-    'sim-c05-ch09-a01-river-crossing-adventure',
-    'apps/web/lib/simulations/guided/c5-ch09-a01-river-crossing-adventure.scene.ts',
-    () => import('./guided/c5-ch09-a01-river-crossing-adventure.scene'),
-  ),
-  'guided-rock-climbing': guidedViewerInput(
-    'sim-c05-ch09-a02-rock-climbing',
-    'apps/web/lib/simulations/guided/c5-ch09-a02-rock-climbing.scene.ts',
-    () => import('./guided/c5-ch09-a02-rock-climbing.scene'),
-  ),
-  'guided-camp-in-snow': guidedViewerInput(
-    'sim-c05-ch09-a03-camp-in-the-snow',
-    'apps/web/lib/simulations/guided/c5-ch09-a03-camp-in-the-snow.scene.ts',
-    () => import('./guided/c5-ch09-a03-camp-in-the-snow.scene'),
-  ),
-  'guided-snow-mountain-climbing': guidedViewerInput(
-    'sim-c05-ch09-a04-snow-mountain-climbing',
-    'apps/web/lib/simulations/guided/c5-ch09-a04-snow-mountain-climbing.scene.ts',
-    () => import('./guided/c5-ch09-a04-snow-mountain-climbing.scene'),
-  ),
-  'guided-ancient-fort': guidedViewerInput(
-    'sim-c05-ch10-a01-a-visit-of-ancient-fort',
-    'apps/web/lib/simulations/guided/c5-ch10-a01-a-visit-of-ancient-fort.scene.ts',
-    () => import('./guided/c5-ch10-a01-a-visit-of-ancient-fort.scene'),
-  ),
-  'guided-cotton-farming': guidedViewerInput(
-    'sim-c06-ch03-a01-cotton-farming',
-    'apps/web/lib/simulations/guided/c6-ch03-a01-cotton-farming.scene.ts',
-    () => import('./guided/c6-ch03-a01-cotton-farming.scene'),
-  ),
-  'guided-cotton-ginning': guidedViewerInput(
-    'sim-c06-ch03-a02-the-process-of-cotton-ginning',
-    'apps/web/lib/simulations/guided/c6-ch03-a02-the-process-of-cotton-ginning.scene.ts',
-    () => import('./guided/c6-ch03-a02-the-process-of-cotton-ginning.scene'),
-  ),
+  'guided-food-spoilage': bespokeGuidedViewerInput('sim-c05-ch04-a01-food-spoilage', 'apps/web/lib/simulations/guided/c5-ch04-a01-food-spoilage.scene.ts', () => import('./guided/c5-ch04-a01-food-spoilage.scene'), () => import('../../components/simulations/FoodSpoilageViewer')),
+  'guided-milk-spoilage': bespokeGuidedViewerInput('sim-c05-ch04-a02-milk-spoilage', 'apps/web/lib/simulations/guided/c5-ch04-a02-milk-spoilage.scene.ts', () => import('./guided/c5-ch04-a02-milk-spoilage.scene'), () => import('../../components/simulations/MilkSpoilageViewer')),
+  'guided-aam-papad': bespokeGuidedViewerInput('sim-c05-ch04-a03-the-making-of-aam-papad', 'apps/web/lib/simulations/guided/c5-ch04-a03-the-making-of-aam-papad.scene.ts', () => import('./guided/c5-ch04-a03-the-making-of-aam-papad.scene'), () => import('../../components/simulations/AamPapadViewer')),
+  'guided-pitcher-plant': bespokeGuidedViewerInput('sim-c05-ch05-a01-pitcher-plant-the-insect-hunter', 'apps/web/lib/simulations/guided/c5-ch05-a01-pitcher-plant-the-insect-hunter.scene.ts', () => import('./guided/c5-ch05-a01-pitcher-plant-the-insect-hunter.scene'), () => import('../../components/simulations/PitcherPlantViewer')),
+  'guided-seed-dispersal': bespokeGuidedViewerInput('sim-c05-ch05-a02-seed-dispersal', 'apps/web/lib/simulations/guided/c5-ch05-a02-seed-dispersal.scene.ts', () => import('./guided/c5-ch05-a02-seed-dispersal.scene'), () => import('../../components/simulations/SeedDispersalViewer')),
+  'guided-rainwater-storage': bespokeGuidedViewerInput('sim-c05-ch06-a01-the-storage-of-rainwater', 'apps/web/lib/simulations/guided/c5-ch06-a01-the-storage-of-rainwater.scene.ts', () => import('./guided/c5-ch06-a01-the-storage-of-rainwater.scene'), () => import('../../components/simulations/RainwaterStorageViewer')),
+  'guided-stepwell-structure': bespokeGuidedViewerInput('sim-c05-ch06-a02-a-step-well-structure', 'apps/web/lib/simulations/guided/c5-ch06-a02-a-step-well-structure.scene.ts', () => import('./guided/c5-ch06-a02-a-step-well-structure.scene'), () => import('../../components/simulations/StepwellStructureViewer')),
+  'guided-dead-sea-salt-water': bespokeGuidedViewerInput('sim-c05-ch07-a02-dead-sea-salt-water-and-its-effects', 'apps/web/lib/simulations/guided/c5-ch07-a02-dead-sea-salt-water-and-its-effects.scene.ts', () => import('./guided/c5-ch07-a02-dead-sea-salt-water-and-its-effects.scene'), () => import('../../components/simulations/DeadSeaSaltWaterViewer')),
+  'guided-malaria-diagnosis': bespokeGuidedViewerInput('sim-c05-ch08-a01-diagnosis-of-malaria', 'apps/web/lib/simulations/guided/c5-ch08-a01-diagnosis-of-malaria.scene.ts', () => import('./guided/c5-ch08-a01-diagnosis-of-malaria.scene'), () => import('../../components/simulations/MalariaDiagnosisViewer')),
+  'guided-mosquito-life-cycle': bespokeGuidedViewerInput('sim-c05-ch08-a02-life-cycle-of-the-mosquito', 'apps/web/lib/simulations/guided/c5-ch08-a02-life-cycle-of-the-mosquito.scene.ts', () => import('./guided/c5-ch08-a02-life-cycle-of-the-mosquito.scene'), () => import('../../components/simulations/MosquitoLifeCycleViewer')),
+  'guided-river-crossing': bespokeGuidedViewerInput('sim-c05-ch09-a01-river-crossing-adventure', 'apps/web/lib/simulations/guided/c5-ch09-a01-river-crossing-adventure.scene.ts', () => import('./guided/c5-ch09-a01-river-crossing-adventure.scene'), () => import('../../components/simulations/RiverCrossingAdventureViewer')),
+  'guided-rock-climbing': bespokeGuidedViewerInput('sim-c05-ch09-a02-rock-climbing', 'apps/web/lib/simulations/guided/c5-ch09-a02-rock-climbing.scene.ts', () => import('./guided/c5-ch09-a02-rock-climbing.scene'), () => import('../../components/simulations/RockClimbingViewer')),
+  'guided-camp-in-snow': bespokeGuidedViewerInput('sim-c05-ch09-a03-camp-in-the-snow', 'apps/web/lib/simulations/guided/c5-ch09-a03-camp-in-the-snow.scene.ts', () => import('./guided/c5-ch09-a03-camp-in-the-snow.scene'), () => import('../../components/simulations/CampInSnowViewer')),
+  'guided-snow-mountain-climbing': bespokeGuidedViewerInput('sim-c05-ch09-a04-snow-mountain-climbing', 'apps/web/lib/simulations/guided/c5-ch09-a04-snow-mountain-climbing.scene.ts', () => import('./guided/c5-ch09-a04-snow-mountain-climbing.scene'), () => import('../../components/simulations/SnowMountainClimbingViewer')),
+  'guided-ancient-fort': bespokeGuidedViewerInput('sim-c05-ch10-a01-a-visit-of-ancient-fort', 'apps/web/lib/simulations/guided/c5-ch10-a01-a-visit-of-ancient-fort.scene.ts', () => import('./guided/c5-ch10-a01-a-visit-of-ancient-fort.scene'), () => import('../../components/simulations/AncientFortVisitViewer')),
+  'guided-cotton-farming': bespokeGuidedViewerInput('sim-c06-ch03-a01-cotton-farming', 'apps/web/lib/simulations/guided/c6-ch03-a01-cotton-farming.scene.ts', () => import('./guided/c6-ch03-a01-cotton-farming.scene'), () => import('../../components/simulations/CottonFarmingViewer')),
+  'guided-cotton-ginning': bespokeGuidedViewerInput('sim-c06-ch03-a02-the-process-of-cotton-ginning', 'apps/web/lib/simulations/guided/c6-ch03-a02-the-process-of-cotton-ginning.scene.ts', () => import('./guided/c6-ch03-a02-the-process-of-cotton-ginning.scene'), () => import('../../components/simulations/CottonGinningViewer')),
+  'guided-shearing-scouring-wool': bespokeGuidedViewerInput('sim-c07-ch03-a01-shearing-and-scouring-of-wool', 'apps/web/lib/simulations/guided/c7-ch03-a01-shearing-and-scouring-of-wool.scene.ts', () => import('./guided/c7-ch03-a01-shearing-and-scouring-of-wool.scene'), () => import('../../components/simulations/WoolProcessingViewer')),
+  'guided-yarn-maker-mission': bespokeGuidedViewerInput('sim-c07-ch03-a03-spinning-and-rolling-of-wool', 'apps/web/lib/simulations/guided/c7-ch03-a03-spinning-and-rolling-of-wool.scene.ts', () => import('./guided/c7-ch03-a03-spinning-and-rolling-of-wool.scene'), () => import('../../components/simulations/YarnMakerViewer')),
+  'guided-virus-invasion': bespokeGuidedViewerInput('sim-c08-ch02-a02-virus-introduction-spreading-and-its-effects', 'apps/web/lib/simulations/guided/c8-ch02-a02-virus-introduction-spreading-and-its-effects.scene.ts', () => import('./guided/c8-ch02-a02-virus-introduction-spreading-and-its-effects.scene'), () => import('../../components/simulations/VirusInvasionViewer')),
+  'guided-irrigation-methods': bespokeGuidedViewerInput('sim-c08-ch01-a03-irrigation-methods', 'apps/web/lib/simulations/guided/c8-ch01-a03-irrigation-methods.scene.ts', () => import('./guided/c8-ch01-a03-irrigation-methods.scene'), () => import('../../components/simulations/IrrigationMethodsViewer')),
+  'guided-harvesting-threshing-storage': bespokeGuidedViewerInput('sim-c08-ch01-a05-harvesting-threshing-and-storage-of-crops', 'apps/web/lib/simulations/guided/c8-ch01-a05-harvesting-threshing-and-storage-of-crops.scene.ts', () => import('./guided/c8-ch01-a05-harvesting-threshing-and-storage-of-crops.scene'), () => import('../../components/simulations/HarvestingStorageViewer')),
 } as const satisfies Record<string, SimulationViewerInput>;
 
 export function assertSimulationViewerCoverage(

@@ -202,6 +202,50 @@ export const GUIDED_LEARNING_CONCEPTS: LearningConceptRecord[] = [
     keywords: ['cotton gin', 'roller', 'fibre', 'seed', 'spinning'],
     related: ['concept-cotton-farming'],
   }),
+  guidedConcept({
+    id: 'concept-shearing-scouring-wool',
+    name: 'Shearing and scouring of wool',
+    aliases: ['wool processing', 'cleaning fleece', 'Mission Wool'],
+    subject: 'biology',
+    description: 'Humane shearing removes a dry fleece in suitable warm weather, while controlled scouring removes dust, sweat, plant matter and lanolin from the removed wool.',
+    misconception: 'Shearing and scouring are the same process, or raw fleece can be spun without cleaning.',
+    relevance: 'Connects animal care and material processing to the woollen clothes students use.',
+    keywords: ['sheep', 'fleece', 'shearing', 'scouring', 'lanolin', 'wool'],
+    related: ['concept-cotton-farming', 'concept-cotton-ginning', 'concept-wool-carding-combing'],
+  }),
+  guidedConcept({
+    id: 'concept-wool-carding-combing',
+    name: 'Carding and combing wool fibres',
+    aliases: ['preparing wool for spinning', 'straightening wool fibres', 'making wool sliver'],
+    subject: 'science',
+    description: 'Carding opens and separates tangled wool while partly aligning the fibres; combing then aligns longer fibres more evenly and removes some short fibres and remaining impurities to form a soft untwisted sliver.',
+    misconception: 'Carding and combing are identical, or either process twists loose fibres into finished yarn.',
+    relevance: 'Explains how clean, dyed wool becomes an even fibre strand that can be drawn and spun reliably.',
+    keywords: ['wool', 'carding', 'combing', 'aligned fibres', 'parallel fibres', 'sliver'],
+    related: ['concept-shearing-scouring-wool', 'concept-wool-drawing-spinning'],
+  }),
+  guidedConcept({
+    id: 'concept-wool-drawing-spinning',
+    name: 'Drawing and spinning wool',
+    aliases: ['spinning woollen yarn', 'sliver to roving', 'twisting wool fibres'],
+    subject: 'science',
+    description: 'Drawing gradually makes a sliver thinner and more even to prepare roving, while spinning continues the drawing and adds a balanced twist so many short fibres grip one another as continuous woollen yarn.',
+    misconception: 'One loose fibre is already yarn, or adding more twist always makes yarn better and stronger.',
+    relevance: 'Connects roller speed, strand thickness, twist and tension with the strength and flexibility of everyday woollen yarn.',
+    keywords: ['wool', 'sliver', 'drawing', 'roving', 'spinning', 'twist', 'yarn tension'],
+    related: ['concept-wool-carding-combing', 'concept-yarn-winding-quality'],
+  }),
+  guidedConcept({
+    id: 'concept-yarn-winding-quality',
+    name: 'Yarn winding and quality',
+    aliases: ['rolling woollen yarn', 'winding a bobbin', 'yarn quality inspection'],
+    subject: 'science',
+    description: 'Finished yarn is wound evenly onto a bobbin, spool or cone using suitable speed, guide movement and tension; useful yarn should be continuous, sufficiently strong, evenly twisted and reasonably uniform in thickness.',
+    misconception: 'Winding is the same as spinning, or piling yarn in one place on a bobbin stores it correctly.',
+    relevance: 'Explains how controlled winding prevents tangles and breakage and prepares yarn to unwind smoothly for knitting or weaving.',
+    keywords: ['yarn', 'winding', 'rolling', 'bobbin', 'spool', 'tension', 'quality'],
+    related: ['concept-wool-drawing-spinning'],
+  }),
 ];
 
 export const GUIDED_CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
@@ -268,13 +312,37 @@ export const GUIDED_CURRICULUM_CHAPTERS: CurriculumChapterRecord[] = [
     conceptIds: ['concept-cotton-farming', 'concept-cotton-ginning'],
     simulationIds: ['sim-c06-ch03-a01-cotton-farming', 'sim-c06-ch03-a02-the-process-of-cotton-ginning'],
   },
+  {
+    id: 'chapter-cbse-c7-fibre-to-fabric',
+    courseId: 'course-cbse-c7-biology',
+    chapterNumber: 3,
+    title: 'Fibre to Fabric',
+    topicIds: ['topic-wool-processing'],
+    conceptIds: [
+      'concept-shearing-scouring-wool',
+      'concept-wool-carding-combing',
+      'concept-wool-drawing-spinning',
+      'concept-yarn-winding-quality',
+    ],
+    simulationIds: [
+      'sim-c07-ch03-a01-shearing-and-scouring-of-wool',
+      'sim-c07-ch03-a03-spinning-and-rolling-of-wool',
+    ],
+  },
 ];
 
 export const GUIDED_CLASS5_CHAPTER_IDS = GUIDED_CURRICULUM_CHAPTERS
   .filter(chapter => chapter.courseId === 'course-cbse-c5-environmental-science')
   .map(chapter => chapter.id);
 export const GUIDED_CLASS5_CONCEPT_IDS = GUIDED_LEARNING_CONCEPTS
-  .filter(concept => !['concept-cotton-farming', 'concept-cotton-ginning'].includes(concept.id))
+  .filter(concept => ![
+    'concept-cotton-farming',
+    'concept-cotton-ginning',
+    'concept-shearing-scouring-wool',
+    'concept-wool-carding-combing',
+    'concept-wool-drawing-spinning',
+    'concept-yarn-winding-quality',
+  ].includes(concept.id))
   .map(concept => concept.id);
 export const GUIDED_CLASS5_SIMULATION_IDS = GUIDED_CURRICULUM_CHAPTERS
   .filter(chapter => chapter.courseId === 'course-cbse-c5-environmental-science')
@@ -282,3 +350,14 @@ export const GUIDED_CLASS5_SIMULATION_IDS = GUIDED_CURRICULUM_CHAPTERS
 export const GUIDED_CLASS6_CHAPTER_IDS = ['chapter-cbse-c6-fibre-to-fabric'];
 export const GUIDED_CLASS6_CONCEPT_IDS = ['concept-cotton-farming', 'concept-cotton-ginning'];
 export const GUIDED_CLASS6_SIMULATION_IDS = ['sim-c06-ch03-a01-cotton-farming', 'sim-c06-ch03-a02-the-process-of-cotton-ginning'];
+export const GUIDED_CLASS7_CHAPTER_IDS = ['chapter-cbse-c7-fibre-to-fabric'];
+export const GUIDED_CLASS7_CONCEPT_IDS = [
+  'concept-shearing-scouring-wool',
+  'concept-wool-carding-combing',
+  'concept-wool-drawing-spinning',
+  'concept-yarn-winding-quality',
+];
+export const GUIDED_CLASS7_SIMULATION_IDS = [
+  'sim-c07-ch03-a01-shearing-and-scouring-of-wool',
+  'sim-c07-ch03-a03-spinning-and-rolling-of-wool',
+];

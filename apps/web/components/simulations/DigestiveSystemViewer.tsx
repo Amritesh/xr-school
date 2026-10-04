@@ -33,7 +33,11 @@ import {
   playSimulationNarration,
   stopSimulationNarration,
 } from '@/lib/simulationAudio';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
 import { ClassroomSync } from '@/components/robotree/ClassroomSync';
+import { createQuestVrControls } from './questVrControls';
+
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c5-ch03-a02-introduction-of-digestive-system');
 
 const COLORS = {
   cyan: 0x38bdf8,
@@ -1159,6 +1163,7 @@ export default function DigestiveSystemViewer() {
   const progressRef = useRef<DigestiveProgress>(createDigestiveProgress());
   const performActionRef = useRef<(actionId: string) => void>(() => undefined);
   const goToStageRef = useRef<(stageIndex: number) => void>(() => undefined);
+  const speakRef = useRef<(text: string, cueIndex?: number) => void>(() => undefined);
   const focusStageRef = useRef<(stageId: DigestiveStageId, animate?: boolean) => void>(() => undefined);
   const scienceRoomObjectsRef = useRef<THREE.Object3D[]>([]);
   const productionMixersRef = useRef<THREE.AnimationMixer[]>([]);
@@ -1205,8 +1210,9 @@ export default function DigestiveSystemViewer() {
 
   const speak = useCallback((text: string, cueIndex = stageIndexRef.current) => {
     if (muted) return;
-    void playSimulationNarration(text, cueIndex);
+    void playSimulationNarration(text, cueIndex, NARRATION_AUDIO_URLS[cueIndex]);
   }, [muted]);
+  speakRef.current = speak;
 
   const performAction = useCallback((actionId: string) => {
     const currentStage = DIGESTIVE_STAGES[stageIndexRef.current];
@@ -1456,6 +1462,24 @@ export default function DigestiveSystemViewer() {
     controller0.add(makeControllerRay());
     controller1.add(makeControllerRay());
     scene.add(controller0, controller1);
+    const questVr = createQuestVrControls({
+      renderer,
+      scene,
+      camera,
+      controllers: [controller0, controller1],
+      onPrimary: () => {
+        const current = DIGESTIVE_STAGES[stageIndexRef.current];
+        const completed = progressRef.current.completedActions[current.id] ?? [];
+        const actionId = current.requiredActionIds.find(id => !completed.includes(id));
+        if (actionId) performActionRef.current(actionId);
+        else goToStageRef.current(stageIndexRef.current + 1);
+      },
+      onBack: () => goToStageRef.current(stageIndexRef.current - 1),
+      onNarrate: () => {
+        const current = DIGESTIVE_STAGES[stageIndexRef.current];
+        speakRef.current(current.teacherNarration, stageIndexRef.current);
+      },
+    });
 
     // ── Selection: one shared raycasting/highlight system for mouse + XR.
     // Lets desktop learners click organs directly, not just the HTML
@@ -1492,6 +1516,7 @@ export default function DigestiveSystemViewer() {
       elapsed += delta;
       const time = elapsed;
       if (!renderer.xr.isPresenting) guidedCamera.update(delta);
+      questVr.update();
       const intensity = comfortModeRef.current ? 0.35 : 1;
       for (const mixer of productionMixersRef.current) mixer.update(delta * intensity);
       const {
@@ -1606,6 +1631,7 @@ export default function DigestiveSystemViewer() {
       focusStageRef.current = () => undefined;
       productionMixersRef.current = [];
       interactionSystem.dispose();
+      questVr.dispose();
       guidedCamera.dispose();
       presentationPipeline.dispose();
       scene.traverse(object => {

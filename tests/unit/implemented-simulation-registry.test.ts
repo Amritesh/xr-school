@@ -26,13 +26,15 @@ function mutableClone(
 
 describe("implemented simulation registry", () => {
   it("contains the complete released registry while preserving the 13 legacy module seeds", () => {
-    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(EXPECTED_RELEASED_SIMULATION_COUNT);
+    expect(IMPLEMENTED_SIMULATIONS).toHaveLength(
+      EXPECTED_RELEASED_SIMULATION_COUNT,
+    );
     expect(SIMULATION_MODULES).toHaveLength(13);
     const implementedIds = new Set(
       IMPLEMENTED_SIMULATIONS.map(({ module }) => module.id),
     );
     expect(
-      SIMULATION_MODULES.every(module => implementedIds.has(module.id)),
+      SIMULATION_MODULES.every((module) => implementedIds.has(module.id)),
     ).toBe(true);
     expect(
       IMPLEMENTED_SIMULATIONS.every(
@@ -43,7 +45,7 @@ describe("implemented simulation registry", () => {
     ).toBe(true);
   });
 
-  it("looks up Living Mycelium Lab once by its canonical identity", () => {
+  it("looks up The Secret Life of Fungi once by its canonical identity", () => {
     const definition = findImplementedSimulation(
       "sim-c08-ch02-a03-fungi-and-its-development",
     );
@@ -52,9 +54,9 @@ describe("implemented simulation registry", () => {
       slug: "c8-ch02-a03-fungi-and-its-development",
       viewerKey: "fungi-development",
     });
-    expect(findImplementedSimulation("c8-ch02-a03-fungi-and-its-development")).toBe(
-      definition,
-    );
+    expect(
+      findImplementedSimulation("c8-ch02-a03-fungi-and-its-development"),
+    ).toBe(definition);
     expect(
       IMPLEMENTED_SIMULATIONS.filter(
         ({ module }) => module.viewerKey === "fungi-development",
@@ -81,7 +83,9 @@ describe("implemented simulation registry", () => {
         validateImplementedSimulationDefinition(definition),
         definition.module.slug,
       ).toEqual([]);
-      expect(definition.module.stages).toBe(definition.experience.stages.length);
+      expect(definition.module.stages).toBe(
+        definition.experience.stages.length,
+      );
       expect(definition.narration.cues.length).toBeGreaterThan(0);
     }
   });
@@ -103,13 +107,16 @@ describe("implemented simulation registry", () => {
         expect(asset.license, asset.id).toContain("self-authored");
 
         const bytes = readFileSync(
-          resolve(process.cwd(), "apps/web/public", asset.url.replace(/^\//, "")),
+          resolve(
+            process.cwd(),
+            "apps/web/public",
+            asset.url.replace(/^\//, ""),
+          ),
         );
         expect(bytes.byteLength, asset.id).toBe(asset.byteSize);
-        expect(
-          createHash("sha256").update(bytes).digest("hex"),
-          asset.id,
-        ).toBe(asset.sha256);
+        expect(createHash("sha256").update(bytes).digest("hex"), asset.id).toBe(
+          asset.sha256,
+        );
       }
     }
   });
@@ -157,7 +164,9 @@ describe("implemented simulation registry", () => {
   it("finds every definition by ID, slug, canonical path, and alias", () => {
     for (const definition of IMPLEMENTED_SIMULATIONS) {
       expect(findImplementedSimulation(definition.module.id)).toBe(definition);
-      expect(findImplementedSimulation(definition.module.slug)).toBe(definition);
+      expect(findImplementedSimulation(definition.module.slug)).toBe(
+        definition,
+      );
       expect(findImplementedSimulation(routeForSimulation(definition))).toBe(
         definition,
       );
@@ -205,26 +214,46 @@ describe("implemented simulation registry", () => {
     const definition = IMPLEMENTED_SIMULATIONS[0];
     const canonicalPath = routeForSimulation(definition);
 
-    expect(resolveSimulationPath(`${canonicalPath}/?mode=browser#stage-1`)).toEqual(
-      {
-        definition,
-        canonicalPath,
-        redirect: false,
-      },
-    );
-    expect(resolveSimulationPath("/simulations/not-real?mode=browser")).toBeUndefined();
+    expect(
+      resolveSimulationPath(`${canonicalPath}/?mode=browser#stage-1`),
+    ).toEqual({
+      definition,
+      canonicalPath,
+      redirect: false,
+    });
+    expect(
+      resolveSimulationPath("/simulations/not-real?mode=browser"),
+    ).toBeUndefined();
   });
 
   it.each([
-    ["module ID", (first: ImplementedSimulationDefinition, second: ImplementedSimulationDefinition) => {
-      second.module.id = first.module.id;
-    }],
-    ["slug", (first: ImplementedSimulationDefinition, second: ImplementedSimulationDefinition) => {
-      second.module.slug = first.module.slug;
-    }],
-    ["viewer key", (first: ImplementedSimulationDefinition, second: ImplementedSimulationDefinition) => {
-      second.module.viewerKey = first.module.viewerKey;
-    }],
+    [
+      "module ID",
+      (
+        first: ImplementedSimulationDefinition,
+        second: ImplementedSimulationDefinition,
+      ) => {
+        second.module.id = first.module.id;
+      },
+    ],
+    [
+      "slug",
+      (
+        first: ImplementedSimulationDefinition,
+        second: ImplementedSimulationDefinition,
+      ) => {
+        second.module.slug = first.module.slug;
+      },
+    ],
+    [
+      "viewer key",
+      (
+        first: ImplementedSimulationDefinition,
+        second: ImplementedSimulationDefinition,
+      ) => {
+        second.module.viewerKey = first.module.viewerKey;
+      },
+    ],
   ])("rejects a duplicate %s before exposing lookup maps", (_label, mutate) => {
     const first = mutableClone(IMPLEMENTED_SIMULATIONS[0]);
     const second = mutableClone(IMPLEMENTED_SIMULATIONS[1]);

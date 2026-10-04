@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "auditDate": "2026-08-01",
-  "method": "Rendered first, middle, and final pages with Poppler and inspected contact sheets.",
+  "auditDate": "2026-10-02",
+  "method": "Rendered all pages with Poppler, inspected five complete contact sheets, and reviewed the first, middle, appendix, and final pages at full size.",
   "reports": [
     {
       "file": "aditya-contribution-improvement-report.pdf",
@@ -11,7 +11,7 @@
         14,
         28
       ],
-      "sha256": "1c4a6753508b7d2e101138b8495310f9d41c4815a07ea7ba8b8e3ede5b5f6c4e",
+      "sha256": "7afc10146668e0d8db5d585fa7aa7d78a4359b8f455cc8c0eb39cde651d66b43",
       "checks": [
         "no clipping",
         "readable hierarchy",
@@ -22,13 +22,13 @@
     },
     {
       "file": "xr-school-implemented-simulations-quality-report.pdf",
-      "pages": 44,
+      "pages": 49,
       "representativePages": [
         1,
-        22,
-        44
+        25,
+        49
       ],
-      "sha256": "11c641490b1f0cfc05896a20f64096b761452cd03d6a157a8e23fb9ad3c23240",
+      "sha256": "188df0ca54d43e5e89c07535c41d53671cb6d0a2b859b4e7568a0cfc5948e44a",
       "checks": [
         "no clipping",
         "readable hierarchy",
@@ -45,7 +45,7 @@
         6,
         12
       ],
-      "sha256": "bd59619e1978c05a66699ce78a0ac35495a652d5fc076fe1bbb6901c624e0e6e",
+      "sha256": "78ba2dff9693f9e57f10b40db04d400164c006a6aff1d0ca1e75e39c78a73428",
       "checks": [
         "no clipping",
         "readable hierarchy",

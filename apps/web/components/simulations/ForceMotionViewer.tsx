@@ -13,6 +13,7 @@ import SimulationExperienceShell, {
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
 import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
 import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
@@ -50,6 +51,7 @@ const NARRATIONS = [
   'Squeeze the ball between the two plates, then release it. Notice whether it returns to its original shape once the force is removed.',
   'Review the comparison board to see all five ways a force changed this ball\'s motion or shape.',
 ];
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape');
 
 const ACTION_LABELS: Record<string, string> = {
   'apply-push': 'Push the resting ball',
@@ -153,7 +155,7 @@ function advanceAfterObjectAction(source: NormalizedInputSource, snapshot: Lesso
 
 function playNarration(stageIndex: number, enabled: boolean) {
   if (!enabled) return;
-  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex);
+  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
 function createForceMotionMaterials(): { materials: ForceMotionMaterials; dispose(): void } {
@@ -480,9 +482,15 @@ export default function ForceMotionViewer() {
       const locomotion = createVrLocomotion({
         renderer: host.renderer,
         rig: vrRig.rig,
+        locomotion: 'boundedTeleport',
+        movementBounds: new THREE.Box3(new THREE.Vector3(-4, -1, -4), new THREE.Vector3(4, 3, 4)),
+        onPrimary: () => {
+          const actionId = focusActionRef.current;
+          if (actionId) performAction(actionId, 'xr-controller');
+        },
+        onNarrate: () => playNarration(snapshotRef.current.stageIndex, preferences.audio),
         onBack: () => {
-          if (snapshotRef.current.stageIndex > 0) previousRef.current();
-          else void host!.renderer.xr.getSession()?.end();
+          previousRef.current();
         },
       });
 

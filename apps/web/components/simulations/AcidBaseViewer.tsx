@@ -13,11 +13,8 @@ import SimulationExperienceShell, {
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
 import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import {
-  isQuestBackPressed,
-  updateButtonLatch,
-  updateSnapTurn,
-} from '@/lib/xrNavigation';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
+import { createQuestVrControls } from './questVrControls';
 import {
   ACID_BASE_EXPERIENCE_DEFINITION,
   createAcidBaseExperience,
@@ -50,6 +47,7 @@ const NARRATIONS = [
   'Add base to the acid drop by drop. Watch the pH climb from 2 toward 7 and the colour move from red through orange to green — the acid and base neutralise each other to make a salt and water.',
   'Compare the three solutions on the pH scale: the acidic start near 2, the neutral product at 7, and the base near 12.',
 ];
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test');
 
 const ACTION_LABELS: Record<string, string> = {
   'test-acid-litmus': 'Dip litmus in the acid',
@@ -120,7 +118,7 @@ function advanceAfterObjectAction(source: NormalizedInputSource, snapshot: Lesso
 }
 function playNarration(stageIndex: number, enabled: boolean) {
   if (!enabled) return;
-  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex);
+  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
 }
 
 export default function AcidBaseViewer() {
@@ -333,7 +331,20 @@ export default function AcidBaseViewer() {
         playerRig.add(controller);
         return controller;
       });
+      const questVr = createQuestVrControls({
+        renderer: host.renderer,
+        scene,
+        camera,
+        controllers,
+        onPrimary: () => {
+          const actionId = focusActionRef.current;
+          if (actionId) performAction(actionId, 'xr-controller');
+        },
+        onBack: () => previousRef.current(),
+        onNarrate: () => playNarration(snapshotRef.current.stageIndex, preferences.audio),
+      });
       host.resources.register('acid-base-controller-rays', () => {
+        questVr.dispose();
         controllerRayGeometry.dispose();
         controllerRayMaterial.dispose();
         for (const controller of controllers) playerRig.remove(controller);
@@ -358,8 +369,6 @@ export default function AcidBaseViewer() {
       interactionSystem.register('compare-solutions', world.comparisonBoard, { highlightColor: '#a78bfa' });
       host.resources.register('acid-base-interaction', () => interactionSystem.dispose());
 
-      const snapTurnLatches = [false, false];
-      const backButtonLatches = [false, false];
       const projectedFocus = new THREE.Vector3();
       renderUpdate = context => {
         world.update(context.frameDeltaSeconds);
@@ -368,23 +377,8 @@ export default function AcidBaseViewer() {
         interactionSystem.update(context.elapsedSeconds);
 
         if (host!.renderer.xr.isPresenting) {
-          const session = host!.renderer.xr.getSession();
-          session?.inputSources.forEach((inputSource, index) => {
-            const gamepad = inputSource.gamepad;
-            if (!gamepad) return;
-            const snap = updateSnapTurn(gamepad.axes[2] ?? gamepad.axes[0] ?? 0, snapTurnLatches[index]);
-            snapTurnLatches[index] = snap.latched;
-            playerRig.rotation.y += snap.radians;
-            const back = updateButtonLatch(
-              isQuestBackPressed(gamepad.buttons, inputSource.handedness),
-              backButtonLatches[index],
-            );
-            backButtonLatches[index] = back.latched;
-            if (back.pressed) {
-              if (snapshotRef.current.stageIndex > 0) previousRef.current();
-              else void session.end();
-            }
-          });
+          questVr.update();
+          interactionSystem.updateXrHover();
         } else {
           guidedCamera.update(context.frameDeltaSeconds);
           const focusTarget = suggestedTargetId ? world[OBJECT_KEY_BY_ACTION[suggestedTargetId]] : undefined;

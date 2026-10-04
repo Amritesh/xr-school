@@ -17,3 +17,5 @@ certificates/
 .superpowers/
 .worktrees/
 .vercel
+__pycache__/
+*.py[cod]

@@ -10580,6 +10580,51 @@ export const RELEASED_SIMULATION_CATALOG = [
     "evidenceMaturity": "internalQA"
   },
   {
+    "id": "sim-c07-ch03-a01-shearing-and-scouring-of-wool",
+    "slug": "c7-ch03-a01-shearing-and-scouring-of-wool",
+    "title": "Shearing and Scouring of Wool",
+    "href": "/simulations/c7-ch03-a01-shearing-and-scouring-of-wool",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c08-ch02-a02-virus-introduction-spreading-and-its-effects",
+    "slug": "c8-ch02-a02-virus-introduction-spreading-and-its-effects",
+    "title": "The Invisible Invader: Break the Viral Chain",
+    "href": "/simulations/c8-ch02-a02-virus-introduction-spreading-and-its-effects",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c08-ch01-a03-irrigation-methods",
+    "slug": "c8-ch01-a03-irrigation-methods",
+    "title": "Irrigation Methods: Every Root Gets Water",
+    "href": "/simulations/c8-ch01-a03-irrigation-methods",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c08-ch01-a05-harvesting-threshing-and-storage-of-crops",
+    "slug": "c8-ch01-a05-harvesting-threshing-and-storage-of-crops",
+    "title": "Harvesting, Threshing and Storage of Crops",
+    "href": "/simulations/c8-ch01-a05-harvesting-threshing-and-storage-of-crops",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c07-ch03-a03-spinning-and-rolling-of-wool",
+    "slug": "c7-ch03-a03-spinning-and-rolling-of-wool",
+    "title": "Spinning and Rolling of Wool",
+    "href": "/simulations/c7-ch03-a03-spinning-and-rolling-of-wool",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
     "id": "sim-c05-ch07-a01-a-concept-about-what-floats-what-sinks",
     "slug": "c5-ch07-a01-a-concept-about-what-floats-what-sinks",
     "title": "What Floats, What Sinks?",
@@ -10636,7 +10681,7 @@ export const RELEASED_SIMULATION_CATALOG = [
   {
     "id": "sim-c08-ch02-a03-fungi-and-its-development",
     "slug": "c8-ch02-a03-fungi-and-its-development",
-    "title": "Living Mycelium Lab: Fungi and Its Development",
+    "title": "The Secret Life of Fungi",
     "href": "/simulations/c8-ch02-a03-fungi-and-its-development",
     "releaseMaturity": "internalQA",
     "publicationStatus": "released",

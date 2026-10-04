@@ -748,9 +748,15 @@ export default function PollinationViewer() {
       const locomotion = createVrLocomotion({
         renderer: host.renderer,
         rig: vrRig.rig,
+        locomotion: 'boundedTeleport',
+        movementBounds: new THREE.Box3(new THREE.Vector3(-4, -1, -4), new THREE.Vector3(4, 3, 4)),
+        onPrimary: () => {
+          const actionId = focusActionRef.current;
+          if (actionId) performAction(actionId, 'xr-controller');
+        },
+        onNarrate: () => playNarration(snapshotRef.current.stageIndex, preferences.audio),
         onBack: () => {
-          if (snapshotRef.current.stageIndex > 0) previousRef.current();
-          else void host!.renderer.xr.getSession()?.end();
+          previousRef.current();
         },
       });
 

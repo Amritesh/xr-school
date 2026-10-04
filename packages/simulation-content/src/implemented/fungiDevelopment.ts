@@ -2,8 +2,10 @@ import type {
   AssessmentSequence,
   ExperienceDefinition,
   ImplementedSimulationDefinition,
+  NarrationCueDefinition,
   SimulationNarrationManifest,
 } from "@xr-school/simulation-schema";
+import { withPackagedNarration } from "./narrationAssets.js";
 
 const slug = "c8-ch02-a03-fungi-and-its-development";
 
@@ -11,60 +13,59 @@ export const FUNGI_DEVELOPMENT_EXPERIENCE: ExperienceDefinition = {
   id: "experience-fungi-development",
   gradeTone: "class6To8",
   objective:
-    "Identify fungi, observe hyphae and mycelium, sequence five days of development, and explain useful, harmful, and ecosystem roles from evidence.",
+    "Investigate bread mould from spore to sporangium, compare the conditions that control fungal growth, and explain useful and harmful roles from evidence.",
   stages: [
     {
       id: "fungal-forensics",
-      title: "Fungal Forensics",
-      cue: "Classify the mushroom, bread mould, and green plant, then cite the two fungal clues.",
+      title: "The Mysterious Bread",
+      cue: "Scan the sealed bread sample, then classify the mushroom, bread mould, and green plant using visible evidence.",
       requiredActionIds: ["fungi.classify-mushroom-and-mould"],
       completionEvidenceIds: ["fungi-pair-classified"],
     },
     {
       id: "under-the-cap",
-      title: "Under the Cap",
-      cue: "Inspect a branching hypha and identify the connected mycelium network.",
+      title: "Inside the Colony",
+      cue: "Shrink to microscopic scale, trace three hyphae, and identify the connected mycelium network.",
       requiredActionIds: ["fungi.inspect-hypha-network"],
       completionEvidenceIds: ["mycelium-identified"],
     },
     {
       id: "spore-flight",
-      title: "Spore Flight",
-      cue: "Guide a spore to a surface and compare warm, moist conditions with cold or dry ones.",
+      title: "The Spore Journey",
+      cue: "Release a spore, guide it through the air, and compare a germinating landing with an unsuitable one.",
       requiredActionIds: ["fungi.guide-spore-to-surface"],
       completionEvidenceIds: ["spore-condition-observed"],
     },
     {
       id: "five-day-time-lens",
-      title: "Five-Day Time Lens",
-      cue: "Run all five days and record the development sequence from landed spore to released spores.",
+      title: "Growth Chamber Experiment",
+      cue: "Compare warm-moist, warm-dry, cold-moist, and nutrient-rich chambers, then explain one fair trial.",
       requiredActionIds: ["fungi.run-five-day-timeline"],
       completionEvidenceIds: ["five-day-sequence-observed"],
     },
     {
       id: "fungi-at-work",
-      title: "Fungi at Work",
-      cue: "Match fungi with decomposition, baking, food, and medicine roles using the displayed evidence.",
+      title: "Friend or Foe",
+      cue: "Use the evidence bench to separate useful fungi in food, medicine, and decomposition from harmful spoilage.",
       requiredActionIds: ["fungi.match-useful-roles"],
       completionEvidenceIds: ["useful-roles-matched"],
     },
     {
       id: "food-safety-scan",
-      title: "Food Safety Scan",
+      title: "Food Safety Mission",
       cue: "Inspect the mould scenario without touching it and choose the safe food response.",
       requiredActionIds: ["fungi.choose-safe-mould-response"],
       completionEvidenceIds: ["mould-safety-resolved"],
     },
     {
       id: "forest-circle",
-      title: "Forest Circle",
-      cue: "Trace how fungal decomposition returns nutrients and explain the result for a new forest case.",
+      title: "Build the Life Cycle",
+      cue: "Build the six-stage fungal life cycle, cite your experiment, and choose storage conditions that slow mould growth.",
       requiredActionIds: ["fungi.explain-forest-transfer"],
       completionEvidenceIds: ["forest-transfer-explained"],
     },
   ],
 };
-
 const assessment: AssessmentSequence = {
   id: "assessment-fungi-development",
   objectiveId: FUNGI_DEVELOPMENT_EXPERIENCE.id,
@@ -125,12 +126,12 @@ const assessment: AssessmentSequence = {
       id: "development-order-observation",
       kind: "observation",
       stageId: "five-day-time-lens",
-      question: "Which sequence matches the five-day observation?",
+      question: "Which sequence matches the complete bread-mould life cycle?",
       options: [
         {
           id: "spore-hyphae-mycelium-structures-release",
           label:
-            "Spore lands, hypha grows, mycelium spreads, spore structures form, spores release",
+            "Spore lands, germinates, grows hyphae, forms mycelium and sporangia, then releases new spores",
         },
         {
           id: "release-mycelium-spore",
@@ -140,7 +141,7 @@ const assessment: AssessmentSequence = {
       acceptedEvidenceIds: ["spore-hyphae-mycelium-structures-release"],
       hint: "Return to the observed day cards and compare them from day one to day five.",
       explanation:
-        "The ordered model begins with a landed spore, then hyphae and mycelium develop before new spores are released.",
+        "A landed spore germinates, hyphae grow into mycelium, sporangia form, and new spores are released.",
       retryPolicy: "immediateWithHint",
     },
     {
@@ -176,8 +177,7 @@ const assessment: AssessmentSequence = {
         },
       ],
       acceptedEvidenceIds: ["reject-whole-soft-food"],
-      hint:
-        "Look for hidden hyphae that may extend beyond the visible mould patch.",
+      hint: "Look for hidden hyphae that may extend beyond the visible mould patch.",
       explanation:
         "No. Hidden hyphae may extend beyond the visible patch in soft food, so reject the whole visibly mouldy item and ask an adult to dispose of it safely.",
       retryPolicy: "immediateWithHint",
@@ -187,22 +187,21 @@ const assessment: AssessmentSequence = {
       kind: "transfer",
       stageId: "forest-circle",
       question:
-        "After practice, two cloth surfaces are stored in different places. Which is more likely to develop fungal growth over the next few days?",
+        "Which storage choice will best slow mould growth on bread after the investigation?",
       options: [
         {
           id: "warm-damp-surface",
-          label: "The damp towel sealed in the warm sports bag",
+          label: "Keep the bread warm and damp in an open bag",
         },
         {
           id: "cool-dry-surface",
-          label: "The dry towel on a cool, ventilated shelf",
+          label: "Keep the bread cool, dry, and protected",
         },
       ],
-      acceptedEvidenceIds: ["warm-damp-surface"],
-      hint:
-        "Compare both temperature and moisture with the evidence from spore flight.",
+      acceptedEvidenceIds: ["cool-dry-surface"],
+      hint: "Compare temperature, moisture, and exposure with your saved chamber evidence.",
       explanation:
-        "The warm, moist towel provides conditions that support faster fungal growth than the cool, dry, ventilated surface.",
+        "Cool, dry, protected storage slows fungal development compared with warm, moist conditions.",
       retryPolicy: "immediateWithHint",
     },
   ],
@@ -219,59 +218,61 @@ export const FUNGI_DEVELOPMENT_NARRATION: SimulationNarrationManifest & {
 } = {
   id: "narration-fungi-development",
   locale: "en-IN",
-  speaker: "Living Mycelium Lab guide",
+  speaker: "Secret Life of Fungi science guide",
   fallback: "browserTts",
-  cues: [
-    {
-      id: "fungi-narration-fungal-forensics",
-      stageId: "fungal-forensics",
-      text: "Fungi are not plants. They cannot make their own food using sunlight; they absorb food from their surroundings. Classify the mushroom and bread mould as fungi.",
-      caption:
-        "Fungi are not plants. They cannot make their own food using sunlight; they absorb food from their surroundings. Classify the mushroom and bread mould as fungi.",
-    },
-    {
-      id: "fungi-narration-under-the-cap",
-      stageId: "under-the-cap",
-      text: "A fungus is built from tiny threads called hyphae. Many connected hyphae form a mycelium, the hidden feeding network.",
-      caption:
-        "A fungus is built from tiny threads called hyphae. Many connected hyphae form a mycelium, the hidden feeding network.",
-    },
-    {
-      id: "fungi-narration-spore-flight",
-      stageId: "spore-flight",
-      text: "Fungi reproduce using spores. Guide one through the air and compare where it lands: suitable warm, moist conditions support growth.",
-      caption:
-        "Fungi reproduce using spores. Guide one through the air and compare where it lands: suitable warm, moist conditions support growth.",
-    },
-    {
-      id: "fungi-narration-five-day-time-lens",
-      stageId: "five-day-time-lens",
-      text: "Across five ordered days, a spore lands, a hypha grows, mycelium spreads, spore structures form, and new spores release.",
-      caption:
-        "Across five ordered days, a spore lands, a hypha grows, mycelium spreads, spore structures form, and new spores release.",
-    },
-    {
-      id: "fungi-narration-fungi-at-work",
-      stageId: "fungi-at-work",
-      text: "Fungi are at work around us: yeast helps in baking, some fungi provide food or medicine, and decomposers break down dead matter.",
-      caption:
-        "Fungi are at work around us: yeast helps in baking, some fungi provide food or medicine, and decomposers break down dead matter.",
-    },
-    {
-      id: "fungi-narration-food-safety-scan",
-      stageId: "food-safety-scan",
-      text: "Some fungi are harmful, and mould on food can be unsafe. Never taste mouldy food or open a mould culture; keep the view stationary, observe without touching, and tell an adult.",
-      caption:
-        "Some fungi are harmful, and mould on food can be unsafe. Never taste mouldy food or open a mould culture; keep the view stationary, observe without touching, and tell an adult.",
-    },
-    {
-      id: "fungi-narration-forest-circle",
-      stageId: "forest-circle",
-      text: "In conclusion, fungi are spore-forming absorbers with hyphae and mycelium. In a forest they decompose dead matter and return nutrients to the living circle.",
-      caption:
-        "In conclusion, fungi are spore-forming absorbers with hyphae and mycelium. In a forest they decompose dead matter and return nutrients to the living circle.",
-    },
-  ],
+  cues: (
+    [
+      {
+        id: "fungi-narration-fungal-forensics",
+        stageId: "fungal-forensics",
+        text: "Welcome to the Secret Life of Fungi laboratory. A slice of bread has changed while nobody was watching. Scan the sealed sample and identify the fungal clues. Fungi do not contain chlorophyll, so they cannot make food using sunlight. Instead, they absorb nutrients from their surroundings.",
+        caption:
+          "Welcome to the Secret Life of Fungi laboratory. A slice of bread has changed while nobody was watching. Scan the sealed sample and identify the fungal clues. Fungi do not contain chlorophyll, so they cannot make food using sunlight. Instead, they absorb nutrients from their surroundings.",
+      },
+      {
+        id: "fungi-narration-under-the-cap",
+        stageId: "under-the-cap",
+        text: "Shrink to microscopic scale. Each fine fungal thread is a hypha. Many connected hyphae form a mycelium, the hidden feeding network. Above it, stalks carry round sporangia that will produce new spores.",
+        caption:
+          "Shrink to microscopic scale. Each fine fungal thread is a hypha. Many connected hyphae form a mycelium, the hidden feeding network. Above it, stalks carry round sporangia that will produce new spores.",
+      },
+      {
+        id: "fungi-narration-spore-flight",
+        stageId: "spore-flight",
+        text: "A mature sporangium opens and microscopic spores drift through the air. Guide one towards a surface. A spore that lands where warmth, moisture, and food are available can germinate; an unsuitable landing stays dormant or fails.",
+        caption:
+          "A mature sporangium opens and microscopic spores drift through the air. Guide one towards a surface. A spore that lands where warmth, moisture, and food are available can germinate; an unsuitable landing stays dormant or fails.",
+      },
+      {
+        id: "fungi-narration-five-day-time-lens",
+        stageId: "five-day-time-lens",
+        text: "Now test four sealed chambers. Warm and moist bread should show high growth. Warm but dry bread should show little growth. Cold and moist bread should grow slowly. A warm, moist, nutrient-rich surface should show the greatest growth. Save two fair trials and compare only one changed condition.",
+        caption:
+          "Now test four sealed chambers. Warm and moist bread should show high growth. Warm but dry bread should show little growth. Cold and moist bread should grow slowly. A warm, moist, nutrient-rich surface should show the greatest growth. Save two fair trials and compare only one changed condition.",
+      },
+      {
+        id: "fungi-narration-fungi-at-work",
+        stageId: "fungi-at-work",
+        text: "Fungi can be friends or foes. Yeast makes dough rise, mushrooms can be food, some fungi help produce medicines, and decomposers recycle dead matter. Other fungi spoil food or cause disease. Classify each role using the evidence.",
+        caption:
+          "Fungi can be friends or foes. Yeast makes dough rise, mushrooms can be food, some fungi help produce medicines, and decomposers recycle dead matter. Other fungi spoil food or cause disease. Classify each role using the evidence.",
+      },
+      {
+        id: "fungi-narration-food-safety-scan",
+        stageId: "food-safety-scan",
+        text: "Mould can spread invisible hyphae beyond the patch you can see. Never taste mouldy food or open a mould culture. Scan the sealed sample, reject the whole visibly mouldy soft food, and tell an adult.",
+        caption:
+          "Mould can spread invisible hyphae beyond the patch you can see. Never taste mouldy food or open a mould culture. Scan the sealed sample, reject the whole visibly mouldy soft food, and tell an adult.",
+      },
+      {
+        id: "fungi-narration-forest-circle",
+        stageId: "forest-circle",
+        text: "Complete the fungal life cycle: spore, germination, hyphal growth, mycelium, sporangium, and new spores. Then protect the bread by reducing warmth and moisture. Fungi grow, feed, reproduce, help ecosystems, and sometimes spoil food. Mission complete.",
+        caption:
+          "Complete the fungal life cycle: spore, germination, hyphal growth, mycelium, sporangium, and new spores. Then protect the bread by reducing warmth and moisture. Fungi grow, feed, reproduce, help ecosystems, and sometimes spoil food. Mission complete.",
+      },
+    ] satisfies NarrationCueDefinition[]
+  ).map(withPackagedNarration),
 };
 
 export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
@@ -279,9 +280,9 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
     id: "sim-c08-ch02-a03-fungi-and-its-development",
     slug,
     viewerKey: "fungi-development",
-    title: "Living Mycelium Lab: Fungi and Its Development",
+    title: "The Secret Life of Fungi",
     summary:
-      "Enter a scale-shifting fungal lab to classify fungi, inspect hyphae, guide spores, observe five days of development, and reason about uses, safety, and forests.",
+      "Enter a realistic scale-shifting food-science laboratory to investigate bread mould, fly with spores, compare four growth chambers, and build the fungal life cycle.",
     gradeBands: ["class6To8"],
     subjects: ["biology", "science"],
     applicableBoards: ["cbse"],
@@ -294,7 +295,7 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
     evidenceMaturity: "internalQA",
     xrFitType: "strongVrFit",
     xrFitJustification:
-      "VR lets learners move safely inside an otherwise invisible hyphal network, shift scale beneath a mushroom cap, guide airborne spores in spatial context, and compress five days of development into an inspectable time lens.",
+      "VR lets learners move safely inside an otherwise invisible hyphal network, guide airborne spores in spatial context, compare controlled growth chambers, and assemble a life cycle that is too small and slow to observe directly.",
     learningObjective: FUNGI_DEVELOPMENT_EXPERIENCE.objective,
     scientificConceptExplanation:
       "Fungi are a distinct kingdom that absorb nutrients rather than photosynthesise. Their bodies contain hyphae that form mycelium, many reproduce by spores, favourable warmth and moisture support development, and fungal species may decompose matter, support food and medicine, or spoil food.",
@@ -305,13 +306,13 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
       "All fungi are harmful and have no useful ecosystem role.",
     ],
     visualizationStrategy:
-      "Shift from life-size specimens to enlarged hyphae and a glowing mycelium network, then use particle spores, condition overlays, a five-day time lens, and a forest nutrient circle.",
+      "Move from a realistic sealed bread specimen to enlarged hyphae, mycelium, sporangia, particle spores, four controlled growth chambers, and a six-stage life-cycle builder.",
     interactionStrategy:
-      "Learners classify specimens, inspect a hypha, guide a spore, compare conditions, sequence development, match useful roles, make a safe choice, and explain a forest transfer case.",
+      "Learners classify specimens, trace hyphae, guide a spore, run fair growth trials, compare four conditions, match useful roles, make a safe food decision, and assemble the fungal life cycle.",
     imaginationHelperStrategy:
       "Scale bars and a five-day clock identify when microscopic structures and accelerated time are representations rather than life-size real-time views.",
     practicalUseCase:
-      "Connects fungi to bread and yeast, edible mushrooms, medicine, food spoilage safety, composting, and forest nutrient recycling.",
+      "Connects fungi to bread storage, yeast, edible mushrooms, medicine, food spoilage safety, composting, and nutrient recycling.",
     cueCardIds: FUNGI_DEVELOPMENT_EXPERIENCE.stages.map(
       (stage) => `cue-${stage.id}`,
     ),
@@ -322,11 +323,11 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
     ],
     assessmentHookIds: assessment.prompts.map((prompt) => prompt.id),
     instructorScript:
-      "Introduction: Ask learners which two specimens are fungi and record the prediction before revealing evidence. Procedure: Seat the headset learner in stationary view; classify the specimens, inspect hyphae and mycelium, guide a spore, compare conditions, run all five days, match useful roles, scan food safety, and complete the forest circle. Observation: Require the learner and non-headset group to name visible evidence at every stage, especially the ordered day cards. Assessment: Use the mycelium, yeast, mould-safety, and forest-transfer prompts; incorrect answers return learners to the cited observation before retry. Conclusion: Recap that fungi are not plants, absorb nutrients, grow through hyphae and mycelium, reproduce by spores, may be useful or harmful, and recycle forest nutrients.",
+      "Introduction: Present the sealed mysterious bread and ask which visible clues suggest fungal growth. Procedure: Seat the headset learner in stationary view; classify specimens, trace hyphae and mycelium, guide a spore, compare the four growth conditions, match useful roles, scan the mould safely, and build the six-stage life cycle. Observation: Require the learner and non-headset group to name evidence at every stage and record how temperature, moisture, food, and time affect growth. Assessment: Use the mycelium, yeast, mould-safety, growth-condition, and storage prompts; incorrect answers return learners to the relevant observation. Conclusion: Recap that fungi absorb nutrients, grow through hyphae and mycelium, reproduce by spores, may be useful or harmful, and grow fastest under suitable conditions.",
     batchActivityPrompt:
-      "In each group, one stationary headset learner reports observations while the non-headset batch records specimen classification, warm/moist prediction, five-day order, one useful role, the safe mould response, and a forest explanation; rotate the reporter after the lesson.",
-    expectedDurationMinutes: 9,
-    maxSessionDurationMinutes: 10,
+      "In each group, one stationary headset learner reports observations while the non-headset batch records specimen classification, warm/moist prediction, the observed life-cycle order, one useful role, the safe mould response, and a storage recommendation supported by growth-chamber evidence; rotate the reporter after the lesson.",
+    expectedDurationMinutes: 8,
+    maxSessionDurationMinutes: 12,
     comfortRiskLevel: "low",
     safetyNotes: [
       "Use stationary seated or standing view with no required locomotion.",
@@ -345,8 +346,25 @@ export const FUNGI_DEVELOPMENT: ImplementedSimulationDefinition = {
   assessment,
   narration: FUNGI_DEVELOPMENT_NARRATION,
   assets: {
-    id: "assets-fungi-development-procedural",
-    assets: [],
+    id: "assets-fungi-development-laboratory",
+    assets: [
+      {
+        id: "fungi-development-secret-lab-environment-v2",
+        url: `/simulations/${slug}/environment-v2.webp`,
+        kind: "environment",
+        source:
+          "OpenAI image generation for the user-authored Secret Life of Fungi simulation",
+        license: "project-generated",
+        author: "OpenAI image generation directed by Aditya K. R. Pandey",
+        width: 1774,
+        height: 887,
+        channels: ["baseColor"],
+        compression: "WebP lossy q75; sharp/libvips effort 6",
+        byteSize: 147742,
+        sha256:
+          "d643110d812ff97383c88eff73a150ba80377292b7e30f44a0b2b3544e790b90",
+      },
+    ],
   },
   legacyPaths: [],
   contribution: {

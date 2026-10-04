@@ -2,9 +2,9 @@ name: Deploy to Vercel
 
 # Normal deployments do NOT run tests. A push to main builds and ships.
 #
-# The full gate lives in quality.yml and is run on demand:
+# The CI gate lives in quality.yml and is run on demand:
 #     gh workflow run quality.yml
-# or locally:
+# The full gate, including browser E2E, runs locally:
 #     npm run verify
 #
 # Trade-off, stated plainly: nothing blocks a broken commit from reaching

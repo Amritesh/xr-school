@@ -72,7 +72,7 @@ describe('simulation quality report data', () => {
     expect(errors).toEqual([]);
   });
 
-  it('records code-native fungi visuals without inventing asset validation', () => {
+  it('records the measured fungi environment without inventing validation', () => {
     const evidence = json(
       'reports/data/implemented-simulation-quality-evidence.json',
     ) as {
@@ -98,32 +98,26 @@ describe('simulation quality report data', () => {
     );
 
     expect(fungi?.assets).toMatchObject({
-      count: 0,
-      visualSource: 'code-native',
-      provenanceComplete: false,
-      pathValidated: false,
-      hashValidated: false,
+      count: 1,
+      visualSource: 'manifest-assets',
+      provenanceComplete: true,
+      pathValidated: true,
+      hashValidated: true,
     });
     expect(fungi?.references).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        id: 'c8-ch02-a03-fungi-and-its-development:visual-source',
-        kind: 'code-native-visual',
-        ref: 'apps/web/lib/world-builder/fungiWorld.ts',
-      }),
-      expect.objectContaining({
-        id: 'c8-ch02-a03-fungi-and-its-development:visual-behavior',
-        kind: 'test',
-        ref: 'tests/unit/fungi-world.test.ts',
+        id: 'c8-ch02-a03-fungi-and-its-development:assets',
+        kind: 'asset',
+        ref: 'assets-fungi-development-laboratory',
       }),
     ]));
     expect(JSON.stringify(fungi)).not.toMatch(/shared procedural scene/i);
     expect(JSON.stringify(fungi)).not.toMatch(/0 declared assets; path and digest validation passes/i);
     expect(card?.dimensionEvidence.visuals).toEqual([
-      'c8-ch02-a03-fungi-and-its-development:visual-source',
-      'c8-ch02-a03-fungi-and-its-development:visual-behavior',
+      'c8-ch02-a03-fungi-and-its-development:assets',
     ]);
     expect(card?.scores.visuals).toBe(11);
-    expect(card?.risks.join(' ')).toMatch(/code-native/i);
+    expect(card?.risks.join(' ')).toMatch(/asset richness.*device review/i);
   });
 
   it('rejects invented path, hash, or provenance validation for an empty manifest', () => {
@@ -139,6 +133,12 @@ describe('simulation quality report data', () => {
       item => item.slug === 'c8-ch02-a03-fungi-and-its-development',
     );
     if (!fungi) throw new Error('Missing fungi evidence fixture');
+    const definitions = structuredClone(IMPLEMENTED_SIMULATIONS);
+    const fungiDefinition = definitions.find(
+      definition => definition.module.slug === 'c8-ch02-a03-fungi-and-its-development',
+    );
+    if (!fungiDefinition) throw new Error('Missing fungi definition fixture');
+    fungiDefinition.assets.assets = [];
     Object.assign(fungi.assets, {
       provenanceComplete: true,
       pathValidated: true,
@@ -146,7 +146,7 @@ describe('simulation quality report data', () => {
     });
 
     expect(validatePortfolioData({
-      definitions: IMPLEMENTED_SIMULATIONS,
+      definitions,
       cards: json('reports/data/implemented-simulation-quality-cards.json'),
       evidence,
     })).toEqual(expect.arrayContaining([

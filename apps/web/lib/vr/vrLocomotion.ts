@@ -1,6 +1,7 @@
 /** @deprecated Import these VR utilities from @xr-school/simulation-web. */
 export {
   createVrLocomotion,
+  questControllerAction,
   rotateRigAboutHead,
   smoothAxis,
   smoothTurnRadians,
@@ -9,4 +10,5 @@ export {
 export type {
   VrLocomotion,
   VrLocomotionConfig,
+  QuestControllerAction,
 } from '@xr-school/simulation-web';

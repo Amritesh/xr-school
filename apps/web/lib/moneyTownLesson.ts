@@ -64,12 +64,14 @@ export type MoneyMemoryQuestion = {
   prompt: string;
   correctAnswer: string;
   options: readonly string[];
+  specimen?: MoneyId;
 };
 
 export type MoneyTownProgress = {
   completedActions: Partial<Record<MoneyTownStageId, string[]>>;
   identificationAnswers: Record<string, MoneyId>;
   memoryAnswers: Record<string, string>;
+  payments: Record<string, MoneyId>;
 };
 
 export const MONEY_TOWN_MONEY: readonly MoneyDefinition[] = [
@@ -188,14 +190,14 @@ export const MONEY_SHOP_ITEMS: readonly MoneyShopItem[] = [
 ] as const;
 
 export const MONEY_MEMORY_QUESTIONS: readonly MoneyMemoryQuestion[] = [
-  { id: 'what-rs-5', prompt: 'What is this?', correctAnswer: 'Rs 5 Coin', options: ['Rs 1 Coin', 'Rs 5 Coin', 'Rs 20 Note', 'Rs 100 Note'] },
-  { id: 'what-rs-100', prompt: 'What is this Rs 100 object?', correctAnswer: 'Rs 100 Note', options: ['Rs 10 Coin', 'Rs 100 Note', 'Rs 5 Coin', 'Money Town'] },
+  { id: 'what-rs-5', prompt: 'What is the money shown above?', specimen: 'coin-rs-5', correctAnswer: 'Rs 5 Coin', options: ['Rs 1 Coin', 'Rs 5 Coin', 'Rs 20 Note', 'Rs 100 Note'] },
+  { id: 'what-rs-100', prompt: 'What is the money shown above?', specimen: 'note-rs-100', correctAnswer: 'Rs 100 Note', options: ['Rs 10 Coin', 'Rs 100 Note', 'Rs 5 Coin', 'Money Town'] },
   { id: 'which-coin', prompt: 'Which one is a coin?', correctAnswer: 'Rs 5 Coin', options: ['Rs 5 Coin', 'Rs 20 Note', 'Rs 50 Note', 'Rs 100 Note'] },
   { id: 'which-note', prompt: 'Which one is a currency note?', correctAnswer: 'Rs 20 Note', options: ['Rs 10 Coin', 'Rs 5 Coin', 'Rs 20 Note', 'Rs 2 Coin'] },
   { id: 'worth-ten', prompt: 'Which money is worth ten rupees?', correctAnswer: 'Rs 10 Coin', options: ['Rs 1 Coin', 'Rs 2 Coin', 'Rs 10 Coin', 'Rs 20 Note'] },
   { id: 'biggest-note', prompt: 'Find the biggest note among these.', correctAnswer: 'Rs 500 Note', options: ['Rs 20 Note', 'Rs 50 Note', 'Rs 100 Note', 'Rs 500 Note'] },
   { id: 'buy-things', prompt: 'What do we use to buy things?', correctAnswer: 'Money', options: ['Money', 'Ball', 'Pencil', 'Toy'] },
-  { id: 'coin-or-note', prompt: 'Is this a coin or a note?', correctAnswer: 'Coin', options: ['Coin', 'Note', 'Shop', 'Balloon'] },
+  { id: 'coin-or-note', prompt: 'Is the money shown above a coin or a note?', specimen: 'coin-rs-2', correctAnswer: 'Coin', options: ['Coin', 'Note', 'Shop', 'Balloon'] },
 ] as const;
 
 export const MONEY_TOWN_STAGES: readonly MoneyTownStage[] = [
@@ -296,7 +298,7 @@ export const MONEY_TOWN_VR_REQUIREMENTS = [
   'Interaction every 20-30 seconds',
   'Trigger picks up coins, grabs notes, and selects answers',
   'A button moves next and confirms answers',
-  'B button goes back or pauses narration',
+  'B button exits VR; X replays narration; Y goes back',
   'Soft glowing laser pointer for floating money objects',
   'Optional hand tracking for picking, touching, and dropping money into the piggy bank',
   'No student NPCs',
@@ -318,10 +320,23 @@ export function createMoneyTownProgress(): MoneyTownProgress {
     completedActions: {},
     identificationAnswers: {},
     memoryAnswers: {},
+    payments: {},
   };
 }
 
 export function recordMoneyTownAction(
+  progress: MoneyTownProgress,
+  stageId: MoneyTownStageId,
+  actionId: string,
+): MoneyTownProgress {
+  // All input paths (DOM, ray selection and controller buttons) share these
+  // guards. A raw completion action must never substitute for an answer.
+  if (stageId === 'identify-money' || stageId === 'shopping-challenge') return progress;
+  if (stageId === 'memory-check' && !isMoneyMemoryReady(progress)) return progress;
+  return markAction(progress, stageId, actionId);
+}
+
+function markAction(
   progress: MoneyTownProgress,
   stageId: MoneyTownStageId,
   actionId: string,
@@ -374,7 +389,7 @@ export function answerMoneyIdentificationRound(
   };
 
   if (moneyId !== round.correctMoneyId) return nextProgress;
-  return recordMoneyTownAction(nextProgress, 'identify-money', `identify-${round.id}`);
+  return markAction(nextProgress, 'identify-money', `identify-${round.id}`);
 }
 
 export function answerMoneyMemoryQuestion(
@@ -396,11 +411,18 @@ export function answerMoneyMemoryQuestion(
     },
   };
 
-  if (Object.keys(nextProgress.memoryAnswers).length < MONEY_MEMORY_QUESTIONS.length) {
-    return nextProgress;
-  }
+  return nextProgress;
+}
 
-  return recordMoneyTownAction(nextProgress, 'memory-check', 'complete-money-memory-check');
+export function isMoneyMemoryReady(progress: MoneyTownProgress) {
+  return MONEY_MEMORY_QUESTIONS.every(question => progress.memoryAnswers[question.id] === question.correctAnswer);
+}
+
+export function payForMoneyShopItem(progress: MoneyTownProgress, itemId: string, moneyId: MoneyId) {
+  const item = MONEY_SHOP_ITEMS.find(candidate => candidate.id === itemId);
+  if (!item) throw new Error(`Unknown shop item: ${itemId}`);
+  if (getMoneyDefinition(moneyId).value !== item.price) return progress;
+  return markAction({ ...progress, payments: { ...progress.payments, [itemId]: moneyId } }, 'shopping-challenge', `buy-${itemId}`);
 }
 
 export function getMoneyMemoryScore(progress: MoneyTownProgress) {

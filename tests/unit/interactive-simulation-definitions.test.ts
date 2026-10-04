@@ -88,7 +88,7 @@ describe('interactive simulation definitions', () => {
     }
   });
 
-  it('uses captioned shared narration without claiming absent MP3 files', () => {
+  it('uses captioned shared narration with packaged MP3 files', () => {
     for (const definition of INTERACTIVE_SIMULATIONS) {
       expect(definition.narration.fallback).toBe('browserTts');
       expect(definition.narration.cues.map(cue => cue.stageId).sort()).toEqual(
@@ -96,7 +96,7 @@ describe('interactive simulation definitions', () => {
       );
       for (const cue of definition.narration.cues) {
         expect(cue.caption).toBe(cue.text);
-        expect(cue.audioUrl).toBeUndefined();
+        expect(cue.audioUrl).toMatch(/^\/narration\/[a-z0-9]+\.mp3$/u);
       }
     }
   });

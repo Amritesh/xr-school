@@ -27,6 +27,10 @@ import {
   playSimulationNarration,
   stopSimulationNarration,
 } from '@/lib/simulationAudio';
+import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
+import { createQuestVrControls } from './questVrControls';
+
+const NARRATION_AUDIO_URLS = narrationAudioUrls('c2-english-ch01-prepositions');
 
 const STAGE_FRAMES: Record<PrepositionStageId, {
   position: [number, number, number];
@@ -343,6 +347,7 @@ export default function PrepositionAdventureViewer() {
   const goToStageRef = useRef<(index: number) => void>(() => undefined);
   const focusStageRef = useRef<(stageId: PrepositionStageId, animate?: boolean) => void>(() => undefined);
   const comfortModeRef = useRef(true);
+  const speakRef = useRef<(text: string, cueIndex?: number) => void>(() => undefined);
   const animatedRefs = useRef<{ teacher?: THREE.Group }>({});
 
   const [started, setStarted] = useState(false);
@@ -364,8 +369,9 @@ export default function PrepositionAdventureViewer() {
 
   const speak = useCallback((text: string, cueIndex = stageIndexRef.current) => {
     if (muted) return;
-    void playSimulationNarration(text, cueIndex);
+    void playSimulationNarration(text, cueIndex, NARRATION_AUDIO_URLS[cueIndex]);
   }, [muted]);
+  speakRef.current = speak;
 
   const completeAction = useCallback((actionId: string, message = 'Excellent! Stars and sparkles for you.') => {
     const currentStage = PREPOSITION_STAGES[stageIndexRef.current];
@@ -534,6 +540,24 @@ export default function PrepositionAdventureViewer() {
     controller0.add(makeRay());
     controller1.add(makeRay());
     scene.add(controller0, controller1);
+    const questVr = createQuestVrControls({
+      renderer,
+      scene,
+      camera,
+      controllers: [controller0, controller1],
+      onPrimary: () => {
+        const current = PREPOSITION_STAGES[stageIndexRef.current];
+        const completed = progressRef.current.completedActions[current.id] ?? [];
+        const actionId = current.requiredActionIds.find(id => !completed.includes(id));
+        if (actionId) performActionRef.current(actionId);
+        else goToStageRef.current(stageIndexRef.current + 1);
+      },
+      onBack: () => goToStageRef.current(stageIndexRef.current - 1),
+      onNarrate: () => {
+        const current = PREPOSITION_STAGES[stageIndexRef.current];
+        speakRef.current(current.teacherNarration, stageIndexRef.current);
+      },
+    });
 
     const interactionSystem = createInteractionSystem({
       camera,
@@ -561,6 +585,7 @@ export default function PrepositionAdventureViewer() {
       elapsed += delta;
       const intensity = comfortModeRef.current ? 0.42 : 1;
       if (!renderer.xr.isPresenting) guidedCamera.update(delta);
+      questVr.update();
       sparkleLight.intensity = 1.85 + Math.sin(elapsed * 1.3) * 0.28 * intensity;
       const { teacher } = animatedRefs.current;
       if (teacher) {
@@ -597,6 +622,7 @@ export default function PrepositionAdventureViewer() {
       renderer.setAnimationLoop(null);
       window.removeEventListener('resize', onResize);
       interactionSystem.dispose();
+      questVr.dispose();
       guidedCamera.dispose();
       scene.traverse(object => {
         const mesh = object as THREE.Mesh;

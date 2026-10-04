@@ -50,6 +50,9 @@ const VR_SPAWN = {
 const EXPERIENCE = FUNGI_DEVELOPMENT.experience;
 const CLASS_CONTEXT = 'Class 8 · Microorganisms · Fungi and its development';
 const ASSESSMENT = FUNGI_DEVELOPMENT.assessment;
+const ENVIRONMENT_URL =
+  FUNGI_DEVELOPMENT.assets.assets.find((asset) => asset.kind === 'environment')?.url ??
+  '/simulations/c8-ch02-a03-fungi-and-its-development/environment-v2.webp';
 
 const DEFAULT_PREFERENCES: ExperiencePreferences = {
   audio: true,
@@ -475,6 +478,14 @@ export default function FungiDevelopmentViewer() {
     scene.fog = new THREE.Fog(0x16241a, 22, 60);
     const camera = new THREE.PerspectiveCamera(55, 16 / 9, 0.1, 200);
 
+    // Keep the branch's authored forest panorama while retaining upstream's
+    // shared world, camera, interaction, and player-rig architecture.
+    const environmentTexture = new THREE.TextureLoader().load(ENVIRONMENT_URL);
+    environmentTexture.mapping = THREE.EquirectangularReflectionMapping;
+    environmentTexture.colorSpace = THREE.SRGBColorSpace;
+    scene.background = environmentTexture;
+    scene.environment = environmentTexture;
+
     // Dappled forest light: a warm key through the canopy, a cool sky fill,
     // and a soft rim so the apparatus separates from the background.
     const key = new THREE.DirectionalLight(0xfff0d2, 3.1);
@@ -595,6 +606,7 @@ export default function FungiDevelopmentViewer() {
       hudRef.current = null;
       void runtime?.dispose();
       runtimeRef.current = null;
+      environmentTexture.dispose();
     };
   }, [started, preferences.reducedMotion, syncViewport, publish, publishFocusGuide]);
 

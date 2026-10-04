@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { describe, expect, it, vi } from 'vitest';
 import {
   createVrLocomotion,
+  questControllerAction,
   rotateRigAboutHead,
   smoothAxis,
 } from '../../apps/web/lib/vr/vrLocomotion';
@@ -78,10 +79,10 @@ describe('createVrLocomotion', () => {
     return { rig, camera };
   }
 
-  function fakeRenderer(camera: THREE.Camera, inputSources: unknown[]) {
+  function fakeRenderer(camera: THREE.Camera, inputSources: unknown[], end = vi.fn()) {
     return {
       xr: {
-        getSession: () => ({ inputSources }),
+        getSession: () => ({ inputSources, end }),
         getCamera: () => camera,
       },
     } as unknown as THREE.WebGLRenderer;
@@ -202,25 +203,50 @@ describe('createVrLocomotion', () => {
     expect(other.rig.rotation.y).toBe(0);
   });
 
-  it('fires back exactly once per held B press', () => {
+  it('maps the Quest face buttons by hand and exits exactly once per held B press', () => {
+    expect(questControllerAction('right', 4)).toBe('primary');
+    expect(questControllerAction('right', 5)).toBe('exit');
+    expect(questControllerAction('left', 4)).toBe('narrate');
+    expect(questControllerAction('left', 5)).toBe('back');
     const { rig, camera } = makeRig();
     const sources = [stick('right', 0, 0, true)];
-    let backs = 0;
+    const end = vi.fn();
     const locomotion = createVrLocomotion({
-      renderer: fakeRenderer(camera, sources),
+      renderer: fakeRenderer(camera, sources, end),
       rig,
-      onBack: () => { backs += 1; },
     });
 
     locomotion.update(0.016);
     locomotion.update(0.016);
-    expect(backs).toBe(1);
+    expect(end).toHaveBeenCalledTimes(1);
 
     sources[0].gamepad.buttons[5].pressed = false;
     locomotion.update(0.016);
     sources[0].gamepad.buttons[5].pressed = true;
     locomotion.update(0.016);
-    expect(backs).toBe(2);
+    expect(end).toHaveBeenCalledTimes(2);
+  });
+
+  it('invokes X narration and Y back independently', () => {
+    const { rig, camera } = makeRig();
+    const source = stick('left', 0, 0);
+    const narrate = vi.fn();
+    const back = vi.fn();
+    const locomotion = createVrLocomotion({
+      renderer: fakeRenderer(camera, [source]),
+      rig,
+      onNarrate: narrate,
+      onBack: back,
+    });
+
+    source.gamepad.buttons[4].pressed = true;
+    locomotion.update(0.016);
+    expect(narrate).toHaveBeenCalledTimes(1);
+    expect(back).not.toHaveBeenCalled();
+    source.gamepad.buttons[4].pressed = false;
+    source.gamepad.buttons[5].pressed = true;
+    locomotion.update(0.016);
+    expect(back).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -269,7 +295,7 @@ describe('shared VR HUD panel', () => {
     expect(text).toContain("'restart'");
     expect(text).toContain("buttonIdFor(objectName: string)");
     expect(text).toContain('Trigger: select');
-    expect(text).toContain('B: back');
+    expect(text).toContain('B: exit VR');
   });
 
   it('shows, resolves, and hides authored choices and distinct help/restart controls', () => {
@@ -277,6 +303,7 @@ describe('shared VR HUD panel', () => {
     const fillText = vi.fn();
     const context = {
       clearRect: draw, fillRect: draw, strokeRect: draw, fillText,
+      save: draw, restore: draw, beginPath: draw, rect: draw, clip: draw,
       measureText: (text: string) => ({ width: text.length * 12 }),
       fillStyle: '', strokeStyle: '', lineWidth: 1, font: '', textAlign: '', textBaseline: '',
     };

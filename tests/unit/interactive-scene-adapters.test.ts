@@ -75,6 +75,39 @@ function createRecordingContext() {
 }
 
 describe('interactive scene adapters', () => {
+  it('keeps the solubility apparatus framed above the lesson dock across stages', async () => {
+    const recording = createRecordingContext();
+    const registration = INTERACTIVE_VIEWER_REGISTRATIONS['interactive-solubility'];
+    const handle = await registration.createAdapter().create(recording.context);
+    const initial = registration.createSession().snapshot();
+    const beaker = recording.context.scene.getObjectByName('solubility-beaker')!;
+    for (const stageId of ['predict', 'fair-test', 'investigate-rate', 'misconception', 'transfer']) {
+      handle.applySnapshot({ ...initial.lesson, stageId });
+      const focus = handle.focusTarget!()!;
+      expect(focus.name).toBe('solubility-apparatus-focus');
+      for (const [width, height] of [[1280, 720], [390, 844]]) {
+        const camera = new THREE.PerspectiveCamera(58, width / height, 0.04, 80);
+        camera.position.set(0, 1.55, 3.6);
+        camera.lookAt(focus.getWorldPosition(new THREE.Vector3()));
+        camera.updateMatrixWorld();
+        const bounds = new THREE.Box3().setFromObject(beaker);
+        for (const x of [bounds.min.x, bounds.max.x]) {
+          for (const y of [bounds.min.y, bounds.max.y]) {
+            for (const z of [bounds.min.z, bounds.max.z]) {
+              const point = new THREE.Vector3(x, y, z).project(camera);
+              expect(Math.abs(point.x)).toBeLessThan(0.9);
+              const screenY = (1 - point.y) / 2;
+              expect(screenY).toBeGreaterThan(0.2);
+              expect(screenY).toBeLessThan(0.66);
+            }
+          }
+        }
+      }
+    }
+    await handle.dispose();
+    await recording.resources.disposeAll();
+  });
+
   it.each(Object.entries(INTERACTIVE_VIEWER_REGISTRATIONS))(
     '%s remains a projection-only, disposable interaction surface',
     async (_viewerKey, registration) => {

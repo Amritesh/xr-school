@@ -128,6 +128,17 @@ export const FeedbackState = {
   },
 };
 
+export const ChoicesState = {
+  args: {
+    ...Default.args,
+    snapshot: INCOMPLETE_SNAPSHOT,
+    choices: [
+      { id: 'ten-ohm', label: 'Try 10 Ω', onActivate: noAction },
+      { id: 'two-hundred-ohm', label: 'Try 200 Ω', onActivate: noAction },
+    ],
+  },
+};
+
 // completionEyebrow/Headline/Body/ActionLabel pass through to
 // BrowserExperienceHud so each simulation can show its own completion
 // summary instead of a hardcoded, Pollination-specific one.
