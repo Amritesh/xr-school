@@ -10,8 +10,8 @@ import { validateCurriculumGraph } from '../../packages/simulation-schema/src/in
 describe('canonical curriculum content', () => {
   it('defines typed courses, chapters, and concepts for every working simulation', () => {
     expect(COURSES).toHaveLength(11);
-    expect(CURRICULUM_CHAPTERS).toHaveLength(25);
-    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(74);
+    expect(CURRICULUM_CHAPTERS).toHaveLength(26);
+    expect(LEARNING_CONCEPTS.length).toBeGreaterThanOrEqual(77);
 
     const linkedSimulationIds = new Set(COURSES.flatMap(course => course.simulationIds));
     for (const { module } of IMPLEMENTED_SIMULATIONS) {
@@ -36,6 +36,7 @@ describe('canonical curriculum content', () => {
     const class7 = COURSES.find(item => item.id === 'course-cbse-c7-biology');
 
     expect(class5?.chapterIds).toEqual(expect.arrayContaining([
+      'chapter-cbse-c5-super-senses',
       'chapter-cbse-c5-mangoes-round-year',
       'chapter-cbse-c5-seeds-and-seeds',
       'chapter-cbse-c5-every-drop-counts',
@@ -43,7 +44,27 @@ describe('canonical curriculum content', () => {
       'chapter-cbse-c5-up-you-go',
       'chapter-cbse-c5-walls-tell-stories',
     ]));
-    expect(class5?.simulationIds).toHaveLength(18);
+    expect(class5?.simulationIds).toHaveLength(21);
+    expect(class5?.simulationIds).toContain(
+      'sim-c05-ch01-a01-supersense-of-smell',
+    );
+    expect(class5?.simulationIds).toContain(
+      'sim-c05-ch01-a02-supersense-of-sights',
+    );
+    expect(class5?.simulationIds).toContain(
+      'sim-c05-ch01-a03-super-sense-of-danger',
+    );
+    expect(CURRICULUM_CHAPTERS.find(
+      item => item.id === 'chapter-cbse-c5-super-senses',
+    )).toMatchObject({
+      chapterNumber: 1,
+      title: 'Super Senses',
+      simulationIds: [
+        'sim-c05-ch01-a01-supersense-of-smell',
+        'sim-c05-ch01-a02-supersense-of-sights',
+        'sim-c05-ch01-a03-super-sense-of-danger',
+      ],
+    });
     expect(class6?.simulationIds).toEqual(expect.arrayContaining([
       'sim-c06-ch03-a01-cotton-farming',
       'sim-c06-ch03-a02-the-process-of-cotton-ginning',

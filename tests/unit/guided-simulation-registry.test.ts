@@ -42,10 +42,10 @@ function unique(values: readonly string[]) {
 }
 
 describe('guided simulation inventory', () => {
-  it('publishes the 17 PR #8 classes plus five new evidence-backed guided simulations with 167 stages', () => {
-    expect(GUIDED_SIMULATION_DEFINITIONS).toHaveLength(22);
-    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(22);
-    expect(GUIDED_SIMULATION_DEFINITIONS.flatMap(item => item.stages)).toHaveLength(167);
+  it('publishes the 17 PR #8 classes plus eight new evidence-backed guided simulations with 179 stages', () => {
+    expect(GUIDED_SIMULATION_DEFINITIONS).toHaveLength(25);
+    expect(GUIDED_IMPLEMENTED_SIMULATIONS).toHaveLength(25);
+    expect(GUIDED_SIMULATION_DEFINITIONS.flatMap(item => item.stages)).toHaveLength(179);
 
     for (const [slug, moduleId, viewerKey, legacyPath, stageCount] of EXPECTED_GUIDED) {
       const record = GUIDED_IMPLEMENTED_SIMULATIONS.find(
@@ -130,6 +130,59 @@ describe('guided simulation inventory', () => {
       },
     });
     expect(invisibleInvader?.experience.stages).toHaveLength(7);
+
+    const superSensesSmell = GUIDED_IMPLEMENTED_SIMULATIONS.find(
+      item => item.module.slug === 'c5-ch01-a01-supersense-of-smell',
+    );
+    expect(superSensesSmell).toMatchObject({
+      kind: 'guided',
+      legacyPaths: [],
+      contribution: { source: 'user-story', integration: 'new-class' },
+      module: {
+        id: 'sim-c05-ch01-a01-supersense-of-smell',
+        viewerKey: 'guided-super-senses-smell',
+        publicationStatus: 'released',
+        evidenceMaturity: 'internalQA',
+        expectedDurationMinutes: 5,
+        maxSessionDurationMinutes: 5,
+      },
+    });
+    expect(superSensesSmell?.experience.stages).toHaveLength(4);
+    expect(resolveSimulationPath('/simulations/c5-ch01-a01-supersense-of-smell')).toMatchObject({
+      definition: { module: { id: 'sim-c05-ch01-a01-supersense-of-smell' } },
+      canonicalPath: '/simulations/c5-ch01-a01-supersense-of-smell',
+      redirect: false,
+    });
+
+    const superSensesSight = GUIDED_IMPLEMENTED_SIMULATIONS.find(
+      item => item.module.slug === 'c5-ch01-a02-supersense-of-sights',
+    );
+    expect(superSensesSight).toMatchObject({
+      kind: 'guided',
+      contribution: { source: 'user-story', integration: 'new-class' },
+      module: {
+        id: 'sim-c05-ch01-a02-supersense-of-sights',
+        viewerKey: 'guided-super-senses-sight',
+        expectedDurationMinutes: 5,
+        maxSessionDurationMinutes: 5,
+      },
+    });
+    expect(superSensesSight?.experience.stages).toHaveLength(4);
+
+    const superSensesDanger = GUIDED_IMPLEMENTED_SIMULATIONS.find(
+      item => item.module.slug === 'c5-ch01-a03-super-sense-of-danger',
+    );
+    expect(superSensesDanger).toMatchObject({
+      kind: 'guided',
+      contribution: { source: 'user-story', integration: 'new-class' },
+      module: {
+        id: 'sim-c05-ch01-a03-super-sense-of-danger',
+        viewerKey: 'guided-super-senses-danger',
+        expectedDurationMinutes: 5,
+        maxSessionDurationMinutes: 5,
+      },
+    });
+    expect(superSensesDanger?.experience.stages).toHaveLength(4);
   });
 
   it('keeps every identifier, caption, path, and asset identity unique', () => {

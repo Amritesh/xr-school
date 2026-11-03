@@ -15,7 +15,7 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "simulationFormat": "interactive3d",
     "xrFitType": "strongVrFit",
     "comfortRiskLevel": "low",
-    "expectedDurationMinutes": 8,
+    "expectedDurationMinutes": 5,
     "reuseGroup": "environmentalScience:super-senses",
     "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
     "releaseMaturity": "catalogued"
@@ -28,16 +28,16 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "chapter": 1,
     "topic": "Super Senses",
     "activityNumber": 2,
-    "title": "Supersense of sights",
+    "title": "The Super Sense of Sight",
     "subject": "environmentalScience",
     "primaryArchetype": "modelInspection",
     "secondaryArchetypes": [],
     "simulationFormat": "interactive3d",
     "xrFitType": "strongVrFit",
     "comfortRiskLevel": "low",
-    "expectedDurationMinutes": 8,
+    "expectedDurationMinutes": 5,
     "reuseGroup": "environmentalScience:super-senses",
-    "implementationNotes": "Use labeled 3D inspection with isolate, zoom, explode, compare, and vocabulary layer.",
+    "implementationNotes": "Use a timed immersive investigation to compare eagle distance vision, nocturnal low-light adaptations, and chameleon panoramic vision.",
     "releaseMaturity": "catalogued"
   },
   {
@@ -48,16 +48,16 @@ export const SCIENCE_SIMULATION_CATALOG = [
     "chapter": 1,
     "topic": "Super Senses",
     "activityNumber": 3,
-    "title": "Super Sense of danger",
+    "title": "The Sense of Danger",
     "subject": "environmentalScience",
     "primaryArchetype": "scenario",
     "secondaryArchetypes": [],
-    "simulationFormat": "guidedVisualization",
+    "simulationFormat": "immersiveVr",
     "xrFitType": "strongVrFit",
     "comfortRiskLevel": "low",
-    "expectedDurationMinutes": 8,
+    "expectedDurationMinutes": 5,
     "reuseGroup": "environmentalScience:super-senses",
-    "implementationNotes": "Use decision scenario with safe choices, consequence preview, and debrief focused on reasoning rather than score.",
+    "implementationNotes": "Use an exact five-minute wildlife-spy investigation to trace elephant seismic signals, decode spider-web vibration, and locate weak electric fields with shark electroreception.",
     "releaseMaturity": "catalogued"
   },
   {
@@ -10620,6 +10620,33 @@ export const RELEASED_SIMULATION_CATALOG = [
     "slug": "c7-ch03-a03-spinning-and-rolling-of-wool",
     "title": "Spinning and Rolling of Wool",
     "href": "/simulations/c7-ch03-a03-spinning-and-rolling-of-wool",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch01-a01-supersense-of-smell",
+    "slug": "c5-ch01-a01-supersense-of-smell",
+    "title": "Super Senses: The Sense of Smell",
+    "href": "/simulations/c5-ch01-a01-supersense-of-smell",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch01-a02-supersense-of-sights",
+    "slug": "c5-ch01-a02-supersense-of-sights",
+    "title": "Super Senses: The Super Sense of Sight",
+    "href": "/simulations/c5-ch01-a02-supersense-of-sights",
+    "releaseMaturity": "internalQA",
+    "publicationStatus": "released",
+    "evidenceMaturity": "internalQA"
+  },
+  {
+    "id": "sim-c05-ch01-a03-super-sense-of-danger",
+    "slug": "c5-ch01-a03-super-sense-of-danger",
+    "title": "Super Senses: The Sense of Danger",
+    "href": "/simulations/c5-ch01-a03-super-sense-of-danger",
     "releaseMaturity": "internalQA",
     "publicationStatus": "released",
     "evidenceMaturity": "internalQA"

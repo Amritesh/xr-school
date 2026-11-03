@@ -1,16 +1,16 @@
 {
   "auditDate": "2026-08-01",
   "portfolio": {
-    "publiclyLaunchableSimulations": 41,
+    "publiclyLaunchableSimulations": 44,
     "evidenceMaturityDistribution": {
-      "internalQA": 41,
+      "internalQA": 44,
       "deviceVerified": 0,
       "classroomVerified": 0
     },
-    "narrationCues": 283,
-    "packagedNarrationClips": 283,
+    "narrationCues": 295,
+    "packagedNarrationClips": 295,
     "missingNarrationFiles": 0,
-    "assets": 108,
+    "assets": 111,
     "signedQuestAcceptanceRuns": 0,
     "classroomStudies": 0
   },
@@ -3781,6 +3781,336 @@
         },
         {
           "id": "c7-ch03-a03-spinning-and-rolling-of-wool:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch01-a01-supersense-of-smell",
+      "title": "Super Senses: The Sense of Smell",
+      "route": "/simulations/c5-ch01-a01-supersense-of-smell",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "guided",
+      "contribution": "user-story",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 4,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 4,
+        "missingFiles": 0,
+        "hashValidated": 4,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "visualSource": "manifest-assets",
+        "provenanceComplete": true,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch01-a01-supersense-of-smell:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch01-a01-supersense-of-smell:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/super-senses-smell.ts",
+          "finding": "4 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch01-a01-supersense-of-smell:behavior",
+          "kind": "test",
+          "ref": "tests/unit/super-senses-smell-viewer.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a01-supersense-of-smell:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch01-a01-supersense-of-smell",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a01-supersense-of-smell:narration",
+          "kind": "narration",
+          "ref": "narration:guided-super-senses-smell",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a01-supersense-of-smell:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch01-a01-supersense-of-smell",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a01-supersense-of-smell:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch01-a02-supersense-of-sights",
+      "title": "Super Senses: The Super Sense of Sight",
+      "route": "/simulations/c5-ch01-a02-supersense-of-sights",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "guided",
+      "contribution": "user-story",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 4,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 4,
+        "missingFiles": 0,
+        "hashValidated": 4,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "visualSource": "manifest-assets",
+        "provenanceComplete": true,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch01-a02-supersense-of-sights:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch01-a02-supersense-of-sights:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/super-senses-sight.ts",
+          "finding": "4 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch01-a02-supersense-of-sights:behavior",
+          "kind": "test",
+          "ref": "tests/unit/super-senses-sight-viewer.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a02-supersense-of-sights:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch01-a02-supersense-of-sights",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a02-supersense-of-sights:narration",
+          "kind": "narration",
+          "ref": "narration:guided-super-senses-sight",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a02-supersense-of-sights:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch01-a02-supersense-of-sights",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a02-supersense-of-sights:release-build",
+          "kind": "build",
+          "ref": "npm --workspace apps/web run build",
+          "finding": "The route is included in the static production build and canonical registry coverage gate.",
+          "dimensions": [
+            "stability",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "c5-ch01-a03-super-sense-of-danger",
+      "title": "Super Senses: The Sense of Danger",
+      "route": "/simulations/c5-ch01-a03-super-sense-of-danger",
+      "publicationStatus": "released",
+      "evidenceMaturity": "internalQA",
+      "legacyPaths": [],
+      "kind": "guided",
+      "contribution": "user-story",
+      "counts": {
+        "stages": 4,
+        "actions": 4,
+        "evidence": 4,
+        "assessmentPrompts": 2
+      },
+      "narration": {
+        "cues": 4,
+        "captions": 4,
+        "packagedAudio": 4,
+        "missingFiles": 0,
+        "hashValidated": 4,
+        "fallback": "browserTts"
+      },
+      "assets": {
+        "count": 1,
+        "visualSource": "manifest-assets",
+        "provenanceComplete": true,
+        "fallback": "shared declarative scene remains usable without panorama texture",
+        "pathValidated": true,
+        "hashValidated": true
+      },
+      "tests": [
+        "c5-ch01-a03-super-sense-of-danger:behavior",
+        "implemented-registry:coverage",
+        "viewer-registry:coverage"
+      ],
+      "lastVerifiedCommand": "npm run verify",
+      "browserEvidence": {
+        "status": "build-and-contract-verified",
+        "finding": "Static production route generation and shared-host contract checks pass; final deployed browser acceptance is recorded in production release evidence."
+      },
+      "questDeviceEvidence": "not-run",
+      "classroomEvidence": "not-run",
+      "references": [
+        {
+          "id": "c5-ch01-a03-super-sense-of-danger:definition",
+          "kind": "source",
+          "ref": "packages/simulation-content/src/implemented/guided/super-senses-danger.ts",
+          "finding": "4 canonical stages, 2 assessment prompts, and release metadata are declared in the shared content contract.",
+          "dimensions": [
+            "education",
+            "integrity"
+          ]
+        },
+        {
+          "id": "c5-ch01-a03-super-sense-of-danger:behavior",
+          "kind": "test",
+          "ref": "tests/unit/super-senses-danger-viewer.test.ts",
+          "finding": "Behavior tests execute declared actions, evidence gates, assessment behavior, or canonical registry resolution.",
+          "dimensions": [
+            "education",
+            "integrity",
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a03-super-sense-of-danger:assets",
+          "kind": "asset",
+          "ref": "assets:sim-c05-ch01-a03-super-sense-of-danger",
+          "finding": "1 declared assets; path, digest, and provenance validation passes.",
+          "dimensions": [
+            "visuals",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a03-super-sense-of-danger:narration",
+          "kind": "narration",
+          "ref": "narration:guided-super-senses-danger",
+          "finding": "4 exact captions; 4 packaged clips; fallback browserTts.",
+          "dimensions": [
+            "audio",
+            "usability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a03-super-sense-of-danger:browser-contract",
+          "kind": "browser",
+          "ref": "/simulations/c5-ch01-a03-super-sense-of-danger",
+          "finding": "The canonical route delegates to the shared experience shell and registered viewer; production observation remains separate from this contract evidence.",
+          "dimensions": [
+            "interactivity",
+            "usability",
+            "stability"
+          ]
+        },
+        {
+          "id": "c5-ch01-a03-super-sense-of-danger:release-build",
           "kind": "build",
           "ref": "npm --workspace apps/web run build",
           "finding": "The route is included in the static production build and canonical registry coverage gate.",

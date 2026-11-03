@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditDate": "2026-10-02",
+  "auditDate": "2026-10-31",
   "method": "Rendered all pages with Poppler, inspected five complete contact sheets, and reviewed the first, middle, appendix, and final pages at full size.",
   "reports": [
     {
@@ -22,13 +22,13 @@
     },
     {
       "file": "xr-school-implemented-simulations-quality-report.pdf",
-      "pages": 49,
+      "pages": 52,
       "representativePages": [
         1,
-        25,
-        49
+        26,
+        52
       ],
-      "sha256": "188df0ca54d43e5e89c07535c41d53671cb6d0a2b859b4e7568a0cfc5948e44a",
+      "sha256": "9a5655dbfd772d1313f18bf222b38449a51a2600482ccd4347fb3afc12e175e0",
       "checks": [
         "no clipping",
         "readable hierarchy",

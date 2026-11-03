@@ -246,6 +246,9 @@ function baselineScores(total: number, hasContributedAudio: boolean): QualitySco
 function contentPath(definition: ImplementedSimulationDefinition): string {
   if (definition.contribution.source === 'user-story') {
     const userStorySources: Record<string, string> = {
+      'c5-ch01-a01-supersense-of-smell': 'packages/simulation-content/src/implemented/guided/super-senses-smell.ts',
+      'c5-ch01-a02-supersense-of-sights': 'packages/simulation-content/src/implemented/guided/super-senses-sight.ts',
+      'c5-ch01-a03-super-sense-of-danger': 'packages/simulation-content/src/implemented/guided/super-senses-danger.ts',
       'c7-ch03-a01-shearing-and-scouring-of-wool': 'packages/simulation-content/src/implemented/guided/shearing-scouring.ts',
       'c7-ch03-a03-spinning-and-rolling-of-wool': 'packages/simulation-content/src/implemented/guided/yarn-maker-mission.ts',
       'c8-ch01-a03-irrigation-methods': 'packages/simulation-content/src/implemented/guided/irrigation-methods.ts',
@@ -277,6 +280,9 @@ function contentPath(definition: ImplementedSimulationDefinition): string {
 function behaviorTest(definition: ImplementedSimulationDefinition): string {
   if (definition.contribution.source === 'user-story') {
     const userStoryTests: Record<string, string> = {
+      'c5-ch01-a01-supersense-of-smell': 'tests/unit/super-senses-smell-viewer.test.ts',
+      'c5-ch01-a02-supersense-of-sights': 'tests/unit/super-senses-sight-viewer.test.ts',
+      'c5-ch01-a03-super-sense-of-danger': 'tests/unit/super-senses-danger-viewer.test.ts',
       'c7-ch03-a01-shearing-and-scouring-of-wool': 'tests/unit/wool-processing-viewer.test.ts',
       'c7-ch03-a03-spinning-and-rolling-of-wool': 'tests/unit/yarn-maker-viewer.test.ts',
       'c8-ch01-a03-irrigation-methods': 'tests/unit/irrigation-methods-viewer.test.ts',

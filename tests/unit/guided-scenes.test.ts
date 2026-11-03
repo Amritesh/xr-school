@@ -32,8 +32,8 @@ function context(): SimulationSceneContext {
 
 describe('guided declarative scene worlds', () => {
   it('binds one unique adapter and testable evidence world to every guided class', async () => {
-    expect(GUIDED_SCENE_ENTRIES).toHaveLength(22);
-    expect(new Set(GUIDED_SCENE_ENTRIES.map(entry => entry.adapter.id)).size).toBe(22);
+    expect(GUIDED_SCENE_ENTRIES).toHaveLength(25);
+    expect(new Set(GUIDED_SCENE_ENTRIES.map(entry => entry.adapter.id)).size).toBe(25);
     expect(GUIDED_SCENE_ENTRIES.map(entry => entry.moduleId).sort()).toEqual(
       GUIDED_SIMULATION_DEFINITIONS.map(definition => definition.moduleId).sort(),
     );

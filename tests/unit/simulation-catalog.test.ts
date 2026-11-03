@@ -22,6 +22,7 @@ describe('Class 5-10 science simulation catalog', () => {
     expect(new Set(catalog.map(row => row.simulationId)).size).toBe(catalog.length);
     expect(catalog[0].slug).toBe('c5-ch01-a01-supersense-of-smell');
     expect(catalog[0].simulationId).toBe('sim-c05-ch01-a01-supersense-of-smell');
+    expect(catalog[0].expectedDurationMinutes).toBe(5);
   });
 
   it('uses only TypeSpec-compatible enums and safe duration limits', () => {

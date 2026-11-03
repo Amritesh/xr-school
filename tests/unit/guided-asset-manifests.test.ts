@@ -77,6 +77,27 @@ describe('guided asset manifests', () => {
           license: 'project-generated',
         });
         expect(environment.source).toContain('Harvesting');
+      } else if (record.module.slug === 'c5-ch01-a01-supersense-of-smell') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'XR School project team',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Super Senses');
+      } else if (record.module.slug === 'c5-ch01-a02-supersense-of-sights') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'XR School project team',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Super Senses');
+      } else if (record.module.slug === 'c5-ch01-a03-super-sense-of-danger') {
+        expect(environment).toMatchObject({
+          compression: 'WebP lossy q76; sharp/libvips effort 6',
+          author: 'XR School project team',
+          license: 'project-generated',
+        });
+        expect(environment.source).toContain('Super Senses');
       } else {
         expect(environment).toMatchObject({
           compression: 'WebP lossy q75; cwebp 1.6.0 method 6',

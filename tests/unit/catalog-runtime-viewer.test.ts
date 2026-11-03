@@ -24,7 +24,12 @@ describe('catalog runtime simulations', () => {
     const sections = getSimulationCatalogSections(SCIENCE_SIMULATION_CATALOG);
     expect(SCIENCE_SIMULATION_CATALOG).toHaveLength(497);
     expect(sections.launchable).toHaveLength(IMPLEMENTED_SIMULATION_SLUGS.length);
-    expect(sections.catalogued.find(item => item.slug === 'c5-ch01-a01-supersense-of-smell')?.href).toBeUndefined();
+    expect(sections.launchable.find(
+      item => item.slug === 'c5-ch01-a01-supersense-of-smell',
+    )?.href).toBe('/simulations/c5-ch01-a01-supersense-of-smell');
+    expect(sections.catalogued.some(
+      item => item.slug === 'c5-ch01-a01-supersense-of-smell',
+    )).toBe(false);
   });
 
   it('uses reusable archetype rendering instead of static queued cards', () => {

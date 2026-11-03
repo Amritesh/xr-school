@@ -111,7 +111,7 @@ describe('simulation availability routing', () => {
 
   it('exposes a route guard for exactly the implemented demos', () => {
     expect(isImplementedSimulationSlug('pollination')).toBe(true);
-    expect(isImplementedSimulationSlug('c5-ch01-a01-supersense-of-smell')).toBe(false);
+    expect(isImplementedSimulationSlug('c5-ch01-a01-supersense-of-smell')).toBe(true);
   });
 
   it('keeps unfinished catalog rows visible but non-launchable', () => {

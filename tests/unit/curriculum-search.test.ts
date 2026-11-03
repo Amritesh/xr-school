@@ -33,20 +33,48 @@ describe('curriculum search', () => {
     });
 
     expect(results.map(result => result.href)).toEqual(expect.arrayContaining([
+      '/simulations/c5-ch01-a01-supersense-of-smell',
+      '/simulations/c5-ch01-a02-supersense-of-sights',
+      '/simulations/c5-ch01-a03-super-sense-of-danger',
       '/simulations/c5-ch03-a02-introduction-of-digestive-system',
       '/simulations/c5-ch07-a03-soluble-and-insoluble-substances',
     ]));
-    // The 17 integrated Class 5 guided classes expand this released filter
-    // beyond the two original simulations while preserving both originals.
-    expect(results).toHaveLength(18);
+    // The three Super Senses investigations join the integrated Class 5 guided
+    // classes while preserving every previously released Class 5 activity.
+    expect(results).toHaveLength(21);
     expect(results.every(result => result.releaseMaturity === 'internalQA')).toBe(true);
   });
 
-  it('keeps catalogued candidates searchable without launch URLs', () => {
+  it('promotes the canonical smell investigation to its launch route', () => {
     const results = searchCurriculum(CURRICULUM_SEARCH_DOCUMENTS, 'supersense of smell');
-    const candidate = results.find(result => result.title === 'Supersense of smell');
+    const candidate = results.find(
+      result => result.id === 'simulation:c5-ch01-a01-supersense-of-smell',
+    );
 
-    expect(candidate?.releaseMaturity).toBe('catalogued');
-    expect(candidate?.href).toBe('/simulations#c5-ch01-a01-supersense-of-smell');
+    expect(candidate?.title).toBe('Super Senses: The Sense of Smell');
+    expect(candidate?.releaseMaturity).toBe('internalQA');
+    expect(candidate?.href).toBe('/simulations/c5-ch01-a01-supersense-of-smell');
+  });
+
+  it('promotes the canonical sight investigation to its launch route', () => {
+    const results = searchCurriculum(CURRICULUM_SEARCH_DOCUMENTS, 'super sense of sight');
+    const candidate = results.find(
+      result => result.id === 'simulation:c5-ch01-a02-supersense-of-sights',
+    );
+
+    expect(candidate?.title).toBe('Super Senses: The Super Sense of Sight');
+    expect(candidate?.releaseMaturity).toBe('internalQA');
+    expect(candidate?.href).toBe('/simulations/c5-ch01-a02-supersense-of-sights');
+  });
+
+  it('promotes the canonical danger-sense investigation to its launch route', () => {
+    const results = searchCurriculum(CURRICULUM_SEARCH_DOCUMENTS, 'sense of danger');
+    const candidate = results.find(
+      result => result.id === 'simulation:c5-ch01-a03-super-sense-of-danger',
+    );
+
+    expect(candidate?.title).toBe('Super Senses: The Sense of Danger');
+    expect(candidate?.releaseMaturity).toBe('internalQA');
+    expect(candidate?.href).toBe('/simulations/c5-ch01-a03-super-sense-of-danger');
   });
 });

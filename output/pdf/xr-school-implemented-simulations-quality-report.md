@@ -2,19 +2,19 @@
 
 **Audit date:** 2026-08-01
 
-**Scope:** 41 released simulations
+**Scope:** 44 released simulations
 
-**Portfolio average:** 79.3/100
+**Portfolio average:** 79.4/100
 
-**Evidence maturity:** 41 internal QA; 0 device verified; 0 classroom verified
+**Evidence maturity:** 44 internal QA; 0 device verified; 0 classroom verified
 
 **Audit position:** Released means publicly launchable. Released does not mean school-validated, Quest-verified, classroom-verified, or proven to improve learning outcomes.
 
 ## Executive summary
 
-The released portfolio contains 41 canonical simulations. Its evidence-backed product-indicator average is **79.3/100**: 1 pilot candidates, 40 promising internal-QA classes, 0 needing focused improvement, and 0 requiring rebuild before pilot.
+The released portfolio contains 44 canonical simulations. Its evidence-backed product-indicator average is **79.4/100**: 1 pilot candidates, 43 promising internal-QA classes, 0 needing focused improvement, and 0 requiring rebuild before pilot.
 
-Repository evidence records 283 narration cues, 283 packaged narration clips, 0 missing narration files, and 108 declared assets. These are implementation indicators, not learner-outcome measurements.
+Repository evidence records 295 narration cues, 295 packaged narration clips, 0 missing narration files, and 111 declared assets. These are implementation indicators, not learner-outcome measurements.
 
 Quest and classroom evidence are absent: no signed physical-device acceptance runs or controlled classroom studies are represented in this audit. Every class therefore remains at internal QA evidence maturity.
 
@@ -36,40 +36,43 @@ Quest and classroom evidence are absent: no signed physical-device acceptance ru
 | 12 | Solar System: Gravity's Orchestra | `c8-10-science-solar-system` | 81 | Promising internal QA | internalQA |
 | 13 | Spinning and Rolling of Wool | `c7-ch03-a03-spinning-and-rolling-of-wool` | 81 | Promising internal QA | internalQA |
 | 14 | States of Matter Particle Lab | `c9-ch01-a02-states-of-matter` | 81 | Promising internal QA | internalQA |
-| 15 | The Invisible Invader: Break the Viral Chain | `c8-ch02-a02-virus-introduction-spreading-and-its-effects` | 81 | Promising internal QA | internalQA |
-| 16 | Electric Circuits & Resistance (Ohm's Law) | `circuit` | 80 | Promising internal QA | internalQA |
-| 17 | A Step Well Structure | `c5-ch06-a02-a-step-well-structure` | 79 | Promising internal QA | internalQA |
-| 18 | A Visit of an Ancient Fort | `c5-ch10-a01-a-visit-of-ancient-fort` | 79 | Promising internal QA | internalQA |
-| 19 | Camp in the Snow | `c5-ch09-a03-camp-in-the-snow` | 79 | Promising internal QA | internalQA |
-| 20 | Cotton Farming | `c6-ch03-a01-cotton-farming` | 79 | Promising internal QA | internalQA |
-| 21 | Dead Sea: Salt Water and Its Effects | `c5-ch07-a02-dead-sea-salt-water-and-its-effects` | 79 | Promising internal QA | internalQA |
-| 22 | Diagnosis of Malaria | `c5-ch08-a01-diagnosis-of-malaria` | 79 | Promising internal QA | internalQA |
-| 23 | Food Spoilage | `c5-ch04-a01-food-spoilage` | 79 | Promising internal QA | internalQA |
-| 24 | Life Cycle of the Mosquito | `c5-ch08-a02-life-cycle-of-the-mosquito` | 79 | Promising internal QA | internalQA |
-| 25 | Milk Spoilage | `c5-ch04-a02-milk-spoilage` | 79 | Promising internal QA | internalQA |
-| 26 | Pitcher Plant - The Insect Hunter | `c5-ch05-a01-pitcher-plant-the-insect-hunter` | 79 | Promising internal QA | internalQA |
-| 27 | River Crossing Adventure | `c5-ch09-a01-river-crossing-adventure` | 79 | Promising internal QA | internalQA |
-| 28 | Rock Climbing | `c5-ch09-a02-rock-climbing` | 79 | Promising internal QA | internalQA |
-| 29 | Seed Dispersal | `c5-ch05-a02-seed-dispersal` | 79 | Promising internal QA | internalQA |
-| 30 | Snow Mountain Climbing | `c5-ch09-a04-snow-mountain-climbing` | 79 | Promising internal QA | internalQA |
-| 31 | The Making of Aam Papad | `c5-ch04-a03-the-making-of-aam-papad` | 79 | Promising internal QA | internalQA |
-| 32 | The Process of Cotton Ginning | `c6-ch03-a02-the-process-of-cotton-ginning` | 79 | Promising internal QA | internalQA |
-| 33 | The Storage of Rainwater | `c5-ch06-a01-the-storage-of-rainwater` | 79 | Promising internal QA | internalQA |
-| 34 | Preposition Adventure | `c2-english-ch01-prepositions` | 76 | Promising internal QA | internalQA |
-| 35 | Sources of Food Sorting Lab | `c6-ch01-a01-sources-of-food` | 76 | Promising internal QA | internalQA |
-| 36 | Acids, Bases & Neutralisation | `c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test` | 75 | Promising internal QA | internalQA |
-| 37 | Introduction to Money | `c1-math-ch01-introduction-to-money` | 75 | Promising internal QA | internalQA |
-| 38 | Introduction to the Digestive System | `c5-ch03-a02-introduction-of-digestive-system` | 75 | Promising internal QA | internalQA |
-| 39 | The Effects of Force on an Object's Motion and Shape | `c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape` | 75 | Promising internal QA | internalQA |
-| 40 | Colour Adventure | `c1-art-a01-learning-of-colours` | 74 | Promising internal QA | internalQA |
-| 41 | The Breathing Process in Human | `c7-ch10-a02-the-breathing-process-in-human` | 73 | Promising internal QA | internalQA |
+| 15 | Super Senses: The Sense of Danger | `c5-ch01-a03-super-sense-of-danger` | 81 | Promising internal QA | internalQA |
+| 16 | Super Senses: The Sense of Smell | `c5-ch01-a01-supersense-of-smell` | 81 | Promising internal QA | internalQA |
+| 17 | Super Senses: The Super Sense of Sight | `c5-ch01-a02-supersense-of-sights` | 81 | Promising internal QA | internalQA |
+| 18 | The Invisible Invader: Break the Viral Chain | `c8-ch02-a02-virus-introduction-spreading-and-its-effects` | 81 | Promising internal QA | internalQA |
+| 19 | Electric Circuits & Resistance (Ohm's Law) | `circuit` | 80 | Promising internal QA | internalQA |
+| 20 | A Step Well Structure | `c5-ch06-a02-a-step-well-structure` | 79 | Promising internal QA | internalQA |
+| 21 | A Visit of an Ancient Fort | `c5-ch10-a01-a-visit-of-ancient-fort` | 79 | Promising internal QA | internalQA |
+| 22 | Camp in the Snow | `c5-ch09-a03-camp-in-the-snow` | 79 | Promising internal QA | internalQA |
+| 23 | Cotton Farming | `c6-ch03-a01-cotton-farming` | 79 | Promising internal QA | internalQA |
+| 24 | Dead Sea: Salt Water and Its Effects | `c5-ch07-a02-dead-sea-salt-water-and-its-effects` | 79 | Promising internal QA | internalQA |
+| 25 | Diagnosis of Malaria | `c5-ch08-a01-diagnosis-of-malaria` | 79 | Promising internal QA | internalQA |
+| 26 | Food Spoilage | `c5-ch04-a01-food-spoilage` | 79 | Promising internal QA | internalQA |
+| 27 | Life Cycle of the Mosquito | `c5-ch08-a02-life-cycle-of-the-mosquito` | 79 | Promising internal QA | internalQA |
+| 28 | Milk Spoilage | `c5-ch04-a02-milk-spoilage` | 79 | Promising internal QA | internalQA |
+| 29 | Pitcher Plant - The Insect Hunter | `c5-ch05-a01-pitcher-plant-the-insect-hunter` | 79 | Promising internal QA | internalQA |
+| 30 | River Crossing Adventure | `c5-ch09-a01-river-crossing-adventure` | 79 | Promising internal QA | internalQA |
+| 31 | Rock Climbing | `c5-ch09-a02-rock-climbing` | 79 | Promising internal QA | internalQA |
+| 32 | Seed Dispersal | `c5-ch05-a02-seed-dispersal` | 79 | Promising internal QA | internalQA |
+| 33 | Snow Mountain Climbing | `c5-ch09-a04-snow-mountain-climbing` | 79 | Promising internal QA | internalQA |
+| 34 | The Making of Aam Papad | `c5-ch04-a03-the-making-of-aam-papad` | 79 | Promising internal QA | internalQA |
+| 35 | The Process of Cotton Ginning | `c6-ch03-a02-the-process-of-cotton-ginning` | 79 | Promising internal QA | internalQA |
+| 36 | The Storage of Rainwater | `c5-ch06-a01-the-storage-of-rainwater` | 79 | Promising internal QA | internalQA |
+| 37 | Preposition Adventure | `c2-english-ch01-prepositions` | 76 | Promising internal QA | internalQA |
+| 38 | Sources of Food Sorting Lab | `c6-ch01-a01-sources-of-food` | 76 | Promising internal QA | internalQA |
+| 39 | Acids, Bases & Neutralisation | `c10-ch02-a01-introduction-to-acids-and-bases-and-litmus-test` | 75 | Promising internal QA | internalQA |
+| 40 | Introduction to Money | `c1-math-ch01-introduction-to-money` | 75 | Promising internal QA | internalQA |
+| 41 | Introduction to the Digestive System | `c5-ch03-a02-introduction-of-digestive-system` | 75 | Promising internal QA | internalQA |
+| 42 | The Effects of Force on an Object's Motion and Shape | `c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape` | 75 | Promising internal QA | internalQA |
+| 43 | Colour Adventure | `c1-art-a01-learning-of-colours` | 74 | Promising internal QA | internalQA |
+| 44 | The Breathing Process in Human | `c7-ch10-a02-the-breathing-process-in-human` | 73 | Promising internal QA | internalQA |
 
 ## Portfolio priorities
 
-Priorities are derived from the three lowest average rubric attainment ratios across the complete 41-card dataset.
+Priorities are derived from the three lowest average rubric attainment ratios across the complete 44-card dataset.
 
 1. **Deployment readiness:** portfolio mean 3.0/5. Address the card-level evidence gaps and next actions before raising evidence maturity.
-2. **Visual and asset quality:** portfolio mean 9.5/15. Address the card-level evidence gaps and next actions before raising evidence maturity.
+2. **Visual and asset quality:** portfolio mean 9.6/15. Address the card-level evidence gaps and next actions before raising evidence maturity.
 3. **Narration and sound:** portfolio mean 7.2/10. Address the card-level evidence gaps and next actions before raising evidence maturity.
 4. **Physical-device acceptance:** run the documented Quest comfort, controller, narration, cleanup, and performance checks; current signed run count is 0.
 5. **Classroom evidence:** collect teacher workflow and learner-comprehension evidence without converting internal QA scores into outcome claims; current study count is 0.
@@ -640,6 +643,129 @@ A particle-model laboratory that makes spacing, motion, attraction, heating, and
 
 - 4 declared stages connect the curriculum objective to observable learner actions and evidence.
 - 3 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Super Senses: The Sense of Danger - 81/100
+
+**Canonical slug:** `c5-ch01-a03-super-sense-of-danger`
+
+**Route:** `/simulations/c5-ch01-a03-super-sense-of-danger`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science, Biology, Physics
+
+Super Senses: The Sense of Danger is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 11 | 15 |
+| Narration and sound | 8 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Super Senses: The Sense of Smell - 81/100
+
+**Canonical slug:** `c5-ch01-a01-supersense-of-smell`
+
+**Route:** `/simulations/c5-ch01-a01-supersense-of-smell`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science, Biology
+
+Super Senses: The Sense of Smell is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 11 | 15 |
+| Narration and sound | 8 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
+- 4 committed narration clips are owned by the manifest with exact captions.
+
+**Gaps and risks**
+
+- Evidence maturity remains internal QA: no signed headset acceptance run or classroom outcome study has occurred.
+- Asset richness and visual clarity still need a representative low-end device review.
+- Teacher facilitation, learner-language comprehension, and multi-session reliability still require a controlled school pilot.
+
+**Next action:** Run representative browser and headset acceptance, then conduct a teacher-facilitated pilot before making learning-effect claims.
+
+### Super Senses: The Super Sense of Sight - 81/100
+
+**Canonical slug:** `c5-ch01-a02-supersense-of-sights`
+
+**Route:** `/simulations/c5-ch01-a02-supersense-of-sights`
+
+**Publication status:** released
+
+**Evidence maturity:** internalQA
+
+**Band:** Promising internal QA
+
+**Audience:** Class 5 - Environmental Science, Biology
+
+Super Senses: The Super Sense of Sight is now a canonical guided class with declared stages, evidence gates, assessment, narration, an auditable visual implementation, route ownership, and release metadata.
+
+| Dimension | Score | Maximum |
+|---|---:|---:|
+| Educational effectiveness | 17 | 20 |
+| Content / scientific integrity | 13 | 15 |
+| Learner interactivity | 13 | 15 |
+| Visual and asset quality | 11 | 15 |
+| Narration and sound | 8 | 10 |
+| Usability, accessibility, comfort | 8 | 10 |
+| Performance and stability | 8 | 10 |
+| Deployment readiness | 3 | 5 |
+
+**Strengths**
+
+- 4 declared stages connect the curriculum objective to observable learner actions and evidence.
+- 2 assessment prompts include misconception and transfer checks; completion is kept separate from mastery.
 - 4 committed narration clips are owned by the manifest with exact captions.
 
 **Gaps and risks**
