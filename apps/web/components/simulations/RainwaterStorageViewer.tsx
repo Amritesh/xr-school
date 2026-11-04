@@ -5,13 +5,17 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   createRainwaterState,
+  narrationKeyFor,
+  RAINWATER_NARRATION_KEYS,
   RAINWATER_STAGES,
   rainwaterCanContinue,
   rainwaterPrompt,
   reduceRainwater,
   savedLitres,
   spillingSockets,
+  storedLitres,
   SUMMER_NEEDS,
+  summerShortage,
   waterIsClear,
   type AssemblyStageId,
   type DroughtOption,
@@ -21,6 +25,18 @@ import {
   type SummerTarget,
 } from "@/lib/rainwaterLesson";
 import { createRainwaterScene, type RainwaterScene } from "@/lib/rainwaterScene";
+import { createRainwaterAudio, soundsFor } from "@/lib/rainwaterSounds";
+import {
+  STORM,
+  clearBlock,
+  createStorm,
+  routeStorm,
+  setStormPaused,
+  stepStorm,
+  stormResult,
+  type StormState,
+  type StormTarget,
+} from "@/lib/rainwaterStorm";
 import {
   createVrHudPanel,
   type VrHudButtonId,
@@ -44,32 +60,22 @@ import {
 import { createQuestVrControls } from "./questVrControls";
 
 const NARRATIONS = [
-  "Namaste, young explorers! Welcome to Sundargram. I am Droppy, your water-drop guide. This village receives plenty of rain every year, but most of the rainwater is disappearing. Accept our mission, find the lost raindrops, and help save the village.",
-  "The monsoon has arrived! Look around as rain falls on roofs, roads, gardens, farms, trees and open spaces. Sundargram receives ten thousand litres, but none is collected. Follow the roof runoff into the drain. All ten thousand litres are being lost.",
-  "Let us travel a few months into the future. It is now a hot summer. The pond is almost dry, plants are wilting and farmers are worried. The village had plenty of rain, but it allowed the water to flow away instead of storing it.",
-  "What should the villagers do with rainwater? Let it escape into drains, waste it on flooded roads, or collect and store it for future use? Choose collect and store it. Correct! You are ready to become a Rainwater Guardian.",
-  "We are back in the rainy season. Our mission map shows a house rooftop, the school building, a farm recharge area and the village pond. Complete every mission and guide Sundargram toward its ten-thousand-litre target.",
-  "Mission one begins at the house rooftop. Place gutters along the lower edge of the sloping roof. The roof catches rain over a wide area, and the gutters guide the runoff into a downpipe instead of allowing it to spill onto the road.",
-  "Connect the downpipe to a first-flush chamber, filter and covered tank. The first dirty flow can carry leaves and dust, so it is diverted. Later water passes through stones, sand and charcoal. Filtering removes dirt, but drinking water still needs proper treatment and testing.",
-  "The school has a large roof, so it can collect a great deal of rain. Connect its gutters and pipe to the underground tank. This stored water can be used for the school garden, cleaning pathways and other careful non-drinking uses.",
-  "Now build a groundwater recharge pit. Place large stones at the bottom, small stones above them and sand on top. Rainwater passes slowly through the layers and enters the soil. Watch the groundwater level rise and nearby plants recover.",
-  "Heavy rain alert! Guide water toward the house tank, school tank, recharge pit and village pond. Excellent work. The roads are clearing and the saved-water meter has reached ten thousand litres. You saved every possible drop.",
-  "Travel forward to summer once more. This time the village is green and water-secure. Stored rainwater supports crops, gardens, cleaning and animals. The villagers no longer need to travel far because they saved rain during the monsoon.",
-  "Compare the two villages. In one, rain flows away, the pond dries and crops suffer. In the other, rooftops collect water, covered tanks store it and recharge pits return it to the ground. Choose the village that saves rainwater.",
-  "You have saved Sundargram! Raise your Rainwater Guardian badge and repeat: I promise to save water and make every drop count. Rainwater is a precious natural resource. Save rainwater, save our future. Every drop counts!",
+  "Namaste, young explorers! I am Droppy. Welcome to Sundargram. It is raining hard, but look at the road. Follow a raindrop and see where it goes.",
+  "Off the roof, down the road and into the drain. All of this rain is being lost, and nobody is saving a single drop.",
+  "Now it is summer. The pond is almost dry and the crops are wilting. All that rain fell, but nobody stored it. What should the village do next monsoon?",
+  "Back to the monsoon. This roof catches a lot of rain. Pick up each gutter and snap it to the edge of the roof. If you leave a gap, the water spills onto the road.",
+  "Look, the tank water is dirty! The first rain washes dust off the roof. Open the red valve to send that dirty water away. Then stack stones, sand and charcoal in the filter. Even then, this water needs proper treatment and testing before anyone can drink it.",
+  "The school has a much bigger roof, so it can catch much more rain. Put the long gutter on the roof edge, the pipe down the wall and the cover on the big tank. Watch how fast it fills!",
+  "Some rain should go back into the ground. Build this pit from the bottom up: large stones, small stones, then sand. Then watch the water soak down and the groundwater rise.",
+  "Heavy rain alert! Turn the valves to send water wherever there is room. When a store is full, switch quickly, and clear any leaves that block the channel. Ready?",
+  "It is summer again, and this time you have water saved. Share it between the garden, the animals and cleaning. Remember, this water is not for drinking.",
+  "It is summer again. You saved a lot, but not quite enough for everything. Choose carefully where your water goes. Remember, this water is not for drinking.",
+  "You did it! You saved all ten thousand litres. Sundargram is ready for summer. You are a true Rainwater Guardian!",
+  "Well done, Guardian! Every litre you saved is real water for Sundargram. Want to save even more? Try the storm again.",
 ];
 
-const STAGE_NARRATION: Record<RainwaterStageId, number> = {
-  "rainy-day": 1,
-  drought: 2,
-  rooftop: 5,
-  filter: 6,
-  school: 7,
-  recharge: 8,
-  storm: 9,
-  summer: 10,
-  finale: 12,
-};
+const narrationFor = (state: RainwaterState) =>
+  NARRATIONS[RAINWATER_NARRATION_KEYS.indexOf(narrationKeyFor(state))]!;
 
 const STAGE_TITLES: Record<RainwaterStageId, string> = {
   "rainy-day": "The Lost Raindrops",
@@ -93,7 +99,7 @@ const PIECE_LABELS: Record<string, string> = {
   charcoal: "charcoal",
   "school-gutter": "school gutter",
   "school-pipe": "school pipe",
-  "school-tank": "underground tank",
+  "school-tank": "tank cover",
   "large-stones": "large stones",
   "small-stones": "small stones",
   "pit-sand": "sand",
@@ -109,7 +115,7 @@ const SOCKET_LABELS: Record<string, string> = {
   "filter-bottom": "bottom of filter",
   "school-gutter-socket": "school roof edge",
   "school-pipe-socket": "pipe run",
-  "school-tank-socket": "tank pit",
+  "school-tank-socket": "big tank",
   "pit-bottom": "bottom of pit",
   "pit-middle": "middle of pit",
   "pit-top": "top of pit",
@@ -125,6 +131,13 @@ const SUMMER_CHOICES: { target: SummerTarget; label: string }[] = [
   { target: "garden", label: "Water the garden" },
   { target: "animals", label: "Water the animals" },
   { target: "cleaning", label: "Use for cleaning" },
+];
+
+const STORM_ROUTES: { target: StormTarget; label: string; key: string }[] = [
+  { target: "houseTank", label: "House tank", key: "1" },
+  { target: "schoolTank", label: "School tank", key: "2" },
+  { target: "rechargePit", label: "Recharge pit", key: "3" },
+  { target: "pond", label: "Village pond", key: "4" },
 ];
 
 const FLUSH_VALVE_ID = "first-flush-valve";
@@ -146,10 +159,39 @@ export default function RainwaterStorageViewer() {
   const stateRef = useRef<RainwaterState>(createRainwaterState());
   const worldRef = useRef<RainwaterScene | null>(null);
   const hudNeedsDrawRef = useRef(true);
+  const stormRef = useRef<StormState | null>(null);
+  const audioRef = useRef<ReturnType<typeof createRainwaterAudio> | null>(null);
   const [state, setState] = useState<RainwaterState>(stateRef.current);
   const [started, setStarted] = useState(false);
   const [ready, setReady] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
+  const [storm, setStorm] = useState<StormState | null>(null);
+  const [lostLitres, setLostLitres] = useState(0);
+
+  const publishStorm = useCallback((next: StormState | null) => {
+    stormRef.current = next;
+    worldRef.current?.applyStorm(next);
+    setStorm(next);
+    hudNeedsDrawRef.current = true;
+  }, []);
+
+  const startStorm = useCallback(
+    (pace: 1 | 0.5) => {
+      publishStorm(createStorm({ seed: Date.now() % 100_000, pace }));
+    },
+    [publishStorm],
+  );
+
+  const routeTo = useCallback(
+    (target: StormTarget) => {
+      if (stormRef.current) publishStorm(routeStorm(stormRef.current, target));
+    },
+    [publishStorm],
+  );
+
+  const clearLeaves = useCallback(() => {
+    if (stormRef.current) publishStorm(clearBlock(stormRef.current));
+  }, [publishStorm]);
 
   const dispatch = useCallback((action: RainwaterAction) => {
     const before = stateRef.current;
@@ -159,8 +201,15 @@ export default function RainwaterStorageViewer() {
     worldRef.current?.apply(next);
     hudNeedsDrawRef.current = true;
     setState(next);
-    if (next.stage !== before.stage) {
-      playNarration(NARRATIONS[STAGE_NARRATION[next.stage]]);
+    for (const sound of soundsFor(before, next)) audioRef.current?.play(sound);
+    if (next.stage !== "storm" && stormRef.current) {
+      stormRef.current = null;
+      worldRef.current?.applyStorm(null);
+      setStorm(null);
+      audioRef.current?.setRain(0);
+    }
+    if (narrationKeyFor(next) !== narrationKeyFor(before)) {
+      playNarration(narrationFor(next));
     }
   }, []);
 
@@ -179,6 +228,8 @@ export default function RainwaterStorageViewer() {
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const audio = createRainwaterAudio();
+    audioRef.current = audio;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -264,11 +315,12 @@ export default function RainwaterStorageViewer() {
       previous: () => dispatch({ type: "back" }),
       next: continueOrComplain,
       replay: () =>
-        playNarration(NARRATIONS[STAGE_NARRATION[stateRef.current.stage]]),
+        playNarration(narrationFor(stateRef.current)),
       exit: () => void renderer.xr.getSession()?.end(),
-      "choice-a": () => hudChoice(stateRef.current, 0, dispatch),
-      "choice-b": () => hudChoice(stateRef.current, 1, dispatch),
-      "choice-c": () => hudChoice(stateRef.current, 2, dispatch),
+      help: () => dispatch({ type: "try-drinking" }),
+      "choice-a": () => hudChoice(stateRef.current, 0, dispatch, startStorm),
+      "choice-b": () => hudChoice(stateRef.current, 1, dispatch, startStorm),
+      "choice-c": () => hudChoice(stateRef.current, 2, dispatch, startStorm),
     };
 
     const interaction = createInteractionSystem({
@@ -283,6 +335,14 @@ export default function RainwaterStorageViewer() {
         }
         if (id === FLUSH_VALVE_ID) {
           dispatch({ type: "open-first-flush" });
+          return;
+        }
+        if (id === "leaf-block") {
+          clearLeaves();
+          return;
+        }
+        if (id.startsWith("valve-")) {
+          routeTo(id.slice(6) as StormTarget);
           return;
         }
         socketInput?.handleSelect(id);
@@ -300,7 +360,7 @@ export default function RainwaterStorageViewer() {
       onPrimary: continueOrComplain,
       onBack: () => dispatch({ type: "back" }),
       onNarrate: () =>
-        playNarration(NARRATIONS[STAGE_NARRATION[stateRef.current.stage]]),
+        playNarration(narrationFor(stateRef.current)),
       startPosition: new THREE.Vector3(0, 0, 5.6),
       movementBounds: new THREE.Box2(
         new THREE.Vector2(-6, 3),
@@ -329,6 +389,9 @@ export default function RainwaterStorageViewer() {
       interaction.register(FLUSH_VALVE_ID, world.valve, {
         highlightColor: 0xffc23d,
       });
+      for (const [id, object] of world.stormTargets) {
+        interaction.register(id, object, { highlightColor: 0xffffff });
+      }
       socketInput = createSocketInput({
         pieces: world.pieceTargets,
         sockets: world.socketTargets,
@@ -353,6 +416,8 @@ export default function RainwaterStorageViewer() {
 
     const clock = new THREE.Clock();
     let lastStatsAt = 0;
+    let lastStormUiAt = 0;
+    let lastLost = 0;
     type Focus = { position: THREE.Vector3; target: THREE.Vector3 };
     let focusedStage: RainwaterStageId = stateRef.current.stage;
     let focusFrom: Focus | null = null;
@@ -364,6 +429,31 @@ export default function RainwaterStorageViewer() {
       questVr.update();
       worldRef.current?.update(delta);
       socketInput?.update(delta);
+      const playing = stormRef.current;
+      if (playing && !stormResult(playing).finished) {
+        const stepped = stepStorm(playing, delta);
+        stormRef.current = stepped;
+        worldRef.current?.applyStorm(stepped);
+        const result = stormResult(stepped);
+        audio.setRain(stepped.paused ? 0 : 0.35 + (stepped.elapsed / STORM.durationSeconds) * 0.65);
+        if (result.finished) {
+          audio.setRain(0);
+          setStorm(stepped);
+          dispatch({ type: "storm-finished", routedLitres: result.routed });
+          hudNeedsDrawRef.current = true;
+        } else if (elapsed - lastStormUiAt >= 0.25) {
+          lastStormUiAt = elapsed;
+          setStorm(stepped);
+          hudNeedsDrawRef.current = true;
+        }
+      }
+      if (stateRef.current.stage === "rainy-day" && worldRef.current) {
+        const lost = worldRef.current.lostLitres();
+        if (lost !== lastLost) {
+          lastLost = lost;
+          setLostLitres(lost);
+        }
+      }
       const current = stateRef.current;
       interaction.setSuggested(
         current.stage === "filter" && !current.firstFlushOpen
@@ -396,7 +486,7 @@ export default function RainwaterStorageViewer() {
         interaction.updateXrHover();
         if (hudNeedsDrawRef.current) {
           hudNeedsDrawRef.current = false;
-          hud.setContent(hudContent(stateRef.current));
+          hud.setContent(hudContent(stateRef.current, stormRef.current));
         }
         hud.update(renderer.xr.getCamera(), delta);
       } else {
@@ -417,8 +507,32 @@ export default function RainwaterStorageViewer() {
     };
     window.addEventListener("resize", resize);
 
+    // An interrupted storm waits: no water lost and no time jump on return.
+    const pauseStorm = (paused: boolean) => {
+      if (!stormRef.current) return;
+      publishStorm(setStormPaused(stormRef.current, paused));
+      if (paused) audio.setRain(0);
+    };
+    const onVisibility = () => pauseStorm(document.hidden);
+    const onSessionEnd = () => pauseStorm(true);
+    document.addEventListener("visibilitychange", onVisibility);
+    renderer.xr.addEventListener("sessionend", onSessionEnd);
+
+    const onKey = (event: KeyboardEvent) => {
+      if (!stormRef.current) return;
+      const route = STORM_ROUTES.find(({ key }) => key === event.key);
+      if (route) routeTo(route.target);
+      else if (event.key.toLowerCase() === "b") clearLeaves();
+    };
+    window.addEventListener("keydown", onKey);
+
     return () => {
       disposed = true;
+      document.removeEventListener("visibilitychange", onVisibility);
+      renderer.xr.removeEventListener("sessionend", onSessionEnd);
+      window.removeEventListener("keydown", onKey);
+      audio.dispose();
+      audioRef.current = null;
       renderer.setAnimationLoop(null);
       window.removeEventListener("resize", resize);
       renderer.domElement.removeEventListener("pointermove", onPointerMove);
@@ -438,7 +552,7 @@ export default function RainwaterStorageViewer() {
       rendererRef.current = null;
       stopNarration();
     };
-  }, [dispatch]);
+  }, [dispatch, clearLeaves, publishStorm, routeTo, startStorm]);
 
   const enterVR = useCallback(async () => {
     const xr = (
@@ -463,7 +577,7 @@ export default function RainwaterStorageViewer() {
       hudNeedsDrawRef.current = true;
       window.setTimeout(
         () =>
-          playNarration(NARRATIONS[STAGE_NARRATION[stateRef.current.stage]]),
+          playNarration(narrationFor(stateRef.current)),
         900,
       );
     } catch {
@@ -488,6 +602,11 @@ export default function RainwaterStorageViewer() {
       data-spilling={state.stage === "rooftop" ? spillingSockets(state).length : 0}
       data-first-flush={state.firstFlushOpen}
       data-water-clear={waterIsClear(state)}
+      data-lost-litres={lostLitres}
+      data-storm-active={storm?.active ?? ""}
+      data-storm-elapsed={storm ? storm.elapsed.toFixed(2) : ""}
+      data-storm-paused={storm?.paused ?? false}
+      data-storm-blocked={storm?.blocked ?? false}
       style={{
         position: "relative",
         width: "100%",
@@ -563,7 +682,7 @@ export default function RainwaterStorageViewer() {
                 onClick={() => {
                   unlockNarration();
                   setStarted(true);
-                  playNarration(NARRATIONS[STAGE_NARRATION[state.stage]]);
+                  playNarration(narrationFor(state));
                 }}
                 style={secondaryButtonStyle}
               >
@@ -619,6 +738,21 @@ export default function RainwaterStorageViewer() {
                 }}
               />
             </div>
+            {state.stage === "rainy-day" && state.observedRunoff && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: 8,
+                  color: "#fda4af",
+                  fontSize: "0.78rem",
+                  fontWeight: 800,
+                }}
+              >
+                <span>🚰 LOST TO THE DRAIN</span>
+                <span>{lostLitres.toLocaleString("en-US")} L</span>
+              </div>
+            )}
           </div>
 
           <aside
@@ -745,15 +879,89 @@ export default function RainwaterStorageViewer() {
                 })}
               </div>
             )}
-            {state.stage === "storm" && (
-              <button
-                style={secondaryButtonStyle}
-                onClick={() =>
-                  dispatch({ type: "storm-finished", routedLitres: 2000 })
-                }
-              >
-                Preview only: end the storm at 2,000 L
-              </button>
+            {state.stage === "storm" && !storm && (
+              <>
+                <button style={primaryButtonStyle} onClick={() => startStorm(1)}>
+                  ⛈️ Start the storm
+                </button>
+                <button
+                  style={secondaryButtonStyle}
+                  onClick={() => startStorm(0.5)}
+                >
+                  Start at a slower pace
+                </button>
+              </>
+            )}
+            {state.stage === "storm" && storm && (
+              <>
+                <div style={{ display: "grid", gap: 5, marginBottom: 6 }}>
+                  {STORM_ROUTES.map(({ target, label, key }) => {
+                    const level = storm.levels[target];
+                    const capacity = STORM.capacities[target];
+                    const full = level >= capacity - 1;
+                    return (
+                      <button
+                        key={target}
+                        aria-pressed={storm.active === target}
+                        disabled={stormResult(storm).finished}
+                        onClick={() => routeTo(target)}
+                        style={{
+                          ...(storm.active === target
+                            ? primaryButtonStyle
+                            : secondaryButtonStyle),
+                          marginTop: 0,
+                          position: "relative",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <span
+                          aria-hidden
+                          style={{
+                            position: "absolute",
+                            left: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: `${Math.min(100, (level / capacity) * 100)}%`,
+                            background: full
+                              ? "rgba(248,113,113,0.5)"
+                              : "rgba(56,189,248,0.4)",
+                          }}
+                        />
+                        <span style={{ position: "relative" }}>
+                          {key}: {label} {full ? "(full)" : ""}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {storm.blocked && (
+                  <button style={primaryButtonStyle} onClick={clearLeaves}>
+                    🍂 Clear the leaves (B)
+                  </button>
+                )}
+                {storm.paused && !stormResult(storm).finished && (
+                  <button
+                    style={primaryButtonStyle}
+                    onClick={() => publishStorm(setStormPaused(storm, false))}
+                  >
+                    Resume the storm
+                  </button>
+                )}
+                <div style={{ fontSize: "0.8rem", color: "#e0f2fe", marginTop: 4 }}>
+                  Routed {Math.round(storm.routed).toLocaleString("en-US")} L •
+                  Flooded {Math.round(storm.flooded).toLocaleString("en-US")} L
+                  {!stormResult(storm).finished &&
+                    ` • ${Math.ceil(STORM.durationSeconds - storm.elapsed)} s left`}
+                </div>
+                {stormResult(storm).finished && (
+                  <button
+                    style={secondaryButtonStyle}
+                    onClick={() => startStorm(storm.pace)}
+                  >
+                    Play the storm again
+                  </button>
+                )}
+              </>
             )}
             {state.stage === "summer" && (
               <>
@@ -776,12 +984,38 @@ export default function RainwaterStorageViewer() {
               </>
             )}
             {state.stage === "finale" && (
-              <button
-                style={primaryButtonStyle}
-                onClick={() => dispatch({ type: "retry-storm" })}
-              >
-                Replay the storm
-              </button>
+              <>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 6,
+                    marginBottom: 6,
+                    fontSize: "0.78rem",
+                  }}
+                >
+                  <div style={compareCardStyle}>
+                    <strong>A village that lets its rain run away</strong>
+                    <div>0 L saved</div>
+                    <div>Pond dry, crops wilting</div>
+                  </div>
+                  <div style={compareCardStyle}>
+                    <strong>Your Sundargram</strong>
+                    <div>{saved.toLocaleString("en-US")} L saved</div>
+                    <div>
+                      {summerShortage(state) > 0
+                        ? `${summerShortage(state).toLocaleString("en-US")} L short this summer`
+                        : `${storedLitres(state).toLocaleString("en-US")} L stored for summer`}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  style={primaryButtonStyle}
+                  onClick={() => dispatch({ type: "retry-storm" })}
+                >
+                  Replay the storm
+                </button>
+              </>
             )}
 
             <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
@@ -809,7 +1043,7 @@ export default function RainwaterStorageViewer() {
             <button
               style={secondaryButtonStyle}
               onClick={() =>
-                playNarration(NARRATIONS[STAGE_NARRATION[state.stage]])
+                playNarration(narrationFor(state))
               }
             >
               🔊 Replay Droppy’s narration
@@ -830,7 +1064,7 @@ function hudChoiceLabels(state: RainwaterState): string[] {
   if (state.stage === "rainy-day") return ["Follow the raindrop"];
   if (state.stage === "drought") return DROUGHT_CHOICES.map((c) => c.label);
   if (state.stage === "filter" && !state.firstFlushOpen) return ["Open valve"];
-  if (state.stage === "storm") return ["Preview: end storm"];
+  if (state.stage === "storm") return ["Start storm", "Slower pace"];
   if (state.stage === "summer") return SUMMER_CHOICES.map((c) => c.label);
   if (state.stage === "finale") return ["Replay the storm"];
   return [];
@@ -840,30 +1074,50 @@ function hudChoice(
   state: RainwaterState,
   index: number,
   dispatch: (action: RainwaterAction) => void,
+  startStorm: (pace: 1 | 0.5) => void,
 ) {
   if (state.stage === "rainy-day") dispatch({ type: "observe" });
   else if (state.stage === "drought")
     dispatch({ type: "choose", option: DROUGHT_CHOICES[index]!.option });
   else if (state.stage === "filter") dispatch({ type: "open-first-flush" });
-  else if (state.stage === "storm")
-    dispatch({ type: "storm-finished", routedLitres: 2000 });
+  else if (state.stage === "storm") startStorm(index === 0 ? 1 : 0.5);
   else if (state.stage === "summer")
     dispatch({ type: "allocate", target: SUMMER_CHOICES[index]!.target });
   else if (state.stage === "finale") dispatch({ type: "retry-storm" });
 }
 
-function hudContent(state: RainwaterState): VrHudContent {
+function hudContent(
+  state: RainwaterState,
+  storm: StormState | null,
+): VrHudContent {
   const index = RAINWATER_STAGES.indexOf(state.stage);
+  if (state.stage === "storm" && storm && !stormResult(storm).finished) {
+    return {
+      eyebrow: `${Math.ceil(STORM.durationSeconds - storm.elapsed)} s left`,
+      title: storm.blocked ? "Leaves! Clear the channel" : "Turn the valves",
+      body: STORM_ROUTES.map(
+        ({ target, label }) =>
+          `${label}: ${Math.round(storm.levels[target])} / ${STORM.capacities[target]} L`,
+      ).join("  •  "),
+      hint: `Routed ${Math.round(storm.routed)} L, flooded ${Math.round(storm.flooded)} L`,
+      buttons: ["exit"],
+    };
+  }
   return {
     eyebrow: `Step ${index + 1} of ${RAINWATER_STAGES.length} • ${savedLitres(state).toLocaleString("en-US")} L saved`,
     title: STAGE_TITLES[state.stage],
     body: state.feedback ?? rainwaterPrompt(state),
     hint: rainwaterCanContinue(state) ? "Ready: press A to continue" : undefined,
-    choices: hudChoiceLabels(state).map((label) => ({ label })),
+    choices: (storm && state.stage === "storm"
+      ? ["Play again", "Slower pace"]
+      : hudChoiceLabels(state)
+    ).map((label) => ({ label })),
     buttons:
       state.stage === "finale"
         ? ["previous", "replay", "exit"]
-        : ["previous", "next", "replay", "exit"],
+        : state.stage === "summer"
+          ? ["previous", "next", "help", "exit"]
+          : ["previous", "next", "replay", "exit"],
   };
 }
 
@@ -877,6 +1131,14 @@ const primaryButtonStyle = {
   fontWeight: 800,
   cursor: "pointer",
   marginTop: 7,
+} as const;
+
+const compareCardStyle = {
+  padding: 8,
+  borderRadius: 8,
+  background: "rgba(125,211,252,0.1)",
+  display: "grid",
+  gap: 4,
 } as const;
 
 const secondaryButtonStyle = {

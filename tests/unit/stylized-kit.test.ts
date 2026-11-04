@@ -25,6 +25,19 @@ describe('stylized kit lighting', () => {
     expect(lighting.mood()).toBe('restored');
   });
 
+  it('brightens the fill for a lightning flash and restores it', () => {
+    const scene = new THREE.Scene();
+    const lighting = createStylizedLighting(scene, new THREE.Group());
+    const fill = lighting.group.children.find(
+      child => (child as THREE.HemisphereLight).isHemisphereLight,
+    ) as THREE.HemisphereLight;
+    const base = fill.intensity;
+    lighting.setFlash(1);
+    expect(fill.intensity).toBeGreaterThan(base);
+    lighting.setFlash(0);
+    expect(fill.intensity).toBe(base);
+  });
+
   it('clears fog on dispose', () => {
     const scene = new THREE.Scene();
     const lighting = createStylizedLighting(scene, new THREE.Group());

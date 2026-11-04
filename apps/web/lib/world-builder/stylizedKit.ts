@@ -78,6 +78,10 @@ export function createStylizedLighting(scene: THREE.Scene, parent: THREE.Object3
   return {
     group,
     setMood,
+    /** Brief extra brightness for lightning; 0 restores the mood's level. */
+    setFlash(amount: number) {
+      fill.intensity = MOODS[current].fillIntensity + amount * 3;
+    },
     mood: () => current,
     dispose() {
       domeGeometry.dispose();

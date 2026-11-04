@@ -141,16 +141,20 @@ export function createDropletPool({
 /** A tank or pond whose level and cleanliness can change. Origin is at the base. */
 export function createFillVolume({
   radius,
+  box,
   height,
   color,
 }: {
-  radius: number;
+  radius?: number;
+  box?: { x: number; z: number };
   height: number;
   color: THREE.ColorRepresentation;
 }) {
   const base = new THREE.Color(color);
   const muddy = new THREE.Color(MUDDY_WATER);
-  const geometry = new THREE.CylinderGeometry(radius, radius, height, 16);
+  const geometry = box
+    ? new THREE.BoxGeometry(box.x, height, box.z)
+    : new THREE.CylinderGeometry(radius ?? 1, radius ?? 1, height, 16);
   geometry.translate(0, height / 2, 0);
   const material = new THREE.MeshStandardMaterial({
     color: base.clone(),

@@ -51,6 +51,15 @@ describe('water effects', () => {
     expect(volume.object.visible).toBe(true);
   });
 
+  it('can fill a box as well as a cylinder', () => {
+    const volume = createFillVolume({ box: { x: 3, z: 1 }, height: 0.5, color: 0x3399ff });
+    volume.setFill(1);
+    volume.object.updateMatrixWorld(true);
+    const size = new THREE.Box3().setFromObject(volume.object).getSize(new THREE.Vector3());
+    expect(size.x).toBeCloseTo(3);
+    expect(size.y).toBeCloseTo(0.5);
+  });
+
   it('makes dirty water darker and more opaque than clear water', () => {
     const volume = createFillVolume({ radius: 1, height: 2, color: 0x3399ff });
     volume.setClarity(1);

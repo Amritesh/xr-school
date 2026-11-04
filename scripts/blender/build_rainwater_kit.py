@@ -66,6 +66,7 @@ PALETTE = {
     "rangoli_a": 0xe4476b,
     "rangoli_b": 0xf2c230,
     "sand": 0xdcc18c,
+    "droppy_blue": 0x3fb6e8,
     "charcoal": 0x2b2b2e,
     "charcoal_light": 0x45454a,
 }
@@ -121,7 +122,7 @@ class Kit:
         )
         self._paint([face for face in self.bm.faces if face not in before], colour, jitter)
 
-    def blob(self, centre, radius, colour, squash=1.0, subdivisions=1):
+    def blob(self, centre, radius, colour, squash=1.0, subdivisions=1, rough=0.12):
         before = set(self.bm.faces)
         made = bmesh.ops.create_icosphere(
             self.bm,
@@ -130,8 +131,8 @@ class Kit:
             matrix=Matrix.Translation(centre) @ Matrix.Diagonal((1, 1, squash, 1)),
         )
         for vert in made["verts"]:
-            vert.co += vert.normal * random.uniform(-radius * 0.12, radius * 0.12)
-        self._paint([face for face in self.bm.faces if face not in before], colour, 0.09)
+            vert.co += vert.normal * random.uniform(-radius * rough, radius * rough)
+        self._paint([face for face in self.bm.faces if face not in before], colour, 0.09 if rough else 0.0)
 
     def prism(self, points, width_x, colour, centre_x=0.0):
         """Extrudes a closed Y-Z profile along X."""
@@ -405,6 +406,223 @@ def build_layer(name, base, lump, lumps, lump_size):
     kit.build(bake_ao=False)
 
 
+def build_school():
+    """Wide school with a big roof. Origin at floor centre; front faces +Z in Three.js."""
+    kit = Kit("school")
+    kit.box((0, 0, 0.12), (8.6, 4.4, 0.24), "stone", cuts=6)
+    kit.box((0, 0, 0.55), (8.2, 4.0, 0.62), "ochre", cuts=6, jitter=0.03)
+    kit.box((0, 0, 1.96), (8.2, 4.0, 2.2), "lime", cuts=6, jitter=0.02)
+    kit.box((0, 0, 0.88), (8.24, 4.04, 0.05), "door", jitter=0.0)
+    for x in (-4.1, 4.1):
+        kit.prism([(-2.0, 3.06), (2.0, 3.06), (0, 4.3)], 0.04, "lime", centre_x=x)
+    kit.box((0, -2.02, 1.25), (1.5, 0.05, 2.0), "wood")
+    kit.box((-0.36, -2.06, 1.2), (0.66, 0.04, 1.8), "door")
+    kit.box((0.36, -2.06, 1.2), (0.66, 0.04, 1.8), "door")
+    for x in (-3.0, -1.7, 1.7, 3.0):
+        kit.box((x, -2.02, 1.75), (0.95, 0.05, 1.05), "wood")
+        kit.box((x, -2.05, 1.75), (0.75, 0.03, 0.85), "glass", jitter=0.0)
+    kit.box((0, -2.04, 2.82), (2.4, 0.04, 0.3), "door", jitter=0.0)
+    ridge, eave, run = 4.36, 3.32, 2.55
+    kit.prism(
+        [(-run, eave - 0.1), (run, eave - 0.1), (run, eave), (0, ridge), (-run, eave)],
+        8.9,
+        "tile_dark",
+    )
+    angle = math.atan2(ridge - eave, run)
+    rows = 9
+    for side in (-1, 1):
+        for row in range(rows):
+            t = (row + 0.5) / rows
+            kit.box(
+                (0, side * run * (1 - t), eave + (ridge - eave) * t + 0.035),
+                (8.96, run / rows / math.cos(angle) + 0.03, 0.06),
+                "tile" if row % 3 else "tile_dark",
+                rotate_x=-side * angle,
+                jitter=0.07,
+            )
+    kit.box((0, 0, ridge + 0.05), (9.0, 0.2, 0.1), "tile_dark")
+    kit.cylinder((-4.9, -3.4, 0), (-4.9, -3.4, 5.2), 0.04, "metal", segments=6, jitter=0.0)
+    kit.box((-4.55, -3.4, 5.0), (0.62, 0.015, 0.14), "ochre", jitter=0.0)
+    kit.box((-4.55, -3.4, 4.86), (0.62, 0.015, 0.14), "lime", jitter=0.0)
+    kit.box((-4.55, -3.4, 4.72), (0.62, 0.015, 0.14), "grass", jitter=0.0)
+    kit.build()
+
+
+def build_long_gutter():
+    kit = Kit("school-gutter")
+    segments = 7
+    radius = 0.09
+    outer = []
+    inner = []
+    for index in range(segments + 1):
+        angle = math.pi + math.pi * index / segments
+        outer.append((math.cos(angle) * radius, math.sin(angle) * radius))
+        inner.append((math.cos(angle) * radius * 0.8, math.sin(angle) * radius * 0.8))
+    kit.prism(outer + list(reversed(inner)), 8.0, "metal")
+    for x in (-3.6, -1.8, 0, 1.8, 3.6):
+        kit.box((x, 0, -0.01), (0.04, 0.2, 0.2), "metal_dark", jitter=0.0)
+    kit.build(bake_ao=False)
+
+
+def build_school_pipe():
+    kit = Kit("school-pipe")
+    kit.cylinder((0, 0, 1.1), (0, 0, -1.0), 0.07, "metal", segments=8)
+    kit.cylinder((0, 0, -1.0), (0.85, 0, -1.0), 0.07, "metal", segments=8)
+    kit.cylinder((0, 0, 1.25), (0, 0, 1.1), 0.13, "metal_dark", segments=8, end_radius=0.07)
+    kit.build(bake_ao=False)
+
+
+def build_school_cover():
+    kit = Kit("school-tank-cover")
+    kit.cylinder((0, 0, 0), (0, 0, 0.08), 1.0, "stone_dark", segments=16)
+    kit.cylinder((0, 0, 0.08), (0, 0, 0.16), 0.3, "metal_dark", segments=8, jitter=0.0)
+    kit.build(bake_ao=False)
+
+
+def build_recharge_cutaway():
+    """A mound cut open at the front so the child can see inside the ground."""
+    kit = Kit("recharge-cutaway")
+    kit.box((-1.15, 0, 0.9), (0.9, 1.8, 1.8), "earth", cuts=3)
+    kit.box((1.15, 0, 0.9), (0.9, 1.8, 1.8), "earth", cuts=3)
+    kit.box((0, 0.65, 1.05), (1.4, 0.5, 1.5), "earth_dark", cuts=3)
+    kit.box((0, 0, 0.22), (1.4, 1.8, 0.44), "earth_dark", cuts=2)
+    for x in (-1.15, 1.15):
+        kit.box((x, 0, 1.81), (0.94, 1.84, 0.05), "grass", jitter=0.03)
+    kit.box((0, 0.65, 1.81), (1.4, 0.5, 0.05), "grass", jitter=0.03)
+    for _ in range(14):
+        side = random.choice((-1, 1))
+        x, y = side * random.uniform(0.8, 1.5), random.uniform(-0.8, 0.8)
+        kit.cylinder((x, y, 1.82), (x, y, 2.05), 0.06, "leaf_light", segments=4, end_radius=0.0)
+    kit.build()
+
+
+def build_pit_layer(name, base, lump, lumps, size):
+    kit = Kit(name)
+    kit.box((0, 0, -0.02), (1.32, 1.1, 0.32), base, jitter=0.06)
+    for _ in range(lumps):
+        x, y = random.uniform(-0.6, 0.6), random.uniform(-0.5, 0.5)
+        kit.blob((x, y, 0.13), random.uniform(*size), lump, 0.75, 1)
+    # Lumps on the front so the layer reads in the cutaway.
+    for _ in range(lumps // 2):
+        x, z = random.uniform(-0.6, 0.6), random.uniform(-0.14, 0.1)
+        kit.blob((x, -0.55, z), random.uniform(*size), lump, 0.8, 1)
+    kit.build(bake_ao=False)
+
+
+def build_pond():
+    kit = Kit("pond")
+    kit.cylinder((0, 0, 0), (0, 0, 0.02), 1.65, "earth_dark", segments=20, jitter=0.0)
+    for index in range(22):
+        a = index / 22 * math.tau
+        kit.blob((math.cos(a) * 1.72, math.sin(a) * 1.72, 0.1), random.uniform(0.14, 0.24), "stone", 0.8, 1)
+    for _ in range(6):
+        a = random.uniform(0, math.tau)
+        kit.cylinder(
+            (math.cos(a) * 2.0, math.sin(a) * 2.0, 0),
+            (math.cos(a) * 2.0, math.sin(a) * 2.0, random.uniform(0.5, 0.9)),
+            0.05,
+            "grass_dark",
+            segments=4,
+            end_radius=0.0,
+        )
+    kit.build(bake_ao=False)
+
+
+def build_crops():
+    """Field beds with rows of plants. Origin at the field centre."""
+    kit = Kit("crops")
+    for row in range(5):
+        y = -1.6 + row * 0.8
+        kit.box((0, y, 0.07), (2.4, 0.55, 0.14), "earth_dark", jitter=0.03)
+        for column in range(7):
+            x = -1.05 + column * 0.35
+            for leaf in range(3):
+                a = leaf / 3 * math.tau + random.uniform(0, 1)
+                kit.cylinder(
+                    (x, y, 0.14),
+                    (x + math.cos(a) * 0.13, y + math.sin(a) * 0.13, random.uniform(0.5, 0.75)),
+                    0.05,
+                    random.choice(("leaf", "leaf_light")),
+                    segments=3,
+                    end_radius=0.0,
+                )
+    kit.build(bake_ao=False)
+
+
+def build_station():
+    """Control post for the storm: valves mount on the front beam."""
+    kit = Kit("control-station")
+    kit.box((0, 0, 0.1), (3.2, 0.9, 0.2), "stone_dark", cuts=2)
+    for x in (-1.45, 1.45):
+        kit.cylinder((x, 0, 0.2), (x, 0, 1.4), 0.08, "wood", segments=6)
+    kit.box((0, 0, 1.15), (3.3, 0.14, 0.34), "wood")
+    kit.box((0, 0, 1.45), (3.3, 0.6, 0.06), "tile", jitter=0.08)
+    kit.build(bake_ao=False)
+
+
+def build_leaf_pile():
+    kit = Kit("leaf-pile")
+    for _ in range(14):
+        kit.blob(
+            (random.uniform(-0.3, 0.3), random.uniform(-0.3, 0.3), random.uniform(0.03, 0.2)),
+            random.uniform(0.07, 0.13),
+            random.choice(("leaf", "leaf_light", "ochre", "clay")),
+            0.5,
+            1,
+        )
+    kit.build(bake_ao=False)
+
+
+def build_droppy():
+    """Droppy the guide. Origin at the base; face looks towards +Z in Three.js."""
+    kit = Kit("droppy")
+    kit.blob((0, 0, 0.3), 0.3, "droppy_blue", 0.95, 3, 0.0)
+    kit.cylinder((0, 0, 0.42), (0, 0, 0.82), 0.25, "droppy_blue", segments=16, end_radius=0.0, jitter=0.0)
+    for x in (-0.1, 0.1):
+        kit.blob((x, -0.255, 0.36), 0.062, "lime", 1.0, 2, 0.0)
+        kit.blob((x, -0.305, 0.36), 0.032, "glass", 1.0, 2, 0.0)
+    for index in range(7):
+        a = math.pi + (index + 1) / 8 * math.pi
+        kit.blob((math.cos(a) * 0.1, -0.292, 0.24 + math.sin(a) * 0.05), 0.014, "glass", 1.0, 1, 0.0)
+    kit.build(bake_ao=False)
+
+
+def build_badge():
+    kit = Kit("guardian-badge")
+    kit.cylinder((0, 0.02, 0), (0, -0.02, 0), 0.26, "rangoli_b", segments=20, jitter=0.0)
+    kit.cylinder((0, -0.02, 0), (0, -0.05, 0), 0.19, "droppy_blue", segments=20, jitter=0.0)
+    kit.blob((0, -0.08, -0.03), 0.075, "lime", 1.0, 2, 0.0)
+    kit.cylinder((0, 0.02, 0), (0, 0.05, 0), 0.19, "droppy_blue", segments=20, jitter=0.0)
+    kit.cylinder((0, -0.08, 0.02), (0, -0.08, 0.13), 0.065, "lime", segments=10, end_radius=0.0, jitter=0.0)
+    kit.build(bake_ao=False)
+
+
+def build_summer_props():
+    """Trough and wash bucket, shared by the summer stage."""
+    kit = Kit("summer-props")
+    kit.box((-3.3, -4.2, 0.2), (1.5, 0.08, 0.4), "wood")
+    kit.box((-3.3, -3.6, 0.2), (1.5, 0.08, 0.4), "wood")
+    kit.box((-4.02, -3.9, 0.2), (0.08, 0.6, 0.4), "wood")
+    kit.box((-2.58, -3.9, 0.2), (0.08, 0.6, 0.4), "wood")
+    kit.box((-3.3, -3.9, 0.03), (1.5, 0.6, 0.06), "wood")
+    kit.build(bake_ao=False)
+
+
+def build_goat():
+    """A small goat. Origin at its feet; faces +X."""
+    kit = Kit("goat")
+    kit.box((0, 0, 0.42), (0.62, 0.26, 0.28), "lime", jitter=0.03)
+    kit.box((0.36, 0, 0.62), (0.2, 0.17, 0.2), "lime", jitter=0.03)
+    kit.box((0.46, 0, 0.58), (0.12, 0.11, 0.1), "stone", jitter=0.0)
+    for x in (-0.24, 0.22):
+        for y in (-0.09, 0.09):
+            kit.cylinder((x, y, 0), (x, y, 0.32), 0.035, "wood", segments=5, jitter=0.0)
+    for y in (-0.05, 0.05):
+        kit.cylinder((0.33, y, 0.71), (0.27, y, 0.85), 0.018, "stone_dark", segments=4, end_radius=0.0, jitter=0.0)
+    kit.box((-0.33, 0, 0.5), (0.1, 0.05, 0.16), "lime", jitter=0.0)
+    kit.build(bake_ao=False)
+
+
 def build_ground():
     kit = Kit("courtyard-ground")
     bm = kit.bm
@@ -507,10 +725,10 @@ def build_backdrop():
     neighbour_house(kit, -15, -8, "ochre", "tile")
     neighbour_house(kit, 15, -9, "lime", "tile_dark")
     for x, y, scale in (
-        (-7, 3, 1.1),
-        (7.5, 2, 1.25),
-        (-9, -6.8, 1.0),
-        (9.5, -7, 1.15),
+        (-6, 5, 1.1),
+        (5, 5, 1.25),
+        (-17, -10, 1.0),
+        (15, -10, 1.15),
         (-4, 8, 1.3),
         (5, 9, 1.2),
         (-17, 2, 1.4),
@@ -520,10 +738,10 @@ def build_backdrop():
     ):
         mango_tree(kit, x, y, scale)
     for x, y, scale in (
-        (-5.5, -7, 1.0),
+        (-9, -10, 1.0),
         (5.8, 5.5, 1.1),
-        (-13, -3, 1.2),
-        (13, -2, 1.15),
+        (-19, -3, 1.2),
+        (14, -2, 1.15),
         (-8, 12, 1.25),
         (2, 13, 1.1),
         (19, 10, 1.3),
@@ -541,6 +759,22 @@ build_flush_valve()
 build_layer("filter-stones", "stone_dark", "stone", 22, (0.05, 0.08))
 build_layer("filter-sand", "sand", "sand", 12, (0.04, 0.07))
 build_layer("filter-charcoal", "charcoal", "charcoal_light", 22, (0.04, 0.07))
+build_school()
+build_long_gutter()
+build_school_pipe()
+build_school_cover()
+build_recharge_cutaway()
+build_pit_layer("pit-large-stones", "stone_dark", "stone", 12, (0.09, 0.14))
+build_pit_layer("pit-small-stones", "stone_dark", "stone_dark", 22, (0.05, 0.08))
+build_pit_layer("pit-sand", "sand", "sand", 14, (0.04, 0.07))
+build_pond()
+build_crops()
+build_station()
+build_leaf_pile()
+build_droppy()
+build_badge()
+build_summer_props()
+build_goat()
 build_ground()
 build_backdrop()
 print("KIT_DONE")

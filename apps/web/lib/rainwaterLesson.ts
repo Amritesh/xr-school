@@ -274,6 +274,36 @@ export function reduceRainwater(
   }
 }
 
+export const RAINWATER_NARRATION_KEYS = [
+  'rainy-day',
+  'rainy-lost',
+  'drought',
+  'rooftop',
+  'filter',
+  'school',
+  'recharge',
+  'storm',
+  'summer',
+  'summer-short',
+  'finale-full',
+  'finale-partial',
+] as const;
+export type RainwaterNarrationKey = (typeof RAINWATER_NARRATION_KEYS)[number];
+
+/** The narration line that matches what the child has actually done. */
+export function narrationKeyFor(state: RainwaterState): RainwaterNarrationKey {
+  switch (state.stage) {
+    case 'rainy-day':
+      return state.observedRunoff ? 'rainy-lost' : 'rainy-day';
+    case 'summer':
+      return summerShortage(state) > 0 ? 'summer-short' : 'summer';
+    case 'finale':
+      return savedLitres(state) >= RAINWATER_GOAL_LITRES ? 'finale-full' : 'finale-partial';
+    default:
+      return state.stage;
+  }
+}
+
 function assemblyPrompt(
   assembly: AssemblyState,
   building: string,
@@ -314,8 +344,8 @@ export function rainwaterPrompt(state: RainwaterState): string {
         ? 'A bigger roof catches far more rain, so the tank fills faster.'
         : assemblyPrompt(
             state.assemblies.school,
-            'Connect the school roof: gutter, then pipe, then the underground tank.',
-            'That part does not fit there. Try the gutter at the roof, the pipe below it, and the tank at the end.',
+            'Connect the school roof: the long gutter at the roof edge, the pipe down the wall, and the cover on the big tank.',
+            'Something is in the wrong place. The gutter goes on the roof edge, the pipe goes down the wall, and the cover goes on the tank.',
           );
     case 'recharge':
       return isAssemblySolved(state.assemblies.recharge)
