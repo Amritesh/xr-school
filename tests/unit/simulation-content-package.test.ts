@@ -18,7 +18,6 @@ const bundledCatalogPath = join(
   'dist/data',
   catalogFileName,
 );
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 let npmCacheDirectory = '';
 
 interface PackageManifest {
@@ -34,9 +33,8 @@ beforeAll(() => {
   npmCacheDirectory = mkdtempSync(join(tmpdir(), 'xr-school-pack-'));
 
   const build = spawnSync(
-    npmCommand,
-    ['--workspace', '@xr-school/simulation-content', 'run', 'build'],
-    { cwd: repositoryRoot, encoding: 'utf8' },
+    'npm --workspace @xr-school/simulation-content run build',
+    { cwd: repositoryRoot, encoding: 'utf8', shell: true },
   );
 
   expect(build.status, build.stderr || build.stdout).toBe(0);
@@ -95,18 +93,12 @@ describe('simulation-content package artifact', () => {
 
   it('packs an exact copy of the canonical catalog in dist data', () => {
     const pack = spawnSync(
-      npmCommand,
-      [
-        'pack',
-        '--dry-run',
-        '--json',
-        '--workspace',
-        '@xr-school/simulation-content',
-      ],
+      'npm pack --dry-run --json --workspace @xr-school/simulation-content',
       {
         cwd: repositoryRoot,
         encoding: 'utf8',
         env: { ...process.env, npm_config_cache: npmCacheDirectory },
+        shell: true,
       },
     );
 

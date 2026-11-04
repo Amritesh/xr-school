@@ -9,14 +9,13 @@ const packageNames = [
   '@xr-school/simulation-web',
 ];
 
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-
 for (const packageName of packageNames) {
-  const result = spawnSync(
-    npmCommand,
-    ['--workspace', packageName, 'run', 'build'],
-    { stdio: 'inherit' },
-  );
+  // A command string with shell: true resolves npm.cmd on Windows, where Node
+  // refuses to spawn .cmd files directly.
+  const result = spawnSync(`npm --workspace ${packageName} run build`, {
+    shell: true,
+    stdio: 'inherit',
+  });
 
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);

@@ -18,11 +18,11 @@ describe('narration command contract', () => {
       'node --import tsx scripts/validate-narration-manifests.ts',
     );
 
-    const result = spawnSync(
-      process.platform === 'win32' ? 'npm.cmd' : 'npm',
-      ['run', 'narration:validate'],
-      { cwd: repositoryRoot, encoding: 'utf8' },
-    );
+    const result = spawnSync('npm run narration:validate', {
+      cwd: repositoryRoot,
+      encoding: 'utf8',
+      shell: true,
+    });
 
     expect(result.status).toBe(0);
     expect(result.stderr).not.toContain('Narration validation failed');
