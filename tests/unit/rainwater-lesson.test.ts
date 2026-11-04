@@ -123,6 +123,10 @@ describe('rainwater lesson', () => {
     expect(spillingSockets(rooftopDone())).toEqual([]);
   });
 
+  it('points out that unfiltered roof water is dirty', () => {
+    expect(rainwaterPrompt(rooftopDone())).toMatch(/dirty/i);
+  });
+
   it('keeps the filter cloudy with first flush closed or a wrong order, then allows a retry', () => {
     const closed = apply(
       rooftopDone(),

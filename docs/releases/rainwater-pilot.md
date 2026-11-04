@@ -34,6 +34,14 @@ Measured the same way as the baseline, at the end of the rooftop stage: 21 draw 
 
 All five models are original work built by `scripts/blender/build_rainwater_kit.py`, because community kits don't cover Indian village houses. Each is one mesh with vertex colours and baked ambient occlusion, so each costs one draw call.
 
+## Filter stage (owner feedback, 2026-11-04)
+
+The owner reported the roof tiles tilted the wrong way and the filter stage appearing broken. The tile rotation sign was reversed. The filter logic worked, but nothing in the scene showed it, and the tank filled with clear water before any filtering.
+
+Now the tank fills with dirty water at the rooftop stage, and the filter stage has a valve, a first-flush drain and three layers to place. At the end of this stage: 26 draw calls and about 30,500 triangles. Quest FPS: not measured.
+
+The layer order (stones, sand, charcoal) is still unchecked against the Class 5 NCERT chapter.
+
 ## Texture format
 
 `toktx` is not installed on the build machine, so KTX2 textures can't be produced here. The rainwater kit uses flat-coloured shared materials with no image textures, which is cheaper still. The loader supports KTX2 for later kits.

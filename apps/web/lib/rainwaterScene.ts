@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {
+  RAINWATER_STAGES,
   savedLitres,
   spillingSockets,
+  waterIsClear,
   type RainwaterStageId,
   type RainwaterState,
 } from './rainwaterLesson';
@@ -20,9 +22,33 @@ const SOCKET_X = [-1.65, -0.55, 0.55, 1.65];
 const EAVE_Y = 2.6;
 const EAVE_Z = 2.46;
 const TANK = new THREE.Vector3(3.05, 0.41, EAVE_Z);
-const TANK_FILL_SECONDS = 4;
+const TANK_TOP_Y = 1.41;
+const PIPE_OUTLET_Y = 1.98;
+const TANK_FILL_SECONDS = 8;
+const CLEARING_SECONDS = 2.5;
+const DIRTY_CLARITY = 0.15;
 const RAIN_PER_SECOND = 130;
 const SPILL_INTERVAL_SECONDS = 0.05;
+const VALVE_POSITION = new THREE.Vector3(2.42, 1.72, 2.56);
+const TABLE = new THREE.Vector3(-1.95, 0, 4.0);
+/** Close to the tank, so the camera can frame the table and the filter together. */
+const FILTER_TABLE = new THREE.Vector3(-0.3, 0, 4.1);
+const TABLE_TOP_Y = 0.8;
+
+const FILTER_LAYERS = [
+  { pieceId: 'stones', model: 'filter-stones', colour: 0x7a7367, socketId: 'filter-top', y: 1.81 },
+  { pieceId: 'sand', model: 'filter-sand', colour: 0xdcc18c, socketId: 'filter-middle', y: 1.67 },
+  { pieceId: 'charcoal', model: 'filter-charcoal', colour: 0x2b2b2e, socketId: 'filter-bottom', y: 1.53 },
+];
+
+const WIDE_FOCUS = {
+  position: new THREE.Vector3(0.1, 2.1, 8.9),
+  target: new THREE.Vector3(1.15, 1.5, 1.2),
+};
+const FILTER_FOCUS = {
+  position: new THREE.Vector3(0.75, 2.2, 7.2),
+  target: new THREE.Vector3(1.35, 1.4, 2.6),
+};
 
 const ignoreRaycast: THREE.Mesh['raycast'] = () => undefined;
 
@@ -41,6 +67,8 @@ function moodFor(stage: RainwaterStageId): StylizedMood {
 }
 
 const raining = (stage: RainwaterStageId) => moodFor(stage) === 'monsoon';
+const reached = (stage: RainwaterStageId, goal: RainwaterStageId) =>
+  RAINWATER_STAGES.indexOf(stage) >= RAINWATER_STAGES.indexOf(goal);
 
 function flatMesh(geometry: THREE.BufferGeometry, colour: number) {
   return new THREE.Mesh(
@@ -76,9 +104,23 @@ function fallbackGutter() {
 }
 
 function fallbackDownpipe() {
-  const pipe = flatMesh(new THREE.CylinderGeometry(0.05, 0.05, 1.08, 8), 0xa7bac6);
-  pipe.position.y = -0.54;
+  const pipe = flatMesh(new THREE.CylinderGeometry(0.05, 0.05, 0.62, 8), 0xa7bac6);
+  pipe.position.y = -0.31;
   return fallbackGroup(pipe);
+}
+
+function fallbackFrame() {
+  const base = flatMesh(new THREE.CylinderGeometry(0.37, 0.37, 0.035, 16), 0x6f8591);
+  return fallbackGroup(base);
+}
+
+function fallbackValve() {
+  const wheel = flatMesh(new THREE.TorusGeometry(0.13, 0.024, 6, 14), 0xe4476b);
+  return fallbackGroup(wheel);
+}
+
+function fallbackLayer(colour: number) {
+  return () => fallbackGroup(flatMesh(new THREE.CylinderGeometry(0.31, 0.31, 0.1, 12), colour));
 }
 
 /** A work table: a thin top on four legs, merged into one draw call. */
@@ -127,13 +169,19 @@ export async function createRainwaterScene(
   scene.add(root);
   const lighting = createStylizedLighting(scene, root);
 
-  const [house, ground, backdrop, downpipe, gutterModel] = await Promise.all([
-    assets.loadOrFallback(`${MODELS}/sundargram-house.glb`, fallbackHouse, onDiagnostic),
-    assets.loadOrFallback(`${MODELS}/courtyard-ground.glb`, fallbackGround, onDiagnostic),
-    assets.loadOrFallback(`${MODELS}/village-backdrop.glb`, () => new THREE.Group(), onDiagnostic),
-    assets.loadOrFallback(`${MODELS}/downpipe.glb`, fallbackDownpipe, onDiagnostic),
-    assets.loadOrFallback(`${MODELS}/gutter-piece.glb`, fallbackGutter, onDiagnostic),
-  ]);
+  const load = (name: string, fallback: () => THREE.Group) =>
+    assets.loadOrFallback(`${MODELS}/${name}.glb`, fallback, onDiagnostic);
+  const [house, ground, backdrop, downpipe, gutterModel, frame, valve, ...layerModels] =
+    await Promise.all([
+      load('sundargram-house', fallbackHouse),
+      load('courtyard-ground', fallbackGround),
+      load('village-backdrop', () => new THREE.Group()),
+      load('downpipe', fallbackDownpipe),
+      load('gutter-piece', fallbackGutter),
+      load('filter-unit', fallbackFrame),
+      load('flush-valve', fallbackValve),
+      ...FILTER_LAYERS.map(layer => load(layer.model, fallbackLayer(layer.colour))),
+    ]);
   ground.traverse(child => {
     child.receiveShadow = true;
   });
@@ -141,7 +189,10 @@ export async function createRainwaterScene(
     child.castShadow = true;
   });
   downpipe.position.set(2.25, EAVE_Y, EAVE_Z);
-  root.add(ground, backdrop, house, downpipe);
+  frame.position.set(TANK.x, TANK_TOP_Y, TANK.z);
+  valve.position.copy(VALVE_POSITION);
+  valve.name = 'first-flush-valve';
+  root.add(ground, backdrop, house, downpipe, frame, valve);
 
   // Tank: a see-through shell so the child can watch their water rise.
   const tankShell = new THREE.Mesh(
@@ -164,15 +215,15 @@ export async function createRainwaterScene(
   droppy.position.set(1.05, 0.05, 3.7);
   root.add(droppy);
 
-  // Rooftop work area.
-  const rooftop = new THREE.Group();
-  rooftop.name = 'rooftop-stage';
-  root.add(rooftop);
+  const work = new THREE.Group();
+  work.name = 'work-area';
+  root.add(work);
   const bench = flatMesh(benchGeometry(), 0x7a5233);
-  bench.position.set(-1.95, 0, 4.0);
-  rooftop.add(bench);
+  bench.position.copy(TABLE);
+  work.add(bench);
 
-  const targets = new Map<string, THREE.Object3D>();
+  const pieceTargets = new Map<string, THREE.Object3D>();
+  const socketTargets = new Map<string, THREE.Object3D>();
   const restPositions = new Map<string, THREE.Vector3>();
   const socketPositions = new Map<string, THREE.Vector3>();
   const ribbons = new Map<string, ReturnType<typeof createFlowRibbon>>();
@@ -182,93 +233,140 @@ export async function createRainwaterScene(
     opacity: 0.55,
     depthWrite: false,
   });
-  const socketGeometry = new THREE.BoxGeometry(1.06, 0.2, 0.22);
+  const gutterSocketGeometry = new THREE.BoxGeometry(1.06, 0.2, 0.22);
+  const layerSocketGeometry = new THREE.CylinderGeometry(0.33, 0.33, 0.125, 12);
+
+  const addSocket = (id: string, geometry: THREE.BufferGeometry, position: THREE.Vector3) => {
+    const socket = new THREE.Mesh(geometry, socketMaterial);
+    socket.name = id;
+    socket.position.copy(position);
+    work.add(socket);
+    socketTargets.set(id, socket);
+    socketPositions.set(id, position.clone());
+    return socket;
+  };
+  const addPiece = (id: string, model: THREE.Object3D, rest: THREE.Vector3) => {
+    model.name = id;
+    model.traverse(child => {
+      child.castShadow = true;
+    });
+    model.position.copy(rest);
+    work.add(model);
+    pieceTargets.set(id, model);
+    restPositions.set(id, rest.clone());
+  };
 
   SOCKET_X.forEach((x, index) => {
     const number = index + 1;
-    const pieceId = `gutter-${number}`;
-    const socketId = `gutter-socket-${number}`;
-
-    const socket = new THREE.Mesh(socketGeometry, socketMaterial);
     const authored = house.getObjectByName(`Socket_Gutter_${number}`);
-    if (authored) authored.getWorldPosition(socket.position);
-    else socket.position.set(x, EAVE_Y, EAVE_Z);
-    socket.name = socketId;
-    rooftop.add(socket);
-    targets.set(socketId, socket);
-    socketPositions.set(socketId, socket.position.clone());
-
-    const piece = gutterModel.clone();
-    piece.name = pieceId;
-    piece.traverse(child => {
-      child.castShadow = true;
-    });
-    const rest = new THREE.Vector3(-1.95, 0.8, 3.55 + index * 0.3);
-    piece.position.copy(rest);
-    restPositions.set(pieceId, rest);
-    rooftop.add(piece);
-    targets.set(pieceId, piece);
-
+    const position = new THREE.Vector3(x, EAVE_Y, EAVE_Z);
+    if (authored) authored.getWorldPosition(position);
+    const socketId = `gutter-socket-${number}`;
+    addSocket(socketId, gutterSocketGeometry, position);
+    addPiece(
+      `gutter-${number}`,
+      gutterModel.clone(),
+      new THREE.Vector3(TABLE.x, TABLE_TOP_Y, 3.55 + index * 0.3),
+    );
     const ribbon = createFlowRibbon(
       new THREE.LineCurve3(
-        new THREE.Vector3(x - 0.54, socket.position.y - 0.035, socket.position.z),
-        new THREE.Vector3(x + 0.54, socket.position.y - 0.035, socket.position.z),
+        new THREE.Vector3(x - 0.54, position.y - 0.035, position.z),
+        new THREE.Vector3(x + 0.54, position.y - 0.035, position.z),
       ),
       { width: 0.09, color: 0x8fd2f2, reducedMotion },
     );
-    rooftop.add(ribbon.object);
+    work.add(ribbon.object);
     ribbons.set(socketId, ribbon);
+  });
+
+  FILTER_LAYERS.forEach((layer, index) => {
+    addSocket(layer.socketId, layerSocketGeometry, new THREE.Vector3(TANK.x, layer.y, TANK.z));
+    addPiece(
+      layer.pieceId,
+      layerModels[index]!,
+      new THREE.Vector3(FILTER_TABLE.x, TABLE_TOP_Y + 0.05, FILTER_TABLE.z - 0.45 + index * 0.45),
+    );
   });
 
   const tankStream = createFlowRibbon(
     new THREE.LineCurve3(
-      new THREE.Vector3(TANK.x, EAVE_Y - 1.1, TANK.z),
+      new THREE.Vector3(TANK.x, PIPE_OUTLET_Y, TANK.z),
       new THREE.Vector3(TANK.x, TANK.y + 0.3, TANK.z),
     ),
     { width: 0.07, color: 0x8fd2f2, reducedMotion },
   );
   root.add(tankStream.object);
 
+  // First flush: dirty water leaves the chamber and runs to the road drain.
+  const flushStream = createFlowRibbon(
+    new THREE.CatmullRomCurve3([
+      new THREE.Vector3(VALVE_POSITION.x, 1.02, 2.58),
+      new THREE.Vector3(VALVE_POSITION.x, 0.05, 2.72),
+      new THREE.Vector3(2.5, 0.04, 3.9),
+      new THREE.Vector3(2.2, 0.04, 5.45),
+    ]),
+    { width: 0.1, color: 0x8fd2f2, reducedMotion },
+  );
+  flushStream.setClarity(0);
+  root.add(flushStream.object);
+
   const rain = createDropletPool({ max: 200, reducedMotion });
   root.add(rain.mesh);
 
+  const targets = new Map<string, THREE.Object3D>([...pieceTargets, ...socketTargets]);
+
   let state: RainwaterState | null = null;
   let tankLevel = 0;
+  let clarity = DIRTY_CLARITY;
   let rainDebt = 0;
   let spillClock = 0;
   let time = 0;
   const emitPoint = new THREE.Vector3();
   const emitVelocity = new THREE.Vector3();
+  tankWater.setClarity(clarity);
+  tankStream.setClarity(clarity);
+
+  function flushFlowing() {
+    return state !== null && state.stage === 'filter' && state.firstFlushOpen && !waterIsClear(state);
+  }
 
   function apply(next: RainwaterState) {
     state = next;
     lighting.setMood(moodFor(next.stage));
-    const onRooftop = next.stage === 'rooftop';
-    const assembly = next.assemblies.rooftop;
-    rooftop.visible = true;
-    bench.visible = onRooftop;
-    for (const [socketId, position] of socketPositions) {
-      const socket = targets.get(socketId)!;
-      const pieceId = assembly.placed[socketId];
-      socket.visible = onRooftop && pieceId === undefined;
-      ribbons.get(socketId)!.setFlow(pieceId !== undefined && raining(next.stage) ? 1 : 0);
-      if (pieceId) {
-        const piece = targets.get(pieceId)!;
-        piece.position.copy(position);
-        piece.visible = true;
+    const { stage, assemblies } = next;
+    const rainingNow = raining(stage);
+    const atFilterOrLater = reached(stage, 'filter');
+    bench.visible = stage === 'rooftop' || stage === 'filter';
+    bench.position.copy(stage === 'filter' ? FILTER_TABLE : TABLE);
+    frame.visible = atFilterOrLater;
+    valve.visible = atFilterOrLater;
+    valve.rotation.z = next.firstFlushOpen ? -Math.PI / 2 : 0;
+
+    for (const [assembly, activeStage] of [
+      [assemblies.rooftop, 'rooftop'],
+      [assemblies.filter, 'filter'],
+    ] as const) {
+      const placedPieces = new Set(Object.values(assembly.placed));
+      for (const { id: socketId } of assembly.sockets) {
+        const pieceId = assembly.placed[socketId];
+        socketTargets.get(socketId)!.visible = stage === activeStage && pieceId === undefined;
+        if (pieceId) {
+          const piece = pieceTargets.get(pieceId)!;
+          piece.position.copy(socketPositions.get(socketId)!);
+          piece.visible = true;
+        }
+        ribbons.get(socketId)?.setFlow(pieceId !== undefined && rainingNow ? 1 : 0);
+      }
+      for (const pieceId of Object.keys(assembly.pieces)) {
+        setClickable(pieceTargets.get(pieceId)!, assembly.picked !== pieceId);
+        if (placedPieces.has(pieceId)) continue;
+        const piece = pieceTargets.get(pieceId)!;
+        piece.visible = stage === activeStage;
+        if (assembly.picked !== pieceId) piece.position.copy(restPositions.get(pieceId)!);
       }
     }
-    const placedPieces = new Set(Object.values(assembly.placed));
-    for (const [pieceId, rest] of restPositions) {
-      if (placedPieces.has(pieceId)) continue;
-      const piece = targets.get(pieceId)!;
-      piece.visible = onRooftop;
-      if (assembly.picked !== pieceId) piece.position.copy(rest);
-    }
-    for (const pieceId of restPositions.keys()) {
-      setClickable(targets.get(pieceId)!, assembly.picked !== pieceId);
-    }
-    tankStream.setFlow(isAssemblySolved(assembly) && raining(next.stage) ? 1 : 0);
+    tankStream.setFlow(isAssemblySolved(assemblies.rooftop) && rainingNow ? 1 : 0);
+    flushStream.setFlow(flushFlowing() ? 1 : 0);
   }
 
   function spillCount() {
@@ -279,10 +377,20 @@ export async function createRainwaterScene(
     time += dt;
     for (const ribbon of ribbons.values()) ribbon.update(dt);
     tankStream.update(dt);
+    flushStream.update(dt);
 
     if (state && isAssemblySolved(state.assemblies.rooftop)) {
-      tankLevel = reducedMotion ? 1 : Math.min(1, tankLevel + dt / TANK_FILL_SECONDS);
+      const clear = waterIsClear(state);
+      const levelGoal = clear ? 1 : 0.5;
+      tankLevel = reducedMotion
+        ? levelGoal
+        : Math.min(levelGoal, tankLevel + dt / TANK_FILL_SECONDS);
       tankWater.setFill(tankLevel * (savedLitres(state) > 0 ? 1 : 0));
+      const clarityGoal = clear ? 1 : DIRTY_CLARITY;
+      const clarityStep = reducedMotion ? 1 : dt / CLEARING_SECONDS;
+      clarity += THREE.MathUtils.clamp(clarityGoal - clarity, -clarityStep, clarityStep);
+      tankWater.setClarity(clarity);
+      tankStream.setClarity(clarity);
     }
 
     if (state && raining(state.stage)) {
@@ -317,16 +425,24 @@ export async function createRainwaterScene(
     apply,
     update,
     targets,
+    pieceTargets,
+    socketTargets,
+    valve,
     tankFill: () => tankWater.fill(),
+    tankClarity: () => clarity,
+    flushFlowing,
     spillCount,
+    focusFor: (stage: RainwaterStageId) => (stage === 'filter' ? FILTER_FOCUS : WIDE_FOCUS),
     dispose() {
       for (const ribbon of ribbons.values()) ribbon.dispose();
       tankStream.dispose();
+      flushStream.dispose();
       rain.dispose();
       tankWater.dispose();
       lighting.dispose();
       disposeObjectTree(root);
-      socketGeometry.dispose();
+      gutterSocketGeometry.dispose();
+      layerSocketGeometry.dispose();
       socketMaterial.dispose();
       scene.remove(root);
     },

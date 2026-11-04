@@ -2,13 +2,16 @@ import type * as THREE from 'three';
 
 export type SocketInputAction =
   | { kind: 'pick'; pieceId: string }
-  | { kind: 'place'; socketId: string };
+  | { kind: 'place'; socketId: string }
+  | { kind: 'remove'; socketId: string };
 
 export interface SocketInputConfig {
   pieces: Map<string, THREE.Object3D>;
   sockets: Map<string, THREE.Object3D>;
   /** The currently picked piece id, read from lesson state. */
   getPicked(): string | null;
+  /** The socket holding this piece, if it is placed. Selecting it takes it off. */
+  getSocketOf?(pieceId: string): string | null;
   dispatch(action: SocketInputAction): void;
   /** Where a carried piece should hover: along the pointer or controller ray. */
   getCarryPoint(): THREE.Vector3 | null;
@@ -30,8 +33,13 @@ export function createSocketInput(config: SocketInputConfig) {
     if (!isPiece && !isSocket) return false;
     if (handledThisFrame.has(id)) return true;
     handledThisFrame.add(id);
+    if (!isPiece) {
+      config.dispatch({ kind: 'place', socketId: id });
+      return true;
+    }
+    const holder = config.getSocketOf?.(id);
     config.dispatch(
-      isPiece ? { kind: 'pick', pieceId: id } : { kind: 'place', socketId: id },
+      holder ? { kind: 'remove', socketId: holder } : { kind: 'pick', pieceId: id },
     );
     return true;
   }

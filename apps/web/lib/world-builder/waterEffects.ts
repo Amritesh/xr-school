@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const MUDDY_WATER = 0x7a5c3a;
+const MUDDY_WATER = 0x8f5e2a;
 const GRAVITY = 9.8;
 
 function createStreakTexture() {

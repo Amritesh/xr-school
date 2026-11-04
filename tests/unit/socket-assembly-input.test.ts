@@ -39,6 +39,20 @@ describe('socket assembly input', () => {
     expect(dispatched).toHaveLength(2);
   });
 
+  it('takes a placed piece back off its socket when selected', () => {
+    const dispatched: unknown[] = [];
+    const input = createSocketInput({
+      pieces: new Map([['g1', new THREE.Group()]]),
+      sockets: new Map([['s1', new THREE.Group()]]),
+      getPicked: () => null,
+      getSocketOf: id => (id === 'g1' ? 's1' : null),
+      dispatch: action => dispatched.push(action),
+      getCarryPoint: () => null,
+    });
+    input.handleSelect('g1');
+    expect(dispatched).toEqual([{ kind: 'remove', socketId: 's1' }]);
+  });
+
   it('reports unknown targets as not handled', () => {
     const { input, dispatched } = setup();
     expect(input.handleSelect('btn-next')).toBe(false);

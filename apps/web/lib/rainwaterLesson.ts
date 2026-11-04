@@ -295,7 +295,7 @@ export function rainwaterPrompt(state: RainwaterState): string {
         : 'What should the village do with its rain next monsoon?';
     case 'rooftop':
       return isAssemblySolved(state.assemblies.rooftop)
-        ? 'The roof catches the rain, and the gutters guide it into the pipe.'
+        ? 'The roof catches the rain, and the gutters guide it to the tank. But look: the first rain washes dust off the roof, so this water is dirty.'
         : 'Pick up each gutter piece and snap it to the lower edge of the roof. Any gap spills water onto the road.';
     case 'filter':
       if (waterIsClear(state)) {

@@ -65,6 +65,9 @@ PALETTE = {
     "brick": 0xa8583c,
     "rangoli_a": 0xe4476b,
     "rangoli_b": 0xf2c230,
+    "sand": 0xdcc18c,
+    "charcoal": 0x2b2b2e,
+    "charcoal_light": 0x45454a,
 }
 
 
@@ -283,7 +286,7 @@ def build_house():
                 (0, y, z),
                 (5.56, run / rows / math.cos(angle) + 0.03, 0.06),
                 colour,
-                rotate_x=side * angle,
+                rotate_x=-side * angle,
                 jitter=0.07,
             )
     kit.box((0, 0, ridge + 0.05), (5.6, 0.2, 0.1), "tile_dark")
@@ -320,14 +323,85 @@ def build_gutter():
 def build_downpipe():
     kit = Kit("downpipe")
     kit.cylinder((0, 0, 0.02), (0, 0, -0.14), 0.11, "metal_dark", segments=8, end_radius=0.05)
-    kit.cylinder((0, 0, -0.14), (0, 0, -0.95), 0.05, "metal", segments=8)
-    kit.cylinder((0, 0, -0.95), (0.8, 0, -0.95), 0.05, "metal", segments=8)
-    kit.cylinder((0.8, 0, -0.95), (0.8, 0, -1.08), 0.05, "metal", segments=8)
-    for z in (-0.3, -0.75):
-        kit.box((0, 0.05, z), (0.14, 0.08, 0.03), "metal_dark", jitter=0.0)
+    kit.cylinder((0, 0, -0.14), (0, 0, -0.5), 0.05, "metal", segments=8)
+    kit.cylinder((0, 0, -0.5), (0.8, 0, -0.5), 0.05, "metal", segments=8)
+    kit.cylinder((0.8, 0, -0.5), (0.8, 0, -0.62), 0.05, "metal", segments=8)
+    kit.box((0, 0.05, -0.3), (0.14, 0.08, 0.03), "metal_dark", jitter=0.0)
+    # First-flush branch: a capped chamber that drains the first dirty water.
+    kit.cylinder((0.17, 0, -0.5), (0.17, 0, -1.1), 0.05, "metal", segments=8)
+    kit.cylinder((0.17, 0, -1.1), (0.17, 0, -1.5), 0.085, "metal_dark", segments=8)
+    kit.cylinder((0.17, 0, -1.5), (0.17, -0.12, -1.58), 0.035, "metal", segments=6)
     # Brick stand under the tank (ground is 2.6 m below the gutter).
     for layer in range(3):
         kit.box((0.8, 0, -2.6 + 0.07 + layer * 0.135), (1.3, 1.3, 0.13), "brick", jitter=0.08)
+    kit.build(bake_ao=False)
+
+
+def build_filter_unit():
+    """Open frame on the tank lid, so the child can see the layers inside."""
+    kit = Kit("filter-unit")
+    kit.cylinder((0, 0, 0), (0, 0, 0.035), 0.37, "metal_dark", segments=16, jitter=0.0)
+    segments = 16
+    for index in range(segments):
+        a = index / segments * math.tau
+        b = (index + 1) / segments * math.tau
+        kit.cylinder(
+            (math.cos(a) * 0.36, math.sin(a) * 0.36, 0.5),
+            (math.cos(b) * 0.36, math.sin(b) * 0.36, 0.5),
+            0.018,
+            "metal",
+            segments=5,
+            jitter=0.0,
+        )
+    for index in range(4):
+        a = (index + 0.5) / 4 * math.tau
+        x, y = math.cos(a) * 0.36, math.sin(a) * 0.36
+        kit.cylinder((x, y, 0), (x, y, 0.5), 0.02, "metal", segments=6, jitter=0.0)
+    kit.build(bake_ao=False)
+
+
+def build_flush_valve():
+    """A bright hand wheel, centred, facing the child (+Z in Three.js)."""
+    kit = Kit("flush-valve")
+    kit.cylinder((0, 0.05, 0), (0, -0.03, 0), 0.04, "metal_dark", segments=8, jitter=0.0)
+    segments = 14
+    for index in range(segments):
+        a = index / segments * math.tau
+        b = (index + 1) / segments * math.tau
+        kit.cylinder(
+            (math.cos(a) * 0.13, -0.04, math.sin(a) * 0.13),
+            (math.cos(b) * 0.13, -0.04, math.sin(b) * 0.13),
+            0.024,
+            "rangoli_a",
+            segments=6,
+            jitter=0.0,
+        )
+    for a in (0, math.pi / 2):
+        kit.cylinder(
+            (math.cos(a) * 0.13, -0.04, math.sin(a) * 0.13),
+            (-math.cos(a) * 0.13, -0.04, -math.sin(a) * 0.13),
+            0.016,
+            "rangoli_a",
+            segments=5,
+            jitter=0.0,
+        )
+    kit.build(bake_ao=False)
+
+
+def build_layer(name, base, lump, lumps, lump_size):
+    """One filter layer: a disc with a lumpy top. Origin at its centre."""
+    kit = Kit(name)
+    kit.cylinder((0, 0, -0.06), (0, 0, 0.04), 0.31, base, segments=12)
+    for _ in range(lumps):
+        a = random.uniform(0, math.tau)
+        r = 0.27 * math.sqrt(random.random())
+        kit.blob(
+            (math.cos(a) * r, math.sin(a) * r, 0.045),
+            random.uniform(*lump_size),
+            lump,
+            0.7,
+            1,
+        )
     kit.build(bake_ao=False)
 
 
@@ -462,6 +536,11 @@ def build_backdrop():
 build_house()
 build_gutter()
 build_downpipe()
+build_filter_unit()
+build_flush_valve()
+build_layer("filter-stones", "stone_dark", "stone", 22, (0.05, 0.08))
+build_layer("filter-sand", "sand", "sand", 12, (0.04, 0.07))
+build_layer("filter-charcoal", "charcoal", "charcoal_light", 22, (0.04, 0.07))
 build_ground()
 build_backdrop()
 print("KIT_DONE")

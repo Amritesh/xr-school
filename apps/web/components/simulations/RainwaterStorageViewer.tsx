@@ -12,6 +12,7 @@ import {
   savedLitres,
   spillingSockets,
   SUMMER_NEEDS,
+  waterIsClear,
   type AssemblyStageId,
   type DroughtOption,
   type RainwaterAction,
@@ -125,6 +126,9 @@ const SUMMER_CHOICES: { target: SummerTarget; label: string }[] = [
   { target: "animals", label: "Water the animals" },
   { target: "cleaning", label: "Use for cleaning" },
 ];
+
+const FLUSH_VALVE_ID = "first-flush-valve";
+const FOCUS_SECONDS = 0.9;
 
 function assemblyStageOf(stage: RainwaterStageId): AssemblyStageId | null {
   return stage === "rooftop" ||
@@ -277,6 +281,10 @@ export default function RainwaterStorageViewer() {
           hudActions[id.slice(4) as VrHudButtonId]?.();
           return;
         }
+        if (id === FLUSH_VALVE_ID) {
+          dispatch({ type: "open-first-flush" });
+          return;
+        }
         socketInput?.handleSelect(id);
       },
     });
@@ -312,18 +320,27 @@ export default function RainwaterStorageViewer() {
       }
       worldRef.current = world;
       world.apply(stateRef.current);
-      const pieces = new Map<string, THREE.Object3D>();
-      const sockets = new Map<string, THREE.Object3D>();
-      for (const [id, object] of world.targets) {
-        if (id.includes("socket")) sockets.set(id, object);
-        else pieces.set(id, object);
-        interaction.register(id, object, {
-          highlightColor: id.includes("socket") ? undefined : 0xffc23d,
-        });
+      for (const [id, object] of world.socketTargets) {
+        interaction.register(id, object);
       }
+      for (const [id, object] of world.pieceTargets) {
+        interaction.register(id, object, { highlightColor: 0xffc23d });
+      }
+      interaction.register(FLUSH_VALVE_ID, world.valve, {
+        highlightColor: 0xffc23d,
+      });
       socketInput = createSocketInput({
-        pieces,
-        sockets,
+        pieces: world.pieceTargets,
+        sockets: world.socketTargets,
+        getSocketOf: (pieceId) => {
+          const stage = assemblyStageOf(stateRef.current.stage);
+          if (!stage) return null;
+          const { placed } = stateRef.current.assemblies[stage];
+          return (
+            Object.keys(placed).find((socket) => placed[socket] === pieceId) ??
+            null
+          );
+        },
         getPicked: () => {
           const stage = assemblyStageOf(stateRef.current.stage);
           return stage ? stateRef.current.assemblies[stage].picked : null;
@@ -336,14 +353,45 @@ export default function RainwaterStorageViewer() {
 
     const clock = new THREE.Clock();
     let lastStatsAt = 0;
+    type Focus = { position: THREE.Vector3; target: THREE.Vector3 };
+    let focusedStage: RainwaterStageId = stateRef.current.stage;
+    let focusFrom: Focus | null = null;
+    let focusTo: Focus | null = null;
+    let focusTime = 0;
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
       const elapsed = clock.elapsedTime;
       questVr.update();
       worldRef.current?.update(delta);
       socketInput?.update(delta);
+      const current = stateRef.current;
+      interaction.setSuggested(
+        current.stage === "filter" && !current.firstFlushOpen
+          ? FLUSH_VALVE_ID
+          : undefined,
+      );
       interaction.update(elapsed);
       const presenting = renderer.xr.isPresenting;
+      if (focusedStage !== current.stage && worldRef.current && !presenting) {
+        const next = worldRef.current.focusFor(current.stage);
+        const previous = worldRef.current.focusFor(focusedStage);
+        focusedStage = current.stage;
+        if (!next.position.equals(previous.position)) {
+          focusFrom = {
+            position: camera.position.clone(),
+            target: controls.target.clone(),
+          };
+          focusTo = next;
+          focusTime = reducedMotion ? FOCUS_SECONDS : 0;
+        }
+      }
+      if (focusFrom && focusTo) {
+        focusTime = Math.min(FOCUS_SECONDS, focusTime + delta);
+        const t = THREE.MathUtils.smoothstep(focusTime / FOCUS_SECONDS, 0, 1);
+        camera.position.lerpVectors(focusFrom.position, focusTo.position, t);
+        controls.target.lerpVectors(focusFrom.target, focusTo.target, t);
+        if (focusTime >= FOCUS_SECONDS) focusFrom = focusTo = null;
+      }
       if (presenting) {
         interaction.updateXrHover();
         if (hudNeedsDrawRef.current) {
@@ -438,6 +486,8 @@ export default function RainwaterStorageViewer() {
       data-stage={state.stage}
       data-saved-litres={saved}
       data-spilling={state.stage === "rooftop" ? spillingSockets(state).length : 0}
+      data-first-flush={state.firstFlushOpen}
+      data-water-clear={waterIsClear(state)}
       style={{
         position: "relative",
         width: "100%",
