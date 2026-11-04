@@ -30,4 +30,4 @@ Quest FPS: not measured (no headset used yet).
 
 ## Texture format
 
-To be recorded in Task 4.
+`toktx` is not installed on the build machine, so KTX2 textures can't be produced here. The rainwater kit uses flat-coloured shared materials with no image textures, which is cheaper still. The loader supports KTX2 for later kits.
