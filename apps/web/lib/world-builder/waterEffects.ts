@@ -79,7 +79,7 @@ export function createDropletPool({
   max: number;
   reducedMotion?: boolean;
 }) {
-  const geometry = new THREE.IcosahedronGeometry(0.02, 0);
+  const geometry = new THREE.IcosahedronGeometry(0.02, 0).scale(0.6, 3, 0.6);
   const material = new THREE.MeshBasicMaterial({ color: 0xa8dcff });
   const mesh = new THREE.InstancedMesh(geometry, material, max);
   mesh.frustumCulled = false;

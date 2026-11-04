@@ -28,6 +28,12 @@ Six stages already exceed the draw-call budget, even though the scene is simple.
 
 Quest FPS: not measured (no headset used yet).
 
+## Rooftop slice (Task 6)
+
+Measured the same way as the baseline, at the end of the rooftop stage: 21 draw calls and 28,536 triangles, against 172 draw calls before. Quest FPS: not measured.
+
+All five models are original work built by `scripts/blender/build_rainwater_kit.py`, because community kits don't cover Indian village houses. Each is one mesh with vertex colours and baked ambient occlusion, so each costs one draw call.
+
 ## Texture format
 
 `toktx` is not installed on the build machine, so KTX2 textures can't be produced here. The rainwater kit uses flat-coloured shared materials with no image textures, which is cheaper still. The loader supports KTX2 for later kits.

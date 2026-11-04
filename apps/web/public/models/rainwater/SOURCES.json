@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "file": "courtyard-ground.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 223740,
+    "sha256": "67e2f370f14cb2d6f7938cfe1f64c1a82c0ff9047e18f217ca1c2f01867ef1a0",
+    "triangles": 13500
+  },
+  {
+    "file": "downpipe.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 5036,
+    "sha256": "f5eae73f7d17432cceb79dd7dc9e6dfab57282bdce2efc70d5c9fdee6a6304ad",
+    "triangles": 172
+  },
+  {
+    "file": "gutter-piece.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 3240,
+    "sha256": "4e2c376fad1aed595c1283d8c4812ca682a4b56e9709062c5c1b87450879901f",
+    "triangles": 84
+  },
+  {
+    "file": "sundargram-house.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 35380,
+    "sha256": "60ba12ae6e6135cfaf6c75a3ddae01a5ec1b9c35418c9824833f5630f46482db",
+    "triangles": 2544
+  },
+  {
+    "file": "village-backdrop.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 229424,
+    "sha256": "11f6285c286a41052e177bfdd7c23b9fe12375456ae2689b401eddbd73176ab3",
+    "triangles": 8872
+  }
+]
