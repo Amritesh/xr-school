@@ -10,6 +10,10 @@ import {
 } from "./narrationAudio";
 import { createQuestVrControls } from "./questVrControls";
 import { applyRealisticEnvironment } from "./realisticEnvironment";
+import {
+  publishRenderStats,
+  readRenderStats,
+} from "@/lib/world-builder/renderBudget";
 
 type EnvironmentName = "monsoon" | "drought" | "restored";
 
@@ -674,6 +678,7 @@ function registerHotspot(
 }
 
 export default function RainwaterStorageViewer() {
+  const rootRef = useRef<HTMLDivElement>(null);
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const stageRef = useRef(0);
@@ -1109,6 +1114,7 @@ export default function RainwaterStorageViewer() {
 
     const clock = new THREE.Clock();
     let lastEnvironment: EnvironmentName | null = null;
+    let lastStatsAt = 0;
     renderer.setAnimationLoop(() => {
       const elapsed = clock.getElapsedTime();
       const currentStage = stageRef.current;
@@ -1269,6 +1275,10 @@ export default function RainwaterStorageViewer() {
       );
       if (!renderer.xr.isPresenting) controls.update();
       renderer.render(scene, camera);
+      if (rootRef.current && elapsed - lastStatsAt >= 1) {
+        lastStatsAt = elapsed;
+        publishRenderStats(rootRef.current, readRenderStats(renderer.info));
+      }
     });
 
     drawCard(cardCanvas, 0, false);
@@ -1345,6 +1355,8 @@ export default function RainwaterStorageViewer() {
 
   return (
     <div
+      ref={rootRef}
+      data-testid="rainwater-mission"
       style={{
         position: "relative",
         width: "100%",
