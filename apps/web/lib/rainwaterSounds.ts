@@ -1,6 +1,6 @@
 import { savedLitres, type AssemblyStageId, type RainwaterState } from './rainwaterLesson';
 
-export type RainwaterSound = 'pick' | 'snap' | 'wrong' | 'earn' | 'stage' | 'valve';
+export type RainwaterSound = 'pick' | 'snap' | 'wrong' | 'earn' | 'stage' | 'valve' | 'pour';
 
 const ASSEMBLIES: AssemblyStageId[] = ['rooftop', 'filter', 'school', 'recharge'];
 
@@ -11,6 +11,7 @@ export function soundsFor(before: RainwaterState, after: RainwaterState): Rainwa
   if (after.stage !== before.stage) return ['stage'];
   if (after.feedback && after.feedback !== before.feedback) return ['wrong'];
   if (after.firstFlushOpen && !before.firstFlushOpen) return ['valve'];
+  if (after.allocated !== before.allocated) return ['pour'];
   for (const stage of ASSEMBLIES) {
     const was = before.assemblies[stage];
     const is = after.assemblies[stage];
@@ -27,6 +28,7 @@ const TONES: Record<RainwaterSound, { from: number; to: number; seconds: number;
   snap: [{ from: 240, to: 120, seconds: 0.08, type: 'square', volume: 0.05 }],
   wrong: [{ from: 240, to: 180, seconds: 0.22, type: 'sine', volume: 0.07 }],
   valve: [{ from: 300, to: 520, seconds: 0.25, type: 'triangle', volume: 0.06 }],
+  pour: [{ from: 700, to: 340, seconds: 0.3, type: 'sine', volume: 0.06 }],
   stage: [{ from: 440, to: 620, seconds: 0.2, type: 'sine', volume: 0.05 }],
   earn: [
     { from: 523, to: 523, seconds: 0.12, type: 'triangle', volume: 0.07 },

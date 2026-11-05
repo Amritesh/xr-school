@@ -68,6 +68,15 @@ All 26 models in `apps/web/public/models/rainwater/` are original work built by 
 
 Twelve clips were regenerated with edge-tts (`en-IN-NeerjaExpressiveNeural`), and the 13 old clips were removed. Run on 2026-11-05 with the owner's approval.
 
+## VR preparation
+
+Done before the headset test, from the code review, and checked only with unit tests:
+
+- The child is moved to a standing spot facing the work at each stage, including in front of the storm valves.
+- A storm pauses when VR ends or the Quest system menu opens, and resumes on return.
+- The grip button no longer ends VR in this lesson, because the mission asks children to pick things up. B and the panel's exit button still do. Other simulations are unchanged.
+- Selecting a placed piece takes it off, and wrong-order messages now say so.
+
 ## Not tested
 
 - **Quest headset:** nothing has been tried in VR, so frame rate, controller carrying and the VR panel are unproven. The owner will test this later. VR draw calls may be higher than the figures above.

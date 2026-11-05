@@ -31,6 +31,7 @@ const PIPE_OUTLET_Y = 1.98;
 const HOUSE_FILL_SECONDS = 8;
 const SCHOOL_FILL_SECONDS = 4;
 const CLEARING_SECONDS = 2.5;
+const DRAIN_SECONDS = 2;
 const DIRTY_CLARITY = 0.15;
 const RAIN_PER_SECOND = 130;
 const STORM_RAIN_PER_SECOND = 320;
@@ -73,6 +74,19 @@ const FOCI: Partial<Record<RainwaterStageId, Focus>> = {
   storm: focus([3.6, 7.4, 17.5], [3.6, 0.9, 3.2]),
   summer: focus([0.6, 2.7, 10.4], [0.3, 1.0, 2.8]),
   finale: focus([0.8, 2.4, 9.2], [1.1, 1.4, 2.4]),
+};
+
+/** Where the child stands in VR for each stage. The rig faces -Z, towards the work. */
+const VR_SPOTS: Record<RainwaterStageId, THREE.Vector3> = {
+  'rainy-day': new THREE.Vector3(0, 0, 7),
+  drought: new THREE.Vector3(0, 0, 7),
+  rooftop: new THREE.Vector3(-0.3, 0, 7),
+  filter: new THREE.Vector3(1.4, 0, 7.2),
+  school: new THREE.Vector3(-6, 0, 8.2),
+  recharge: new THREE.Vector3(7.5, 0, 7.2),
+  storm: new THREE.Vector3(0, 0, 9.6),
+  summer: new THREE.Vector3(0, 0, 7.4),
+  finale: new THREE.Vector3(1, 0, 6.8),
 };
 
 const STORM_TARGETS: { id: StormTarget; label: string; colour: number; channelEnd: THREE.Vector3; labelAt: THREE.Vector3 }[] = [
@@ -684,11 +698,19 @@ export async function createRainwaterScene(
       // Tanks rise as systems come online, then the storm tops them up.
       const clear = waterIsClear(state);
       if (isAssemblySolved(assemblies.rooftop)) {
-        const goal = Math.min(1, (clear ? 0.5 : 0.25) + stormShare('houseTank') * 0.5);
-        tankLevel = approach(tankLevel, Math.max(goal, tankLevel), dt / HOUSE_FILL_SECONDS);
-        clarity = approach(clarity, clear ? 1 : DIRTY_CLARITY, dt / CLEARING_SECONDS);
+        if (clear && clarity < 1) {
+          // Filtering cannot clean what is already in the tank: empty it first.
+          tankLevel = approach(tankLevel, 0, dt / DRAIN_SECONDS);
+          if (tankLevel <= 0) clarity = 1;
+        } else if (!clear) {
+          clarity = approach(clarity, DIRTY_CLARITY, dt / CLEARING_SECONDS);
+        }
+        if (!clear || clarity >= 1) {
+          const goal = Math.min(1, (clear ? 0.5 : 0.25) + stormShare('houseTank') * 0.5);
+          tankLevel = approach(tankLevel, Math.max(goal, tankLevel), dt / HOUSE_FILL_SECONDS);
+        }
         tankWater.setClarity(clarity);
-        tankStream.setClarity(clarity);
+        tankStream.setClarity(clear ? 1 : DIRTY_CLARITY);
       }
       tankWater.setFill(tankLevel);
       if (isAssemblySolved(assemblies.school)) {
@@ -830,6 +852,7 @@ export async function createRainwaterScene(
     flushFlowing,
     spillCount,
     focusFor: (stage: RainwaterStageId) => FOCI[stage] ?? WIDE_FOCUS,
+    vrSpotFor: (stage: RainwaterStageId) => VR_SPOTS[stage],
     dispose() {
       for (const ribbon of ribbons.values()) ribbon.dispose();
       for (const channel of channels.values()) channel.dispose();

@@ -63,6 +63,8 @@ export interface RainwaterState {
 const SAFETY_MESSAGE =
   'Filtered rainwater is not safe to drink until it has had proper treatment and testing.';
 
+const TAKE_OFF_HINT = 'Select a piece to take it off.';
+
 const litres = (value: number) => value.toLocaleString('en-US');
 
 export function createRainwaterState(): RainwaterState {
@@ -259,7 +261,14 @@ export function reduceRainwater(
         return { ...base, feedback: `The ${target} has enough water now.` };
       }
       if (storedLitres(state) - allocatedLitres(state) < SUMMER_STEP_LITRES) {
-        return { ...base, feedback: 'The tanks are empty. Every litre has been used.' };
+        const left = storedLitres(state) - allocatedLitres(state);
+        return {
+          ...base,
+          feedback:
+            left > 0
+              ? `Only ${litres(left)} litres are left, not enough for another share.`
+              : 'The tanks are empty. Every litre has been used.',
+        };
       }
       return {
         ...base,
@@ -329,7 +338,7 @@ export function rainwaterPrompt(state: RainwaterState): string {
         : 'Pick up each gutter piece and snap it to the lower edge of the roof. Any gap spills water onto the road.';
     case 'filter':
       if (waterIsClear(state)) {
-        return `The water runs clear into the covered tank. ${SAFETY_MESSAGE}`;
+        return `The dirty water was emptied, and now clean rain runs through the filter into the tank. ${SAFETY_MESSAGE}`;
       }
       if (!state.firstFlushOpen) {
         return `Open the first-flush valve to send the dirty first rain away. ${SAFETY_MESSAGE}`;
@@ -337,7 +346,7 @@ export function rainwaterPrompt(state: RainwaterState): string {
       return `${assemblyPrompt(
         state.assemblies.filter,
         'Stack the filter layers so water passes through stones, then sand, then charcoal.',
-        'The water is still cloudy. Water must pass through stones, then sand, then charcoal.',
+        `The water is still cloudy. Water must pass through stones, then sand, then charcoal. ${TAKE_OFF_HINT}`,
       )} ${SAFETY_MESSAGE}`;
     case 'school':
       return isAssemblySolved(state.assemblies.school)
@@ -345,7 +354,7 @@ export function rainwaterPrompt(state: RainwaterState): string {
         : assemblyPrompt(
             state.assemblies.school,
             'Connect the school roof: the long gutter at the roof edge, the pipe down the wall, and the cover on the big tank.',
-            'Something is in the wrong place. The gutter goes on the roof edge, the pipe goes down the wall, and the cover goes on the tank.',
+            `Something is in the wrong place. The gutter goes on the roof edge, the pipe goes down the wall, and the cover goes on the tank. ${TAKE_OFF_HINT}`,
           );
     case 'recharge':
       return isAssemblySolved(state.assemblies.recharge)
@@ -353,17 +362,19 @@ export function rainwaterPrompt(state: RainwaterState): string {
         : assemblyPrompt(
             state.assemblies.recharge,
             'Build the pit from the bottom up: large stones, small stones, then sand.',
-            'Water cannot soak through well in that order. Use large stones at the bottom, small stones in the middle, and sand on top.',
+            `Water cannot soak through well in that order. Use large stones at the bottom, small stones in the middle, and sand on top. ${TAKE_OFF_HINT}`,
           );
     case 'storm':
       return state.stormBestLitres === null
         ? 'Heavy rain! Turn the valves to send water to whichever store has room.'
-        : `You routed ${litres(state.stormBestLitres)} litres through the storm. Play again to beat it, or continue.`;
+        : `Your best is ${litres(state.stormBestLitres)} litres saved in the storm. Play again to beat it, or continue.`;
     case 'summer': {
       const shortage = summerShortage(state);
+      const { garden, animals, cleaning } = state.allocated;
+      const shared = `Garden ${litres(garden)} of ${litres(SUMMER_NEEDS.garden)} L, animals ${litres(animals)} of ${litres(SUMMER_NEEDS.animals)} L, cleaning ${litres(cleaning)} of ${litres(SUMMER_NEEDS.cleaning)} L.`;
       return shortage > 0
-        ? `You stored ${litres(storedLitres(state))} litres, but the village needs ${litres(totalSummerNeed())}. Choose carefully.`
-        : `You stored ${litres(storedLitres(state))} litres. Share it between the garden, the animals and cleaning.`;
+        ? `You stored ${litres(storedLitres(state))} litres, but the village needs ${litres(totalSummerNeed())}. Choose carefully. ${shared}`
+        : `You stored ${litres(storedLitres(state))} litres. Share it between the garden, the animals and cleaning. ${shared}`;
     }
     case 'finale':
       return saved >= RAINWATER_GOAL_LITRES

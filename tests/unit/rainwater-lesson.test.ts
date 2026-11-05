@@ -222,6 +222,68 @@ describe('rainwater lesson', () => {
     expect(summerShortage(atSummer(3500))).toBe(0);
   });
 
+  it('shows what has been shared so far in summer', () => {
+    const state = reduceRainwater(atSummer(1000), { type: 'allocate', target: 'garden' });
+    expect(rainwaterPrompt(state)).toContain('Garden 500 of 2,500 L');
+    expect(rainwaterPrompt(state)).toContain('animals 0 of 2,000 L');
+    expect(rainwaterPrompt(state)).toContain('cleaning 0 of 1,500 L');
+  });
+
+  it('does not say the tanks are empty while water remains', () => {
+    let state = atSummer(235);
+    for (let i = 0; i < 20; i += 1) {
+      for (const target of ['garden', 'animals', 'cleaning'] as const) {
+        state = reduceRainwater(state, { type: 'allocate', target });
+      }
+    }
+    const left = storedLitres(state) - Object.values(state.allocated).reduce((a, b) => a + b, 0);
+    expect(left).toBe(235);
+    const blocked = reduceRainwater(state, { type: 'allocate', target: 'garden' });
+    if (blocked.feedback) expect(blocked.feedback).not.toMatch(/empty/i);
+    const animals = reduceRainwater(state, { type: 'allocate', target: 'animals' });
+    expect(animals.feedback).toContain('235');
+  });
+
+  it('says best, not last, after a lower storm replay', () => {
+    const replayed = reduceRainwater(
+      apply(rechargeDone(), go, { type: 'storm-finished', routedLitres: 2000 }, { type: 'retry-storm' }),
+      { type: 'storm-finished', routedLitres: 1000 },
+    );
+    expect(rainwaterPrompt(replayed)).toMatch(/best .*2,000/i);
+  });
+
+  it('tells the child how to fix a wrong order in VR as well as the browser', () => {
+    const wrong = apply(
+      schoolDone(),
+      go,
+      ...put('pit-sand', 'pit-bottom'),
+      ...put('small-stones', 'pit-middle'),
+      ...put('large-stones', 'pit-top'),
+    );
+    expect(rainwaterPrompt(wrong)).toMatch(/select a piece to take it off/i);
+    const filter = apply(
+      rooftopDone(),
+      go,
+      { type: 'open-first-flush' },
+      ...put('sand', 'filter-top'),
+      ...put('stones', 'filter-middle'),
+      ...put('charcoal', 'filter-bottom'),
+    );
+    expect(rainwaterPrompt(filter)).toMatch(/select a piece to take it off/i);
+  });
+
+  it('says the dirty water was emptied before the clean water fills the tank', () => {
+    const done = apply(
+      rooftopDone(),
+      go,
+      { type: 'open-first-flush' },
+      ...put('stones', 'filter-top'),
+      ...put('sand', 'filter-middle'),
+      ...put('charcoal', 'filter-bottom'),
+    );
+    expect(rainwaterPrompt(done)).toMatch(/emptied/i);
+  });
+
   it('spends nothing on drinking and explains why', () => {
     const state = reduceRainwater(atSummer(1000), { type: 'try-drinking' });
     expect(Object.values(state.allocated).reduce((a, b) => a + b, 0)).toBe(0);

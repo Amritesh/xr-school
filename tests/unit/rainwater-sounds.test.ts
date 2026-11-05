@@ -57,6 +57,18 @@ describe('rainwater sounds', () => {
     expect(soundsFor(atDrought, atDrought)).toEqual([]);
   });
 
+  it('plays a pouring sound when water is shared', () => {
+    const summer = { ...createRainwaterState(), stage: 'summer' as const, stormBestLitres: 3500 };
+    const after = reduceRainwater(
+      {
+        ...summer,
+        assemblies: summer.assemblies,
+      },
+      { type: 'allocate', target: 'garden' },
+    );
+    expect(soundsFor(summer, { ...after, allocated: { ...after.allocated, garden: 500 } })).toEqual(['pour']);
+  });
+
   it('marks a new stage', () => {
     const before = reduceRainwater(createRainwaterState(), { type: 'observe' });
     expect(soundsFor(before, reduceRainwater(before, go))).toEqual(['stage']);

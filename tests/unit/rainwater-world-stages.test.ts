@@ -69,6 +69,22 @@ async function setup(reducedMotion = false) {
 }
 
 describe('rainwater world stages', () => {
+  it('empties the dirty tank before clean water fills it', async () => {
+    const { world } = await setup();
+    world.apply(rooftopDone());
+    world.update(10);
+    const dirtyLevel = world.tankFill();
+    expect(dirtyLevel).toBeGreaterThan(0);
+    world.apply(filterDone());
+    world.update(0.05);
+    // Still the same dirty water, draining: it never turns clear in the tank.
+    expect(world.tankClarity()).toBeLessThan(0.3);
+    expect(world.tankFill()).toBeLessThan(dirtyLevel);
+    world.update(20);
+    expect(world.tankClarity()).toBe(1);
+    expect(world.tankFill()).toBeGreaterThan(0);
+  });
+
   it('shows school pieces only on the school stage', async () => {
     const { world } = await setup();
     world.apply(filterDone());

@@ -43,6 +43,7 @@ import {
   type VrHudContent,
 } from "@/lib/vr/vrHudPanel";
 import { createGlbAssetLoader } from "@/lib/world-builder/glbAssets";
+import { watchInterruptions } from "@/lib/world-builder/sessionInterruptions";
 import { createInteractionSystem } from "@/lib/world-builder/interactionSystem";
 import {
   publishRenderStats,
@@ -361,11 +362,12 @@ export default function RainwaterStorageViewer() {
       onBack: () => dispatch({ type: "back" }),
       onNarrate: () =>
         playNarration(narrationFor(stateRef.current)),
-      startPosition: new THREE.Vector3(0, 0, 5.6),
+      startPosition: new THREE.Vector3(0, 0, 2.6),
       movementBounds: new THREE.Box2(
-        new THREE.Vector2(-6, 3),
-        new THREE.Vector2(6, 8),
+        new THREE.Vector2(-18, -1),
+        new THREE.Vector2(18, 13),
       ),
+      gripExits: false,
     });
 
     const assets = createGlbAssetLoader(renderer);
@@ -423,6 +425,7 @@ export default function RainwaterStorageViewer() {
     let focusFrom: Focus | null = null;
     let focusTo: Focus | null = null;
     let focusTime = 0;
+    let vrSpotStage: RainwaterStageId | null = null;
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
       const elapsed = clock.elapsedTime;
@@ -462,6 +465,13 @@ export default function RainwaterStorageViewer() {
       );
       interaction.update(elapsed);
       const presenting = renderer.xr.isPresenting;
+      if (presenting && worldRef.current && vrSpotStage !== current.stage) {
+        vrSpotStage = current.stage;
+        questVr.rig.position.copy(worldRef.current.vrSpotFor(current.stage));
+        questVr.rig.rotation.set(0, 0, 0);
+      } else if (!presenting) {
+        vrSpotStage = null;
+      }
       if (focusedStage !== current.stage && worldRef.current && !presenting) {
         const next = worldRef.current.focusFor(current.stage);
         const previous = worldRef.current.focusFor(focusedStage);
@@ -513,10 +523,11 @@ export default function RainwaterStorageViewer() {
       publishStorm(setStormPaused(stormRef.current, paused));
       if (paused) audio.setRain(0);
     };
-    const onVisibility = () => pauseStorm(document.hidden);
-    const onSessionEnd = () => pauseStorm(true);
-    document.addEventListener("visibilitychange", onVisibility);
-    renderer.xr.addEventListener("sessionend", onSessionEnd);
+    const stopWatchingInterruptions = watchInterruptions({
+      document,
+      xr: renderer.xr as never,
+      onPausedChange: pauseStorm,
+    });
 
     const onKey = (event: KeyboardEvent) => {
       if (!stormRef.current) return;
@@ -528,8 +539,7 @@ export default function RainwaterStorageViewer() {
 
     return () => {
       disposed = true;
-      document.removeEventListener("visibilitychange", onVisibility);
-      renderer.xr.removeEventListener("sessionend", onSessionEnd);
+      stopWatchingInterruptions();
       window.removeEventListener("keydown", onKey);
       audio.dispose();
       audioRef.current = null;
