@@ -11,6 +11,8 @@ interface QuestVrControlsOptions {
   startPosition?: THREE.Vector3;
   /** Horizontal x/z limits for continuous Quest locomotion. */
   movementBounds?: THREE.Box2;
+  /** Set false when a lesson asks children to pick things up, which invites squeezing. */
+  gripExits?: boolean;
 }
 
 const BUTTON_PRIMARY = 4;
@@ -39,6 +41,7 @@ export function createQuestVrControls({
   onNarrate: _onNarrate,
   startPosition = new THREE.Vector3(0, 0, 2.6),
   movementBounds,
+  gripExits = true,
 }: QuestVrControlsOptions) {
   const rig = new THREE.Group();
   rig.name = "quest-player-rig";
@@ -59,6 +62,7 @@ export function createQuestVrControls({
     if (inputSource) controller.userData.handedness = inputSource.handedness;
   };
   const onControllerSqueeze = (event: Event) => {
+    if (!gripExits) return;
     const controller = event.target as unknown as THREE.XRTargetRaySpace;
     const controllerIndex = controllers.indexOf(controller);
     const handedness = controller.userData.handedness as XRHandedness | undefined;
@@ -86,6 +90,7 @@ export function createQuestVrControls({
   };
 
   const onSessionSqueeze = (event: XRInputSourceEvent) => {
+    if (!gripExits) return;
     if (event.inputSource.handedness !== "left") void activeSession?.end();
   };
 

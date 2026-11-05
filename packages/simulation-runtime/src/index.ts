@@ -249,6 +249,20 @@ export type {
   InvestigationReducer,
   InvestigationTransition,
 } from './experience/interactiveInvestigation.js';
+export {
+  createSocketAssembly,
+  emptySockets,
+  isAssemblyFull,
+  isAssemblySolved,
+  pickPiece,
+  placePiece,
+  removePiece,
+} from './experience/socketAssembly.js';
+export type {
+  AssemblyConfig,
+  AssemblySocket,
+  AssemblyState,
+} from './experience/socketAssembly.js';
 export { createActionRouter } from './input/actionRouter.js';
 export type {
   ActionHandler,

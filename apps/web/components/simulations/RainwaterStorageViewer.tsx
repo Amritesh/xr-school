@@ -4,1054 +4,271 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
+  createRainwaterState,
+  narrationKeyFor,
+  RAINWATER_NARRATION_KEYS,
+  RAINWATER_STAGES,
+  rainwaterCanContinue,
+  rainwaterPrompt,
+  reduceRainwater,
+  savedLitres,
+  spillingSockets,
+  storedLitres,
+  SUMMER_NEEDS,
+  summerShortage,
+  waterIsClear,
+  type AssemblyStageId,
+  type DroughtOption,
+  type RainwaterAction,
+  type RainwaterStageId,
+  type RainwaterState,
+  type SummerTarget,
+} from "@/lib/rainwaterLesson";
+import { createRainwaterScene, type RainwaterScene } from "@/lib/rainwaterScene";
+import { createRainwaterAudio, soundsFor } from "@/lib/rainwaterSounds";
+import {
+  STORM,
+  clearBlock,
+  createStorm,
+  routeStorm,
+  setStormPaused,
+  stepStorm,
+  stormResult,
+  type StormState,
+  type StormTarget,
+} from "@/lib/rainwaterStorm";
+import {
+  createVrHudPanel,
+  type VrHudButtonId,
+  type VrHudContent,
+} from "@/lib/vr/vrHudPanel";
+import { createGlbAssetLoader } from "@/lib/world-builder/glbAssets";
+import { watchInterruptions } from "@/lib/world-builder/sessionInterruptions";
+import { createInteractionSystem } from "@/lib/world-builder/interactionSystem";
+import {
+  publishRenderStats,
+  readRenderStats,
+} from "@/lib/world-builder/renderBudget";
+import {
+  createSocketInput,
+  type SocketInput,
+} from "@/lib/world-builder/socketAssemblyInput";
+import {
   playNarration,
   stopNarration,
   unlockNarration,
 } from "./narrationAudio";
 import { createQuestVrControls } from "./questVrControls";
-import { applyRealisticEnvironment } from "./realisticEnvironment";
-
-type EnvironmentName = "monsoon" | "drought" | "restored";
-
-const ENVIRONMENTS: Record<EnvironmentName, string> = {
-  monsoon: "/environments/rainwater-sundargram-monsoon-360.png",
-  drought: "/environments/rainwater-sundargram-drought-360.png",
-  restored: "/environments/rainwater-sundargram-restored-360.png",
-};
-
-const STAGES = [
-  {
-    title: "Welcome to Sundargram",
-    zone: "Village Square",
-    environment: "monsoon" as const,
-    cue: "Meet Droppy and accept the mission to find the lost raindrops.",
-    detail:
-      "Sundargram receives plenty of rain, but most of it is not collected for the dry months.",
-    action: "Start the Guardian mission",
-    saved: 0,
-  },
-  {
-    title: "The Beautiful Rainy Day",
-    zone: "Monsoon Trail",
-    environment: "monsoon" as const,
-    cue: "Follow rain from roofs, gardens and farms as it escapes into the drain.",
-    detail:
-      "The village receives 10,000 litres, but every litre is flowing away. Rainwater received: 10,000 L • collected: 0 L • lost: 10,000 L.",
-    action: "Follow the lost raindrops",
-    saved: 0,
-  },
-  {
-    title: "Journey into the Future",
-    zone: "Dry Summer",
-    environment: "drought" as const,
-    cue: "Travel forward in time and inspect the dry pond, fields and water queue.",
-    detail:
-      "Rain fell only a few months ago, but it was not stored. The pond is nearly empty and crops do not have enough water.",
-    action: "Inspect the dry village",
-    saved: 0,
-  },
-  {
-    title: "Make the Right Choice",
-    zone: "Future Village",
-    environment: "drought" as const,
-    cue: "Choose what the villagers should do with rainwater.",
-    detail:
-      "Allow it to enter drains, waste it on flooded roads, or collect and store it for future use?",
-    action: "Choose: collect and store it",
-    saved: 0,
-  },
-  {
-    title: "Rainwater Guardian Map",
-    zone: "Mission Control",
-    environment: "monsoon" as const,
-    cue: "Explore four mission points: a house, the school, a farm recharge pit and the pond.",
-    detail:
-      "Complete every location to guide the village toward the 10,000-litre target.",
-    action: "Open the mission map",
-    saved: 0,
-  },
-  {
-    title: "Mission 1: Rooftop Collector",
-    zone: "House Rooftop",
-    environment: "monsoon" as const,
-    cue: "Lift the gutters and lock them along the lower edge of the sloping roof.",
-    detail:
-      "A clean roof acts as a catchment. Gutters guide runoff into a downpipe instead of letting it spill onto the road.",
-    action: "Install the rooftop gutters",
-    saved: 1250,
-  },
-  {
-    title: "Filter and Storage Tank",
-    zone: "House Courtyard",
-    environment: "monsoon" as const,
-    cue: "Connect the pipe, divert the first dirty flow, then pass later rain through stones, sand and charcoal.",
-    detail:
-      "The filter removes leaves and suspended dirt before water enters a covered tank. Drinking water still requires proper treatment and testing.",
-    action: "Connect the filter and tank",
-    saved: 2500,
-  },
-  {
-    title: "Mission 2: Save School Rain",
-    zone: "Sundargram School",
-    environment: "monsoon" as const,
-    cue: "Connect the school’s wide roof to its underground storage tank.",
-    detail:
-      "The stored water can support the school garden and pathway cleaning during dry days.",
-    action: "Complete the school system",
-    saved: 5000,
-  },
-  {
-    title: "Mission 3: Recharge Groundwater",
-    zone: "Farm Edge",
-    environment: "monsoon" as const,
-    cue: "Build the recharge pit: large stones below, small stones in the middle and sand on top.",
-    detail:
-      "Water moves slowly through the layers and enters the soil, helping the groundwater level rise.",
-    action: "Build the recharge pit",
-    saved: 6500,
-  },
-  {
-    title: "The Heavy Rain Challenge",
-    zone: "Whole Village",
-    environment: "monsoon" as const,
-    cue: "Quickly route rain toward rooftop tanks, the school tank, recharge pits and the village pond.",
-    detail:
-      "Keep the roads clear and save the final 3,500 litres before the storm passes.",
-    action: "Route every possible drop",
-    saved: 10000,
-  },
-  {
-    title: "The Return of Summer",
-    zone: "Water-Secure Sundargram",
-    environment: "restored" as const,
-    cue: "See how stored rainwater keeps gardens, crops, animals and the school healthy.",
-    detail:
-      "Water collected in the rainy season is now available for careful non-drinking uses during the summer.",
-    action: "Use stored water wisely",
-    saved: 10000,
-  },
-  {
-    title: "The Final Choice",
-    zone: "Guardian Gallery",
-    environment: "restored" as const,
-    cue: "Compare a village that wastes rain with a village that saves it.",
-    detail:
-      "Choose the village with rooftop collection, covered tanks, groundwater recharge and healthy crops.",
-    action: "Choose the water-saving village",
-    saved: 10000,
-  },
-  {
-    title: "Rainwater Guardian Celebration",
-    zone: "Village Square",
-    environment: "restored" as const,
-    cue: "Raise the Guardian badge and promise to make every drop count.",
-    detail:
-      "Rainwater can be collected from rooftops, filtered, stored in covered tanks and allowed to recharge the ground.",
-    action: "Make the Guardian promise",
-    saved: 10000,
-  },
-];
 
 const NARRATIONS = [
-  "Namaste, young explorers! Welcome to Sundargram. I am Droppy, your water-drop guide. This village receives plenty of rain every year, but most of the rainwater is disappearing. Accept our mission, find the lost raindrops, and help save the village.",
-  "The monsoon has arrived! Look around as rain falls on roofs, roads, gardens, farms, trees and open spaces. Sundargram receives ten thousand litres, but none is collected. Follow the roof runoff into the drain. All ten thousand litres are being lost.",
-  "Let us travel a few months into the future. It is now a hot summer. The pond is almost dry, plants are wilting and farmers are worried. The village had plenty of rain, but it allowed the water to flow away instead of storing it.",
-  "What should the villagers do with rainwater? Let it escape into drains, waste it on flooded roads, or collect and store it for future use? Choose collect and store it. Correct! You are ready to become a Rainwater Guardian.",
-  "We are back in the rainy season. Our mission map shows a house rooftop, the school building, a farm recharge area and the village pond. Complete every mission and guide Sundargram toward its ten-thousand-litre target.",
-  "Mission one begins at the house rooftop. Place gutters along the lower edge of the sloping roof. The roof catches rain over a wide area, and the gutters guide the runoff into a downpipe instead of allowing it to spill onto the road.",
-  "Connect the downpipe to a first-flush chamber, filter and covered tank. The first dirty flow can carry leaves and dust, so it is diverted. Later water passes through stones, sand and charcoal. Filtering removes dirt, but drinking water still needs proper treatment and testing.",
-  "The school has a large roof, so it can collect a great deal of rain. Connect its gutters and pipe to the underground tank. This stored water can be used for the school garden, cleaning pathways and other careful non-drinking uses.",
-  "Now build a groundwater recharge pit. Place large stones at the bottom, small stones above them and sand on top. Rainwater passes slowly through the layers and enters the soil. Watch the groundwater level rise and nearby plants recover.",
-  "Heavy rain alert! Guide water toward the house tank, school tank, recharge pit and village pond. Excellent work. The roads are clearing and the saved-water meter has reached ten thousand litres. You saved every possible drop.",
-  "Travel forward to summer once more. This time the village is green and water-secure. Stored rainwater supports crops, gardens, cleaning and animals. The villagers no longer need to travel far because they saved rain during the monsoon.",
-  "Compare the two villages. In one, rain flows away, the pond dries and crops suffer. In the other, rooftops collect water, covered tanks store it and recharge pits return it to the ground. Choose the village that saves rainwater.",
-  "You have saved Sundargram! Raise your Rainwater Guardian badge and repeat: I promise to save water and make every drop count. Rainwater is a precious natural resource. Save rainwater, save our future. Every drop counts!",
+  "Namaste, young explorers! I am Droppy. Welcome to Sundargram. It is raining hard, but look at the road. Follow a raindrop and see where it goes.",
+  "Off the roof, down the road and into the drain. All of this rain is being lost, and nobody is saving a single drop.",
+  "Now it is summer. The pond is almost dry and the crops are wilting. All that rain fell, but nobody stored it. What should the village do next monsoon?",
+  "Back to the monsoon. This roof catches a lot of rain. Pick up each gutter and snap it to the edge of the roof. If you leave a gap, the water spills onto the road.",
+  "Look, the tank water is dirty! The first rain washes dust off the roof. Open the red valve to send that dirty water away. Then stack stones, sand and charcoal in the filter. Even then, this water needs proper treatment and testing before anyone can drink it.",
+  "The school has a much bigger roof, so it can catch much more rain. Put the long gutter on the roof edge, the pipe down the wall and the cover on the big tank. Watch how fast it fills!",
+  "Some rain should go back into the ground. Build this pit from the bottom up: large stones, small stones, then sand. Then watch the water soak down and the groundwater rise.",
+  "Heavy rain alert! Turn the valves to send water wherever there is room. When a store is full, switch quickly, and clear any leaves that block the channel. Ready?",
+  "It is summer again, and this time you have water saved. Share it between the garden, the animals and cleaning. Remember, this water is not for drinking.",
+  "It is summer again. You saved a lot, but not quite enough for everything. Choose carefully where your water goes. Remember, this water is not for drinking.",
+  "You did it! You saved all ten thousand litres. Sundargram is ready for summer. You are a true Rainwater Guardian!",
+  "Well done, Guardian! Every litre you saved is real water for Sundargram. Want to save even more? Try the storm again.",
 ];
 
-function wrapText(
-  context: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  width: number,
-  lineHeight: number,
-) {
-  let line = "";
-  let currentY = y;
-  for (const word of text.split(" ")) {
-    const candidate = `${line}${word} `;
-    if (line && context.measureText(candidate).width > width) {
-      context.fillText(line.trim(), x, currentY);
-      line = `${word} `;
-      currentY += lineHeight;
-    } else line = candidate;
-  }
-  if (line) context.fillText(line.trim(), x, currentY);
-}
+const narrationFor = (state: RainwaterState) =>
+  NARRATIONS[RAINWATER_NARRATION_KEYS.indexOf(narrationKeyFor(state))]!;
 
-function drawCard(
-  canvas: HTMLCanvasElement,
-  stage: number,
-  completed: boolean,
-) {
-  const context = canvas.getContext("2d");
-  if (!context) return;
-  const info = STAGES[stage];
-  context.fillStyle = "#082f49";
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  context.strokeStyle = completed ? "#86efac" : "#38bdf8";
-  context.lineWidth = 7;
-  context.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
-  context.fillStyle = "#7dd3fc";
-  context.font = "bold 22px sans-serif";
-  context.fillText(
-    `RAINWATER GUARDIAN  •  ${stage + 1}/${STAGES.length}  •  ${info.zone}`,
-    25,
-    40,
-  );
-  context.fillStyle = "#ffffff";
-  context.font = "bold 30px sans-serif";
-  context.fillText(info.title, 25, 85);
-  context.fillStyle = "#e0f2fe";
-  context.font = "20px sans-serif";
-  wrapText(context, info.cue, 25, 123, canvas.width - 50, 28);
-  context.fillStyle = completed ? "#86efac" : "#fde68a";
-  context.font = "bold 19px sans-serif";
-  context.fillText(
-    completed
-      ? "✓ COMPLETE — PRESS A AGAIN TO CONTINUE"
-      : `ACTION: ${info.action}`,
-    25,
-    244,
-  );
-}
+const STAGE_TITLES: Record<RainwaterStageId, string> = {
+  "rainy-day": "The Lost Raindrops",
+  drought: "Journey into Summer",
+  rooftop: "Rooftop Collector",
+  filter: "Filter and First Flush",
+  school: "Save the School's Rain",
+  recharge: "Recharge the Ground",
+  storm: "The Heavy Rain Challenge",
+  summer: "The Return of Summer",
+  finale: "Rainwater Guardian",
+};
 
-function makePipe(
-  start: THREE.Vector3,
-  end: THREE.Vector3,
-  radius = 0.055,
-  color = 0xdbeafe,
-) {
-  const direction = end.clone().sub(start);
-  const pipe = new THREE.Mesh(
-    new THREE.CylinderGeometry(radius, radius, direction.length(), 16),
-    new THREE.MeshStandardMaterial({ color, metalness: 0.35, roughness: 0.42 }),
-  );
-  pipe.position.copy(start).add(end).multiplyScalar(0.5);
-  pipe.quaternion.setFromUnitVectors(
-    new THREE.Vector3(0, 1, 0),
-    direction.normalize(),
-  );
-  pipe.castShadow = true;
-  return pipe;
-}
+const PIECE_LABELS: Record<string, string> = {
+  "gutter-1": "gutter 1",
+  "gutter-2": "gutter 2",
+  "gutter-3": "gutter 3",
+  "gutter-4": "gutter 4",
+  stones: "stones",
+  sand: "sand",
+  charcoal: "charcoal",
+  "school-gutter": "school gutter",
+  "school-pipe": "school pipe",
+  "school-tank": "tank cover",
+  "large-stones": "large stones",
+  "small-stones": "small stones",
+  "pit-sand": "sand",
+};
 
-function makePanel(
-  title: string,
-  subtitle: string,
-  color: string,
-  width = 1.65,
-  height = 0.72,
-) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 640;
-  canvas.height = 280;
-  const context = canvas.getContext("2d");
-  if (context) {
-    context.fillStyle = "rgba(8,47,73,0.96)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.strokeStyle = color;
-    context.lineWidth = 12;
-    context.strokeRect(7, 7, canvas.width - 14, canvas.height - 14);
-    context.fillStyle = color;
-    context.font = "bold 38px sans-serif";
-    context.textAlign = "center";
-    context.fillText(title, canvas.width / 2, 95);
-    context.fillStyle = "#e0f2fe";
-    context.font = "26px sans-serif";
-    context.textAlign = "left";
-    wrapText(context, subtitle, 45, 150, canvas.width - 90, 34);
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return new THREE.Mesh(
-    new THREE.PlaneGeometry(width, height),
-    new THREE.MeshBasicMaterial({
-      map: texture,
-      transparent: true,
-      side: THREE.DoubleSide,
-    }),
-  );
-}
+const SOCKET_LABELS: Record<string, string> = {
+  "gutter-socket-1": "roof edge 1",
+  "gutter-socket-2": "roof edge 2",
+  "gutter-socket-3": "roof edge 3",
+  "gutter-socket-4": "roof edge 4",
+  "filter-top": "top of filter",
+  "filter-middle": "middle of filter",
+  "filter-bottom": "bottom of filter",
+  "school-gutter-socket": "school roof edge",
+  "school-pipe-socket": "pipe run",
+  "school-tank-socket": "big tank",
+  "pit-bottom": "bottom of pit",
+  "pit-middle": "middle of pit",
+  "pit-top": "top of pit",
+};
 
-function makeDroppy() {
-  const group = new THREE.Group();
-  group.name = "Droppy, the Rainwater Guardian guide";
-  const waterMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0x28b8e8,
-    emissive: 0x075985,
-    emissiveIntensity: 0.12,
-    roughness: 0.1,
-    metalness: 0.04,
-    transmission: 0.08,
-    clearcoat: 1,
-  });
-  const body = new THREE.Mesh(
-    new THREE.SphereGeometry(0.42, 28, 22),
-    waterMaterial,
-  );
-  body.scale.set(0.82, 1.12, 0.68);
-  body.position.y = 0.62;
-  const tip = new THREE.Mesh(
-    new THREE.ConeGeometry(0.26, 0.55, 24),
-    waterMaterial,
-  );
-  tip.position.y = 1.15;
-  const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const pupilMaterial = new THREE.MeshBasicMaterial({ color: 0x082f49 });
-  for (const x of [-0.14, 0.14]) {
-    const eye = new THREE.Mesh(
-      new THREE.SphereGeometry(0.075, 16, 12),
-      eyeMaterial,
-    );
-    eye.position.set(x, 0.71, 0.28);
-    const pupil = new THREE.Mesh(
-      new THREE.SphereGeometry(0.033, 12, 10),
-      pupilMaterial,
-    );
-    pupil.position.set(x, 0.71, 0.35);
-    group.add(eye, pupil);
-  }
-  const smile = new THREE.Mesh(
-    new THREE.TorusGeometry(0.13, 0.018, 8, 24, Math.PI),
-    new THREE.MeshBasicMaterial({ color: 0x082f49 }),
-  );
-  smile.position.set(0, 0.52, 0.35);
-  smile.rotation.z = Math.PI;
-  const cap = new THREE.Mesh(
-    new THREE.SphereGeometry(0.3, 22, 12, 0, Math.PI * 2, 0, Math.PI / 2),
-    new THREE.MeshStandardMaterial({ color: 0x1d4ed8, roughness: 0.58 }),
-  );
-  cap.position.y = 1.2;
-  const brim = new THREE.Mesh(
-    new THREE.BoxGeometry(0.42, 0.05, 0.16),
-    new THREE.MeshStandardMaterial({ color: 0x1e40af, roughness: 0.6 }),
-  );
-  brim.position.set(0, 1.18, 0.18);
-  group.add(body, tip, smile, cap, brim);
-  return group;
-}
+const DROUGHT_CHOICES: { option: DroughtOption; label: string }[] = [
+  { option: "drain", label: "Let it enter the drains" },
+  { option: "road", label: "Leave it on the roads" },
+  { option: "collect", label: "Collect and store it" },
+];
 
-function makeRoofSystem() {
-  const group = new THREE.Group();
-  group.name = "Life-size rooftop rainwater collector";
-  const wall = new THREE.Mesh(
-    new THREE.BoxGeometry(4.4, 1.85, 1.9),
-    new THREE.MeshStandardMaterial({ color: 0xd8c59f, roughness: 0.95 }),
-  );
-  wall.position.y = 0.92;
-  const roofMaterial = new THREE.MeshStandardMaterial({
-    color: 0xa9492d,
-    roughness: 0.94,
-  });
-  const left = new THREE.Mesh(
-    new THREE.BoxGeometry(2.5, 0.14, 2.15),
-    roofMaterial,
-  );
-  left.position.set(-1.02, 2.05, 0);
-  left.rotation.z = -0.38;
-  const right = left.clone();
-  right.position.x = 1.02;
-  right.rotation.z = 0.38;
-  const gutterMaterial = new THREE.MeshStandardMaterial({
-    color: 0xe2e8f0,
-    metalness: 0.42,
-    roughness: 0.35,
-  });
-  const gutter = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.095, 0.095, 4.25, 18, 1, true, 0, Math.PI),
-    gutterMaterial,
-  );
-  gutter.rotation.z = Math.PI / 2;
-  gutter.position.set(0, 1.63, 1.05);
-  gutter.userData.restY = gutter.position.y;
-  gutter.userData.startY = -0.35;
-  const pipe = makePipe(
-    new THREE.Vector3(2.04, 1.63, 1.05),
-    new THREE.Vector3(2.04, 0.46, 1.05),
-    0.075,
-  );
-  const filter = new THREE.Group();
-  const filterWall = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.4, 0.4, 1.2, 24, 1, true),
-    new THREE.MeshPhysicalMaterial({
-      color: 0xbfdbfe,
-      transparent: true,
-      opacity: 0.36,
-      side: THREE.DoubleSide,
-    }),
-  );
-  filterWall.position.y = 0.68;
-  filter.add(filterWall);
-  [
-    { y: 0.27, color: 0x616a73 },
-    { y: 0.55, color: 0xd5bf91 },
-    { y: 0.83, color: 0x292524 },
-  ].forEach(({ y, color }) => {
-    const layer = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.34, 0.34, 0.24, 22),
-      new THREE.MeshStandardMaterial({ color, roughness: 1 }),
-    );
-    layer.position.y = y;
-    filter.add(layer);
-  });
-  filter.position.set(1.22, 0, 1.05);
-  const tank = new THREE.Group();
-  const tankWall = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.72, 0.72, 1.6, 30, 1, true),
-    new THREE.MeshStandardMaterial({
-      color: 0x176b65,
-      roughness: 0.6,
-      side: THREE.DoubleSide,
-    }),
-  );
-  tankWall.position.y = 0.82;
-  const water = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.66, 0.66, 0.16, 28),
-    new THREE.MeshPhysicalMaterial({
-      color: 0x38bdf8,
-      transparent: true,
-      opacity: 0.82,
-      roughness: 0.08,
-    }),
-  );
-  water.name = "house-tank-water";
-  water.position.y = 0.14;
-  const cover = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.76, 0.76, 0.12, 30),
-    new THREE.MeshStandardMaterial({ color: 0x134e4a, roughness: 0.62 }),
-  );
-  cover.position.y = 1.67;
-  tank.add(tankWall, water, cover);
-  tank.position.set(-1.35, 0, 1.2);
-  group.add(wall, left, right, gutter, pipe, filter, tank);
-  group.userData.gutter = gutter;
-  group.userData.filter = filter;
-  group.userData.tankWater = water;
-  return group;
-}
+const SUMMER_CHOICES: { target: SummerTarget; label: string }[] = [
+  { target: "garden", label: "Water the garden" },
+  { target: "animals", label: "Water the animals" },
+  { target: "cleaning", label: "Use for cleaning" },
+];
 
-function makeSchoolSystem() {
-  const group = new THREE.Group();
-  group.name = "School rooftop and underground storage mission";
-  const school = new THREE.Mesh(
-    new THREE.BoxGeometry(4.6, 1.8, 1.7),
-    new THREE.MeshStandardMaterial({ color: 0xf4d06f, roughness: 0.92 }),
-  );
-  school.position.y = 0.9;
-  const roof = new THREE.Mesh(
-    new THREE.BoxGeometry(4.95, 0.2, 2.05),
-    new THREE.MeshStandardMaterial({ color: 0x8f3f2b, roughness: 0.9 }),
-  );
-  roof.position.y = 1.9;
-  const pipe = makePipe(
-    new THREE.Vector3(2.32, 1.8, 0.92),
-    new THREE.Vector3(2.32, 0.25, 0.92),
-    0.09,
-  );
-  const undergroundTank = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.82, 0.82, 1.6, 28, 1, true),
-    new THREE.MeshPhysicalMaterial({
-      color: 0x0e7490,
-      transparent: true,
-      opacity: 0.48,
-      side: THREE.DoubleSide,
-    }),
-  );
-  undergroundTank.rotation.z = Math.PI / 2;
-  undergroundTank.position.set(1.1, -0.15, 1.2);
-  const garden = new THREE.Group();
-  for (let index = 0; index < 12; index += 1) {
-    const plant = new THREE.Mesh(
-      new THREE.SphereGeometry(0.16, 10, 8),
-      new THREE.MeshStandardMaterial({ color: 0x4d9f48, roughness: 0.94 }),
-    );
-    plant.scale.set(1, 1.35, 1);
-    plant.position.set(
-      -2 + (index % 6) * 0.38,
-      0.16,
-      1.15 + Math.floor(index / 6) * 0.34,
-    );
-    garden.add(plant);
-  }
-  group.add(school, roof, pipe, undergroundTank, garden);
-  group.userData.pipe = pipe;
-  group.userData.garden = garden;
-  return group;
-}
+const STORM_ROUTES: { target: StormTarget; label: string; key: string }[] = [
+  { target: "houseTank", label: "House tank", key: "1" },
+  { target: "schoolTank", label: "School tank", key: "2" },
+  { target: "rechargePit", label: "Recharge pit", key: "3" },
+  { target: "pond", label: "Village pond", key: "4" },
+];
 
-function makeRechargePit() {
-  const group = new THREE.Group();
-  group.name = "Groundwater recharge pit with ordered layers";
-  const rim = new THREE.Mesh(
-    new THREE.TorusGeometry(1.05, 0.15, 12, 40),
-    new THREE.MeshStandardMaterial({ color: 0x68635b, roughness: 1 }),
-  );
-  rim.rotation.x = Math.PI / 2;
-  rim.position.y = 0.12;
-  group.add(rim);
-  const layers = [
-    { name: "large stones", y: -0.35, color: 0x57534e, scale: 1 },
-    { name: "small stones", y: -0.08, color: 0x8b8174, scale: 0.93 },
-    { name: "sand", y: 0.18, color: 0xd4b77d, scale: 0.87 },
-  ];
-  layers.forEach(({ name, y, color, scale }) => {
-    const layer = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.88 * scale, 0.88 * scale, 0.24, 26),
-      new THREE.MeshStandardMaterial({ color, roughness: 1 }),
-    );
-    layer.name = name;
-    layer.position.y = y + 0.9;
-    layer.userData.restY = y;
-    group.add(layer);
-  });
-  const groundwater = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.35, 1.35, 0.1, 32),
-    new THREE.MeshPhysicalMaterial({
-      color: 0x0ea5e9,
-      transparent: true,
-      opacity: 0.42,
-    }),
-  );
-  groundwater.name = "rising-groundwater";
-  groundwater.position.y = -0.65;
-  group.add(groundwater);
-  group.userData.groundwater = groundwater;
-  return group;
-}
+const FLUSH_VALVE_ID = "first-flush-valve";
+const FOCUS_SECONDS = 0.9;
 
-function makeMissionMap() {
-  const group = new THREE.Group();
-  group.name = "Four-location Rainwater Guardian mission map";
-  const base = new THREE.Mesh(
-    new THREE.BoxGeometry(3.5, 0.18, 2.3),
-    new THREE.MeshStandardMaterial({ color: 0x345149, roughness: 0.85 }),
-  );
-  base.position.y = 0.92;
-  group.add(base);
-  const labels = ["🏠 HOUSE", "🏫 SCHOOL", "🌾 FARM", "🏞 POND"];
-  const positions = [
-    [-1.05, 1.15, -0.55],
-    [1.05, 1.15, -0.55],
-    [-1.05, 1.15, 0.55],
-    [1.05, 1.15, 0.55],
-  ];
-  labels.forEach((label, index) => {
-    const marker = makePanel(
-      label,
-      "Guardian mission point",
-      "#67e8f9",
-      1.25,
-      0.48,
-    );
-    marker.position.set(
-      positions[index][0],
-      positions[index][1],
-      positions[index][2],
-    );
-    marker.rotation.x = -Math.PI / 2;
-    group.add(marker);
-  });
-  return group;
-}
-
-function makeChoiceGallery() {
-  const group = new THREE.Group();
-  group.name = "Rainwater choice gallery";
-  const choices = [
-    {
-      title: "LET IT DRAIN",
-      subtitle: "Rain is lost",
-      color: "#f87171",
-      x: -1.85,
-    },
-    {
-      title: "COLLECT + STORE",
-      subtitle: "Correct Guardian choice",
-      color: "#86efac",
-      x: 0,
-    },
-    {
-      title: "FLOOD ROADS",
-      subtitle: "Water is wasted",
-      color: "#fbbf24",
-      x: 1.85,
-    },
-  ];
-  choices.forEach(({ title, subtitle, color, x }) => {
-    const panel = makePanel(title, subtitle, color);
-    panel.position.set(x, 1.35, 0);
-    group.add(panel);
-  });
-  return group;
-}
-
-function makeChallengeBeacons() {
-  const group = new THREE.Group();
-  group.name = "Heavy rain routing challenge";
-  const colors = [0x38bdf8, 0x22d3ee, 0x34d399, 0x60a5fa];
-  const positions = [
-    [-1.6, 0.55, 0],
-    [-0.55, 0.55, -0.65],
-    [0.55, 0.55, -0.65],
-    [1.6, 0.55, 0],
-  ];
-  positions.forEach((position, index) => {
-    const beacon = new THREE.Mesh(
-      new THREE.TorusGeometry(0.34, 0.065, 12, 28),
-      new THREE.MeshStandardMaterial({
-        color: colors[index],
-        emissive: colors[index],
-        emissiveIntensity: 0.85,
-      }),
-    );
-    beacon.name = ["house tank", "school tank", "recharge pit", "village pond"][
-      index
-    ];
-    beacon.position.set(position[0], position[1], position[2]);
-    beacon.rotation.x = Math.PI / 2;
-    group.add(beacon);
-  });
-  return group;
-}
-
-function makeGuardianBadge() {
-  const group = new THREE.Group();
-  group.name = "Rainwater Guardian badge";
-  const medal = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.65, 0.65, 0.12, 36),
-    new THREE.MeshStandardMaterial({
-      color: 0xfacc15,
-      metalness: 0.65,
-      roughness: 0.24,
-      emissive: 0x713f12,
-      emissiveIntensity: 0.16,
-    }),
-  );
-  medal.rotation.x = Math.PI / 2;
-  const drop = new THREE.Mesh(
-    new THREE.SphereGeometry(0.26, 24, 18),
-    new THREE.MeshPhysicalMaterial({
-      color: 0x0ea5e9,
-      roughness: 0.08,
-      clearcoat: 1,
-    }),
-  );
-  drop.scale.set(0.75, 1.1, 0.35);
-  drop.position.z = 0.13;
-  const leftRibbon = new THREE.Mesh(
-    new THREE.BoxGeometry(0.25, 0.72, 0.08),
-    new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.7 }),
-  );
-  leftRibbon.position.set(-0.22, -0.74, -0.02);
-  leftRibbon.rotation.z = 0.18;
-  const rightRibbon = leftRibbon.clone();
-  rightRibbon.position.x = 0.22;
-  rightRibbon.rotation.z = -0.18;
-  group.add(leftRibbon, rightRibbon, medal, drop);
-  return group;
-}
-
-function registerHotspot(
-  root: THREE.Object3D,
-  stage: number,
-  interactables: THREE.Object3D[],
-) {
-  root.traverse((object) => {
-    object.userData.hotspotStage = stage;
-    if (object instanceof THREE.Mesh) interactables.push(object);
-  });
+function assemblyStageOf(stage: RainwaterStageId): AssemblyStageId | null {
+  return stage === "rooftop" ||
+    stage === "filter" ||
+    stage === "school" ||
+    stage === "recharge"
+    ? stage
+    : null;
 }
 
 export default function RainwaterStorageViewer() {
+  const rootRef = useRef<HTMLDivElement>(null);
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const stageRef = useRef(0);
-  const actionTimeRef = useRef(0);
-  const completedStagesRef = useRef(new Set<number>());
-  const cardCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const cardTextureRef = useRef<THREE.CanvasTexture | null>(null);
-  const cardNeedsUpdateRef = useRef(true);
-  const transitionTimerRef = useRef<number | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const stateRef = useRef<RainwaterState>(createRainwaterState());
+  const worldRef = useRef<RainwaterScene | null>(null);
+  const hudNeedsDrawRef = useRef(true);
+  const stormRef = useRef<StormState | null>(null);
+  const audioRef = useRef<ReturnType<typeof createRainwaterAudio> | null>(null);
+  const [state, setState] = useState<RainwaterState>(stateRef.current);
   const [started, setStarted] = useState(false);
+  const [ready, setReady] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
-  const [stage, setStage] = useState(0);
-  const [completedStages, setCompletedStages] = useState<Set<number>>(
-    () => new Set(),
+  const [storm, setStorm] = useState<StormState | null>(null);
+  const [lostLitres, setLostLitres] = useState(0);
+
+  const publishStorm = useCallback((next: StormState | null) => {
+    stormRef.current = next;
+    worldRef.current?.applyStorm(next);
+    setStorm(next);
+    hudNeedsDrawRef.current = true;
+  }, []);
+
+  const startStorm = useCallback(
+    (pace: 1 | 0.5) => {
+      publishStorm(createStorm({ seed: Date.now() % 100_000, pace }));
+    },
+    [publishStorm],
   );
-  const [waterSaved, setWaterSaved] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
+
+  const routeTo = useCallback(
+    (target: StormTarget) => {
+      if (stormRef.current) publishStorm(routeStorm(stormRef.current, target));
+    },
+    [publishStorm],
+  );
+
+  const clearLeaves = useCallback(() => {
+    if (stormRef.current) publishStorm(clearBlock(stormRef.current));
+  }, [publishStorm]);
+
+  const dispatch = useCallback((action: RainwaterAction) => {
+    const before = stateRef.current;
+    const next = reduceRainwater(before, action);
+    if (next === before) return;
+    stateRef.current = next;
+    worldRef.current?.apply(next);
+    hudNeedsDrawRef.current = true;
+    setState(next);
+    for (const sound of soundsFor(before, next)) audioRef.current?.play(sound);
+    if (next.stage !== "storm" && stormRef.current) {
+      stormRef.current = null;
+      worldRef.current?.applyStorm(null);
+      setStorm(null);
+      audioRef.current?.setRain(0);
+    }
+    if (narrationKeyFor(next) !== narrationKeyFor(before)) {
+      playNarration(narrationFor(next));
+    }
+  }, []);
 
   useEffect(() => {
-    if (typeof navigator !== "undefined" && "xr" in navigator) {
-      (
-        navigator as Navigator & {
-          xr?: { isSessionSupported?: (mode: string) => Promise<boolean> };
-        }
-      ).xr
-        ?.isSessionSupported?.("immersive-vr")
-        .then(setVrSupported)
-        .catch(() => setVrSupported(false));
-    }
+    (navigator as Navigator & {
+      xr?: { isSessionSupported?: (mode: string) => Promise<boolean> };
+    }).xr
+      ?.isSessionSupported?.("immersive-vr")
+      .then(setVrSupported)
+      .catch(() => setVrSupported(false));
   }, []);
-
-  const playMissionSound = useCallback((currentStage: number) => {
-    const AudioContextConstructor =
-      window.AudioContext ??
-      (window as typeof window & { webkitAudioContext?: typeof AudioContext })
-        .webkitAudioContext;
-    if (!AudioContextConstructor) return;
-    const context = audioContextRef.current ?? new AudioContextConstructor();
-    audioContextRef.current = context;
-    void context.resume();
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const now = context.currentTime;
-    oscillator.type =
-      currentStage === 2 ? "sine" : currentStage === 9 ? "triangle" : "sine";
-    oscillator.frequency.setValueAtTime(
-      currentStage === 2 ? 180 : 440 + currentStage * 24,
-      now,
-    );
-    oscillator.frequency.exponentialRampToValueAtTime(
-      currentStage === 2 ? 120 : 760,
-      now + 0.55,
-    );
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.08, now + 0.035);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.72);
-    oscillator.connect(gain).connect(context.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.75);
-  }, []);
-
-  const goToStage = useCallback((next: number) => {
-    const safeStage = THREE.MathUtils.clamp(next, 0, STAGES.length - 1);
-    stageRef.current = safeStage;
-    actionTimeRef.current = performance.now() / 1000;
-    setStage(safeStage);
-    setWaterSaved(
-      Math.max(
-        0,
-        ...Array.from(completedStagesRef.current, (completedStage) =>
-          STAGES[completedStage].saved,
-        ),
-      ),
-    );
-    cardNeedsUpdateRef.current = true;
-    setTransitioning(true);
-    if (transitionTimerRef.current)
-      window.clearTimeout(transitionTimerRef.current);
-    transitionTimerRef.current = window.setTimeout(
-      () => setTransitioning(false),
-      650,
-    );
-    playNarration(NARRATIONS[safeStage]);
-  }, []);
-
-  const performAction = useCallback(() => {
-    const currentStage = stageRef.current;
-    if (completedStagesRef.current.has(currentStage)) {
-      if (currentStage < STAGES.length - 1) goToStage(currentStage + 1);
-      return;
-    }
-    completedStagesRef.current.add(currentStage);
-    setCompletedStages(new Set(completedStagesRef.current));
-    setWaterSaved(STAGES[currentStage].saved);
-    actionTimeRef.current = performance.now() / 1000;
-    cardNeedsUpdateRef.current = true;
-    playMissionSound(currentStage);
-  }, [goToStage, playMissionSound]);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const audio = createRainwaterAudio();
+    audioRef.current = audio;
+
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.xr.enabled = true;
     renderer.xr.setReferenceSpaceType("local-floor");
     mount.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x6d8995, 18, 44);
-    const realisticEnvironment = applyRealisticEnvironment(
-      scene,
-      renderer,
-      ENVIRONMENTS.monsoon,
-      {
-        exposure: 1.02,
-        intensity: 0.44,
-      },
-    );
-    const environmentTextures: Record<EnvironmentName, THREE.Texture | null> = {
-      monsoon: scene.background as THREE.Texture,
-      drought: null,
-      restored: null,
-    };
-    const textureLoader = new THREE.TextureLoader();
-    (["drought", "restored"] as const).forEach((name) => {
-      environmentTextures[name] = textureLoader.load(ENVIRONMENTS[name]);
-      environmentTextures[name]!.mapping =
-        THREE.EquirectangularReflectionMapping;
-      environmentTextures[name]!.colorSpace = THREE.SRGBColorSpace;
-    });
-
     const camera = new THREE.PerspectiveCamera(
-      68,
+      62,
       mount.clientWidth / mount.clientHeight,
       0.05,
-      90,
+      200,
     );
-    camera.position.set(0, 2.05, 5.2);
-    camera.lookAt(0, 1.1, 0);
-    scene.add(new THREE.HemisphereLight(0xe0f7ff, 0x31413b, 1.65));
-    const daylight = new THREE.DirectionalLight(0xf0f9ff, 1.85);
-    daylight.position.set(-4, 8, 4);
-    daylight.castShadow = true;
-    scene.add(daylight);
+    camera.position.set(0.1, 2.1, 8.9);
 
-    const groundMaterial = new THREE.MeshStandardMaterial({
-      color: 0x526f68,
-      roughness: 0.92,
-      transparent: true,
-      opacity: 0.2,
-    });
-    const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(7.5, 64),
-      groundMaterial,
-    );
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add(ground);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(1.15, 1.5, 1.2);
+    controls.enableDamping = true;
+    controls.minDistance = 2.5;
+    controls.maxDistance = 13;
+    controls.maxPolarAngle = Math.PI / 2 - 0.03;
 
-    const stageGroups: THREE.Group[] = Array.from(
-      { length: STAGES.length },
-      () => new THREE.Group(),
-    );
-    stageGroups.forEach((group, index) => {
-      group.name = `scene-${index}-${STAGES[index].title}`;
-      scene.add(group);
-    });
-
-    const droppy = makeDroppy();
-    droppy.position.set(-1.55, 0.12, 0.42);
-    scene.add(droppy);
-
-    const lostFlow = new THREE.Group();
-    lostFlow.name = "Ten thousand litres escaping to the drain";
-    stageGroups[1].add(lostFlow);
-    const drain = makePipe(
-      new THREE.Vector3(-1.8, 0.16, 0.3),
-      new THREE.Vector3(1.8, 0.16, 0.3),
-      0.15,
-      0x374151,
-    );
-    drain.rotation.y = 0.14;
-    lostFlow.add(drain);
-
-    const droughtProps = new THREE.Group();
-    droughtProps.name = "Dry summer evidence";
-    for (let index = 0; index < 5; index += 1) {
-      const bucket = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.2, 0.16, 0.32, 18, 1, true),
-        new THREE.MeshStandardMaterial({ color: 0x9a6b45, roughness: 0.86 }),
-      );
-      bucket.position.set(
-        -1.2 + index * 0.55,
-        0.17,
-        0.05 + Math.sin(index) * 0.2,
-      );
-      droughtProps.add(bucket);
-    }
-    stageGroups[2].add(droughtProps);
-
-    const choiceGallery = makeChoiceGallery();
-    choiceGallery.position.set(0, 0, -0.15);
-    stageGroups[3].add(choiceGallery);
-
-    const missionMap = makeMissionMap();
-    missionMap.position.set(0, 0, -0.1);
-    stageGroups[4].add(missionMap);
-
-    const roofSystem = makeRoofSystem();
-    roofSystem.position.set(0, 0, -0.5);
-    stageGroups[5].add(roofSystem);
-    const roofSystemComplete = makeRoofSystem();
-    roofSystemComplete.position.copy(roofSystem.position);
-    stageGroups[6].add(roofSystemComplete);
-
-    const schoolSystem = makeSchoolSystem();
-    schoolSystem.position.set(0, 0, -0.5);
-    stageGroups[7].add(schoolSystem);
-
-    const rechargePit = makeRechargePit();
-    rechargePit.position.set(0, 0.42, -0.2);
-    stageGroups[8].add(rechargePit);
-
-    const challengeBeacons = makeChallengeBeacons();
-    challengeBeacons.position.set(0, 0.05, -0.2);
-    stageGroups[9].add(challengeBeacons);
-
-    const restoredPanel = makePanel(
-      "10,000 LITRES SAVED",
-      "Green farms • healthy pond • water for dry days",
-      "#86efac",
-      2.8,
-      1.05,
-    );
-    restoredPanel.position.set(0.35, 1.55, -0.25);
-    stageGroups[10].add(restoredPanel);
-
-    const comparison = new THREE.Group();
-    comparison.name = "Village without storage versus village with storage";
-    const without = makePanel(
-      "WITHOUT STORAGE",
-      "Dry pond • lost rain • weak crops",
-      "#f87171",
-      2.35,
-      1.0,
-    );
-    without.position.set(-1.35, 1.45, -0.15);
-    const withStorage = makePanel(
-      "WITH STORAGE",
-      "Covered tanks • recharge • healthy crops",
-      "#86efac",
-      2.35,
-      1.0,
-    );
-    withStorage.position.set(1.35, 1.45, -0.15);
-    comparison.add(without, withStorage);
-    stageGroups[11].add(comparison);
-
-    const badge = makeGuardianBadge();
-    badge.position.set(0.3, 1.48, -0.15);
-    stageGroups[12].add(badge);
-
-    const rain: THREE.Mesh[] = [];
-    for (let index = 0; index < 110; index += 1) {
-      const drop = new THREE.Mesh(
-        new THREE.CapsuleGeometry(0.009, 0.11, 3, 5),
-        new THREE.MeshBasicMaterial({
-          color: 0x7dd3fc,
-          transparent: true,
-          opacity: 0.8,
-        }),
-      );
-      drop.position.set(
-        ((index * 1.73) % 9) - 4.5,
-        0.8 + ((index * 0.47) % 4.8),
-        ((index * 2.09) % 7) - 3.5,
-      );
-      scene.add(drop);
-      rain.push(drop);
-    }
-
-    const flowDrops: THREE.Mesh[] = [];
-    for (let index = 0; index < 34; index += 1) {
-      const drop = new THREE.Mesh(
-        new THREE.SphereGeometry(0.038, 9, 7),
-        new THREE.MeshBasicMaterial({
-          color: 0x38bdf8,
-          transparent: true,
-          opacity: 0.94,
-        }),
-      );
-      drop.userData.offset = index / 34;
-      scene.add(drop);
-      flowDrops.push(drop);
-    }
-
-    const cardCanvas = document.createElement("canvas");
-    cardCanvas.width = 820;
-    cardCanvas.height = 285;
-    cardCanvasRef.current = cardCanvas;
-    const cardTexture = new THREE.CanvasTexture(cardCanvas);
-    cardTextureRef.current = cardTexture;
-    const card = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.85, 0.99),
-      new THREE.MeshBasicMaterial({ map: cardTexture, transparent: true }),
-    );
-    card.position.set(-1.55, 2.55, 0.48);
-    scene.add(card);
-
-    const makeButton = (name: string, color: number, x: number) => {
-      const button = new THREE.Mesh(
-        new THREE.BoxGeometry(0.62, 0.19, 0.09),
-        new THREE.MeshStandardMaterial({
-          color,
-          emissive: color,
-          emissiveIntensity: 0.28,
-        }),
-      );
-      button.name = name;
-      button.position.set(x, 1.2, 0.66);
-      scene.add(button);
-      return button;
-    };
-    const previousButton = makeButton("btn-previous", 0x64748b, -0.82);
-    const actionButton = makeButton("btn-action", 0x0891b2, 0);
-    actionButton.scale.x = 1.32;
-    const nextButton = makeButton("btn-next", 0x2563eb, 0.82);
-    const buttonInteractables: THREE.Object3D[] = [
-      previousButton,
-      actionButton,
-      nextButton,
-    ];
-    const stageInteractables: THREE.Object3D[] = [];
-    stageGroups.forEach((group, index) =>
-      registerHotspot(group, index, stageInteractables),
-    );
-    const raycaster = new THREE.Raycaster();
-
-    const findNamedAncestor = (
-      object: THREE.Object3D | null,
-    ): THREE.Object3D | null => {
-      let current = object;
-      while (current) {
-        if (current.name.startsWith("btn-")) return current;
-        current = current.parent;
-      }
-      return null;
-    };
-
-    const onControllerSelect = (event: Event) => {
-      const controller = event.target as unknown as THREE.XRTargetRaySpace;
-      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-      raycaster.ray.direction
-        .set(0, 0, -1)
-        .applyQuaternion(controller.quaternion);
-      const hit = raycaster.intersectObjects(
-        [...buttonInteractables, ...stageInteractables],
-        true,
-      )[0];
-      if (!hit) return;
-      const button = findNamedAncestor(hit.object);
-      if (button?.name === "btn-action") performAction();
-      else if (button?.name === "btn-previous") goToStage(stageRef.current - 1);
-      else if (button?.name === "btn-next") {
-        if (completedStagesRef.current.has(stageRef.current))
-          goToStage(stageRef.current + 1);
-      } else if (hit.object.userData.hotspotStage === stageRef.current)
-        performAction();
-    };
     const controllers = [
       renderer.xr.getController(0),
       renderer.xr.getController(1),
     ];
+    let activeController = controllers[0]!;
+    const onControllerSelect = (event: { target: unknown }) => {
+      activeController = event.target as THREE.XRTargetRaySpace;
+    };
     controllers.forEach((controller) => {
       const ray = new THREE.Mesh(
         new THREE.CylinderGeometry(0.002, 0.002, 2.2, 4),
@@ -1060,220 +277,238 @@ export default function RainwaterStorageViewer() {
       ray.rotation.x = Math.PI / 2;
       ray.position.z = -1.1;
       controller.add(ray);
-      controller.addEventListener("selectstart", onControllerSelect as any);
+      controller.addEventListener("selectstart", onControllerSelect);
     });
+
+    const hud = createVrHudPanel({ scene });
+
+    const carryPoint = new THREE.Vector3();
+    const carryDirection = new THREE.Vector3();
+    const pointer = new THREE.Vector2();
+    const pointerCaster = new THREE.Raycaster();
+    const onPointerMove = (event: PointerEvent) => {
+      const bounds = renderer.domElement.getBoundingClientRect();
+      pointer.set(
+        ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+        -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
+      );
+    };
+    renderer.domElement.addEventListener("pointermove", onPointerMove);
+    const getCarryPoint = () => {
+      if (renderer.xr.isPresenting) {
+        activeController.updateMatrixWorld(true);
+        carryPoint.setFromMatrixPosition(activeController.matrixWorld);
+        carryDirection
+          .set(0, 0, -1)
+          .transformDirection(activeController.matrixWorld);
+        return carryPoint.addScaledVector(carryDirection, 2);
+      }
+      pointerCaster.setFromCamera(pointer, camera);
+      return carryPoint
+        .copy(pointerCaster.ray.origin)
+        .addScaledVector(pointerCaster.ray.direction, 4);
+    };
+
+    let socketInput: SocketInput | null = null;
+    const continueOrComplain = () => dispatch({ type: "continue" });
+
+    const hudActions: Partial<Record<VrHudButtonId, () => void>> = {
+      previous: () => dispatch({ type: "back" }),
+      next: continueOrComplain,
+      replay: () =>
+        playNarration(narrationFor(stateRef.current)),
+      exit: () => void renderer.xr.getSession()?.end(),
+      help: () => dispatch({ type: "try-drinking" }),
+      "choice-a": () => hudChoice(stateRef.current, 0, dispatch, startStorm),
+      "choice-b": () => hudChoice(stateRef.current, 1, dispatch, startStorm),
+      "choice-c": () => hudChoice(stateRef.current, 2, dispatch, startStorm),
+    };
+
+    const interaction = createInteractionSystem({
+      camera,
+      domElement: renderer.domElement,
+      xrControllers: controllers,
+      cursor: { hover: "pointer", idle: "grab" },
+      onSelect: (id) => {
+        if (id.startsWith("hud:")) {
+          hudActions[id.slice(4) as VrHudButtonId]?.();
+          return;
+        }
+        if (id === FLUSH_VALVE_ID) {
+          dispatch({ type: "open-first-flush" });
+          return;
+        }
+        if (id === "leaf-block") {
+          clearLeaves();
+          return;
+        }
+        if (id.startsWith("valve-")) {
+          routeTo(id.slice(6) as StormTarget);
+          return;
+        }
+        socketInput?.handleSelect(id);
+      },
+    });
+    (Object.keys(hud.buttons) as VrHudButtonId[]).forEach((id) =>
+      interaction.register(`hud:${id}`, hud.buttons[id]),
+    );
 
     const questVr = createQuestVrControls({
       renderer,
       scene,
       camera,
       controllers,
-      onPrimary: performAction,
-      onBack: () => goToStage(stageRef.current - 1),
-      onNarrate: () => playNarration(NARRATIONS[stageRef.current]),
-      startPosition: new THREE.Vector3(0, 0, 2.45),
+      onPrimary: continueOrComplain,
+      onBack: () => dispatch({ type: "back" }),
+      onNarrate: () =>
+        playNarration(narrationFor(stateRef.current)),
+      startPosition: new THREE.Vector3(0, 0, 2.6),
+      movementBounds: new THREE.Box2(
+        new THREE.Vector2(-18, -1),
+        new THREE.Vector2(18, 13),
+      ),
+      gripExits: false,
     });
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1.15, 0);
-    controls.enableDamping = true;
-    controls.minDistance = 2.2;
-    controls.maxDistance = 8.5;
-    controls.maxPolarAngle = Math.PI / 2 - 0.02;
-
-    const pointerDown = new THREE.Vector2();
-    const pointer = new THREE.Vector2();
-    const setPointer = (event: PointerEvent) => {
-      const bounds = renderer.domElement.getBoundingClientRect();
-      pointer.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
-      pointer.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
-    };
-    const onPointerDown = (event: PointerEvent) =>
-      pointerDown.set(event.clientX, event.clientY);
-    const onPointerUp = (event: PointerEvent) => {
-      if (
-        Math.hypot(
-          event.clientX - pointerDown.x,
-          event.clientY - pointerDown.y,
-        ) > 8
-      )
+    const assets = createGlbAssetLoader(renderer);
+    let disposed = false;
+    void createRainwaterScene(scene, assets, {
+      reducedMotion,
+      onDiagnostic: (message) => console.warn(message),
+    }).then((world) => {
+      if (disposed) {
+        world.dispose();
         return;
-      setPointer(event);
-      raycaster.setFromCamera(pointer, camera);
-      const hit = raycaster.intersectObjects(stageInteractables, true)[0];
-      if (hit?.object.userData.hotspotStage === stageRef.current)
-        performAction();
-    };
-    renderer.domElement.addEventListener("pointerdown", onPointerDown);
-    renderer.domElement.addEventListener("pointerup", onPointerUp);
+      }
+      worldRef.current = world;
+      world.apply(stateRef.current);
+      for (const [id, object] of world.socketTargets) {
+        interaction.register(id, object);
+      }
+      for (const [id, object] of world.pieceTargets) {
+        interaction.register(id, object, { highlightColor: 0xffc23d });
+      }
+      interaction.register(FLUSH_VALVE_ID, world.valve, {
+        highlightColor: 0xffc23d,
+      });
+      for (const [id, object] of world.stormTargets) {
+        interaction.register(id, object, { highlightColor: 0xffffff });
+      }
+      socketInput = createSocketInput({
+        pieces: world.pieceTargets,
+        sockets: world.socketTargets,
+        getSocketOf: (pieceId) => {
+          const stage = assemblyStageOf(stateRef.current.stage);
+          if (!stage) return null;
+          const { placed } = stateRef.current.assemblies[stage];
+          return (
+            Object.keys(placed).find((socket) => placed[socket] === pieceId) ??
+            null
+          );
+        },
+        getPicked: () => {
+          const stage = assemblyStageOf(stateRef.current.stage);
+          return stage ? stateRef.current.assemblies[stage].picked : null;
+        },
+        dispatch: (action) => dispatch({ type: "assembly", action }),
+        getCarryPoint,
+      });
+      setReady(true);
+    });
 
     const clock = new THREE.Clock();
-    let lastEnvironment: EnvironmentName | null = null;
+    let lastStatsAt = 0;
+    let lastStormUiAt = 0;
+    let lastLost = 0;
+    type Focus = { position: THREE.Vector3; target: THREE.Vector3 };
+    let focusedStage: RainwaterStageId = stateRef.current.stage;
+    let focusFrom: Focus | null = null;
+    let focusTo: Focus | null = null;
+    let focusTime = 0;
+    let vrSpotStage: RainwaterStageId | null = null;
     renderer.setAnimationLoop(() => {
-      const elapsed = clock.getElapsedTime();
-      const currentStage = stageRef.current;
-      const info = STAGES[currentStage];
-      const completed = completedStagesRef.current.has(currentStage);
-      const actionAge = Math.max(
-        0,
-        performance.now() / 1000 - actionTimeRef.current,
-      );
+      const delta = clock.getDelta();
+      const elapsed = clock.elapsedTime;
       questVr.update();
-
-      if (lastEnvironment !== info.environment) {
-        const texture =
-          environmentTextures[info.environment] ?? environmentTextures.monsoon;
-        scene.background = texture;
-        scene.environment = texture;
-        scene.fog = new THREE.Fog(
-          info.environment === "drought" ? 0xc7a77c : 0x6d8995,
-          18,
-          44,
-        );
-        groundMaterial.color.setHex(
-          info.environment === "drought" ? 0x987958 : 0x526f68,
-        );
-        renderer.toneMappingExposure =
-          info.environment === "drought" ? 1.08 : 1.02;
-        lastEnvironment = info.environment;
+      worldRef.current?.update(delta);
+      socketInput?.update(delta);
+      const playing = stormRef.current;
+      if (playing && !stormResult(playing).finished) {
+        const stepped = stepStorm(playing, delta);
+        stormRef.current = stepped;
+        worldRef.current?.applyStorm(stepped);
+        const result = stormResult(stepped);
+        audio.setRain(stepped.paused ? 0 : 0.35 + (stepped.elapsed / STORM.durationSeconds) * 0.65);
+        if (result.finished) {
+          audio.setRain(0);
+          setStorm(stepped);
+          dispatch({ type: "storm-finished", routedLitres: result.routed });
+          hudNeedsDrawRef.current = true;
+        } else if (elapsed - lastStormUiAt >= 0.25) {
+          lastStormUiAt = elapsed;
+          setStorm(stepped);
+          hudNeedsDrawRef.current = true;
+        }
       }
-      if (cardNeedsUpdateRef.current && cardCanvasRef.current) {
-        drawCard(cardCanvasRef.current, currentStage, completed);
-        if (cardTextureRef.current) cardTextureRef.current.needsUpdate = true;
-        cardNeedsUpdateRef.current = false;
+      if (stateRef.current.stage === "rainy-day" && worldRef.current) {
+        const lost = worldRef.current.lostLitres();
+        if (lost !== lastLost) {
+          lastLost = lost;
+          setLostLitres(lost);
+        }
       }
-
-      stageGroups.forEach((group, index) => {
-        group.visible = index === currentStage;
-      });
-      const isRaining = info.environment === "monsoon";
-      rain.forEach((drop, index) => {
-        drop.visible = isRaining;
-        if (!drop.visible) return;
-        drop.position.y -=
-          (currentStage === 9 ? 0.08 : 0.045) + (index % 5) * 0.004;
-        if (drop.position.y < 0.08) drop.position.y = 5.5;
-      });
-
-      flowDrops.forEach((drop) => {
-        const progress =
-          (elapsed * (currentStage === 9 ? 0.55 : 0.32) +
-            (drop.userData.offset as number)) %
-          1;
-        drop.visible = [1, 5, 6, 7, 8, 9].includes(currentStage);
-        if (!drop.visible) return;
-        if (currentStage === 1)
-          drop.position.set(-2 + progress * 4, 0.3 - progress * 0.12, 0.25);
-        else if (currentStage === 5)
-          drop.position.set(
-            -1.9 + progress * 3.8,
-            1.78 - Math.abs(progress - 0.5) * 0.5,
-            0.62,
-          );
-        else if (currentStage === 6)
-          drop.position.set(
-            2.02 - progress * 3.25,
-            1.62 - progress * 1.25,
-            0.56,
-          );
-        else if (currentStage === 7)
-          drop.position.set(
-            2.25 - progress * 2.15,
-            1.72 - progress * 1.45,
-            0.42,
-          );
-        else if (currentStage === 8)
-          drop.position.set(
-            0.45 * Math.sin(progress * Math.PI * 4),
-            1.6 - progress * 2,
-            -0.15,
-          );
-        else
-          drop.position.set(
-            -2 + progress * 4,
-            1.8 - progress * 1.5,
-            Math.sin(progress * Math.PI * 4) * 0.55,
-          );
-      });
-
-      const gutter = roofSystem.userData.gutter as THREE.Mesh;
-      const roofWater = roofSystem.userData.tankWater as THREE.Mesh;
-      const clonedWater = roofSystemComplete.getObjectByName(
-        "house-tank-water",
-      ) as THREE.Mesh | undefined;
-      if (gutter) {
-        const progress =
-          completed && currentStage === 5
-            ? Math.min(actionAge / 1.25, 1)
-            : currentStage === 5
-              ? 0
-              : 1;
-        gutter.position.y = THREE.MathUtils.lerp(
-          gutter.userData.startY as number,
-          gutter.userData.restY as number,
-          progress,
-        );
-      }
-      [roofWater, clonedWater].forEach((water) => {
-        if (!water) return;
-        const shouldFill = currentStage === 6 && completed;
-        const fill = shouldFill
-          ? Math.min(actionAge / 2.2, 1)
-          : currentStage === 6
-            ? 0.1
-            : 0.58;
-        water.scale.y = 0.25 + fill * 7.5;
-        water.position.y = 0.12 + fill * 0.57;
-      });
-
-      const groundwater = rechargePit.userData.groundwater as THREE.Mesh;
-      if (groundwater) {
-        const rise =
-          currentStage === 8 && completed ? Math.min(actionAge / 2, 1) : 0;
-        groundwater.position.y = -0.65 + rise * 0.7;
-        groundwater.scale.setScalar(0.7 + rise * 0.45);
-      }
-      rechargePit.children.forEach((child) => {
-        if (typeof child.userData.restY !== "number") return;
-        const settle =
-          currentStage === 8 && completed ? Math.min(actionAge / 1.4, 1) : 0;
-        child.position.y = THREE.MathUtils.lerp(
-          (child.userData.restY as number) + 0.9,
-          child.userData.restY as number,
-          settle,
-        );
-      });
-      challengeBeacons.children.forEach((beacon, index) => {
-        const active = currentStage === 9 && completed;
-        const pulse = 1 + (active ? Math.sin(elapsed * 5 + index) * 0.18 : 0);
-        beacon.scale.setScalar(pulse);
-        const material = (beacon as THREE.Mesh)
-          .material as THREE.MeshStandardMaterial;
-        material.emissiveIntensity = active ? 1.6 : 0.5;
-      });
-      if (currentStage === 12) {
-        badge.rotation.y = Math.sin(elapsed * 0.8) * 0.25;
-        badge.position.y = 1.48 + Math.sin(elapsed * 1.6) * 0.08;
-        if (completed)
-          badge.scale.lerp(new THREE.Vector3(1.35, 1.35, 1.35), 0.04);
-      }
-
-      droppy.position.y = 0.12 + Math.sin(elapsed * 1.8) * 0.09;
-      droppy.rotation.y = Math.sin(elapsed * 0.7) * 0.08;
-      const activeCamera = renderer.xr.isPresenting
-        ? renderer.xr.getCamera()
-        : camera;
-      card.lookAt(activeCamera.position);
-      buttonInteractables.forEach((button) =>
-        button.lookAt(activeCamera.position),
+      const current = stateRef.current;
+      interaction.setSuggested(
+        current.stage === "filter" && !current.firstFlushOpen
+          ? FLUSH_VALVE_ID
+          : undefined,
       );
-      if (!renderer.xr.isPresenting) controls.update();
+      interaction.update(elapsed);
+      const presenting = renderer.xr.isPresenting;
+      if (presenting && worldRef.current && vrSpotStage !== current.stage) {
+        vrSpotStage = current.stage;
+        questVr.rig.position.copy(worldRef.current.vrSpotFor(current.stage));
+        questVr.rig.rotation.set(0, 0, 0);
+      } else if (!presenting) {
+        vrSpotStage = null;
+      }
+      if (focusedStage !== current.stage && worldRef.current && !presenting) {
+        const next = worldRef.current.focusFor(current.stage);
+        const previous = worldRef.current.focusFor(focusedStage);
+        focusedStage = current.stage;
+        if (!next.position.equals(previous.position)) {
+          focusFrom = {
+            position: camera.position.clone(),
+            target: controls.target.clone(),
+          };
+          focusTo = next;
+          focusTime = reducedMotion ? FOCUS_SECONDS : 0;
+        }
+      }
+      if (focusFrom && focusTo) {
+        focusTime = Math.min(FOCUS_SECONDS, focusTime + delta);
+        const t = THREE.MathUtils.smoothstep(focusTime / FOCUS_SECONDS, 0, 1);
+        camera.position.lerpVectors(focusFrom.position, focusTo.position, t);
+        controls.target.lerpVectors(focusFrom.target, focusTo.target, t);
+        if (focusTime >= FOCUS_SECONDS) focusFrom = focusTo = null;
+      }
+      if (presenting) {
+        interaction.updateXrHover();
+        if (hudNeedsDrawRef.current) {
+          hudNeedsDrawRef.current = false;
+          hud.setContent(hudContent(stateRef.current, stormRef.current));
+        }
+        hud.update(renderer.xr.getCamera(), delta);
+      } else {
+        controls.update();
+      }
+      hud.setVisible(presenting);
       renderer.render(scene, camera);
+      if (rootRef.current && elapsed - lastStatsAt >= 1) {
+        lastStatsAt = elapsed;
+        publishRenderStats(rootRef.current, readRenderStats(renderer.info));
+      }
     });
-
-    drawCard(cardCanvas, 0, false);
-    cardTexture.needsUpdate = true;
-    actionTimeRef.current = performance.now() / 1000;
 
     const resize = () => {
       camera.aspect = mount.clientWidth / mount.clientHeight;
@@ -1281,37 +516,53 @@ export default function RainwaterStorageViewer() {
       renderer.setSize(mount.clientWidth, mount.clientHeight);
     };
     window.addEventListener("resize", resize);
+
+    // An interrupted storm waits: no water lost and no time jump on return.
+    const pauseStorm = (paused: boolean) => {
+      if (!stormRef.current) return;
+      publishStorm(setStormPaused(stormRef.current, paused));
+      if (paused) audio.setRain(0);
+    };
+    const stopWatchingInterruptions = watchInterruptions({
+      document,
+      xr: renderer.xr as never,
+      onPausedChange: pauseStorm,
+    });
+
+    const onKey = (event: KeyboardEvent) => {
+      if (!stormRef.current) return;
+      const route = STORM_ROUTES.find(({ key }) => key === event.key);
+      if (route) routeTo(route.target);
+      else if (event.key.toLowerCase() === "b") clearLeaves();
+    };
+    window.addEventListener("keydown", onKey);
+
     return () => {
+      disposed = true;
+      stopWatchingInterruptions();
+      window.removeEventListener("keydown", onKey);
+      audio.dispose();
+      audioRef.current = null;
       renderer.setAnimationLoop(null);
+      window.removeEventListener("resize", resize);
+      renderer.domElement.removeEventListener("pointermove", onPointerMove);
       controllers.forEach((controller) =>
-        controller.removeEventListener(
-          "selectstart",
-          onControllerSelect as any,
-        ),
+        controller.removeEventListener("selectstart", onControllerSelect),
       );
-      renderer.domElement.removeEventListener("pointerdown", onPointerDown);
-      renderer.domElement.removeEventListener("pointerup", onPointerUp);
+      socketInput?.dispose();
+      interaction.dispose();
+      hud.dispose();
       controls.dispose();
       questVr.dispose();
-      realisticEnvironment.dispose();
-      environmentTextures.drought?.dispose();
-      environmentTextures.restored?.dispose();
+      worldRef.current?.dispose();
+      worldRef.current = null;
+      assets.dispose();
       renderer.dispose();
-      window.removeEventListener("resize", resize);
+      renderer.domElement.remove();
+      rendererRef.current = null;
       stopNarration();
-      if (mount.contains(renderer.domElement))
-        mount.removeChild(renderer.domElement);
     };
-  }, [goToStage, performAction]);
-
-  useEffect(
-    () => () => {
-      if (transitionTimerRef.current)
-        window.clearTimeout(transitionTimerRef.current);
-      void audioContextRef.current?.close();
-    },
-    [],
-  );
+  }, [dispatch, clearLeaves, publishStorm, routeTo, startStorm]);
 
   const enterVR = useCallback(async () => {
     const xr = (
@@ -1333,18 +584,39 @@ export default function RainwaterStorageViewer() {
       });
       await rendererRef.current.xr.setSession(session);
       setStarted(true);
-      window.setTimeout(() => playNarration(NARRATIONS[stageRef.current]), 900);
+      hudNeedsDrawRef.current = true;
+      window.setTimeout(
+        () =>
+          playNarration(narrationFor(stateRef.current)),
+        900,
+      );
     } catch {
       setVrSupported(false);
     }
   }, []);
 
-  const currentComplete = completedStages.has(stage);
-  const missionComplete = completedStages.has(STAGES.length - 1);
-  const waterPercent = Math.min(100, (waterSaved / 10000) * 100);
+  const saved = savedLitres(state);
+  const stageIndex = RAINWATER_STAGES.indexOf(state.stage);
+  const assemblyStage = assemblyStageOf(state.stage);
+  const assembly = assemblyStage ? state.assemblies[assemblyStage] : null;
+  const placedPieces = new Set(Object.values(assembly?.placed ?? {}));
+  const canContinue = rainwaterCanContinue(state);
 
   return (
     <div
+      ref={rootRef}
+      data-testid="rainwater-mission"
+      data-ready={ready}
+      data-stage={state.stage}
+      data-saved-litres={saved}
+      data-spilling={state.stage === "rooftop" ? spillingSockets(state).length : 0}
+      data-first-flush={state.firstFlushOpen}
+      data-water-clear={waterIsClear(state)}
+      data-lost-litres={lostLitres}
+      data-storm-active={storm?.active ?? ""}
+      data-storm-elapsed={storm ? storm.elapsed.toFixed(2) : ""}
+      data-storm-paused={storm?.paused ?? false}
+      data-storm-blocked={storm?.blocked ?? false}
       style={{
         position: "relative",
         width: "100%",
@@ -1398,9 +670,9 @@ export default function RainwaterStorageViewer() {
                 margin: "0 auto",
               }}
             >
-              Join Droppy in Sundargram. Travel through time, build real
-              rainwater-harvesting systems and save 10,000 litres before summer
-              returns.
+              Join Droppy in Sundargram. Build real rainwater-harvesting systems
+              with your own hands and see how much water you can save before
+              summer returns.
             </p>
             <div
               style={{
@@ -1420,7 +692,7 @@ export default function RainwaterStorageViewer() {
                 onClick={() => {
                   unlockNarration();
                   setStarted(true);
-                  playNarration(NARRATIONS[0]);
+                  playNarration(narrationFor(state));
                 }}
                 style={secondaryButtonStyle}
               >
@@ -1436,16 +708,13 @@ export default function RainwaterStorageViewer() {
           <div
             style={{
               position: "absolute",
-              top: 16,
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "min(560px, calc(100vw - 40px))",
+              top: 12,
+              left: 12,
+              width: "min(420px, calc(100vw - 24px))",
               padding: "10px 14px",
-              borderRadius: 14,
-              background: "rgba(8,47,73,0.9)",
-              border: "1px solid rgba(125,211,252,0.48)",
+              borderRadius: 12,
+              background: "rgba(8,47,73,0.88)",
               color: "#f0f9ff",
-              backdropFilter: "blur(10px)",
               zIndex: 5,
             }}
           >
@@ -1454,138 +723,338 @@ export default function RainwaterStorageViewer() {
                 display: "flex",
                 justifyContent: "space-between",
                 gap: 10,
-                fontSize: "0.75rem",
+                fontSize: "0.78rem",
                 fontWeight: 800,
               }}
             >
               <span>💧 WATER SAVED</span>
-              <span>{waterSaved.toLocaleString("en-IN")} / 10,000 L</span>
+              <span>{saved.toLocaleString("en-US")} / 10,000 L</span>
             </div>
             <div
               style={{
-                height: 9,
+                height: 8,
                 marginTop: 7,
-                borderRadius: 99,
+                borderRadius: 4,
+                background: "rgba(255,255,255,0.16)",
                 overflow: "hidden",
-                background: "rgba(255,255,255,0.14)",
               }}
             >
               <div
                 style={{
-                  width: `${waterPercent}%`,
+                  width: `${Math.min(100, saved / 100)}%`,
                   height: "100%",
-                  borderRadius: 99,
-                  background:
-                    "linear-gradient(90deg, #22d3ee, #38bdf8, #86efac)",
-                  transition: "width 900ms ease",
+                  background: "linear-gradient(90deg, #38bdf8, #4ade80)",
+                  transition: "width 0.9s ease",
                 }}
               />
             </div>
+            {state.stage === "rainy-day" && state.observedRunoff && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: 8,
+                  color: "#fda4af",
+                  fontSize: "0.78rem",
+                  fontWeight: 800,
+                }}
+              >
+                <span>🚰 LOST TO THE DRAIN</span>
+                <span>{lostLitres.toLocaleString("en-US")} L</span>
+              </div>
+            )}
           </div>
 
           <aside
             style={{
               position: "absolute",
-              top: 76,
-              right: 16,
-              width: 370,
-              maxWidth: "calc(100vw - 32px)",
-              maxHeight: "calc(100vh - 96px)",
+              right: 12,
+              bottom: 12,
+              width: "min(330px, calc(100vw - 24px))",
+              maxHeight: "calc(100vh - 92px)",
               overflowY: "auto",
-              padding: 18,
-              borderRadius: 15,
-              background: "rgba(8,47,73,0.94)",
-              border: "1px solid rgba(125,211,252,0.45)",
+              padding: 14,
+              borderRadius: 12,
+              background: "rgba(8,47,73,0.9)",
               color: "#f0f9ff",
-              backdropFilter: "blur(12px)",
               zIndex: 5,
             }}
           >
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 8,
                 color: "#7dd3fc",
-                fontSize: "0.68rem",
+                fontSize: "0.72rem",
                 fontWeight: 800,
-                textTransform: "uppercase",
-                letterSpacing: "0.09em",
+                letterSpacing: "0.08em",
               }}
             >
-              <span>
-                Mission {stage + 1}/{STAGES.length}
-              </span>
-              <span>{STAGES[stage].zone}</span>
+              STEP {stageIndex + 1} OF {RAINWATER_STAGES.length}
             </div>
-            <h2 style={{ margin: "10px 0 8px", fontSize: "1.22rem" }}>
-              {STAGES[stage].title}
+            <h2 style={{ margin: "4px 0 8px", fontSize: "1.1rem" }}>
+              {STAGE_TITLES[state.stage]}
             </h2>
-            <p style={bodyCopyStyle}>{STAGES[stage].cue}</p>
-            <div
-              style={{
-                padding: 11,
-                borderRadius: 9,
-                background: "rgba(125,211,252,0.08)",
-                border: "1px solid rgba(125,211,252,0.2)",
-                marginBottom: 11,
-              }}
-            >
-              <div style={{ ...bodyCopyStyle, margin: 0 }}>
-                {STAGES[stage].detail}
-              </div>
-            </div>
-            <button
-              onClick={performAction}
-              disabled={missionComplete}
-              style={{
-                ...primaryButtonStyle,
-                opacity: missionComplete ? 0.62 : 1,
-              }}
-            >
-              {missionComplete
-                ? "🏅 Guardian mission complete"
-                : currentComplete
-                  ? "Continue to the next mission →"
-                  : STAGES[stage].action}
-            </button>
-            <div style={{ display: "flex", gap: 8, marginTop: 9 }}>
-              <button
-                onClick={() => goToStage(stage - 1)}
-                disabled={stage === 0}
-                style={{ ...navButtonStyle, opacity: stage === 0 ? 0.45 : 1 }}
-              >
-                ← Previous
-              </button>
-              <button
-                onClick={() => goToStage(stage + 1)}
-                disabled={!currentComplete || stage === STAGES.length - 1}
-                style={{
-                  ...navButtonStyle,
-                  opacity:
-                    !currentComplete || stage === STAGES.length - 1 ? 0.45 : 1,
-                }}
-              >
-                Next →
-              </button>
-            </div>
+            <p style={bodyCopyStyle}>{rainwaterPrompt(state)}</p>
             <div
               role="status"
-              style={{
-                marginTop: 11,
-                color: currentComplete ? "#86efac" : "#fde68a",
-                fontSize: "0.76rem",
-                lineHeight: 1.5,
-                textAlign: "center",
-              }}
+              style={{ minHeight: 18, color: "#fde68a", fontSize: "0.8rem" }}
             >
-              {currentComplete
-                ? "Discovery complete • press Continue or controller A"
-                : "Point and select the glowing model, or use the action button"}
+              {state.feedback}
+            </div>
+
+            {state.stage === "rainy-day" && (
+              <button
+                style={primaryButtonStyle}
+                onClick={() => dispatch({ type: "observe" })}
+              >
+                Follow the raindrop
+              </button>
+            )}
+            {state.stage === "drought" &&
+              DROUGHT_CHOICES.map(({ option, label }) => (
+                <button
+                  key={option}
+                  style={secondaryButtonStyle}
+                  onClick={() => dispatch({ type: "choose", option })}
+                >
+                  {label}
+                </button>
+              ))}
+            {state.stage === "filter" && (
+              <button
+                style={secondaryButtonStyle}
+                disabled={state.firstFlushOpen}
+                onClick={() => dispatch({ type: "open-first-flush" })}
+              >
+                {state.firstFlushOpen
+                  ? "First-flush valve is open"
+                  : "Open the first-flush valve"}
+              </button>
+            )}
+            {assembly && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                {Object.keys(assembly.pieces)
+                  .filter((id) => !placedPieces.has(id))
+                  .map((id) => (
+                    <button
+                      key={id}
+                      aria-pressed={assembly.picked === id}
+                      style={
+                        assembly.picked === id
+                          ? primaryButtonStyle
+                          : secondaryButtonStyle
+                      }
+                      onClick={() =>
+                        dispatch({
+                          type: "assembly",
+                          action: { kind: "pick", pieceId: id },
+                        })
+                      }
+                    >
+                      Pick up {PIECE_LABELS[id]}
+                    </button>
+                  ))}
+                {assembly.sockets.map(({ id }) => {
+                  const piece = assembly.placed[id];
+                  return piece ? (
+                    <button
+                      key={id}
+                      style={secondaryButtonStyle}
+                      onClick={() =>
+                        dispatch({
+                          type: "assembly",
+                          action: { kind: "remove", socketId: id },
+                        })
+                      }
+                    >
+                      Remove from {SOCKET_LABELS[id]}
+                    </button>
+                  ) : (
+                    <button
+                      key={id}
+                      disabled={assembly.picked === null}
+                      style={{
+                        ...secondaryButtonStyle,
+                        opacity: assembly.picked === null ? 0.5 : 1,
+                      }}
+                      onClick={() =>
+                        dispatch({
+                          type: "assembly",
+                          action: { kind: "place", socketId: id },
+                        })
+                      }
+                    >
+                      Place on {SOCKET_LABELS[id]}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+            {state.stage === "storm" && !storm && (
+              <>
+                <button style={primaryButtonStyle} onClick={() => startStorm(1)}>
+                  ⛈️ Start the storm
+                </button>
+                <button
+                  style={secondaryButtonStyle}
+                  onClick={() => startStorm(0.5)}
+                >
+                  Start at a slower pace
+                </button>
+              </>
+            )}
+            {state.stage === "storm" && storm && (
+              <>
+                <div style={{ display: "grid", gap: 5, marginBottom: 6 }}>
+                  {STORM_ROUTES.map(({ target, label, key }) => {
+                    const level = storm.levels[target];
+                    const capacity = STORM.capacities[target];
+                    const full = level >= capacity - 1;
+                    return (
+                      <button
+                        key={target}
+                        aria-pressed={storm.active === target}
+                        disabled={stormResult(storm).finished}
+                        onClick={() => routeTo(target)}
+                        style={{
+                          ...(storm.active === target
+                            ? primaryButtonStyle
+                            : secondaryButtonStyle),
+                          marginTop: 0,
+                          position: "relative",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <span
+                          aria-hidden
+                          style={{
+                            position: "absolute",
+                            left: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: `${Math.min(100, (level / capacity) * 100)}%`,
+                            background: full
+                              ? "rgba(248,113,113,0.5)"
+                              : "rgba(56,189,248,0.4)",
+                          }}
+                        />
+                        <span style={{ position: "relative" }}>
+                          {key}: {label} {full ? "(full)" : ""}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {storm.blocked && (
+                  <button style={primaryButtonStyle} onClick={clearLeaves}>
+                    🍂 Clear the leaves (B)
+                  </button>
+                )}
+                {storm.paused && !stormResult(storm).finished && (
+                  <button
+                    style={primaryButtonStyle}
+                    onClick={() => publishStorm(setStormPaused(storm, false))}
+                  >
+                    Resume the storm
+                  </button>
+                )}
+                <div style={{ fontSize: "0.8rem", color: "#e0f2fe", marginTop: 4 }}>
+                  Routed {Math.round(storm.routed).toLocaleString("en-US")} L •
+                  Flooded {Math.round(storm.flooded).toLocaleString("en-US")} L
+                  {!stormResult(storm).finished &&
+                    ` • ${Math.ceil(STORM.durationSeconds - storm.elapsed)} s left`}
+                </div>
+                {stormResult(storm).finished && (
+                  <button
+                    style={secondaryButtonStyle}
+                    onClick={() => startStorm(storm.pace)}
+                  >
+                    Play the storm again
+                  </button>
+                )}
+              </>
+            )}
+            {state.stage === "summer" && (
+              <>
+                {SUMMER_CHOICES.map(({ target, label }) => (
+                  <button
+                    key={target}
+                    style={secondaryButtonStyle}
+                    onClick={() => dispatch({ type: "allocate", target })}
+                  >
+                    {label} ({state.allocated[target].toLocaleString("en-US")} /{" "}
+                    {SUMMER_NEEDS[target].toLocaleString("en-US")} L)
+                  </button>
+                ))}
+                <button
+                  style={secondaryButtonStyle}
+                  onClick={() => dispatch({ type: "try-drinking" })}
+                >
+                  Drink it
+                </button>
+              </>
+            )}
+            {state.stage === "finale" && (
+              <>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 6,
+                    marginBottom: 6,
+                    fontSize: "0.78rem",
+                  }}
+                >
+                  <div style={compareCardStyle}>
+                    <strong>A village that lets its rain run away</strong>
+                    <div>0 L saved</div>
+                    <div>Pond dry, crops wilting</div>
+                  </div>
+                  <div style={compareCardStyle}>
+                    <strong>Your Sundargram</strong>
+                    <div>{saved.toLocaleString("en-US")} L saved</div>
+                    <div>
+                      {summerShortage(state) > 0
+                        ? `${summerShortage(state).toLocaleString("en-US")} L short this summer`
+                        : `${storedLitres(state).toLocaleString("en-US")} L stored for summer`}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  style={primaryButtonStyle}
+                  onClick={() => dispatch({ type: "retry-storm" })}
+                >
+                  Replay the storm
+                </button>
+              </>
+            )}
+
+            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+              <button
+                style={{ ...navButtonStyle, opacity: stageIndex === 0 ? 0.45 : 1 }}
+                disabled={stageIndex === 0}
+                onClick={() => dispatch({ type: "back" })}
+              >
+                Back
+              </button>
+              {state.stage !== "finale" && (
+                <button
+                  style={{
+                    ...navButtonStyle,
+                    opacity: canContinue ? 1 : 0.45,
+                    fontWeight: 800,
+                  }}
+                  disabled={!canContinue}
+                  onClick={() => dispatch({ type: "continue" })}
+                >
+                  Continue
+                </button>
+              )}
             </div>
             <button
-              onClick={() => playNarration(NARRATIONS[stage])}
               style={secondaryButtonStyle}
+              onClick={() =>
+                playNarration(narrationFor(state))
+              }
             >
               🔊 Replay Droppy’s narration
             </button>
@@ -1595,72 +1064,76 @@ export default function RainwaterStorageViewer() {
               </button>
             )}
           </aside>
-
-          <div
-            style={{
-              position: "absolute",
-              bottom: 16,
-              left: 16,
-              maxWidth: 620,
-              padding: "7px 10px",
-              borderRadius: 9,
-              background: "rgba(8,47,73,0.82)",
-              color: "#e0f2fe",
-              fontSize: "0.72rem",
-              zIndex: 4,
-            }}
-          >
-            Quest: point + trigger interacts • A completes/continues • B or
-            right grip exits VR • Y goes back • joysticks walk and turn
-          </div>
         </>
       )}
-
-      <div
-        aria-hidden={!transitioning}
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 8,
-          display: "grid",
-          placeItems: "center",
-          pointerEvents: "none",
-          background: transitioning ? "rgba(2,23,39,0.68)" : "transparent",
-          opacity: transitioning ? 1 : 0,
-          transition: "opacity 300ms ease",
-        }}
-      >
-        <div
-          style={{
-            padding: "14px 24px",
-            borderRadius: 14,
-            background: "rgba(8,47,73,0.92)",
-            border: "1px solid #7dd3fc",
-            color: "#f0f9ff",
-            fontWeight: 800,
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "#7dd3fc",
-              fontSize: "0.7rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.12em",
-            }}
-          >
-            Travelling to
-          </div>
-          <div style={{ marginTop: 5 }}>{STAGES[stage].zone}</div>
-        </div>
-      </div>
     </div>
   );
 }
 
+function hudChoiceLabels(state: RainwaterState): string[] {
+  if (state.stage === "rainy-day") return ["Follow the raindrop"];
+  if (state.stage === "drought") return DROUGHT_CHOICES.map((c) => c.label);
+  if (state.stage === "filter" && !state.firstFlushOpen) return ["Open valve"];
+  if (state.stage === "storm") return ["Start storm", "Slower pace"];
+  if (state.stage === "summer") return SUMMER_CHOICES.map((c) => c.label);
+  if (state.stage === "finale") return ["Replay the storm"];
+  return [];
+}
+
+function hudChoice(
+  state: RainwaterState,
+  index: number,
+  dispatch: (action: RainwaterAction) => void,
+  startStorm: (pace: 1 | 0.5) => void,
+) {
+  if (state.stage === "rainy-day") dispatch({ type: "observe" });
+  else if (state.stage === "drought")
+    dispatch({ type: "choose", option: DROUGHT_CHOICES[index]!.option });
+  else if (state.stage === "filter") dispatch({ type: "open-first-flush" });
+  else if (state.stage === "storm") startStorm(index === 0 ? 1 : 0.5);
+  else if (state.stage === "summer")
+    dispatch({ type: "allocate", target: SUMMER_CHOICES[index]!.target });
+  else if (state.stage === "finale") dispatch({ type: "retry-storm" });
+}
+
+function hudContent(
+  state: RainwaterState,
+  storm: StormState | null,
+): VrHudContent {
+  const index = RAINWATER_STAGES.indexOf(state.stage);
+  if (state.stage === "storm" && storm && !stormResult(storm).finished) {
+    return {
+      eyebrow: `${Math.ceil(STORM.durationSeconds - storm.elapsed)} s left`,
+      title: storm.blocked ? "Leaves! Clear the channel" : "Turn the valves",
+      body: STORM_ROUTES.map(
+        ({ target, label }) =>
+          `${label}: ${Math.round(storm.levels[target])} / ${STORM.capacities[target]} L`,
+      ).join("  •  "),
+      hint: `Routed ${Math.round(storm.routed)} L, flooded ${Math.round(storm.flooded)} L`,
+      buttons: ["exit"],
+    };
+  }
+  return {
+    eyebrow: `Step ${index + 1} of ${RAINWATER_STAGES.length} • ${savedLitres(state).toLocaleString("en-US")} L saved`,
+    title: STAGE_TITLES[state.stage],
+    body: state.feedback ?? rainwaterPrompt(state),
+    hint: rainwaterCanContinue(state) ? "Ready: press A to continue" : undefined,
+    choices: (storm && state.stage === "storm"
+      ? ["Play again", "Slower pace"]
+      : hudChoiceLabels(state)
+    ).map((label) => ({ label })),
+    buttons:
+      state.stage === "finale"
+        ? ["previous", "replay", "exit"]
+        : state.stage === "summer"
+          ? ["previous", "next", "help", "exit"]
+          : ["previous", "next", "replay", "exit"],
+  };
+}
+
 const primaryButtonStyle = {
   width: "100%",
-  padding: "11px 16px",
+  padding: "9px 10px",
   borderRadius: 9,
   border: 0,
   background: "linear-gradient(135deg, #0284c7, #0e7490)",
@@ -1668,6 +1141,14 @@ const primaryButtonStyle = {
   fontWeight: 800,
   cursor: "pointer",
   marginTop: 7,
+} as const;
+
+const compareCardStyle = {
+  padding: 8,
+  borderRadius: 8,
+  background: "rgba(125,211,252,0.1)",
+  display: "grid",
+  gap: 4,
 } as const;
 
 const secondaryButtonStyle = {

@@ -1,0 +1,262 @@
+[
+  {
+    "file": "control-station.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 4480,
+    "sha256": "49b0ec82f728b3c3bb239a965822e56d3d1c562e866ac244d36691de001c26cd",
+    "triangles": 172
+  },
+  {
+    "file": "courtyard-ground.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 223252,
+    "sha256": "cced13e6a96b6d0d3a36b46e1e76e7a2b13a605ebaef10477d1e1977882b2075",
+    "triangles": 13482
+  },
+  {
+    "file": "crops.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 17196,
+    "sha256": "01dc38741933a8cb0fdbd02483d12da24813b3eb5f34d2498afb24f0ac39e629",
+    "triangles": 480
+  },
+  {
+    "file": "downpipe.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 6148,
+    "sha256": "d5aa8410e456eb720ddda0b4ca6566b1bd2f83a372a8f32b8c65ee44f736bfdc",
+    "triangles": 236
+  },
+  {
+    "file": "droppy.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 24636,
+    "sha256": "dcca63a1e268bb5b6e84e58755d85c949b5d7e3d44fb3f67147be127b5d86234",
+    "triangles": 810
+  },
+  {
+    "file": "filter-charcoal.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 17488,
+    "sha256": "a842c958ab31ce586796749a35ed0de12fa7a1b4f5f71297c490ddb135c73c61",
+    "triangles": 484
+  },
+  {
+    "file": "filter-sand.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 11352,
+    "sha256": "e15c61bc271e1d5ae42b585788f91ca2c5ad284cd58f11f1b385d18499fa5595",
+    "triangles": 284
+  },
+  {
+    "file": "filter-stones.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 18104,
+    "sha256": "1165a8cd8f3a40d37c9505124172332d6e3ac5cfe12376e2f43f5599b9360619",
+    "triangles": 484
+  },
+  {
+    "file": "filter-unit.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 8748,
+    "sha256": "ece380cc9d7a653f7af614d82fc3ca48aaf49ed37d9fbd8ef00d49de332b7316",
+    "triangles": 396
+  },
+  {
+    "file": "flush-valve.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 7884,
+    "sha256": "32951f8ef2f639419795db98c159f11a71f590f1dfade1addc0eda08b705f9cd",
+    "triangles": 340
+  },
+  {
+    "file": "goat.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 4360,
+    "sha256": "ff4fe9bc6008aa2bf0827a5d17114d392015cc57d0a0ab247599385a3b541508",
+    "triangles": 124
+  },
+  {
+    "file": "guardian-badge.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 8540,
+    "sha256": "8c84b340fa27e3fce2ab58410e5386c2cef48c76aff38f12e391704e094b75f3",
+    "triangles": 326
+  },
+  {
+    "file": "gutter-piece.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 3240,
+    "sha256": "4e2c376fad1aed595c1283d8c4812ca682a4b56e9709062c5c1b87450879901f",
+    "triangles": 84
+  },
+  {
+    "file": "leaf-pile.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 11816,
+    "sha256": "3d50e0945f7ab931b0fbcfc5e44485ac37e298b406b48e1ec2ee26308c10c1cf",
+    "triangles": 280
+  },
+  {
+    "file": "pit-large-stones.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 14828,
+    "sha256": "36742fd62ec9e1c9fcf92dd5cacbbb9bfe1e76f88c1ac469355238d4b5edf6ac",
+    "triangles": 372
+  },
+  {
+    "file": "pit-sand.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 16300,
+    "sha256": "842cafd3a7b99b4bb5d21651365f04f1e2c30c884638fa46ee1e6ccb3f905e39",
+    "triangles": 432
+  },
+  {
+    "file": "pit-small-stones.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 24136,
+    "sha256": "9ec304ea3727bb3fd849ae2c590840626bb42d8949fba1bc1695502a02688dc2",
+    "triangles": 672
+  },
+  {
+    "file": "pond.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 18952,
+    "sha256": "0c3425c7814974dcedc1cf6e11b98c4c2e86b4dc0ed4eae236624a5e41ff1684",
+    "triangles": 552
+  },
+  {
+    "file": "recharge-cutaway.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 13048,
+    "sha256": "a2361b1ea0769af5f7edf37320b9c84b3a21124dea02730ee21b4e49947225d5",
+    "triangles": 804
+  },
+  {
+    "file": "school-gutter.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 3540,
+    "sha256": "824e462cec7549a6b6b13b737028e6bcfaa7ffc61af19b2355a579a91c759ebf",
+    "triangles": 120
+  },
+  {
+    "file": "school-pipe.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 3612,
+    "sha256": "8bde961b2798f16b1b8acf61a8e1c94d0df38b3d1621889338766cbb2ad7ca80",
+    "triangles": 84
+  },
+  {
+    "file": "school-tank-cover.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 3452,
+    "sha256": "3f170e880c9d5d088d9bccf98fa35fd2f9bc3726fbea411c824ebc9c146f2ccf",
+    "triangles": 88
+  },
+  {
+    "file": "school.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 28428,
+    "sha256": "632827d3a31131e97e9fec6ca426b3ef9e449c8b7f24399136f0662c4b6c22b0",
+    "triangles": 2236
+  },
+  {
+    "file": "summer-props.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 3108,
+    "sha256": "e22723434b1dd2048e5db30ea7cc1bed83221bd2134e532e28c16ee44cbb6bef",
+    "triangles": 60
+  },
+  {
+    "file": "sundargram-house.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 35232,
+    "sha256": "cf3d8778a460ee9f6a914972e446e967e1a688e08b6a125188673a8056d2c208",
+    "triangles": 2544
+  },
+  {
+    "file": "village-backdrop.glb",
+    "source": "scripts/blender/build_rainwater_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 230012,
+    "sha256": "e0794975964b1f3de8adbaff79b48bd2b2f4eed9ebaf9124c30204a51fa72de4",
+    "triangles": 8872
+  }
+]
