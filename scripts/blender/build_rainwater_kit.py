@@ -738,7 +738,7 @@ def build_backdrop():
     ):
         mango_tree(kit, x, y, scale)
     for x, y, scale in (
-        (-9, -10, 1.0),
+        (-20, -11, 1.0),
         (5.8, 5.5, 1.1),
         (-19, -3, 1.2),
         (14, -2, 1.15),

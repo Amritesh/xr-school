@@ -70,7 +70,7 @@ const FOCI: Partial<Record<RainwaterStageId, Focus>> = {
   filter: focus([0.75, 2.2, 7.2], [1.35, 1.4, 2.6]),
   school: focus([-8.0, 4.4, 12.6], [-6.9, 1.7, 1.8]),
   recharge: focus([7.4, 2.2, 8.4], [8.4, 1.05, 2.6]),
-  storm: focus([2.7, 6.6, 15.5], [2.7, 0.9, 3.2]),
+  storm: focus([3.6, 7.4, 17.5], [3.6, 0.9, 3.2]),
   summer: focus([0.6, 2.7, 10.4], [0.3, 1.0, 2.8]),
   finale: focus([0.8, 2.4, 9.2], [1.1, 1.4, 2.4]),
 };

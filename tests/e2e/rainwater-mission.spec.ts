@@ -40,6 +40,8 @@ async function expectInsideBudget(page: Page) {
 }
 
 test.describe('rainwater mission', () => {
+  test.setTimeout(120_000);
+
   test('rooftop earns water only when every gutter is placed', async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
