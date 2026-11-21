@@ -430,10 +430,10 @@ def build_classroom():
     for i in range(1, 11):
         kit.box((-0.42, y0 + i * 0.25, TABLE_TOP + 0.003), (0.06, 0.012, 0.004), "mark", jitter=0.0)
         kit.box((0.42, y0 + i * 0.25, TABLE_TOP + 0.003), (0.06, 0.012, 0.004), "mark", jitter=0.0)
-    for label, x in (("Smooth", -0.48), ("Rough", 0.48)):
-        kit.box((x, -0.45, TABLE_TOP + 0.2), (0.03, 0.03, 0.4), "wood_dark")
-        kit.box((x, -0.45, TABLE_TOP + 0.42), (0.42, 0.03, 0.16), "sign", jitter=0.0)
-        kit.text(label, (x, -0.47, TABLE_TOP + 0.38), 0.09, "sign_text")
+    # Lane names painted flat on the table, so nothing blocks the view down the lanes.
+    for label, x in (("Smooth", -0.2), ("Rough", 0.2)):
+        kit.box((x, -0.47, TABLE_TOP + 0.003), (0.34, 0.12, 0.004), "sign", jitter=0.0)
+        kit.text(label, (x, -0.49, TABLE_TOP + 0.006), 0.07, "sign_text", rot=(0, 0, 0))
     model("classroom", [(kit, None)], bake_ao=True)
 
 

@@ -70,7 +70,8 @@ describe('released simulation registry consumers', () => {
     } finally {
       await app.close();
     }
-  });
+    // Cold-imports the whole API app; under a full parallel run that alone can pass 5 s.
+  }, 20_000);
 
   it('derives every classroom launch from the released registry', () => {
     expect(DEMO_ACTIVITIES.map(activity => activity.id).sort()).toEqual(releasedSlugs);

@@ -140,6 +140,14 @@ describe('force lab scene', () => {
     });
   });
 
+  it('caps a slow frame so a moving ball is still there to tap', async () => {
+    const { world } = await setup();
+    world.apply(at('playground'));
+    world.kick(2.6);
+    world.update(5);
+    expect(world.ballMoving()).toBe(true);
+  });
+
   it('gives each scene its own camera view and VR standing spot', async () => {
     const { world } = await setup();
     const spots = (['store', 'playground', 'friction', 'wall'] as const).map(id => world.vrSpotFor(id));

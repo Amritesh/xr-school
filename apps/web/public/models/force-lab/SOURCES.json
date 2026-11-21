@@ -5,9 +5,9 @@
     "author": "XR School project",
     "license": "XR-School-original",
     "modifications": "Original procedural model; meshopt compression",
-    "bytes": 108240,
-    "sha256": "1e449ee82a3765b12bc963e0dff6bf040178ccdc2902700843c613023c0e68d1",
-    "triangles": 6976
+    "bytes": 107112,
+    "sha256": "f2b799589a5a6d682ac117810085f954c116628ba9ea8f4003d5ee72624eb847",
+    "triangles": 6952
   },
   {
     "file": "courtyard.glb",

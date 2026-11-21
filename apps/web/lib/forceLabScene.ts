@@ -52,6 +52,7 @@ const REACH = 0.45;
 const SWING_SPEED = 4;
 
 const ARROW_SECONDS = 0.8;
+const MAX_STEP_SECONDS = 0.1;
 
 interface Focus {
   position: THREE.Vector3;
@@ -63,8 +64,8 @@ const focus = (p: [number, number, number], t: [number, number, number]): Focus 
 });
 const FOCI: Record<ForceLabSceneId, Focus> = {
   store: focus([0.1, 1.6, 3.3], [0, 0.75, -0.6]),
-  playground: focus([1.0, 1.55, 3.1], [0, 0.3, -1.0]),
-  friction: focus([0.95, 1.45, 2.35], [0, 0.72, -0.35]),
+  playground: focus([1.5, 1.7, 3.8], [-0.2, 0.35, -0.7]),
+  friction: focus([0.55, 1.75, 2.05], [0, 0.7, -0.55]),
   wall: focus([0.7, 1.6, 3.3], [0, 0.6, -0.9]),
   quiz: focus([0.7, 1.6, 3.3], [0, 0.6, -0.9]),
 };
@@ -95,29 +96,6 @@ const boxFallback = (x: number, y: number, z: number, colour: number, lift = tru
   return group(mesh);
 };
 const ballFallback = (radius: number, colour: number) => () => group(flat(new THREE.SphereGeometry(radius, 16, 12), colour));
-
-function makeLabel(text: string, colour: string): THREE.Object3D {
-  if (typeof document === 'undefined') return new THREE.Object3D();
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 96;
-  const context = canvas.getContext('2d');
-  if (!context) return new THREE.Object3D();
-  context.font = 'bold 72px sans-serif';
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
-  context.lineWidth = 10;
-  context.strokeStyle = 'rgba(255,255,255,0.95)';
-  context.strokeText(text, 128, 50);
-  context.fillStyle = colour;
-  context.fillText(text, 128, 50);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true }));
-  sprite.scale.set(0.6, 0.225, 1);
-  sprite.renderOrder = 20;
-  return sprite;
-}
 
 export async function createForceLabScene(
   scene: THREE.Scene,
@@ -211,7 +189,7 @@ export async function createForceLabScene(
 
   // ---------------------------------------------------------------- playground
   football.position.copy(BALL_HOME);
-  riya.position.set(-0.55, 0, 1.15);
+  riya.position.set(-0.6, 0, 1.0);
   riya.rotation.y = Math.PI;
   const riyaLeg = riya.getObjectByName('riya-leg');
   let ball: Roller | null = null;
@@ -232,7 +210,8 @@ export async function createForceLabScene(
 
   // ---------------------------------------------------------------- wall
   tennisBall.position.copy(THROW_FROM);
-  racket.position.set(0.55, 0.85, 1.75);
+  racket.position.set(0.85, 0.7, 2.0);
+  racket.scale.setScalar(0.8);
   racket.rotation.z = -0.4;
   groups.wall.add(racket);
   const courtRiya = riya.clone();
@@ -250,8 +229,10 @@ export async function createForceLabScene(
   const arrow = group(arrowShaft, arrowHead);
   arrow.visible = false;
   root.add(arrow);
-  const pushLabel = makeLabel('PUSH', '#1d8f46');
-  const pullLabel = makeLabel('PULL', '#b96d00');
+  // Text labels render black through the shared presentation pipeline, so the
+  // arrow colour carries the meaning (green push, orange pull) with the caption.
+  const pushLabel = new THREE.Object3D();
+  const pullLabel = new THREE.Object3D();
   pushLabel.visible = false;
   pullLabel.visible = false;
   root.add(pushLabel, pullLabel);
@@ -474,8 +455,10 @@ export async function createForceLabScene(
     object.rotateOnWorldAxis(rollAxis, (speed / radius) * dt);
   }
 
-  function update(dt: number) {
-    if (!Number.isFinite(dt) || dt <= 0) return;
+  function update(frameSeconds: number) {
+    if (!Number.isFinite(frameSeconds) || frameSeconds <= 0) return;
+    // A slow frame must not teleport a ball past the moment a child is waiting for.
+    const dt = Math.min(frameSeconds, MAX_STEP_SECONDS);
     time += dt;
     arrowTimer = Math.max(0, arrowTimer - dt);
     if (arrowTimer === 0) {
@@ -561,6 +544,7 @@ export async function createForceLabScene(
     throwBall,
     feedBall,
     ballInReach,
+    tennisMoving: () => tennis !== null && Math.hypot(tennis.vx, tennis.vz) > 0,
     swing,
     arrowVisible: () => arrow.visible,
     targets: { trolley, wagon, door, football, cars, tennisBall, racket },
