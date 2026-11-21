@@ -1,0 +1,132 @@
+[
+  {
+    "file": "classroom.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 107112,
+    "sha256": "f2b799589a5a6d682ac117810085f954c116628ba9ea8f4003d5ee72624eb847",
+    "triangles": 6952
+  },
+  {
+    "file": "courtyard.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 43196,
+    "sha256": "3ae2eaef3715ad7a3f231a2c6623c2c8760cf83d25995e1a6e2f81da3eb9a002",
+    "triangles": 2104
+  },
+  {
+    "file": "door.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 5020,
+    "sha256": "066a0feca8c952dc354fb5cf8275a62b11a78d43574e9ed1ef5faf4ff6565060",
+    "triangles": 196
+  },
+  {
+    "file": "football.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 4788,
+    "sha256": "25661542a3f32413696c6823736f718a1a79ae40f0ae52b318e8ac03ec8b391d",
+    "triangles": 80
+  },
+  {
+    "file": "playground.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 57692,
+    "sha256": "2368ee8373b49aaaff7b0df5ca85f6e4af3cc50c4ce4747403167ee8e88e0dde",
+    "triangles": 4460
+  },
+  {
+    "file": "racket.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 14564,
+    "sha256": "24c0bc6bf9e4daef5a6eb11c511cd8a508fc69240fad10517a314deffa9f629e",
+    "triangles": 776
+  },
+  {
+    "file": "riya.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 51452,
+    "sha256": "c5eeaacc4346ad5d37913d2a2f2bf8f44d46ddcc9e2c29358e2b3085cb1d222d",
+    "triangles": 1816
+  },
+  {
+    "file": "stop-flag.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 2744,
+    "sha256": "42b1dd016c56d77b989512b350161526547b00f1b7c8c04898bae5e977c590b6",
+    "triangles": 32
+  },
+  {
+    "file": "store-room.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 73564,
+    "sha256": "a92eb07ed44a5156903ac76aa2b551fbafbcece55d1ba109daa1a0a5f7f7fe4f",
+    "triangles": 3620
+  },
+  {
+    "file": "tennis-ball.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 8456,
+    "sha256": "750c42d59d22b521305ce737fba6928a9df25c3cb0c7341d10682c87faaae11f",
+    "triangles": 272
+  },
+  {
+    "file": "toy-car.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 8020,
+    "sha256": "43aae8b63ba23e88c0313d311f9551a07061400d1f5be98a0b9f3da4298d1921",
+    "triangles": 348
+  },
+  {
+    "file": "trolley.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 16288,
+    "sha256": "3c198ab3836bb40ddd830424254dc5049b444e55c60ce0bac9a03ea61a7677ca",
+    "triangles": 944
+  },
+  {
+    "file": "wagon.glb",
+    "source": "scripts/blender/build_force_lab_kit.py",
+    "author": "XR School project",
+    "license": "XR-School-original",
+    "modifications": "Original procedural model; meshopt compression",
+    "bytes": 10480,
+    "sha256": "4f59efd5e62aa022ea7c2a7c56fb29376cabac1358762e9fc54363c59e2767d5",
+    "triangles": 456
+  }
+]

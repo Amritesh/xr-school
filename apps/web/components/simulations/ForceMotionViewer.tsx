@@ -2,74 +2,70 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import type {
-  NormalizedInputSource,
-} from '@xr-school/simulation-schema';
-import type {
-  LessonSnapshot,
-} from '@xr-school/simulation-runtime';
+import type { LessonSnapshot } from '@xr-school/simulation-runtime';
 import SimulationExperienceShell, {
   type ExperiencePreferences,
 } from '@/components/simulation-experience/SimulationExperienceShell';
 import SimulationCanvasHost from '@/components/simulation-experience/SimulationCanvasHost';
-import { playSimulationNarration, stopSimulationNarration } from '@/lib/simulationAudio';
-import { narrationAudioUrls } from '@/lib/simulationNarrationAssets';
-import { createVrHudPanel, type VrHudContent } from '@/lib/vr/vrHudPanel';
+import {
+  FORCE_LAB_SCENES,
+  QUIZ,
+  createForceLabState,
+  forceLabCanContinue,
+  forceLabPrompt,
+  reduceForceLab,
+  type ForceLabAction,
+  type ForceLabSceneId,
+  type ForceLabState,
+  type Surface,
+} from '@/lib/forceLabLesson';
+import { createForceLabScene, type DragId, type ForceLabScene } from '@/lib/forceLabScene';
+import { createVrHudPanel, type VrHudButtonId, type VrHudContent } from '@/lib/vr/vrHudPanel';
 import { createVrLocomotion } from '@/lib/vr/vrLocomotion';
 import { createVrPlayerRig } from '@/lib/vr/vrPlayerRig';
-import {
-  FORCE_MOTION_EXPERIENCE_DEFINITION,
-  createForceMotionExperience,
-  type ForceMotionExperience,
-} from '@/lib/world-builder/forceMotionExperience';
-import {
-  createForceMotionScene,
-  type ForceMotionScene,
-} from '@/lib/world-builder/forceMotionScene';
-import type { ForceMotionMaterials } from '@/lib/world-builder/forceMotionAnatomy';
-import {
-  resolveFocusGuide,
-  type FocusGuideVisibility,
-} from '@/lib/world-builder/focusGuidance';
+import { createGlbAssetLoader } from '@/lib/world-builder/glbAssets';
+import { createGuidedCamera } from '@/lib/world-builder/guidedCamera';
+import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
+import { publishRenderStats, readRenderStats } from '@/lib/world-builder/renderBudget';
 import {
   createWebSimulationRuntime,
   type WebSimulationRuntime,
   type WebSimulationUpdates,
 } from '@/lib/world-builder/webSimulationRuntime';
-import {
-  computeFocusFrame,
-  createGuidedCamera,
-  type CameraFrame,
-} from '@/lib/world-builder/guidedCamera';
-import { createInteractionSystem } from '@/lib/world-builder/interactionSystem';
+import { playNarration, stopNarration, unlockNarration } from './narrationAudio';
 
 const NARRATIONS = [
-  'A ball sits at rest inside the arena. Give it one push, then watch closely: it keeps rolling on its own even after your push ends, and only turns when it bounces off a wall. That tendency to keep moving is called inertia. The yellow arrow shows its speed and direction.',
-  'The ball is already rolling and, with no force acting on it, it would keep going forever. Apply the brake — a force opposing its motion — and watch the arrow shrink as the ball slows to a stop.',
-  'The ball is rolling at a steady speed. Apply a stronger push in the same direction and watch the arrow grow as the ball speeds up.',
-  'The ball is rolling straight ahead. Apply a sideways push and watch its path bend as the arrow swings to a new direction.',
-  'Squeeze the ball between the two plates, then release it. Notice whether it returns to its original shape once the force is removed.',
-  'Review the comparison board to see all five ways a force changed this ball\'s motion or shape.',
+  "Welcome to our little store! Today we will find out what makes things move. A force is a push or a pull. Grab the trolley handle and push it to the counter.",
+  "Every push and every pull is a force, and every force acts in a direction. Forces can make things start moving.",
+  "It's break time! The football is not moving. It is at rest. Watch Riya. Her kick put a force on the ball, so it started moving. Do you think a gentle kick or a strong kick will make the ball go faster?",
+  "The stronger kick gave a bigger force, so the ball moved faster. Your tap changed its direction. Force can start motion, change speed and change direction.",
+  "Here is a toy car, a ramp and two different floors. Make a guess. Will the car stop sooner on the smooth tiles or on the rough carpet? For a fair test we use the same car, the same starting line, and we let go without pushing.",
+  "The car stopped much sooner on the carpet. A force called friction slowed it down. Friction acts where two surfaces touch, and it works against the motion. Rough surfaces have more friction. Smooth surfaces have less, but never none.",
+  "Welcome to the practice wall. Roll the ball at the wall. Where do you think it will go after it hits?",
+  "When the ball hit the wall, the wall pushed back on it, and that force changed its direction. Your racket did the same. A force can change the direction of a moving object.",
+  "Let's check what you learned. Choose the best answer.",
+  "Well done! You found out that forces are pushes and pulls that can start motion, change speed and change direction, and that friction slows moving things down.",
 ];
-const NARRATION_AUDIO_URLS = narrationAudioUrls('c8-ch10-a02-the-effects-of-force-on-object-s-motion-and-shape');
 
-const ACTION_LABELS: Record<string, string> = {
-  'apply-push': 'Push the resting ball',
-  'apply-brake': 'Apply the brake',
-  'apply-accelerate': 'Push harder to speed up',
-  'apply-deflect': 'Push sideways to redirect',
-  'squeeze-ball': 'Squeeze the ball',
-  'release-ball': 'Release the ball',
-  'compare-motion-effects': 'Compare the effects of force',
+type NarrationKey =
+  | 'store' | 'store-done' | 'playground' | 'playground-done' | 'friction' | 'friction-done'
+  | 'wall' | 'wall-done' | 'quiz' | 'quiz-done';
+const NARRATION_INDEX: Record<NarrationKey, number> = {
+  store: 0, 'store-done': 1, playground: 2, 'playground-done': 3, friction: 4, 'friction-done': 5,
+  wall: 6, 'wall-done': 7, quiz: 8, 'quiz-done': 9,
 };
 
-const EVIDENCE_LABELS: Record<string, string> = {
-  'motion-started': 'A push started the ball moving from rest',
-  'motion-stopped': 'A brake force brought the moving ball to rest',
-  'speed-increased': 'A stronger push in the same direction increased speed',
-  'direction-changed': 'A sideways push changed the ball\'s direction',
-  'shape-changed': 'Squeezing changed the ball\'s shape, and it sprang back on release',
-  'effects-compared': 'Compared how force changed motion and shape across the whole run',
+function narrationKeyFor(state: ForceLabState): NarrationKey {
+  if (state.scene === 'quiz') return state.quiz.complete ? 'quiz-done' : 'quiz';
+  return forceLabCanContinue(state) ? `${state.scene}-done` : state.scene;
+}
+
+const SCENE_TITLES: Record<ForceLabSceneId, string> = {
+  store: 'Push or Pull?',
+  playground: 'Kick Off!',
+  friction: 'Why Do Things Slow Down?',
+  wall: 'Bounce It Back!',
+  quiz: 'Quick Quiz',
 };
 
 const DEFAULT_PREFERENCES: ExperiencePreferences = {
@@ -80,276 +76,127 @@ const DEFAULT_PREFERENCES: ExperiencePreferences = {
   reducedMotion: false,
 };
 
-const DEFAULT_FORCE_MOTION_FRAME: CameraFrame = {
-  position: new THREE.Vector3(0.4, 3.0, 2.6),
-  target: new THREE.Vector3(0, 0.15, 0),
-};
+/** Hand speed for the button fallbacks, chosen to land in each kick band. */
+const GENTLE_HAND = 0.9;
+const STRONG_HAND = 2.6;
+const AUTO_DRAG_SECONDS = 1.1;
 
-const VR_SPAWN = {
-  position: new THREE.Vector3(0.2, -0.05, 2.75),
-  lookAt: new THREE.Vector3(0, 0.35, 0),
-};
-
-// Every stage approaches from the same elevated front-3/4 vantage instead
-// of wherever the previous stage happened to leave the camera — see the
-// Pollination stage-5 fix this pattern is copied from: letting the approach
-// angle drift between stages produced an accidental wide shot once the
-// framed subjects were far enough apart. From the front (+Z) and above, the
-// left-side control panel and the board behind the arena both stay visible.
-const APPROACH_FROM = new THREE.Vector3(0.4, 3.0, 2.6);
-
-type ForceMotionObjectKey =
-  | 'track' | 'ball' | 'pushControl' | 'brakeControl' | 'accelerateControl'
-  | 'deflectControl' | 'shapeRig' | 'squeezeControl' | 'releaseControl' | 'comparisonBoard';
-
-const OBJECT_KEY_BY_ACTION: Record<string, ForceMotionObjectKey> = {
-  'apply-push': 'pushControl',
-  'apply-brake': 'brakeControl',
-  'apply-accelerate': 'accelerateControl',
-  'apply-deflect': 'deflectControl',
-  'squeeze-ball': 'squeezeControl',
-  'release-ball': 'releaseControl',
-  'compare-motion-effects': 'comparisonBoard',
-};
-
-interface StageCameraFocus {
-  objectIds: ForceMotionObjectKey[];
-  fitPadding: number;
-}
-
-// The ball now keeps its velocity and roams the whole arena (bouncing off
-// the walls), so the motion stages frame the entire arena — never just the
-// ball's starting spot — with the stage's control included so the whole
-// play area stays in view no matter where the ball rolls.
-const STAGE_CAMERA_FOCUS: StageCameraFocus[] = [
-  { objectIds: ['track', 'pushControl'], fitPadding: 1.2 }, // 0: push into motion
-  { objectIds: ['track', 'brakeControl'], fitPadding: 1.2 }, // 1: brake to a stop
-  { objectIds: ['track', 'accelerateControl'], fitPadding: 1.2 }, // 2: speed up
-  { objectIds: ['track', 'deflectControl'], fitPadding: 1.2 }, // 3: change direction
-  { objectIds: ['shapeRig', 'squeezeControl', 'releaseControl'], fitPadding: 1.8 }, // 4: change shape
-  { objectIds: ['comparisonBoard', 'track'], fitPadding: 1.25 }, // 5: compare
-];
-
-function focusStageOverview(
-  stageIndex: number,
-  guidedCamera: ReturnType<typeof createGuidedCamera>,
-  camera: THREE.PerspectiveCamera,
-  world: ForceMotionScene,
-) {
-  const focus = STAGE_CAMERA_FOCUS[stageIndex];
-  const objects = focus?.objectIds.map(id => world[id]) ?? [];
-  guidedCamera.focusOn(
-    objects.length > 0
-      ? computeFocusFrame(objects, camera, { fitPadding: focus.fitPadding, approachFrom: APPROACH_FROM })
-      : DEFAULT_FORCE_MOTION_FRAME,
-  );
-}
-
-function isObjectActionSource(source: NormalizedInputSource) {
-  return source === 'xr-controller' || source === 'mouse';
-}
-
-function advanceAfterObjectAction(source: NormalizedInputSource, snapshot: LessonSnapshot) {
-  return isObjectActionSource(source) && snapshot.stageComplete && !snapshot.lessonComplete;
-}
-
-function playNarration(stageIndex: number, enabled: boolean) {
-  if (!enabled) return;
-  void playSimulationNarration(NARRATIONS[stageIndex], stageIndex, NARRATION_AUDIO_URLS[stageIndex]);
-}
-
-function createForceMotionMaterials(): { materials: ForceMotionMaterials; dispose(): void } {
-  const owned: THREE.Material[] = [];
-  const material = (parameters: THREE.MeshStandardMaterialParameters) => {
-    const created = new THREE.MeshStandardMaterial(parameters);
-    owned.push(created);
-    return created;
+function snapshotOf(state: ForceLabState): LessonSnapshot {
+  const index = FORCE_LAB_SCENES.indexOf(state.scene);
+  return {
+    experienceId: 'experience-force-motion',
+    objective: 'Find out how pushes and pulls start, speed up, slow down and turn moving things.',
+    stageIndex: index,
+    stageCount: FORCE_LAB_SCENES.length,
+    stageId: state.scene,
+    stageTitle: SCENE_TITLES[state.scene],
+    cue: forceLabPrompt(state),
+    performedActionIds: [],
+    recordedEvidenceIds: [],
+    stageComplete: forceLabCanContinue(state),
+    lessonComplete: state.quiz.complete,
   };
-
-  const materials: ForceMotionMaterials = {
-    track: material({ color: '#334155', roughness: 0.8, metalness: 0.05 }),
-    ball: material({ color: '#38bdf8', roughness: 0.35, metalness: 0.15 }),
-    shapeBall: material({ color: '#4ade80', roughness: 0.5, metalness: 0.05 }),
-    paddle: material({ color: '#94a3b8', roughness: 0.5, metalness: 0.2 }),
-    pushControl: material({ color: '#4ade80', roughness: 0.35, metalness: 0.1, emissive: '#14532d', emissiveIntensity: 0.4 }),
-    brakeControl: material({ color: '#f87171', roughness: 0.35, metalness: 0.1, emissive: '#7f1d1d', emissiveIntensity: 0.4 }),
-    accelerateControl: material({ color: '#fb923c', roughness: 0.35, metalness: 0.1, emissive: '#7c2d12', emissiveIntensity: 0.4 }),
-    deflectControl: material({ color: '#a78bfa', roughness: 0.35, metalness: 0.1, emissive: '#4c1d95', emissiveIntensity: 0.4 }),
-    shapeControl: material({ color: '#22d3ee', roughness: 0.35, metalness: 0.1, emissive: '#164e63', emissiveIntensity: 0.4 }),
-    velocity: material({ color: '#fde047', roughness: 0.3, metalness: 0.1, emissive: '#a16207', emissiveIntensity: 0.55 }),
-    board: material({ color: '#1e293b', roughness: 0.7, metalness: 0.05 }),
-  };
-
-  return { materials, dispose: () => { for (const item of owned) item.dispose(); } };
 }
+
+interface Choice {
+  label: string;
+  action: ForceLabAction;
+}
+
+function choicesFor(state: ForceLabState): Choice[] {
+  switch (state.scene) {
+    case 'store':
+      return state.store.wagonPulled && !state.store.doorPrediction
+        ? [
+            { label: 'Push the door', action: { type: 'predict-door', option: 'push' } },
+            { label: 'Pull the door', action: { type: 'predict-door', option: 'pull' } },
+          ]
+        : [];
+    case 'playground':
+      return state.playground.prediction
+        ? []
+        : [
+            { label: 'Gentle kick', action: { type: 'predict-kick', option: 'gentle' } },
+            { label: 'Strong kick', action: { type: 'predict-kick', option: 'strong' } },
+          ];
+    case 'friction':
+      return state.friction.prediction
+        ? []
+        : [
+            { label: 'Smooth tiles', action: { type: 'predict-friction', option: 'smooth' } },
+            { label: 'Rough carpet', action: { type: 'predict-friction', option: 'rough' } },
+            { label: 'The same', action: { type: 'predict-friction', option: 'same' } },
+          ];
+    case 'wall':
+      return state.wall.prediction
+        ? []
+        : [
+            { label: 'Back towards me', action: { type: 'predict-bounce', option: 'back' } },
+            { label: 'Through the wall', action: { type: 'predict-bounce', option: 'through' } },
+            { label: 'It stops dead', action: { type: 'predict-bounce', option: 'stop' } },
+          ];
+    case 'quiz':
+      if (state.quiz.complete) return [];
+      return QUIZ[state.quiz.current]!.options.map((label, option) => ({
+        label,
+        action: { type: 'answer', option },
+      }));
+  }
+}
+
+type Grab =
+  | { kind: 'drag'; id: DragId; offset: THREE.Vector3; height: number }
+  | { kind: 'swipe'; samples: { point: THREE.Vector3; time: number }[]; height: number }
+  | { kind: 'car'; surface: Surface };
 
 export default function ForceMotionViewer() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const guidedCameraRef = useRef<ReturnType<typeof createGuidedCamera> | null>(null);
-  const playerRigRef = useRef<THREE.Group | null>(null);
-  const sceneApiRef = useRef<ForceMotionScene | null>(null);
-  const experienceRef = useRef<ForceMotionExperience>(createForceMotionExperience());
-  const snapshotRef = useRef<LessonSnapshot>(experienceRef.current.snapshot());
-  const previousRef = useRef<() => void>(() => {});
-  const nextRef = useRef<() => void>(() => {});
-  const replayRef = useRef<() => void>(() => {});
-  const completedRef = useRef(false);
-  const evidenceRef = useRef<string[]>([]);
-  const focusActionRef = useRef<string | undefined>(undefined);
+  const worldRef = useRef<ForceLabScene | null>(null);
+  const stateRef = useRef<ForceLabState>(createForceLabState());
+  const autoDragRef = useRef<{ id: DragId; from: THREE.Vector3; to: THREE.Vector3; t: number } | null>(null);
+  const autoSwingRef = useRef(false);
+  const autoTapRef = useRef<number | null>(null);
+  const hudDirtyRef = useRef(true);
+  const audioRef = useRef(true);
 
-  const [snapshot, setSnapshot] = useState(snapshotRef.current);
+  const [state, setState] = useState(stateRef.current);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
   const [started, setStarted] = useState(false);
-  const [completed, setCompleted] = useState(false);
   const [vrSupported, setVrSupported] = useState(false);
   const [runtimeError, setRuntimeError] = useState('');
-  const [evidence, setEvidence] = useState<string[]>([]);
-  const [focusVisibility, setFocusVisibility] = useState<FocusGuideVisibility>({
-    direction: 'forward',
-    visible: false,
-  });
-  const focusVisibilityRef = useRef(focusVisibility);
+  const [ready, setReady] = useState(false);
 
-  useEffect(() => { completedRef.current = completed; }, [completed]);
-  useEffect(() => { evidenceRef.current = evidence; }, [evidence]);
+  audioRef.current = preferences.audio;
+  const narrate = useCallback((current: ForceLabState) => {
+    if (audioRef.current) playNarration(NARRATIONS[NARRATION_INDEX[narrationKeyFor(current)]]!);
+  }, []);
 
-  const currentStage = FORCE_MOTION_EXPERIENCE_DEFINITION.stages[snapshot.stageIndex];
-  const remainingActions = useMemo(
-    () => currentStage.requiredActionIds.filter(
-      actionId => !snapshot.performedActionIds.includes(actionId),
-    ),
-    [currentStage, snapshot.performedActionIds],
-  );
-  focusActionRef.current = remainingActions[0];
+  const dispatch = useCallback((action: ForceLabAction) => {
+    const before = stateRef.current;
+    const next = reduceForceLab(before, action);
+    if (next === before) return;
+    stateRef.current = next;
+    worldRef.current?.apply(next);
+    hudDirtyRef.current = true;
+    setState(next);
+    if (narrationKeyFor(next) !== narrationKeyFor(before)) narrate(next);
+  }, [narrate]);
 
-  const applyVisualAction = useCallback((actionId: string) => {
-    const world = sceneApiRef.current;
+  const autoDrag = useCallback((id: DragId, toGoal: boolean) => {
+    const world = worldRef.current;
     if (!world) return;
-    if (actionId === 'apply-push') world.applyPush();
-    if (actionId === 'apply-brake') world.applyBrake();
-    if (actionId === 'apply-accelerate') world.applyAccelerate();
-    if (actionId === 'apply-deflect') world.applyDeflect();
-    if (actionId === 'squeeze-ball') world.squeezeBall();
-    if (actionId === 'release-ball') world.releaseBall();
+    const from = toGoal ? world.dragStart(id) : world.dragGoal(id);
+    const to = toGoal ? world.dragGoal(id) : world.dragStart(id);
+    autoDragRef.current = { id, from, to, t: 0 };
   }, []);
-
-  const moveCameraToStage = useCallback((stageIndex: number) => {
-    if (guidedCameraRef.current && cameraRef.current && sceneApiRef.current) {
-      focusStageOverview(stageIndex, guidedCameraRef.current, cameraRef.current, sceneApiRef.current);
-    }
-  }, []);
-
-  const performAction = useCallback((actionId: string, source: NormalizedInputSource) => {
-    const before = experienceRef.current.snapshot();
-    const stage = FORCE_MOTION_EXPERIENCE_DEFINITION.stages[before.stageIndex];
-    if (!stage.requiredActionIds.includes(actionId) || before.performedActionIds.includes(actionId)) {
-      return;
-    }
-
-    try {
-      let next = experienceRef.current.perform(actionId);
-      applyVisualAction(actionId);
-      const authoredStage = FORCE_MOTION_EXPERIENCE_DEFINITION.stages[next.stageIndex];
-      if (
-        authoredStage.requiredActionIds.every(id => next.performedActionIds.includes(id))
-        && !authoredStage.completionEvidenceIds.every(id => next.recordedEvidenceIds.includes(id))
-      ) {
-        for (const evidenceId of authoredStage.completionEvidenceIds) {
-          next = experienceRef.current.observe(evidenceId);
-          setEvidence(values => values.includes(EVIDENCE_LABELS[evidenceId])
-            ? values
-            : [...values, EVIDENCE_LABELS[evidenceId]]);
-        }
-      }
-      snapshotRef.current = next;
-      setSnapshot(next);
-      if (next.lessonComplete && isObjectActionSource(source)) {
-        setCompleted(true);
-      } else if (advanceAfterObjectAction(source, next)) {
-        window.setTimeout(() => {
-          try {
-            const advanced = experienceRef.current.next();
-            snapshotRef.current = advanced;
-            setSnapshot(advanced);
-            sceneApiRef.current?.setStage(advanced.stageIndex);
-            moveCameraToStage(advanced.stageIndex);
-            playNarration(advanced.stageIndex, preferences.audio);
-          } catch (error) {
-            setRuntimeError(error instanceof Error ? error.message : String(error));
-          }
-        }, 280);
-      }
-    } catch (error) {
-      setRuntimeError(error instanceof Error ? error.message : String(error));
-    }
-  }, [applyVisualAction, moveCameraToStage, preferences.audio]);
-
-  const previous = useCallback(() => {
-    setCompleted(false);
-    const next = experienceRef.current.previous();
-    snapshotRef.current = next;
-    setSnapshot(next);
-    sceneApiRef.current?.setStage(next.stageIndex);
-    moveCameraToStage(next.stageIndex);
-    playNarration(next.stageIndex, preferences.audio);
-  }, [moveCameraToStage, preferences.audio]);
-  previousRef.current = previous;
-
-  const next = useCallback(() => {
-    if (!snapshotRef.current.stageComplete) return;
-    if (snapshotRef.current.lessonComplete) {
-      setCompleted(true);
-      return;
-    }
-    try {
-      const nextSnapshot = experienceRef.current.next();
-      snapshotRef.current = nextSnapshot;
-      setSnapshot(nextSnapshot);
-      sceneApiRef.current?.setStage(nextSnapshot.stageIndex);
-      moveCameraToStage(nextSnapshot.stageIndex);
-      playNarration(nextSnapshot.stageIndex, preferences.audio);
-    } catch (error) {
-      setRuntimeError(error instanceof Error ? error.message : String(error));
-    }
-  }, [moveCameraToStage, preferences.audio]);
-  nextRef.current = next;
-
-  const replay = useCallback(() => {
-    setCompleted(false);
-    setEvidence([]);
-    const fresh = experienceRef.current.restart();
-    snapshotRef.current = fresh;
-    setSnapshot(fresh);
-    sceneApiRef.current?.setStage(fresh.stageIndex);
-    moveCameraToStage(fresh.stageIndex);
-    playNarration(fresh.stageIndex, preferences.audio);
-  }, [moveCameraToStage, preferences.audio]);
-  replayRef.current = replay;
-
-  const enterVr = useCallback(async () => {
-    if (!rendererRef.current || !('xr' in navigator)) return;
-    try {
-      const session = await (navigator as Navigator & {
-        xr: { requestSession(mode: string, options: XRSessionInit): Promise<XRSession> };
-      }).xr.requestSession('immersive-vr', {
-        requiredFeatures: ['local-floor'],
-        optionalFeatures: ['bounded-floor', 'hand-tracking'],
-      });
-      await rendererRef.current.xr.setSession(session);
-      setStarted(true);
-      playNarration(snapshotRef.current.stageIndex, preferences.audio);
-    } catch (error) {
-      setRuntimeError(error instanceof Error ? error.message : 'The headset could not start immersive mode.');
-    }
-  }, [preferences.audio]);
 
   useEffect(() => {
     if ('xr' in navigator) {
       void (navigator as Navigator & {
         xr: { isSessionSupported(mode: string): Promise<boolean> };
-      }).xr.isSessionSupported('immersive-vr').then(setVrSupported);
+      }).xr.isSessionSupported('immersive-vr').then(setVrSupported).catch(() => setVrSupported(false));
     }
   }, []);
 
@@ -359,272 +206,519 @@ export default function ForceMotionViewer() {
     const mountElement = mount;
     let cancelled = false;
     let host: WebSimulationRuntime | undefined;
-    let fixedUpdate: WebSimulationUpdates['fixedUpdate'];
     let renderUpdate: WebSimulationUpdates['renderUpdate'];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     async function initialize() {
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color('#0a1220');
-      const camera = new THREE.PerspectiveCamera(52, 1, 0.04, 40);
-      camera.position.copy(DEFAULT_FORCE_MOTION_FRAME.position);
-      camera.lookAt(DEFAULT_FORCE_MOTION_FRAME.target);
-
+      scene.background = new THREE.Color('#bfe0f2');
+      const camera = new THREE.PerspectiveCamera(56, 1, 0.04, 120);
       host = createWebSimulationRuntime({
         mount: mountElement,
         scene,
         camera,
         updates: {
-          fixedUpdate(context) { fixedUpdate?.(context); },
+          fixedUpdate() {},
           renderUpdate(context) { renderUpdate?.(context); },
         },
       });
-      rendererRef.current = host.renderer;
-      cameraRef.current = camera;
+      const renderer = host.renderer;
+      rendererRef.current = renderer;
+      renderer.shadowMap.enabled = true;
+      // The presentation pipeline renders several passes per frame: count them all.
+      renderer.info.autoReset = false;
 
       const vrRig = createVrPlayerRig({
-        renderer: host.renderer,
+        renderer,
         scene,
         camera,
-        spawn: VR_SPAWN,
+        spawn: { position: new THREE.Vector3(0, 0, 2.2), lookAt: new THREE.Vector3(0, 1, 0) },
       });
-      playerRigRef.current = vrRig.rig;
-      host.resources.register('force-motion-player-rig', () => vrRig.dispose());
+      host.resources.register('force-lab-rig', () => vrRig.dispose());
 
-      const hemisphere = new THREE.HemisphereLight('#cfe8ff', '#101826', 1.6);
-      scene.add(hemisphere);
-      const key = new THREE.DirectionalLight('#fff4e0', 2.2);
-      key.position.set(2.2, 3, -1);
-      key.castShadow = true;
-      scene.add(key);
-      const rim = new THREE.PointLight('#7dd3fc', 1.4, 8);
-      rim.position.set(-1.2, 1.4, 1.5);
-      scene.add(rim);
-
-      const floor = new THREE.Mesh(
-        new THREE.CircleGeometry(3.2, 48),
-        new THREE.MeshStandardMaterial({ color: '#0f1b2d', roughness: 0.95 }),
-      );
-      floor.rotation.x = -Math.PI / 2;
-      floor.position.set(0.3, -0.05, 0.6);
-      floor.receiveShadow = true;
-      scene.add(floor);
-
-      const { materials, dispose: disposeMaterials } = createForceMotionMaterials();
-      host.resources.register('force-motion-materials', disposeMaterials);
-
-      const world = createForceMotionScene({ scene, materials });
-      sceneApiRef.current = world;
-      host.resources.register('force-motion-scene', () => world.dispose());
-
-      const guidedCamera = createGuidedCamera(camera, host.renderer.domElement, {
-        transitionSeconds: 0.7,
+      const assets = createGlbAssetLoader(renderer);
+      host.resources.register('force-lab-assets', () => assets.dispose());
+      const world = await createForceLabScene(scene, assets, {
+        reducedMotion,
+        onEvent: event => dispatch(event),
+        onDiagnostic: message => console.warn(message),
       });
-      // Snap straight to stage 0's own framing rather than a separately
-      // hand-tuned "default" shot — the two drifting out of sync is exactly
-      // what produced an unintentionally wide opening view here.
-      const openingFocus = STAGE_CAMERA_FOCUS[0];
-      const openingObjects = openingFocus.objectIds.map(id => world[id]);
-      guidedCamera.focusOn(
-        computeFocusFrame(openingObjects, camera, {
-          fitPadding: openingFocus.fitPadding,
-          approachFrom: APPROACH_FROM,
-        }),
-        { animate: false },
-      );
-      guidedCameraRef.current = guidedCamera;
-      host.resources.register('force-motion-camera', () => {
-        // Resource disposal runs through an awaited loop (see
-        // resourceRegistry.disposeAll), so under React Strict Mode's
-        // dev-only double-mount this callback can fire *after* a second,
-        // real mount has already assigned its own guided camera to this
-        // same ref. Only clear it if it still points at this instance.
-        if (guidedCameraRef.current === guidedCamera) guidedCameraRef.current = null;
-        guidedCamera.dispose();
+      if (cancelled) {
+        world.dispose();
+        return;
+      }
+      worldRef.current = world;
+      world.apply(stateRef.current);
+      host.resources.register('force-lab-scene', () => {
+        world.dispose();
+        if (worldRef.current === world) worldRef.current = null;
       });
+
+      const guidedCamera = createGuidedCamera(camera, renderer.domElement, { transitionSeconds: 0.8 });
+      guidedCamera.focusOn(world.focusFor(stateRef.current.scene), { animate: false });
+      host.resources.register('force-lab-camera', () => guidedCamera.dispose());
+      let framedScene: ForceLabSceneId = stateRef.current.scene;
 
       const hud = createVrHudPanel({ scene });
-      host.resources.register('force-motion-vr-hud', () => hud.dispose());
+      host.resources.register('force-lab-hud', () => hud.dispose());
 
-      const interactionSystem = createInteractionSystem({
+      const hudAction = (id: VrHudButtonId) => {
+        const current = stateRef.current;
+        if (id === 'previous') dispatch({ type: 'back' });
+        else if (id === 'next') dispatch({ type: 'continue' });
+        else if (id === 'replay') narrate(current);
+        else if (id === 'exit') void renderer.xr.getSession()?.end();
+        else if (id.startsWith('choice-')) {
+          const choice = choicesFor(current)[id.endsWith('a') ? 0 : id.endsWith('b') ? 1 : 2];
+          if (choice) dispatch(choice.action);
+        }
+      };
+      const interaction = createInteractionSystem({
         camera,
-        domElement: host.renderer.domElement,
+        domElement: renderer.domElement,
         xrControllers: vrRig.controllers,
-        onSelect: (id, object, source) => {
-          const hudButton = hud.buttonIdFor(id);
-          if (hudButton) {
-            if (hudButton === 'previous') previousRef.current();
-            if (hudButton === 'next') nextRef.current();
-            if (hudButton === 'replay') replayRef.current();
-            if (hudButton === 'exit') void host!.renderer.xr.getSession()?.end();
-            return;
-          }
-          const activeSnapshot = snapshotRef.current;
-          const activeStage = FORCE_MOTION_EXPERIENCE_DEFINITION.stages[activeSnapshot.stageIndex];
-          if (activeStage.requiredActionIds.includes(id) && !activeSnapshot.performedActionIds.includes(id)) {
-            performAction(id, source);
-          }
-          interactionSystem.setSelected(id);
-          guidedCamera.focusOn(computeFocusFrame(object, camera, { fitPadding: 2.4 }));
+        onSelect: id => {
+          const button = hud.buttonIdFor(id);
+          if (button) hudAction(button);
         },
       });
-      for (const mesh of Object.values(hud.buttons)) {
-        interactionSystem.register(mesh.name, mesh);
-      }
-      interactionSystem.register('apply-push', world.pushControl, { highlightColor: '#4ade80' });
-      interactionSystem.register('apply-brake', world.brakeControl, { highlightColor: '#f87171' });
-      interactionSystem.register('apply-accelerate', world.accelerateControl, { highlightColor: '#fb923c' });
-      interactionSystem.register('apply-deflect', world.deflectControl, { highlightColor: '#a78bfa' });
-      interactionSystem.register('squeeze-ball', world.squeezeControl, { highlightColor: '#22d3ee' });
-      interactionSystem.register('release-ball', world.releaseControl, { highlightColor: '#22d3ee' });
-      interactionSystem.register('compare-motion-effects', world.comparisonBoard, { highlightColor: '#94a3b8' });
-      host.resources.register('force-motion-interaction', () => interactionSystem.dispose());
+      for (const mesh of Object.values(hud.buttons)) interaction.register(mesh.name, mesh);
+      host.resources.register('force-lab-interaction', () => interaction.dispose());
 
       const locomotion = createVrLocomotion({
-        renderer: host.renderer,
+        renderer,
         rig: vrRig.rig,
         locomotion: 'boundedTeleport',
         movementBounds: new THREE.Box3(new THREE.Vector3(-4, -1, -4), new THREE.Vector3(4, 3, 4)),
-        onPrimary: () => {
-          const actionId = focusActionRef.current;
-          if (actionId) performAction(actionId, 'xr-controller');
-        },
-        onNarrate: () => playNarration(snapshotRef.current.stageIndex, preferences.audio),
-        onBack: () => {
-          previousRef.current();
-        },
+        onPrimary: () => dispatch({ type: 'continue' }),
+        onBack: () => dispatch({ type: 'back' }),
+        onNarrate: () => narrate(stateRef.current),
       });
+      host.resources.register('force-lab-locomotion', () => locomotion.dispose());
 
-      const vrHudContent = (): VrHudContent => {
-        if (completedRef.current) {
-          return {
-            eyebrow: 'Lesson complete',
-            title: 'Today you learned',
-            body: 'You tested how forces change motion, direction, speed, and shape.',
-            bullets: evidenceRef.current,
-            buttons: ['replay', 'exit'],
-          };
-        }
-        const active = snapshotRef.current;
-        const focusAction = focusActionRef.current;
-        return {
-          eyebrow: `Stage ${active.stageIndex + 1} / ${active.stageCount}`,
-          title: active.stageTitle,
-          body: active.cue,
-          hint: focusAction
-            ? `Do: ${ACTION_LABELS[focusAction]}`
-            : 'Stage complete - press Next',
-          buttons: active.stageIndex > 0 ? ['previous', 'next'] : ['next'],
-        };
-      };
+      // ------------------------------------------------------------ hands-on input
+      const raycaster = new THREE.Raycaster();
+      const pointer = new THREE.Vector2();
+      const plane = new THREE.Plane();
+      const hit = new THREE.Vector3();
+      let grab: Grab | null = null;
+      let activeController: THREE.Object3D | null = null;
 
-      const projectedFocus = new THREE.Vector3();
-      renderUpdate = context => {
-        world.update(context.frameDeltaSeconds);
-
-        const suggestedTargetId = focusActionRef.current;
-        interactionSystem.setSuggested(suggestedTargetId);
-        interactionSystem.update(context.elapsedSeconds);
-
-        if (host!.renderer.xr.isPresenting) {
-          locomotion.update(context.frameDeltaSeconds);
-          interactionSystem.updateXrHover();
-          hud.setVisible(true);
-          hud.setContent(vrHudContent());
-          hud.update(host!.renderer.xr.getCamera(), context.frameDeltaSeconds);
+      const setRay = (source: THREE.Object3D | null) => {
+        if (source) {
+          source.updateMatrixWorld(true);
+          raycaster.ray.origin.setFromMatrixPosition(source.matrixWorld);
+          raycaster.ray.direction.set(0, 0, -1).transformDirection(source.matrixWorld);
         } else {
-          hud.setVisible(false);
-          guidedCamera.update(context.frameDeltaSeconds);
-          const focusTarget = suggestedTargetId
-            ? world[OBJECT_KEY_BY_ACTION[suggestedTargetId]]
-            : undefined;
-          if (focusTarget instanceof THREE.Object3D) {
-            focusTarget.getWorldPosition(projectedFocus).project(camera);
-            const nextFocusVisibility = resolveFocusGuide(projectedFocus);
-            const currentFocusVisibility = focusVisibilityRef.current;
-            if (
-              nextFocusVisibility.visible !== currentFocusVisibility.visible
-              || nextFocusVisibility.direction !== currentFocusVisibility.direction
-            ) {
-              focusVisibilityRef.current = nextFocusVisibility;
-              setFocusVisibility(nextFocusVisibility);
-            }
+          raycaster.setFromCamera(pointer, camera);
+        }
+      };
+      const pointAt = (height: number) => {
+        plane.set(new THREE.Vector3(0, 1, 0), -height);
+        return raycaster.ray.intersectPlane(plane, hit) ? hit.clone() : null;
+      };
+      const touches = (object: THREE.Object3D) =>
+        object.visible && raycaster.intersectObject(object, true).length > 0;
+
+      const begin = (source: THREE.Object3D | null) => {
+        const current = stateRef.current;
+        if (!worldRef.current) return;
+        setRay(source);
+        const w = worldRef.current;
+        if (current.scene === 'store') {
+          for (const id of ['trolley', 'wagon', 'door'] as const) {
+            if (!touches(w.targets[id])) continue;
+            const height = id === 'trolley' ? 1.0 : id === 'wagon' ? 0.62 : 1.0;
+            const point = pointAt(height);
+            if (!point) return;
+            const anchor = id === 'door' ? point.clone() : w.targets[id].position.clone();
+            grab = { kind: 'drag', id, offset: anchor.sub(point).setY(0), height };
+            return;
           }
         }
+        if (current.scene === 'playground') {
+          const point = pointAt(0.11);
+          if (!point) return;
+          if (w.ballMoving()) {
+            if (point.distanceTo(w.ballPosition()) < 0.6) {
+              w.tap(point.x >= w.ballPosition().x ? -1 : 1);
+            }
+            return;
+          }
+          grab = { kind: 'swipe', samples: [{ point, time: performance.now() / 1000 }], height: 0.11 };
+          return;
+        }
+        if (current.scene === 'friction') {
+          for (const surface of ['tile', 'carpet'] as const) {
+            if (touches(w.targets.cars[surface]) && !w.carRunning(surface)) {
+              grab = { kind: 'car', surface };
+              return;
+            }
+          }
+          return;
+        }
+        if (current.scene === 'wall') {
+          if (current.wall.bounced && w.ballInReach()) {
+            const point = pointAt(0.5);
+            w.swing(point ? THREE.MathUtils.clamp(point.x - w.racketSpot.x, -1, 1) : 0);
+            return;
+          }
+          const point = pointAt(0.034);
+          if (point) grab = { kind: 'swipe', samples: [{ point, time: performance.now() / 1000 }], height: 0.034 };
+        }
       };
-      fixedUpdate = () => {};
+
+      const move = (source: THREE.Object3D | null) => {
+        if (!grab || !worldRef.current) return;
+        setRay(source);
+        const w = worldRef.current;
+        if (grab.kind === 'drag') {
+          const point = pointAt(grab.height);
+          if (point) w.dragTo(grab.id, point.add(grab.offset));
+        } else if (grab.kind === 'swipe') {
+          const point = pointAt(grab.height);
+          if (point) {
+            grab.samples.push({ point, time: performance.now() / 1000 });
+            if (grab.samples.length > 12) grab.samples.shift();
+          }
+        } else if (grab.kind === 'car') {
+          const point = pointAt(0.85);
+          if (point) w.targets.cars[grab.surface].position.set(point.x, 0.85, point.z);
+        }
+      };
+
+      const end = (source: THREE.Object3D | null) => {
+        const current = grab;
+        grab = null;
+        if (!current || !worldRef.current) return;
+        move(source);
+        const w = worldRef.current;
+        if (current.kind === 'swipe') {
+          const samples = current.samples;
+          const first = samples[0]!;
+          const last = samples[samples.length - 1]!;
+          const seconds = Math.max(0.03, last.time - first.time);
+          const velocity = last.point.clone().sub(first.point).divideScalar(seconds).setY(0);
+          const speed = velocity.length();
+          if (stateRef.current.scene === 'playground') {
+            const passedBall = samples.some(s => s.point.distanceTo(w.ballPosition()) < 0.45);
+            if (passedBall && speed > 0.2) w.kick(speed, velocity);
+          } else if (stateRef.current.scene === 'wall' && speed > 0.3) {
+            const towardWall = velocity.z < -0.2 ? velocity : new THREE.Vector3(velocity.x * 0.3, 0, -1);
+            w.throwBall(towardWall.normalize().multiplyScalar(THREE.MathUtils.clamp(speed, 1.6, 4)));
+          }
+        } else if (current.kind === 'car') {
+          const car = w.targets.cars[current.surface];
+          const lane: Surface = car.position.x < 0 ? 'tile' : 'carpet';
+          w.releaseCar(lane);
+          if (lane !== current.surface) w.releaseCar(current.surface);
+        }
+      };
+
+      const onPointerMove = (event: PointerEvent) => {
+        const bounds = renderer.domElement.getBoundingClientRect();
+        pointer.set(
+          ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+          -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
+        );
+        move(null);
+      };
+      const onPointerDown = (event: PointerEvent) => {
+        onPointerMove(event);
+        begin(null);
+        if (grab) guidedCamera.controls.enabled = false;
+      };
+      const onPointerUp = (event: PointerEvent) => {
+        onPointerMove(event);
+        end(null);
+        guidedCamera.controls.enabled = true;
+      };
+      renderer.domElement.addEventListener('pointermove', onPointerMove);
+      renderer.domElement.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointerup', onPointerUp);
+      const onSelectStart = (event: { target: unknown }) => {
+        const controller = event.target as THREE.Object3D;
+        const hovered = interaction.hoveredId;
+        if (hovered && hud.buttonIdFor(hovered)) return;
+        activeController = controller;
+        begin(controller);
+      };
+      const onSelectEnd = (event: { target: unknown }) => {
+        end(event.target as THREE.Object3D);
+        activeController = null;
+      };
+      for (const controller of vrRig.controllers) {
+        controller.addEventListener('selectstart', onSelectStart);
+        controller.addEventListener('selectend', onSelectEnd);
+      }
+      host.resources.register('force-lab-input', () => {
+        renderer.domElement.removeEventListener('pointermove', onPointerMove);
+        renderer.domElement.removeEventListener('pointerdown', onPointerDown);
+        window.removeEventListener('pointerup', onPointerUp);
+        for (const controller of vrRig.controllers) {
+          controller.removeEventListener('selectstart', onSelectStart);
+          controller.removeEventListener('selectend', onSelectEnd);
+        }
+      });
+
+      // In VR the racket rides on the controller; in the browser it waits by the ball path.
+      const racketHome = world.targets.racket.position.clone();
+
+      let lastStatsAt = 0;
+      let feedClock = 0;
+      renderUpdate = context => {
+        const w = worldRef.current;
+        if (!w) return;
+        const dt = context.frameDeltaSeconds;
+        const current = stateRef.current;
+
+        const auto = autoDragRef.current;
+        if (auto) {
+          auto.t = Math.min(1, auto.t + dt / (reducedMotion ? 0.05 : AUTO_DRAG_SECONDS));
+          w.dragTo(auto.id, auto.from.clone().lerp(auto.to, auto.t));
+          if (auto.t >= 1) autoDragRef.current = null;
+        }
+        if (current.scene === 'wall' && current.wall.bounced && !current.wall.hit) {
+          // Feed the next ball only once the last one has stopped rolling.
+          feedClock = w.tennisMoving() ? 0 : feedClock + Math.min(dt, 0.1);
+          if (feedClock > 1.5) {
+            feedClock = 0;
+            w.feedBall();
+          }
+          if (autoSwingRef.current && w.ballInReach()) {
+            autoSwingRef.current = false;
+            w.swing(0);
+          }
+        }
+        if (activeController) move(activeController);
+        w.update(dt);
+        if (autoTapRef.current !== null) {
+          autoTapRef.current -= Math.min(dt, 0.1);
+          if (autoTapRef.current <= 0) {
+            autoTapRef.current = null;
+            w.tap(1);
+          }
+        }
+
+        if (current.scene !== framedScene) {
+          framedScene = current.scene;
+          if (renderer.xr.isPresenting) {
+            vrRig.rig.position.copy(w.vrSpotFor(current.scene));
+            vrRig.rig.rotation.set(0, 0, 0);
+          } else {
+            guidedCamera.focusOn(w.focusFor(current.scene));
+          }
+        }
+
+        if (renderer.xr.isPresenting) {
+          const controller = vrRig.controllers[1] ?? vrRig.controllers[0];
+          if (controller && current.scene === 'wall') {
+            controller.getWorldPosition(w.targets.racket.position);
+          }
+          locomotion.update(dt);
+          interaction.updateXrHover();
+          if (hudDirtyRef.current) {
+            hudDirtyRef.current = false;
+            hud.setContent(hudContent(current));
+          }
+          hud.setVisible(true);
+          hud.update(renderer.xr.getCamera(), dt);
+        } else {
+          w.targets.racket.position.copy(racketHome);
+          hud.setVisible(false);
+          guidedCamera.update(dt);
+        }
+        interaction.update(context.elapsedSeconds);
+
+        if (statsRef.current && context.elapsedSeconds - lastStatsAt >= 1) {
+          lastStatsAt = context.elapsedSeconds;
+          publishRenderStats(statsRef.current, readRenderStats(renderer.info));
+        }
+        renderer.info.reset();
+      };
       await host.initialize();
+      setReady(true);
     }
 
     void initialize().catch(error => {
-      if (!cancelled) {
-        setRuntimeError(error instanceof Error ? error.message : String(error));
-      }
+      if (!cancelled) setRuntimeError(error instanceof Error ? error.message : String(error));
       void host?.dispose();
     });
     return () => {
       cancelled = true;
-      stopSimulationNarration();
-      sceneApiRef.current = null;
+      stopNarration();
+      worldRef.current = null;
       rendererRef.current = null;
-      cameraRef.current = null;
       void host?.dispose();
     };
-  }, [performAction]);
+  }, [dispatch, narrate]);
+
+  const enterVr = useCallback(async () => {
+    const xr = (navigator as Navigator & {
+      xr?: { requestSession(mode: string, options: object): Promise<XRSession> };
+    }).xr;
+    if (!rendererRef.current || !xr) return;
+    try {
+      unlockNarration();
+      const session = await xr.requestSession('immersive-vr', {
+        requiredFeatures: ['local-floor'],
+        optionalFeatures: ['bounded-floor', 'hand-tracking'],
+      });
+      await rendererRef.current.xr.setSession(session);
+      hudDirtyRef.current = true;
+      setStarted(true);
+      narrate(stateRef.current);
+    } catch (error) {
+      setRuntimeError(error instanceof Error ? error.message : 'The headset could not start immersive mode.');
+    }
+  }, [narrate]);
+
+  const snapshot = useMemo(() => snapshotOf(state), [state]);
+  const choices = choicesFor(state).map((choice, index) => ({
+    id: `choice-${index}`,
+    label: choice.label,
+    onActivate: () => dispatch(choice.action),
+  }));
+  const world = worldRef.current;
 
   return (
     <SimulationExperienceShell
-      title="Force and Motion Lab"
-      classContext="Class 8 Science · Force and Pressure"
-      objective="Show how a force can start, stop, speed up, or redirect a moving object, and change an object's shape."
+      title="Force and Motion"
+      classContext="Grades 6–7 Science · Force and Motion"
+      objective="Find out how pushes and pulls start, speed up, slow down and turn moving things."
       snapshot={snapshot}
       started={started}
       preferences={preferences}
       onPreferencesChange={setPreferences}
       onStartBrowser={() => {
+        unlockNarration();
         setStarted(true);
-        playNarration(snapshot.stageIndex, preferences.audio);
+        narrate(stateRef.current);
       }}
       onEnterVr={vrSupported ? enterVr : undefined}
-      onPrevious={previous}
-      onNext={next}
-      evidence={evidence}
-      completed={completed}
-      completionEyebrow="Model complete"
-      completionHeadline="Effects of force observed and recorded"
-      completionBody="You started the ball moving, braked it to a stop, sped it up, redirected it sideways, changed its shape by squeezing it, and compared all five effects of force."
-      completionActionLabel="Review final comparison"
-      focusGuide={{
-        direction: focusVisibility.direction,
-        label: remainingActions.length > 0
-          ? `Look toward: ${ACTION_LABELS[remainingActions[0]]}`
-          : 'Look toward the comparison board',
-        visible: started && !completed && focusVisibility.visible,
-      }}
+      onPrevious={() => dispatch({ type: 'back' })}
+      onNext={() => dispatch({ type: 'continue' })}
+      evidence={evidenceFor(state)}
+      completed={state.quiz.complete}
+      completionEyebrow="Lesson complete"
+      completionHeadline="You know what forces do"
+      completionBody="Pushes and pulls are forces. They can start motion, change speed and change direction, and friction slows moving things down."
+      choices={choices}
+      caption={preferences.subtitles ? forceLabPrompt(state) : undefined}
+      feedback={state.feedback ?? undefined}
+      onReplayNarration={() => narrate(stateRef.current)}
       error={runtimeError || undefined}
     >
-      <SimulationCanvasHost
-        ref={mountRef}
-        className="force-motion-world-mount"
-        ariaLabel="Force, motion, and shape investigation world"
-      />
-      {started && remainingActions.length > 0 && (
+      <div
+        ref={statsRef}
+        data-testid="force-lab"
+        data-ready={ready}
+        data-scene={state.scene}
+        style={{ position: 'absolute', inset: 0 }}
+      >
+        <SimulationCanvasHost
+          ref={mountRef}
+          className="force-motion-world-mount"
+          ariaLabel="Force and motion world"
+        />
+      </div>
+      {started && world && state.scene !== 'quiz' && (
         <section className="force-motion-action-tray" aria-label="Force and motion actions">
-          <span>Model action</span>
-          <strong>{ACTION_LABELS[remainingActions[0]]}</strong>
+          <span>Or use a button</span>
           <div>
-            {remainingActions.map(actionId => (
-              <button
-                key={actionId}
-                type="button"
-                className="secondary"
-                onClick={() => performAction(actionId, 'keyboard')}
-              >
-                {ACTION_LABELS[actionId]}
-              </button>
-            ))}
+            {state.scene === 'store' && (
+              <>
+                <button type="button" className="secondary" disabled={state.store.trolleyPushed}
+                  onClick={() => autoDrag('trolley', true)}>Push the trolley</button>
+                <button type="button" className="secondary" disabled={state.store.wagonPulled}
+                  onClick={() => autoDrag('wagon', true)}>Pull the wagon</button>
+                <button type="button" className="secondary" disabled={state.store.doorOpened}
+                  onClick={() => autoDrag('door', true)}>Open the door</button>
+                <button type="button" className="secondary" disabled={!state.store.doorOpened || state.store.doorClosed}
+                  onClick={() => autoDrag('door', false)}>Close the door</button>
+              </>
+            )}
+            {state.scene === 'playground' && (
+              <>
+                <button type="button" className="secondary" onClick={() => { world.resetBall(); world.kick(GENTLE_HAND); }}>
+                  Kick gently
+                </button>
+                <button type="button" className="secondary" onClick={() => { world.resetBall(); world.kick(STRONG_HAND); }}>
+                  Kick hard
+                </button>
+                <button type="button" className="secondary" onClick={() => {
+                  if (!world.ballMoving()) {
+                    world.resetBall();
+                    world.kick(GENTLE_HAND);
+                  }
+                  autoTapRef.current = 0.3;
+                }}>
+                  Tap the rolling ball from the side
+                </button>
+              </>
+            )}
+            {state.scene === 'friction' && (
+              <>
+                <button type="button" className="secondary" onClick={() => world.releaseCar('tile')}>
+                  Release on smooth tiles
+                </button>
+                <button type="button" className="secondary" onClick={() => world.releaseCar('carpet')}>
+                  Release on rough carpet
+                </button>
+              </>
+            )}
+            {state.scene === 'wall' && (
+              <>
+                <button type="button" className="secondary" onClick={() => world.throwBall(new THREE.Vector3(0.1, 0, -3))}>
+                  Roll the ball at the wall
+                </button>
+                <button type="button" className="secondary" disabled={!state.wall.bounced}
+                  onClick={() => { autoSwingRef.current = true; world.feedBall(); }}>
+                  Hit a ball with the racket
+                </button>
+              </>
+            )}
           </div>
         </section>
       )}
     </SimulationExperienceShell>
   );
+}
+
+/** What the child has found out so far, shown in the lesson panel. */
+function evidenceFor(state: ForceLabState): string[] {
+  const found: string[] = [];
+  if (state.store.trolleyPushed) found.push('Pushing moved the trolley away from me');
+  if (state.store.wagonPulled) found.push('Pulling moved the wagon towards me');
+  if (state.store.doorClosed) found.push('A door opens with a pull and shuts with a push');
+  const { gentleSpeed, strongSpeed } = state.playground;
+  if (gentleSpeed !== null && strongSpeed !== null) {
+    found.push(`A stronger kick was faster: ${strongSpeed.toFixed(1)} m/s against ${gentleSpeed.toFixed(1)} m/s`);
+  }
+  if (state.playground.directionChanged) found.push('A sideways tap changed the ball\'s direction');
+  const { smoothDistance, roughDistance } = state.friction;
+  if (smoothDistance !== null && roughDistance !== null) {
+    found.push(`Friction: ${smoothDistance.toFixed(1)} m on tiles, ${roughDistance.toFixed(1)} m on carpet`);
+  }
+  if (state.wall.bounced) found.push('The wall pushed back and turned the ball around');
+  if (state.wall.hit) found.push('The racket\'s force sent the ball in a new direction');
+  return found;
+}
+
+function hudContent(state: ForceLabState): VrHudContent {
+  const index = FORCE_LAB_SCENES.indexOf(state.scene);
+  const canGoOn = forceLabCanContinue(state);
+  return {
+    eyebrow: `Scene ${index + 1} of ${FORCE_LAB_SCENES.length}`,
+    title: SCENE_TITLES[state.scene],
+    body: state.feedback ?? forceLabPrompt(state),
+    hint: canGoOn ? 'Done! Press Next.' : undefined,
+    choices: choicesFor(state).map(choice => ({ label: choice.label })),
+    buttons: [
+      ...(index > 0 ? (['previous'] as const) : []),
+      ...(canGoOn ? (['next'] as const) : []),
+      'replay',
+      'exit',
+    ],
+  };
 }
